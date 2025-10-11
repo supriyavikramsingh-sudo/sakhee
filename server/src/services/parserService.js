@@ -4,7 +4,7 @@
  */
 
 import fs from 'fs'
-import { getDocument } from 'pdfjs-dist/legacy/build/pdf.js'
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs'
 import mammoth from 'mammoth'
 import { Logger } from '../utils/logger.js'
 import pcosLabRanges from '../utils/labRanges.js'
@@ -18,7 +18,27 @@ class ParserService {
   async parsePDF(filePath) {
     try {
       const dataBuffer = fs.readFileSync(filePath)
-      const loadingTask = getDocument({ data: dataBuffer })
+      // pdfjs expects a Uint8Array for binary PDF data in Node
+      const uint8 = new Uint8Array(dataBuffer)
+
+      // Resolve getDocument robustly (some builds expose under default)
+      let getDocumentFn = pdfjsLib.getDocument ?? pdfjsLib.default?.getDocument
+      if (!getDocumentFn) {
+        // As a last resort try dynamic import of the legacy build
+        try {
+          const alt = await import('pdfjs-dist/legacy/build/pdf.mjs')
+          getDocumentFn = alt.getDocument ?? alt.default?.getDocument
+        } catch (e) {
+          logger.warn('Dynamic import fallback for pdfjs failed', { error: e.message })
+        }
+      }
+
+      if (!getDocumentFn) {
+        throw new Error('getDocument is not defined')
+      }
+
+  // Disable worker in Node.js to avoid attempting to load a browser worker
+  const loadingTask = getDocumentFn({ data: uint8, disableWorker: true })
       const pdfDocument = await loadingTask.promise
 
       let fullText = ''
@@ -33,8 +53,9 @@ class ParserService {
       logger.info('PDF parsed successfully', { pages: pdfDocument.numPages })
       return fullText
     } catch (error) {
-      logger.error('PDF parsing failed', { error: error.message })
-      throw new Error('Failed to parse PDF file')
+      // Log full error and rethrow with original message so client can see cause
+      logger.error('PDF parsing failed', { error: error.message, stack: error.stack })
+      throw new Error(`Failed to parse PDF file: ${error.message}`)
     }
   }
 

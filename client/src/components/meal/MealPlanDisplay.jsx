@@ -1,11 +1,16 @@
 import { useState } from 'react'
-import { Calendar, Download, Share2, AlertCircle } from 'lucide-react'
+import { Calendar, Download, Share2, AlertCircle, CloudCog } from 'lucide-react'
 import MealCard from './MealCard'
 
 const MealPlanDisplay = ({ plan }) => {
   const [selectedDay, setSelectedDay] = useState(0)
 
-  if (!plan || !plan.plan) {
+  // Normalize the source plan object. The parent may pass either:
+  // - plan (object with fields)
+  // - plan.plan (the actual plan object)
+  const source = plan?.plan ?? plan ?? null
+
+  if (!source) {
     return (
       <div className="bg-white rounded-lg shadow p-8 text-center">
         <AlertCircle className="mx-auto mb-4 text-warning" size={40} />
@@ -14,7 +19,32 @@ const MealPlanDisplay = ({ plan }) => {
     )
   }
 
-  const days = plan.plan?.dayNumber ? [plan.plan] : []
+  // Build days array from several possible shapes:
+  // 1) source is already an array of days
+  // 2) source is a single day object with dayNumber
+  // 3) source.rawPlan contains a JSON string with the plan array
+  let days = []
+  if (Array.isArray(source)) {
+    days = source
+  } else if (source.dayNumber) {
+    days = [source]
+  } else if (typeof source.rawPlan === 'string') {
+    // Try to extract JSON array from the rawPlan string (handle ```json blocks)
+    try {
+      const raw = source.rawPlan
+      // Find first [ and last ] to extract a possible JSON array
+      const start = raw.indexOf('[')
+      const end = raw.lastIndexOf(']')
+      if (start !== -1 && end !== -1 && end > start) {
+        const jsonText = raw.slice(start, end + 1)
+        const parsed = JSON.parse(jsonText)
+        if (Array.isArray(parsed)) days = parsed
+      }
+    } catch (e) {
+      // ignore parse errors - we'll show the "generating" state below
+      // console.debug('Failed to parse rawPlan JSON', e)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -23,25 +53,25 @@ const MealPlanDisplay = ({ plan }) => {
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Duration</p>
           <p className="text-2xl font-bold text-primary">
-            {plan.duration} Days
+            {source.duration ?? plan.duration ?? '—'} Days
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Daily Budget</p>
           <p className="text-2xl font-bold text-success">
-            ₹{plan.budget}
+            ₹{source.budget ?? plan.budget ?? '—'}
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Diet Type</p>
           <p className="text-lg font-bold capitalize">
-            {plan.dietType}
+            {source.dietType ?? plan.dietType ?? '—'}
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Region</p>
           <p className="text-lg font-bold capitalize">
-            {plan.region.replace('-', ' ')}
+            {(source.region ?? plan.region ?? '').toString().replace(/-/g, ' ') || '—'}
           </p>
         </div>
       </div>
@@ -53,7 +83,7 @@ const MealPlanDisplay = ({ plan }) => {
           Select Day
         </h3>
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {Array.from({ length: plan.duration }, (_, i) => (
+          {Array.from({ length: (source.duration ?? plan.duration ?? days.length) || 1 }, (_, i) => (
             <button
               key={i}
               onClick={() => setSelectedDay(i)}
@@ -75,9 +105,9 @@ const MealPlanDisplay = ({ plan }) => {
           Day {selectedDay + 1} Meals
         </h3>
         
-        {days.length > 0 && days[0].meals ? (
+        {days.length > 0 && days[selectedDay]?.meals ? (
           <div className="grid md:grid-cols-2 gap-4">
-            {days[0].meals.map((meal, idx) => (
+            {days[selectedDay].meals.map((meal, idx) => (
               <MealCard key={idx} meal={meal} />
             ))}
           </div>
@@ -90,11 +120,11 @@ const MealPlanDisplay = ({ plan }) => {
         )}
 
         {/* Grocery List */}
-        {days[0]?.groceryList && (
+        {days[selectedDay]?.groceryList && (
           <div className="bg-white rounded-lg shadow p-6 mt-6">
             <h4 className="font-bold text-lg mb-4">🛒 Grocery List</h4>
             <div className="grid md:grid-cols-3 gap-3">
-              {days[0].groceryList.map((item, idx) => (
+              {days[selectedDay].groceryList.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <input type="checkbox" className="accent-primary" />
                   <span className="text-sm">{item}</span>
