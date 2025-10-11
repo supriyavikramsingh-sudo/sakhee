@@ -1,5 +1,4 @@
 const QuestionField = ({
-  key,
   type,
   label,
   required,

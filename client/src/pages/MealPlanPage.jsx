@@ -1,24 +1,23 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useAuthStore, useUserProfileStore, useMealStore } from '../store'
-import Navbar from '../components/layout/Navbar'
-import MealPlanGenerator from '../components/meal/MealPlanGenerator'
-import MealPlanDisplay from '../components/meal/MealPlanDisplay'
-import { Plus, Loader } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore, useUserProfileStore, useMealStore } from '../store';
+import Navbar from '../components/layout/Navbar';
+import MealPlanGenerator from '../components/meal/MealPlanGenerator';
+import MealPlanDisplay from '../components/meal/MealPlanDisplay';
+import { Plus } from 'lucide-react';
 
 const MealPlanPage = () => {
-  const { t } = useTranslation()
-  const { user } = useAuthStore()
-  const { profile } = useUserProfileStore()
-  const { currentMealPlan } = useMealStore()
-  const [showGenerator, setShowGenerator] = useState(!currentMealPlan)
-  const [loading, setLoading] = useState(false)
+  const { t } = useTranslation();
+  const { user } = useAuthStore();
+  const { profile } = useUserProfileStore();
+  const { currentMealPlan } = useMealStore();
+  const [showGenerator, setShowGenerator] = useState(!currentMealPlan);
 
   useEffect(() => {
     if (!user) {
-      window.location.href = '/onboarding'
+      window.location.href = '/onboarding';
     }
-  }, [user])
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,12 +26,8 @@ const MealPlanPage = () => {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2">
-            🍽️ {t('meals.title')}
-          </h1>
-          <p className="text-muted">
-            {t('meals.subtitle')}
-          </p>
+          <h1 className="text-4xl font-bold text-primary mb-2">🍽️ {t('meals.title')}</h1>
+          <p className="text-muted">{t('meals.subtitle')}</p>
         </div>
 
         {showGenerator ? (
@@ -55,10 +50,7 @@ const MealPlanPage = () => {
         ) : (
           <div className="text-center py-12">
             <p className="text-muted mb-6">{t('meals.noPlans')}</p>
-            <button
-              onClick={() => setShowGenerator(true)}
-              className="btn-primary"
-            >
+            <button onClick={() => setShowGenerator(true)} className="btn-primary">
               {t('meals.createFirst')}
             </button>
           </div>
@@ -73,7 +65,7 @@ const MealPlanPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MealPlanPage
+export default MealPlanPage;
