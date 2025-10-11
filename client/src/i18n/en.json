@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "chat": "Chat",
+    "meals": "Meals",
+    "progress": "Progress",
+    "settings": "Settings",
+    "logout": "Logout",
+    "getStarted": "Get Started"
+  },
+  "home": {
+    "title": "Welcome to Sakhee 🌸",
+    "subtitle": "Your AI companion for managing PCOS with confidence",
+    "getStarted": "Start Your Journey",
+    "openChat": "Open Chat",
+    "viewMeals": "View Meal Plans",
+    "features": {
+      "ai": "AI-Powered",
+      "aiDesc": "Personalized guidance from an intelligent assistant",
+      "personalized": "Customized",
+      "personalizedDesc": "Tailored to your lifestyle and preferences",
+      "meals": "Meal Planning",
+      "mealsDesc": "Region-specific, budget-friendly meal plans",
+      "tracking": "Progress Tracking",
+      "trackingDesc": "Monitor your journey with detailed analytics"
+    }
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Personal Information",
+      "desc": "Tell us about yourself"
+    },
+    "step2": {
+      "title": "Health Profile",
+      "desc": "Share your PCOS journey"
+    },
+    "step3": {
+      "title": "Diet & Lifestyle",
+      "desc": "Your preferences matter"
+    },
+    "step4": {
+      "title": "Goals & Budget",
+      "desc": "What are you working towards?"
+    },
+    "step5": {
+      "title": "Preferences",
+      "desc": "Customize your experience"
+    },
+    "email": "Email Address *",
+    "age": "Age Group *",
+    "location": "City, State *",
+    "diagnosisTime": "When were you diagnosed? *",
+    "symptoms": "Current Symptoms",
+    "dietType": "Diet Type *",
+    "allergies": "Food Allergies/Restrictions",
+    "activityLevel": "Activity Level *",
+    "primaryGoals": "Primary Goals (select up to 2) *",
+    "income": "Monthly Household Income *",
+    "language": "Preferred Language *",
+    "cuisine": "Favorite Cuisine *"
+  },
+  "common": {
+    "back": "← Back",
+    "next": "Next →",
+    "complete": "Complete Setup",
+    "disclaimer": "Medical Disclaimer",
+    "disclaimerText": "This assistant provides educational guidance only. Always consult a qualified healthcare professional for medical advice."
+  },
+  "chat": {
+    "welcome": "Welcome to Sakhee Chat!",
+    "welcomeMessage": "I'm here to support you on your PCOS journey. Feel free to ask me anything about symptoms, nutrition, lifestyle, or your health concerns.",
+    "tips": "Tips",
+    "inputPlaceholder": "Type your question or concern...",
+    "aiThinking": "Sakhee is thinking...",
+    "newChat": "New Chat",
+    "confirmClear": "Are you sure you want to clear this conversation?",
+    "errorMessage": "Sorry, I couldn't process your message. Please try again.",
+    "sources": "Sources"
+  },
+  "meals": {
+    "title": "Meal Planning",
+    "subtitle": "Personalized PCOS-friendly meal plans tailored to your preferences",
+    "generateNew": "Generate New Plan",
+    "noPlans": "You don't have any meal plans yet",
+    "createFirst": "Create Your First Plan",
+    "region": "Region",
+    "dietType": "Diet Type",
+    "budget": "Daily Budget",
+    "duration": "Duration",
+    "mealsPerDay": "Meals Per Day",
+    "loading": "Generating your personalized plan..."
+  }
+}
