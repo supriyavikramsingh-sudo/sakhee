@@ -1,20 +1,20 @@
-import { TrendingDown, TrendingUp, Activity, Moon, Heart, Zap } from 'lucide-react'
+import { TrendingDown, TrendingUp, Activity, Moon, Heart, Zap } from 'lucide-react';
 
 const ProgressDashboard = ({ progressData, loading }) => {
   if (loading) {
     return (
       <div className="grid md:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map(i => (
+        {[1, 2, 3, 4].map((i) => (
           <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
             <div className="h-4 bg-surface rounded mb-3 w-1/2" />
             <div className="h-8 bg-surface rounded" />
           </div>
         ))}
       </div>
-    )
+    );
   }
 
-  const analytics = progressData?.analytics
+  const analytics = progressData?.analytics;
 
   if (!analytics) {
     return (
@@ -25,7 +25,7 @@ const ProgressDashboard = ({ progressData, loading }) => {
           Start logging your daily progress to see insights and trends
         </p>
       </div>
-    )
+    );
   }
 
   const cards = [
@@ -34,36 +34,34 @@ const ProgressDashboard = ({ progressData, loading }) => {
       label: 'Weight Trend',
       value: analytics.weight.current ? `${analytics.weight.current} kg` : 'Not tracked',
       change: analytics.weight.change,
-      trend: analytics.weight.trend
+      trend: analytics.weight.trend,
     },
     {
       icon: <Heart className="text-danger" />,
       label: 'Avg Mood',
       value: analytics.averages.mood ? `${analytics.averages.mood}/10` : 'Not tracked',
-      color: 'text-danger'
+      color: 'text-danger',
     },
     {
       icon: <Zap className="text-warning" />,
       label: 'Avg Energy',
       value: analytics.averages.energy ? `${analytics.averages.energy}/10` : 'Not tracked',
-      color: 'text-warning'
+      color: 'text-warning',
     },
     {
       icon: <Moon className="text-info" />,
       label: 'Avg Sleep',
       value: analytics.averages.sleep ? `${analytics.averages.sleep}h` : 'Not tracked',
-      color: 'text-info'
-    }
-  ]
+      color: 'text-info',
+    },
+  ];
 
   return (
     <div className="grid md:grid-cols-4 gap-4">
       {cards.map((card, idx) => (
         <div key={idx} className="bg-white rounded-lg shadow p-6">
           <div className="flex items-start justify-between mb-3">
-            <div className={card.color || 'text-primary'}>
-              {card.icon}
-            </div>
+            <div className={card.color || 'text-primary'}>{card.icon}</div>
             {card.trend && (
               <div className="flex items-center gap-1 text-xs">
                 {card.trend === 'down' ? (
@@ -87,7 +85,7 @@ const ProgressDashboard = ({ progressData, loading }) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default ProgressDashboard
+export default ProgressDashboard;

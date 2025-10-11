@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+public
+server/storage
+server/public
+*.min.js
+package-lock.json

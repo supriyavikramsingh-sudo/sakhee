@@ -1,4 +1,4 @@
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle } from 'lucide-react';
 
 const MedicalDisclaimer = ({ onAcknowledge }) => {
   return (
@@ -10,7 +10,8 @@ const MedicalDisclaimer = ({ onAcknowledge }) => {
 
         <div className="space-y-4 text-gray-700 mb-8">
           <p>
-            <strong>Sakhee</strong> is an AI-powered educational health companion designed to provide lifestyle guidance and information for managing PCOS/PCOD symptoms.
+            <strong>Sakhee</strong> is an AI-powered educational health companion designed to
+            provide lifestyle guidance and information for managing PCOS/PCOD symptoms.
           </p>
 
           <div className="bg-warning bg-opacity-10 p-4 rounded-lg border-l-4 border-warning">
@@ -37,29 +38,25 @@ const MedicalDisclaimer = ({ onAcknowledge }) => {
           <div className="bg-danger bg-opacity-10 p-4 rounded-lg border-l-4 border-danger">
             <p className="font-bold mb-2">🚨 EMERGENCY:</p>
             <p className="text-sm">
-              In case of severe pain, heavy bleeding, or other emergencies, seek immediate medical attention:
+              In case of severe pain, heavy bleeding, or other emergencies, seek immediate medical
+              attention:
             </p>
-            <p className="font-bold text-sm mt-2">Call 102 (Ambulance) or visit the nearest hospital</p>
+            <p className="font-bold text-sm mt-2">
+              Call 102 (Ambulance) or visit the nearest hospital
+            </p>
           </div>
         </div>
 
         <label className="flex items-center gap-3 mb-6 cursor-pointer">
-          <input
-            type="checkbox"
-            defaultChecked
-            className="w-5 h-5 accent-primary"
-          />
-          <span className="text-sm">
-            I understand and accept the medical disclaimer
-          </span>
+          <input type="checkbox" defaultChecked className="w-5 h-5 accent-primary" />
+          <span className="text-sm">I understand and accept the medical disclaimer</span>
         </label>
 
         <button
           onClick={onAcknowledge}
           className="w-full py-3 bg-primary text-white rounded-lg font-bold hover:bg-secondary transition"
         >
-          <CheckCircle className="inline mr-2" size={20} />
-          I Acknowledge
+          <CheckCircle className="inline mr-2" size={20} />I Acknowledge
         </button>
 
         <p className="text-xs text-muted text-center mt-4">
@@ -67,7 +64,7 @@ const MedicalDisclaimer = ({ onAcknowledge }) => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MedicalDisclaimer
+export default MedicalDisclaimer;

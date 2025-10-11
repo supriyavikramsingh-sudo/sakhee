@@ -1,29 +1,40 @@
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 const ProgressCharts = ({ progressData }) => {
   if (!progressData?.entries || progressData.entries.length === 0) {
-    return null
+    return null;
   }
 
   // Prepare weight data
   const weightData = progressData.entries
-    .filter(e => e.weight)
+    .filter((e) => e.weight)
     .reverse()
-    .map(e => ({
+    .map((e) => ({
       date: new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      weight: e.weight
-    }))
+      weight: e.weight,
+    }));
 
   // Prepare mood/energy data
   const moodEnergyData = progressData.entries
-    .filter(e => e.mood || e.energy)
+    .filter((e) => e.mood || e.energy)
     .reverse()
     .slice(0, 14) // Last 14 days
-    .map(e => ({
+    .map((e) => ({
       date: new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       mood: e.mood || 0,
-      energy: e.energy || 0
-    }))
+      energy: e.energy || 0,
+    }));
 
   // Prepare symptom frequency data
   const symptomData = Object.entries(progressData.analytics?.symptoms?.counts || {})
@@ -31,8 +42,8 @@ const ProgressCharts = ({ progressData }) => {
     .slice(0, 5)
     .map(([symptom, count]) => ({
       symptom: symptom.length > 15 ? symptom.substring(0, 15) + '...' : symptom,
-      count
-    }))
+      count,
+    }));
 
   return (
     <div className="space-y-6">
@@ -70,13 +81,7 @@ const ProgressCharts = ({ progressData }) => {
               <YAxis domain={[0, 10]} />
               <Tooltip />
               <Legend />
-              <Line
-                type="monotone"
-                dataKey="mood"
-                stroke="#ff006e"
-                strokeWidth={2}
-                name="Mood"
-              />
+              <Line type="monotone" dataKey="mood" stroke="#ff006e" strokeWidth={2} name="Mood" />
               <Line
                 type="monotone"
                 dataKey="energy"
@@ -106,7 +111,7 @@ const ProgressCharts = ({ progressData }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ProgressCharts
+export default ProgressCharts;

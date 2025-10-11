@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore, useUserProfileStore } from '../store'
 import Navbar from '../components/layout/Navbar'
 import OnboardingForm from '../components/onboarding/OnboardingForm'
-import { CheckCircle, ChevronRight } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 
 const OnboardingPage = () => {
   const navigate = useNavigate()
