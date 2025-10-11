@@ -338,6 +338,101 @@ export const apiClient = {
       console.error('Health check failed:', error)
       throw error
     }
+  },
+
+  uploadFile: async (file, userId) => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('userId', userId)
+      
+      const response = await axiosInstance.post('/upload/report', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      return response
+    } catch (error) {
+      console.error('Failed to upload file:', error)
+      throw error
+    }
+  },
+
+  getReport: async (reportId) => {
+    try {
+      const response = await axiosInstance.get(`/upload/report/${reportId}`)
+      return response
+    } catch (error) {
+      console.error('Failed to get report:', error)
+      throw error
+    }
+  },
+
+  getUserReports: async (userId) => {
+    try {
+      const response = await axiosInstance.get(`/upload/user/${userId}/reports`)
+      return response
+    } catch (error) {
+      console.error('Failed to get user reports:', error)
+      throw error
+    }
+  },
+
+  deleteReport: async (reportId) => {
+    try {
+      const response = await axiosInstance.delete(`/upload/report/${reportId}`)
+      return response
+    } catch (error) {
+      console.error('Failed to delete report:', error)
+      throw error
+    }
+  },
+  logProgress: async (userId, data) => {
+    try {
+      const response = await axiosInstance.post(`/progress/${userId}/log`, data)
+      return response
+    } catch (error) {
+      console.error('Failed to log progress:', error)
+      throw error
+    }
+  },
+
+  getProgress: async (userId, params = {}) => {
+    try {
+      const response = await axiosInstance.get(`/progress/${userId}`, { params })
+      return response
+    } catch (error) {
+      console.error('Failed to get progress:', error)
+      throw error
+    }
+  },
+
+  updateProgressEntry: async (userId, entryId, data) => {
+    try {
+      const response = await axiosInstance.put(`/progress/${userId}/entry/${entryId}`, data)
+      return response
+    } catch (error) {
+      console.error('Failed to update entry:', error)
+      throw error
+    }
+  },
+
+  deleteProgressEntry: async (userId, entryId) => {
+    try {
+      const response = await axiosInstance.delete(`/progress/${userId}/entry/${entryId}`)
+      return response
+    } catch (error) {
+      console.error('Failed to delete entry:', error)
+      throw error
+    }
+  },
+
+  setGoals: async (userId, goals) => {
+    try {
+      const response = await axiosInstance.post(`/progress/${userId}/goals`, { goals })
+      return response
+    } catch (error) {
+      console.error('Failed to set goals:', error)
+      throw error
+    }
   }
 }
 

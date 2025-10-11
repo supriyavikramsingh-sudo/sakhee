@@ -5,7 +5,29 @@
     "progress": "Progress",
     "settings": "Settings",
     "logout": "Logout",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "reports": "Reports"
+  },
+  "progress": {
+    "title": "Progress Tracking",
+    "subtitle": "Monitor your PCOS journey with detailed insights",
+    "logToday": "Log Today",
+    "logEntry": "Log Daily Progress",
+    "noData": "No progress data yet",
+    "startTracking": "Start tracking to see your progress"
+  },
+  "reports": {
+    "title": "Medical Reports",
+    "subtitle": "Upload and analyze your lab reports",
+    "upload": "Upload Report",
+    "uploadNew": "Upload New Report",
+    "uploadFirst": "Upload Your First Report",
+    "dropFile": "Drop your report here or click to browse",
+    "uploading": "Uploading and analyzing...",
+    "uploadAndAnalyze": "Upload & Analyze",
+    "uploadSuccess": "Report uploaded and analyzed successfully!",
+    "noSelection": "No report selected",
+    "selectOrUpload": "Select a report from the list or upload a new one"
   },
   "home": {
     "title": "Welcome to Sakhee 🌸",

@@ -4,6 +4,8 @@ import { I18nextProvider } from 'react-i18next'
 import i18n from '../utils/i18n'
 import ErrorBoundary from '../components/layout/ErrorBoundary'
 import LoadingSpinner from '../components/layout/LoadingSpinner'
+import ReportsPage from '../pages/ReportsPage'
+
 
 // Lazy load pages
 const HomePage = lazy(() => import('../pages/HomePage'))
@@ -26,6 +28,7 @@ function App() {
               <Route path="/meals" element={<MealPlanPage />} />
               <Route path="/progress" element={<ProgressPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

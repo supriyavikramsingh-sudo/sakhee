@@ -32,6 +32,9 @@ export const Navbar = () => {
                 <Link to="/progress" className="text-gray-700 hover:text-primary transition">
                   {t('nav.progress')}
                 </Link>
+                <Link to="/reports" className="text-gray-700 hover:text-primary transition">
+                  {t('nav.reports')}
+                </Link>
               </>
             )}
           </div>

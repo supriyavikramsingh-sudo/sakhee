@@ -8,6 +8,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { Logger } from './utils/logger.js';
 import chatRoutes from './routes/chat.js'
 import mealPlanRoutes from './routes/mealPlan.js'
+import uploadRoutes from './routes/upload.js'
+import progressRoutes from './routes/progress.js'
 
 const app = express();
 const logger = new Logger('Server');
@@ -31,12 +33,14 @@ app.use('/api/', rateLimiter);
 
 // Safety guards for chat routes
 app.use('/api/chat', safetyGuards);
-app.use('/api/chat', chatRoutes);
-app.use('/api/meals', mealPlanRoutes);
 
 // ============================================
 // ROUTES
 // ============================================
+app.use('/api/chat', chatRoutes);
+app.use('/api/meals', mealPlanRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/progress', progressRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
