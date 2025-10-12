@@ -297,13 +297,17 @@ class RedditService {
   }
 
   /**
-   * Search across subreddits for specific query
+   * Search across subreddits for specific query - IMPROVED RELEVANCE
    */
   async searchPosts(query, limit = 20) {
     try {
       const token = await this.authenticate();
 
       const allResults = [];
+
+      // Extract specific topic keywords from query for better filtering
+      const queryKeywords = this.extractQueryKeywords(query);
+      logger.info('Search keywords extracted', { query, keywords: queryKeywords });
 
       // Prioritize PCOS-specific subreddits
       const pcosSubreddits = ['PCOS', 'PCOSIndia', 'PCOS_Folks', 'PCOSWeightLoss'];
@@ -317,22 +321,23 @@ class RedditService {
             'User-Agent': 'Sakhee/1.0.0 (PCOS Health Assistant)',
           },
           params: {
-            q: query,
-            restrict_sr: true, // Search within subreddit only
-            sort: 'relevance',
+            q: query, // Use original query, not modified
+            restrict_sr: true,
+            sort: 'relevance', // Relevance, not just top
             t: 'all',
-            limit: 15, // More from PCOS subs
+            limit: 25, // Get more to filter
           },
         });
 
         const posts = response.data.data.children
           .map((child) => child.data)
           .filter((post) => this.isRelevantPost(post))
+          .filter((post) => this.matchesQueryKeywords(post, queryKeywords)) // NEW: Filter by query keywords
           .map((post) => this.anonymizePost(post));
 
         allResults.push(...posts);
 
-        await this.sleep(2000); // Rate limiting
+        await this.sleep(2000);
       }
 
       // Search other subreddits if needed (fewer results)
@@ -344,17 +349,18 @@ class RedditService {
               'User-Agent': 'Sakhee/1.0.0 (PCOS Health Assistant)',
             },
             params: {
-              q: `${query} PCOS`, // Add PCOS to query for non-PCOS subs
+              q: `${query} PCOS`, // Add PCOS for non-PCOS subs
               restrict_sr: true,
               sort: 'relevance',
               t: 'all',
-              limit: 5, // Fewer from general subs
+              limit: 10,
             },
           });
 
           const posts = response.data.data.children
             .map((child) => child.data)
             .filter((post) => this.isRelevantPost(post))
+            .filter((post) => this.matchesQueryKeywords(post, queryKeywords)) // NEW: Filter by query keywords
             .map((post) => this.anonymizePost(post));
 
           allResults.push(...posts);
@@ -363,26 +369,184 @@ class RedditService {
         }
       }
 
-      // Sort by relevance (upvotes) and PCOS subreddits first
+      // NEW: Sort by query relevance FIRST, then engagement
       allResults.sort((a, b) => {
-        // Prioritize PCOS subreddits
-        const aIsPCOS = ['PCOS', 'PCOSIndia', 'PCOS_Folks', 'PCOSWeightLoss'].includes(a.subreddit);
-        const bIsPCOS = ['PCOS', 'PCOSIndia', 'PCOS_Folks', 'PCOSWeightLoss'].includes(b.subreddit);
+        // Calculate relevance score
+        const aScore = this.calculateRelevanceScore(a, queryKeywords);
+        const bScore = this.calculateRelevanceScore(b, queryKeywords);
 
-        if (aIsPCOS && !bIsPCOS) return -1;
-        if (!aIsPCOS && bIsPCOS) return 1;
+        if (aScore !== bScore) {
+          return bScore - aScore; // Higher score first
+        }
 
-        // Then by upvotes
+        // If same relevance, sort by upvotes
         return b.upvotes - a.upvotes;
       });
 
-      logger.info(`Found ${allResults.length} PCOS-relevant results for: ${query}`);
+      logger.info(`Found ${allResults.length} query-relevant results`, {
+        query,
+        keywords: queryKeywords,
+      });
 
       return allResults.slice(0, limit);
     } catch (error) {
       logger.error('Reddit search failed', { error: error.message });
       throw error;
     }
+  }
+
+  /**
+   * Extract specific keywords from user query for relevance matching
+   */
+  extractQueryKeywords(query) {
+    const lowerQuery = query.toLowerCase();
+
+    // Specific medical/symptom keywords to look for
+    const specificKeywords = [
+      // Conditions
+      'hypothyroid',
+      'thyroid',
+      'diabetes',
+      'endometriosis',
+      'adhd',
+      'anxiety',
+      'depression',
+
+      // Pregnancy/Fertility specific
+      'miscarriage',
+      'miscarry',
+      'pregnancy loss',
+      'chemical pregnancy',
+      'trying to conceive',
+      'ttc',
+      'pregnant',
+      'pregnancy',
+      'conceive',
+      'conception',
+      'ivf',
+      'iui',
+      'fertility treatment',
+      'ovulation',
+      'clomid',
+      'letrozole',
+
+      // Symptoms
+      'hair loss',
+      'hair thinning',
+      'facial hair',
+      'hirsutism',
+      'acne',
+      'weight gain',
+      'weight loss',
+      'insulin resistance',
+      'irregular period',
+      'missing period',
+      'amenorrhea',
+      'heavy bleeding',
+
+      // Treatments
+      'metformin',
+      'inositol',
+      'birth control',
+      'spironolactone',
+      'spearmint',
+      'berberine',
+
+      // Lifestyle
+      'diet',
+      'keto',
+      'low carb',
+      'intermittent fasting',
+      'exercise',
+      'gym',
+      'workout',
+      'running',
+      'yoga',
+    ];
+
+    // Find which keywords appear in the query
+    const foundKeywords = specificKeywords.filter((keyword) => lowerQuery.includes(keyword));
+
+    // Also extract any capitalized words (likely important topics)
+    const words = query.split(' ');
+    const importantWords = words.filter(
+      (word) =>
+        word.length > 4 &&
+        !['which', 'reddit', 'threads', 'women', 'about', 'suffer', 'suffering'].includes(
+          word.toLowerCase()
+        )
+    );
+
+    // Combine and deduplicate
+    const allKeywords = [
+      ...new Set([...foundKeywords, ...importantWords.map((w) => w.toLowerCase())]),
+    ];
+
+    return allKeywords;
+  }
+
+  /**
+   * Check if post matches specific query keywords
+   */
+  matchesQueryKeywords(post, queryKeywords) {
+    // If no specific keywords, allow all posts (generic PCOS query)
+    if (queryKeywords.length === 0) {
+      return true;
+    }
+
+    const postText = `${post.title} ${post.content || ''}`.toLowerCase();
+
+    // Post must match at least ONE keyword from the query
+    const matchCount = queryKeywords.filter((keyword) =>
+      postText.includes(keyword.toLowerCase())
+    ).length;
+
+    // At least 1 keyword match required (or more for very specific queries)
+    return matchCount >= 1;
+  }
+
+  /**
+   * Calculate relevance score for sorting
+   */
+  calculateRelevanceScore(post, queryKeywords) {
+    if (queryKeywords.length === 0) {
+      return 0; // No specific query, use default sorting
+    }
+
+    const titleLower = post.title.toLowerCase();
+    const contentLower = (post.content || '').toLowerCase();
+
+    let score = 0;
+
+    queryKeywords.forEach((keyword) => {
+      const keywordLower = keyword.toLowerCase();
+
+      // Title matches worth more
+      if (titleLower.includes(keywordLower)) {
+        score += 10;
+      }
+
+      // Content matches worth less
+      if (contentLower.includes(keywordLower)) {
+        score += 3;
+      }
+
+      // Exact title match worth even more
+      if (titleLower === keywordLower || titleLower.includes(` ${keywordLower} `)) {
+        score += 20;
+      }
+    });
+
+    // Bonus for multiple keyword matches (compound topics)
+    const matchCount = queryKeywords.filter(
+      (k) => titleLower.includes(k.toLowerCase()) || contentLower.includes(k.toLowerCase())
+    ).length;
+
+    if (matchCount >= 2) {
+      score += matchCount * 5; // Bonus for matching multiple keywords
+    }
+
+    return score;
   }
 
   /**

@@ -209,21 +209,27 @@ Remember: You're a companion, not a medical professional. Build trust through em
       // Extract topic from message (improved)
       const topic = this.extractTopic(message);
 
+      // Use the full message as query for better matching
+      // This ensures we search for the actual question, not just extracted topic
+      const searchQuery = message.length > 100 ? topic || message.substring(0, 100) : message;
+
       // Search with more results for better coverage
       const insights = await redditService.searchPosts(
-        topic || message.substring(0, 100),
-        10 // Increased from 5 to 10 for more content
+        searchQuery,
+        10 // Fetch 10, will be filtered by relevance
       );
 
       if (insights.length === 0) {
-        logger.warn('No Reddit insights found', { topic });
-        return null;
+        logger.warn('No Reddit insights found', { searchQuery });
+
+        // Return a helpful message instead of null
+        return `No specific Reddit posts found for "${searchQuery}". This might be a less commonly discussed topic in the PCOS communities, or the search terms might be too specific. Consider asking about related topics or broader PCOS experiences.`;
       }
 
-      logger.info(`Found ${insights.length} Reddit insights`, { topic });
+      logger.info(`Found ${insights.length} relevant Reddit insights`, { searchQuery });
 
-      // Format with more detail
-      return redditService.formatInsightsForChat(insights, 5); // Show top 5 instead of 3
+      // Format with more detail - show top 5
+      return redditService.formatInsightsForChat(insights, 5);
     } catch (error) {
       logger.error('Failed to fetch Reddit context', { error: error.message });
       return null;
