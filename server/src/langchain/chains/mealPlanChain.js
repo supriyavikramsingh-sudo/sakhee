@@ -69,18 +69,15 @@ Generate now:
         typeof raw === 'string' ? raw : raw?.text ?? raw?.output_text ?? JSON.stringify(raw);
 
       logger.info('Raw LLM response received', { length: resultText.length });
-      logger.info('Raw LLM response received', { text: resultText });
-      // // Try to parse with multiple strategies
-      // const parsed = this.parseRobustly(result.text)
-      // console.log('Parsed Meal Plan:', parsed)
-      // console.log('Raw LLM Response:', result.text)
-      // if (!parsed || !parsed.days || parsed.days.length === 0) {
-      //   logger.error('Parsing failed, returning fallback')
-      //   return this.getFallbackPlan(preferences)
-      // }
+      // Try to parse with multiple strategies
+      const parsed = this.parseRobustly(resultText);
+      if (!parsed || !parsed.days || parsed.days.length === 0) {
+        logger.error('Parsing failed, returning fallback');
+        return this.getFallbackPlan(preferences);
+      }
 
-      // logger.info('Meal plan parsed successfully', { days: parsed.days.length });
-      return resultText;
+      logger.info('Meal plan parsed successfully', { days: parsed.days.length });
+      return parsed;
     } catch (error) {
       logger.error('Meal plan generation failed', { error: error.message });
       return this.getFallbackPlan(preferences);
@@ -91,49 +88,77 @@ Generate now:
    * Parse with multiple strategies
    */
   parseRobustly(text) {
-    // Strategy 1: Try direct JSON parse
-    try {
-      const cleaned = this.cleanJSON(text);
-      const parsed = JSON.parse(cleaned);
-      if (parsed.days) {
-        logger.info('✅ Strategy 1: Direct parse succeeded');
-        return parsed;
-      }
-    } catch (e) {
-      logger.warn('Strategy 1 failed:', e.message);
-    }
+    // Normalize smart quotes first (some LLM outputs contain curly quotes)
+    const normalizeQuotes = (s) =>
+      s
+        .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'") // single smart
+        .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"'); // double smart
 
-    // Strategy 2: Extract from markdown
-    try {
-      const jsonMatch = text.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
-      if (jsonMatch) {
-        const cleaned = this.cleanJSON(jsonMatch[1]);
+    const tryParse = (candidate) => {
+      try {
+        const cleaned = this.cleanJSON(candidate);
         const parsed = JSON.parse(cleaned);
-        if (parsed.days) {
-          logger.info('✅ Strategy 2: Markdown extraction succeeded');
+        if (parsed && parsed.days) {
           return parsed;
         }
+      } catch (e) {
+        // intentionally ignore parse errors here
       }
-    } catch (e) {
-      logger.warn('Strategy 2 failed:', e.message);
+      return null;
+    };
+
+    const normalized = normalizeQuotes(text || '');
+
+    // Strategy 1: Try direct JSON parse of the cleaned (normalized) text
+    const s1 = tryParse(normalized);
+    if (s1) {
+      logger.info('✅ Strategy 1: Direct parse succeeded');
+      return s1;
     }
 
-    // Strategy 3: Find JSON-like structure
+    // Strategy 2: Extract from markdown code fences
+    const fenceMatch = normalized.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (fenceMatch) {
+      const s2 = tryParse(fenceMatch[1]);
+      if (s2) {
+        logger.info('✅ Strategy 2: Markdown extraction succeeded');
+        return s2;
+      }
+    }
+
+    // Strategy 3: Find JSON-like structure containing "days"
+    const jsonMatches = normalized.match(/\{[\s\S]*"days"[\s\S]*\}/g);
+    if (jsonMatches && jsonMatches.length > 0) {
+      const s3 = tryParse(jsonMatches[0]);
+      if (s3) {
+        logger.info('✅ Strategy 3: Pattern matching succeeded');
+        return s3;
+      }
+    }
+
+    // Strategy 4: Attempt to repair JS-like objects (unquoted keys, smart quotes, currency)
     try {
-      const jsonMatch = text.match(/\{[\s\S]*"days"[\s\S]*\}/g);
-      if (jsonMatch && jsonMatch.length > 0) {
-        const cleaned = this.cleanJSON(jsonMatch[0]);
-        const parsed = JSON.parse(cleaned);
-        if (parsed.days) {
-          logger.info('✅ Strategy 3: Pattern matching succeeded');
-          return parsed;
-        }
+      let attempt = normalized;
+
+      // Extract the outermost braces if present to reduce noise
+      const first = attempt.indexOf('{');
+      const last = attempt.lastIndexOf('}');
+      if (first !== -1 && last !== -1 && last > first) {
+        attempt = attempt.slice(first, last + 1);
+      }
+
+      // Quote unquoted keys (only after { or , or [ )
+      attempt = attempt.replace(/([\{\[,]\s*)([A-Za-z0-9_\-]+)\s*:/g, '$1"$2":');
+
+      const s4 = tryParse(attempt);
+      if (s4) {
+        logger.info('✅ Strategy 4: Key-quoting repair succeeded');
+        return s4;
       }
     } catch (e) {
-      logger.warn('Strategy 3 failed:', e.message);
+      logger.warn('Strategy 4 failed:', e.message);
     }
 
-    // Strategy 4: Use fallback
     logger.error('All parsing strategies failed');
     return null;
   }
@@ -142,22 +167,41 @@ Generate now:
    * Clean JSON string
    */
   cleanJSON(text) {
-    let cleaned = text.trim();
+    let cleaned = (text || '').trim();
 
-    // Remove markdown formatting
-    cleaned = cleaned.replace(/```json\s*/g, '');
+    // Normalize whitespace
+    cleaned = cleaned.replace(/\u00A0/g, ' ');
+
+    // Normalize smart quotes
+    cleaned = cleaned
+      .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'") // single smart
+      .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"'); // double smart
+
+    // Remove markdown fences (keep inner content)
+    cleaned = cleaned.replace(/```(?:json)?\s*/g, '');
     cleaned = cleaned.replace(/```\s*/g, '');
 
-    // Fix common issues
-    cleaned = cleaned.replace(/'/g, '"'); // Replace single quotes
-    cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1'); // Remove trailing commas
-    cleaned = cleaned.replace(/"\s*:\s*₹/g, '": "₹'); // Fix currency
-    cleaned = cleaned.replace(/₹(\d+)/g, '₹$1"'); // Close currency quotes
+    // Quote unquoted keys: convert { key: to { "key":
+    cleaned = cleaned.replace(/([\{\[,]\s*)([A-Za-z0-9_\-]+)\s*:/g, '$1"$2":');
 
-    // Remove invalid characters
-    cleaned = cleaned.replace(/[^\x20-\x7E\n\r\t]/g, '');
+    // Replace single-quoted strings with double quotes (simple heuristic)
+    cleaned = cleaned.replace(/'([^']*)'/g, function (m, p) {
+      return '"' + p.replace(/\"/g, '\\"') + '"';
+    });
 
-    return cleaned;
+    // Replace remaining single quotes with double quotes
+    cleaned = cleaned.replace(/'/g, '"');
+
+    // Handle currency (e.g., : ₹500 -> : "₹500")
+    cleaned = cleaned.replace(/:\s*₹\s*([0-9]+(?:\.[0-9]+)?)/g, ': "₹$1"');
+
+    // Remove trailing commas before } or ]
+    cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1');
+
+    // Strip non-printable/control characters except tab/newline/carriage return
+    cleaned = cleaned.replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '');
+
+    return cleaned.trim();
   }
 
   /**

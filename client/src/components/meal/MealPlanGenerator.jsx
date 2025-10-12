@@ -1,70 +1,68 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useMealStore } from '../../store'
-import apiClient from '../../services/apiClient'
-import { Loader, AlertCircle } from 'lucide-react'
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMealStore } from '../../store';
+import apiClient from '../../services/apiClient';
+import { Loader, AlertCircle } from 'lucide-react';
 
 const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
-  const { t } = useTranslation()
-  const { setMealPlan } = useMealStore()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const { t } = useTranslation();
+  const { setMealPlan } = useMealStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     region: userProfile?.location || 'north-india',
     dietType: userProfile?.dietType || 'vegetarian',
     budget: 200,
     mealsPerDay: 3,
-    duration: 7
-  })
+    duration: 7,
+  });
 
   const regions = [
     { value: 'north-india', label: 'North Indian' },
     { value: 'south-india', label: 'South Indian' },
     { value: 'east-india', label: 'East Indian' },
-    { value: 'west-india', label: 'West Indian' }
-  ]
+    { value: 'west-india', label: 'West Indian' },
+  ];
 
   const dietTypes = [
     { value: 'vegetarian', label: 'Vegetarian' },
     { value: 'non-vegetarian', label: 'Non-vegetarian' },
     { value: 'vegan', label: 'Vegan' },
-    { value: 'jain', label: 'Jain' }
-  ]
+    { value: 'jain', label: 'Jain' },
+  ];
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'budget' || name === 'mealsPerDay' ? parseInt(value) : value
-    }))
-  }
+      [name]: name === 'budget' || name === 'mealsPerDay' ? parseInt(value) : value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     try {
       const response = await apiClient.generateMealPlan({
         ...formData,
         userId,
-        goals: userProfile?.goals || []
-      })
+        goals: userProfile?.goals || [],
+      });
 
-      setMealPlan(response.data)
-      onGenerated()
+      setMealPlan(response.data);
+      onGenerated();
     } catch (err) {
-      setError(err.message || 'Failed to generate meal plan')
+      setError(err.message || 'Failed to generate meal plan');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl">
-      <h2 className="text-2xl font-bold mb-6 text-primary">
-        Create Your Meal Plan
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-primary">Create Your Meal Plan</h2>
 
       {error && (
         <div className="mb-6 p-4 bg-danger bg-opacity-10 border-l-4 border-danger rounded flex items-start gap-3">
@@ -88,7 +86,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
           >
-            {regions.map(r => (
+            {regions.map((r) => (
               <option key={r.value} value={r.value}>
                 {r.label}
               </option>
@@ -107,7 +105,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
           >
-            {dietTypes.map(d => (
+            {dietTypes.map((d) => (
               <option key={d.value} value={d.value}>
                 {d.label}
               </option>
@@ -117,9 +115,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
 
         {/* Daily Budget */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Daily Budget: ₹{formData.budget}
-          </label>
+          <label className="block text-sm font-medium mb-2">Daily Budget: ₹{formData.budget}</label>
           <input
             type="range"
             name="budget"
@@ -138,9 +134,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
 
         {/* Meals Per Day */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Meals Per Day
-          </label>
+          <label className="block text-sm font-medium mb-2">Meals Per Day</label>
           <select
             name="mealsPerDay"
             value={formData.mealsPerDay}
@@ -155,18 +149,20 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
 
         {/* Duration */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Duration
-          </label>
+          <label className="block text-sm font-medium mb-2">Duration</label>
           <select
             name="duration"
             value={formData.duration}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
           >
+            <option value={1}>1 Days</option>
+            <option value={2}>2 Days</option>
+            <option value={3}>3 Days</option>
+            <option value={4}>4 Days</option>
+            <option value={5}>5 Days</option>
+            <option value={6}>6 Days</option>
             <option value={7}>7 Days</option>
-            {/* <option value={14}>2 Weeks</option>
-            <option value={30}>1 Month</option> */}
           </select>
         </div>
 
@@ -182,10 +178,11 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
       </form>
 
       <div className="mt-6 p-4 bg-surface rounded text-sm text-muted">
-        💡 Plans are customized for PCOS management with low glycemic index foods and anti-inflammatory options.
+        💡 Plans are customized for PCOS management with low glycemic index foods and
+        anti-inflammatory options.
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MealPlanGenerator
+export default MealPlanGenerator;
