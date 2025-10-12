@@ -1,41 +1,36 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useAuthStore } from '../store'
-import Navbar from '../components/layout/Navbar'
-import ProgressLogger from '../components/progress/ProgressLogger'
-import ProgressDashboard from '../components/progress/ProgressDashboard'
-import ProgressCharts from '../components/progress/ProgressCharts'
-import { Plus, TrendingUp } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../store';
+import Navbar from '../components/layout/Navbar';
+import ProgressLogger from '../components/progress/ProgressLogger';
+import ProgressDashboard from '../components/progress/ProgressDashboard';
+import ProgressCharts from '../components/progress/ProgressCharts';
+import { Plus, TrendingUp } from 'lucide-react';
 
 const ProgressPage = () => {
-  const { t } = useTranslation()
-  const { user } = useAuthStore()
-  const [showLogger, setShowLogger] = useState(false)
-  const [progressData, setProgressData] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const { t } = useTranslation();
+  const { user } = useAuthStore();
+  const [showLogger, setShowLogger] = useState(false);
+  const [progressData, setProgressData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      window.location.href = '/onboarding'
-      return
-    }
-
-    fetchProgress()
-  }, [user])
+    fetchProgress();
+  }, []);
 
   const fetchProgress = async () => {
     // TODO: Fetch from API
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const handleLogComplete = (newEntry) => {
     // Add new entry to progress data
-    setProgressData(prev => ({
+    setProgressData((prev) => ({
       ...prev,
-      entries: [newEntry, ...(prev?.entries || [])]
-    }))
-    setShowLogger(false)
-  }
+      entries: [newEntry, ...(prev?.entries || [])],
+    }));
+    setShowLogger(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,9 +44,7 @@ const ProgressPage = () => {
               <TrendingUp size={40} />
               {t('progress.title')}
             </h1>
-            <p className="text-muted">
-              {t('progress.subtitle')}
-            </p>
+            <p className="text-muted">{t('progress.subtitle')}</p>
           </div>
 
           <button
@@ -81,7 +74,7 @@ const ProgressPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProgressPage
+export default ProgressPage;

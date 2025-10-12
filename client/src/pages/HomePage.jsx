@@ -1,22 +1,22 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuthStore, useUserProfileStore } from '../store'
-import { useTranslation } from 'react-i18next'
-import Navbar from '../components/layout/Navbar'
-import { Heart, Brain, Leaf, Zap } from 'lucide-react'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../store';
+import Navbar from '../components/layout/Navbar';
+import { Heart, Brain, Leaf, Zap } from 'lucide-react';
 
 const HomePage = () => {
-  const navigate = useNavigate()
-  const { user } = useAuthStore()
-  const { onboarded } = useUserProfileStore()
-  const { t } = useTranslation()
+  const navigate = useNavigate();
+  const { user, userProfile } = useAuthStore();
+  const { t } = useTranslation();
 
+  // This check is now redundant because ProtectedRoute handles it,
+  // but keeping for safety
   useEffect(() => {
-    // If not onboarded, redirect to onboarding
-    if (!onboarded && !user) {
-      navigate('/onboarding')
+    if (user && userProfile?.onboarded === false) {
+      navigate('/onboarding');
     }
-  }, [onboarded, user, navigate])
+  }, [user, userProfile, navigate]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,35 +26,18 @@ const HomePage = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            {t('home.title')}
+            Welcome back, {userProfile?.displayName || user?.displayName}! 🌸
           </h1>
-          <p className="text-lg text-muted mb-8 max-w-2xl mx-auto">
-            {t('home.subtitle')}
-          </p>
-          
-          {!user ? (
-            <button
-              onClick={() => navigate('/onboarding')}
-              className="btn-primary text-lg px-8 py-3"
-            >
-              {t('home.getStarted')}
+          <p className="text-lg text-muted mb-8 max-w-2xl mx-auto">{t('home.subtitle')}</p>
+
+          <div className="space-x-4">
+            <button onClick={() => navigate('/chat')} className="btn-primary text-lg px-8 py-3">
+              {t('home.openChat')}
             </button>
-          ) : (
-            <div className="space-x-4">
-              <button
-                onClick={() => navigate('/chat')}
-                className="btn-primary text-lg px-8 py-3"
-              >
-                {t('home.openChat')}
-              </button>
-              <button
-                onClick={() => navigate('/meals')}
-                className="btn-secondary text-lg px-8 py-3"
-              >
-                {t('home.viewMeals')}
-              </button>
-            </div>
-          )}
+            <button onClick={() => navigate('/meals')} className="btn-secondary text-lg px-8 py-3">
+              {t('home.viewMeals')}
+            </button>
+          </div>
         </div>
 
         {/* Features Grid */}
@@ -81,17 +64,48 @@ const HomePage = () => {
           />
         </div>
 
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow p-8">
+          <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <button
+              onClick={() => navigate('/chat')}
+              className="p-6 border-2 border-surface rounded-lg hover:border-primary hover:bg-surface transition text-left"
+            >
+              <div className="text-3xl mb-2">💬</div>
+              <h3 className="font-bold mb-1">Ask Sakhee</h3>
+              <p className="text-sm text-muted">Get instant answers about PCOS</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/progress')}
+              className="p-6 border-2 border-surface rounded-lg hover:border-primary hover:bg-surface transition text-left"
+            >
+              <div className="text-3xl mb-2">📊</div>
+              <h3 className="font-bold mb-1">Log Progress</h3>
+              <p className="text-sm text-muted">Track your daily symptoms</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/reports')}
+              className="p-6 border-2 border-surface rounded-lg hover:border-primary hover:bg-surface transition text-left"
+            >
+              <div className="text-3xl mb-2">📄</div>
+              <h3 className="font-bold mb-1">Upload Report</h3>
+              <p className="text-sm text-muted">Analyze your lab results</p>
+            </button>
+          </div>
+        </div>
+
         {/* Medical Disclaimer */}
-        <div className="bg-warning bg-opacity-10 border-l-4 border-warning p-6 rounded">
+        <div className="mt-8 bg-warning bg-opacity-10 border-l-4 border-warning p-6 rounded">
           <h3 className="font-bold text-warning mb-2">⚠️ {t('common.disclaimer')}</h3>
-          <p className="text-sm text-gray-700">
-            {t('common.disclaimerText')}
-          </p>
+          <p className="text-sm text-gray-700">{t('common.disclaimerText')}</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const FeatureCard = ({ icon, title, description }) => (
   <div className="card-hover">
@@ -99,6 +113,6 @@ const FeatureCard = ({ icon, title, description }) => (
     <h3 className="font-bold text-lg mb-2">{title}</h3>
     <p className="text-sm text-muted">{description}</p>
   </div>
-)
+);
 
-export default HomePage
+export default HomePage;

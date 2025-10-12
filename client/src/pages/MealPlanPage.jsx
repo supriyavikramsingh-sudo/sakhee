@@ -13,12 +13,6 @@ const MealPlanPage = () => {
   const { currentMealPlan } = useMealStore();
   const [showGenerator, setShowGenerator] = useState(!currentMealPlan);
 
-  useEffect(() => {
-    if (!user) {
-      window.location.href = '/onboarding';
-    }
-  }, [user]);
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

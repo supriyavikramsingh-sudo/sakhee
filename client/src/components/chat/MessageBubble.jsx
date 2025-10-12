@@ -1,6 +1,8 @@
+import { boldify } from '../../utils/helper';
+
 const MessageBubble = ({ message }) => {
-  const isUser = message.type === 'user'
-  const isError = message.type === 'error'
+  const isUser = message.type === 'user';
+  const isError = message.type === 'error';
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -13,13 +15,17 @@ const MessageBubble = ({ message }) => {
             : 'bg-surface text-gray-900 rounded-bl-none'
         }`}
       >
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {message.content}
-        </p>
+        <p
+          className="text-sm leading-relaxed whitespace-pre-wrap"
+          dangerouslySetInnerHTML={{
+            __html: boldify(message.content),
+          }}
+        />
 
         {message.requiresDoctor && (
           <div className="mt-2 pt-2 border-t border-opacity-30 border-current text-xs">
-            🚨 {message.severity === 'critical'
+            🚨{' '}
+            {message.severity === 'critical'
               ? 'Seek immediate medical attention'
               : 'Please consult a healthcare professional'}
           </div>
@@ -30,7 +36,7 @@ const MessageBubble = ({ message }) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MessageBubble
+export default MessageBubble;

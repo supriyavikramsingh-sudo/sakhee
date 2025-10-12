@@ -14,21 +14,42 @@ export const useAuthStore = create((set, get) => ({
     authService.onAuthStateChange(async (firebaseUser) => {
       if (firebaseUser) {
         // User is signed in
+        console.log('🔐 User authenticated:', firebaseUser.email)
+        
+        // Load profile from Firestore
         const profileResult = await firestoreService.getUserProfile(firebaseUser.uid)
         
-        set({
-          user: {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            displayName: firebaseUser.displayName,
-            photoURL: firebaseUser.photoURL
-          },
-          userProfile: profileResult.success ? profileResult.data : null,
-          isAuthenticated: true,
-          isLoading: false
-        })
+        if (profileResult.success) {
+          console.log('👤 Profile loaded:', profileResult.data)
+          
+          set({
+            user: {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              photoURL: firebaseUser.photoURL
+            },
+            userProfile: profileResult.data,
+            isAuthenticated: true,
+            isLoading: false
+          })
+        } else {
+          console.error('❌ Failed to load profile')
+          set({
+            user: {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              photoURL: firebaseUser.photoURL
+            },
+            userProfile: { onboarded: false }, // Default to not onboarded
+            isAuthenticated: true,
+            isLoading: false
+          })
+        }
       } else {
         // User is signed out
+        console.log('🚪 User signed out')
         set({
           user: null,
           userProfile: null,
@@ -93,14 +114,21 @@ export const useAuthStore = create((set, get) => ({
     const { user } = get()
     if (!user) return { success: false, error: 'Not authenticated' }
 
+    console.log('✅ Completing onboarding...', profileData)
+    
     const result = await firestoreService.completeOnboarding(user.uid, profileData)
     
     if (result.success) {
-      // Reload profile
+      console.log('✅ Onboarding completed!')
+      
+      // Reload profile to get updated onboarded status
       const profileResult = await firestoreService.getUserProfile(user.uid)
       if (profileResult.success) {
+        console.log('👤 Updated profile:', profileResult.data)
         set({ userProfile: profileResult.data })
       }
+    } else {
+      console.error('❌ Onboarding failed:', result.error)
     }
     
     return result

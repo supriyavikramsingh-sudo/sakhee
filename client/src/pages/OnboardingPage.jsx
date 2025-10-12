@@ -1,27 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useUserProfileStore } from '../store';
+import { useAuthStore } from '../store';
 import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
 import { CheckCircle } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { user, userProfile, completeOnboarding } = useAuthStore();
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
-  const { setProfile, setOnboarded } = useUserProfileStore();
-  const { completeOnboarding } = useAuthStore();
-
-  const handleComplete = async (finalData) => {
-    const result = await completeOnboarding(finalData);
-    if (result.success) {
-      navigate('/chat');
+  console.log('User Profile:', userProfile, user);
+  // Redirect if already onboarded
+  useEffect(() => {
+    if (userProfile?.onboarded === true) {
+      navigate('/', { replace: true });
     }
-  };
+  }, [userProfile, navigate]);
 
   const steps = [
     { title: t('onboarding.step1.title'), description: t('onboarding.step1.desc') },
@@ -38,16 +36,22 @@ const OnboardingPage = () => {
       setUserData(newUserData);
 
       if (currentStep === steps.length - 1) {
-        setProfile(newUserData);
-        setOnboarded(true);
+        // Final step - complete onboarding
+        const result = await completeOnboarding(newUserData);
 
-        await handleComplete(newUserData);
+        if (result.success) {
+          // Success! Redirect to home
+          navigate('/', { replace: true });
+        } else {
+          alert('Failed to save your profile. Please try again.');
+        }
       } else {
         // Move to next step
         setCurrentStep(currentStep + 1);
       }
     } catch (error) {
       console.error('Onboarding error:', error);
+      alert('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -67,7 +71,7 @@ const OnboardingPage = () => {
         {/* Progress Bar */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
-            {steps.map((_, idx) => (
+            {steps.map((step, idx) => (
               <div key={idx} className="flex items-center flex-1">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${

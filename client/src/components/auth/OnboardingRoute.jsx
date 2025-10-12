@@ -2,11 +2,11 @@ import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingSpinner } from '../layout/LoadingSpinner';
 
-const ProtectedRoute = ({ children }) => {
+const OnboardingRoute = ({ children }) => {
   const { isAuthenticated, userProfile, isLoading } = useAuthStore();
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading..." />;
+    return <LoadingSpinner message="Checking your profile..." />;
   }
 
   // Not authenticated - redirect to login
@@ -14,13 +14,13 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // Authenticated but not onboarded - redirect to onboarding
-  if (userProfile?.onboarded === false || !userProfile?.onboarded) {
-    return <Navigate to="/onboarding" replace />;
+  // Already onboarded - redirect to home
+  if (userProfile?.onboarded === true) {
+    return <Navigate to="/" replace />;
   }
 
-  // Authenticated and onboarded - show protected content
+  // Not onboarded - show onboarding
   return children;
 };
 
-export default ProtectedRoute;
+export default OnboardingRoute;

@@ -1,24 +1,18 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useAuthStore } from '../store'
-import Navbar from '../components/layout/Navbar'
-import FileUpload from '../components/files/FileUpload'
-import ReportList from '../components/files/ReportList'
-import ReportAnalysis from '../components/files/ReportAnalysis'
-import { Upload, FileText, AlertCircle } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../store';
+import Navbar from '../components/layout/Navbar';
+import FileUpload from '../components/files/FileUpload';
+import ReportList from '../components/files/ReportList';
+import ReportAnalysis from '../components/files/ReportAnalysis';
+import { Upload, FileText, AlertCircle } from 'lucide-react';
 
 const ReportsPage = () => {
-  const { t } = useTranslation()
-  const { user } = useAuthStore()
-  const [reports, setReports] = useState([])
-  const [selectedReport, setSelectedReport] = useState(null)
-  const [showUpload, setShowUpload] = useState(false)
-
-  useEffect(() => {
-    if (!user) {
-      window.location.href = '/onboarding'
-    }
-  }, [user])
+  const { t } = useTranslation();
+  const { user } = useAuthStore();
+  const [reports, setReports] = useState([]);
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [showUpload, setShowUpload] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -31,9 +25,7 @@ const ReportsPage = () => {
             <FileText size={40} />
             {t('reports.title')}
           </h1>
-          <p className="text-muted">
-            {t('reports.subtitle')}
-          </p>
+          <p className="text-muted">{t('reports.subtitle')}</p>
         </div>
 
         {/* Medical Disclaimer */}
@@ -43,7 +35,9 @@ const ReportsPage = () => {
             <div>
               <h3 className="font-bold text-warning mb-2">⚠️ Important</h3>
               <p className="text-sm text-gray-700">
-                This tool provides educational analysis only. Always discuss your lab results with a qualified healthcare professional. Do not make medical decisions based solely on this analysis.
+                This tool provides educational analysis only. Always discuss your lab results with a
+                qualified healthcare professional. Do not make medical decisions based solely on
+                this analysis.
               </p>
             </div>
           </div>
@@ -66,9 +60,9 @@ const ReportsPage = () => {
               <FileUpload
                 userId={user?.id}
                 onUploadComplete={(report) => {
-                  setReports([report, ...reports])
-                  setSelectedReport(report)
-                  setShowUpload(false)
+                  setReports([report, ...reports]);
+                  setSelectedReport(report);
+                  setShowUpload(false);
                 }}
               />
             )}
@@ -88,16 +82,9 @@ const ReportsPage = () => {
             ) : (
               <div className="bg-white rounded-lg shadow p-12 text-center">
                 <FileText className="mx-auto mb-4 text-muted" size={64} />
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {t('reports.noSelection')}
-                </h3>
-                <p className="text-muted mb-6">
-                  {t('reports.selectOrUpload')}
-                </p>
-                <button
-                  onClick={() => setShowUpload(true)}
-                  className="btn-primary"
-                >
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('reports.noSelection')}</h3>
+                <p className="text-muted mb-6">{t('reports.selectOrUpload')}</p>
+                <button onClick={() => setShowUpload(true)} className="btn-primary">
                   {t('reports.uploadFirst')}
                 </button>
               </div>
@@ -106,7 +93,7 @@ const ReportsPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReportsPage
+export default ReportsPage;

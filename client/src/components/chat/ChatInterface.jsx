@@ -6,13 +6,14 @@ import MessageBubble from './MessageBubble';
 import SourceCitations from './SourceCitations';
 import { Send, Plus, Loader } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
+import { firestoreService } from '../../services/firestoreService';
 
 const ChatInterface = ({ userProfile, userId }) => {
   const { t } = useTranslation();
   const { messages, addMessage, setLoading, isLoading } = useChatStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -37,8 +38,8 @@ const ChatInterface = ({ userProfile, userId }) => {
     await firestoreService.saveChatMessage(user.uid, {
       type: 'user',
       content: input,
-      timestamp: new Date()
-    })
+      timestamp: new Date(),
+    });
 
     setInput('');
     setLoading(true);
@@ -56,8 +57,8 @@ const ChatInterface = ({ userProfile, userId }) => {
       await firestoreService.saveChatMessage(user.uid, {
         type: 'assistant',
         content: response.data.message.response,
-        timestamp: new Date()
-      })
+        timestamp: new Date(),
+      });
 
       // Add assistant message
       addMessage({
