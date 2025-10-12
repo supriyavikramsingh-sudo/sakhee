@@ -1,218 +1,392 @@
 import { PromptTemplate } from '@langchain/core/prompts';
-import { llmClient } from '../llmClient.js';
+import { ChatOpenAI } from '@langchain/openai';
+import { env } from '../../config/env.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('MealPlanChain');
 
 class MealPlanChain {
+  constructor() {
+    // Create dedicated LLM for structured output with JSON mode enabled
+    this.structuredLLM = new ChatOpenAI({
+      modelName: 'gpt-4o-mini',
+      temperature: 0.1,
+      maxTokens: 8192,
+      openAIApiKey: env.OPENAI_API_KEY,
+      modelKwargs: {
+        response_format: { type: 'json_object' },
+      },
+    });
+  }
+
   async generateMealPlan(preferences) {
     try {
-      logger.info('Generating meal plan', preferences);
-
-      // Simplified prompt with stricter JSON format
-      const prompt = PromptTemplate.fromTemplate(`
-You are a nutritionist creating a PCOS-friendly Indian meal plan.
-
-Requirements:
-- Region: ${preferences.region}
-- Diet: ${preferences.dietType}
-- Budget: ₹${preferences.budget} per day
-- Duration: ${preferences.duration} days
-- Meals per day: ${preferences.mealsPerDay}
-
-Create a simple, VALID JSON response. Use ONLY double quotes for values.
-
-Example format (follow EXACTLY):
-{{
-  days: [
-    {{
-      dayNumber: 1,
-      meals: [
-        {{
-          mealType: "Breakfast",
-          name: "Besan Chilla",
-          ingredients: ["100g besan", "1 onion", "spices"],
-          protein: 15,
-          carbs: 20,
-          fats: 5,
-          gi: "Low",
-          time: "15 mins",
-          tip: "Add vegetables"
-      }}
-      ]
-      }}
-  ]
-      }}
-
-CRITICAL RULES:
-1. Use ONLY double quotes (") for values.
-2. No single quotes (')
-3. No missing commas
-4. No trailing commas
-5. No extra text outside JSON
-6. Keep it simple - just ${preferences.duration} days
-
-Generate now:
-`);
-
-      // LLMChain is deprecated — format the prompt and call the LLM client directly.
-      const formattedPrompt = await prompt.format({
-        duration: preferences.duration || 7,
+      logger.info('Generating meal plan with structured output', {
+        duration: preferences.duration,
         region: preferences.region,
         dietType: preferences.dietType,
         budget: preferences.budget,
-        mealsPerDay: preferences.mealsPerDay || 3,
+        mealsPerDay: preferences.mealsPerDay,
+        restrictions: preferences.restrictions,
+        cuisines: preferences.cuisines,
       });
 
-      const raw = await llmClient.invoke(formattedPrompt);
-      const resultText =
-        typeof raw === 'string' ? raw : raw?.text ?? raw?.output_text ?? JSON.stringify(raw);
+      const duration = parseInt(preferences.duration) || 7;
+      const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
 
-      logger.info('Raw LLM response received', { length: resultText.length });
-      // Try to parse with multiple strategies
-      const parsed = this.parseRobustly(resultText);
-      if (!parsed || !parsed.days || parsed.days.length === 0) {
-        logger.error('Parsing failed, returning fallback');
-        return this.getFallbackPlan(preferences);
+      // For reliability, cap at 3 days per request
+      if (duration > 3) {
+        return await this.generateInChunks(preferences);
       }
 
-      logger.info('Meal plan parsed successfully', { days: parsed.days.length });
-      return parsed;
+      return await this.generateWithStructuredOutput(preferences);
     } catch (error) {
-      logger.error('Meal plan generation failed', { error: error.message });
+      logger.error('Meal plan generation failed', { error: error.message, stack: error.stack });
       return this.getFallbackPlan(preferences);
     }
   }
 
   /**
-   * Parse with multiple strategies
+   * Generate in chunks for longer durations
    */
-  parseRobustly(text) {
-    // Normalize smart quotes first (some LLM outputs contain curly quotes)
-    const normalizeQuotes = (s) =>
-      s
-        .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'") // single smart
-        .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"'); // double smart
+  async generateInChunks(preferences) {
+    logger.info('Generating in 3-day chunks for reliability');
 
-    const tryParse = (candidate) => {
+    const duration = parseInt(preferences.duration) || 7;
+    const allDays = [];
+    const chunkSize = 3;
+
+    for (let startDay = 1; startDay <= duration; startDay += chunkSize) {
+      const endDay = Math.min(startDay + chunkSize - 1, duration);
+      const chunkDuration = endDay - startDay + 1;
+
       try {
-        const cleaned = this.cleanJSON(candidate);
-        const parsed = JSON.parse(cleaned);
-        if (parsed && parsed.days) {
-          return parsed;
+        const chunkPrefs = {
+          ...preferences,
+          duration: chunkDuration,
+          startDay,
+        };
+
+        const chunk = await this.generateWithStructuredOutput(chunkPrefs);
+
+        if (chunk && chunk.days) {
+          // Renumber days
+          chunk.days.forEach((day, idx) => {
+            day.dayNumber = startDay + idx;
+            allDays.push(day);
+          });
+        } else {
+          // Use fallback for this chunk
+          for (let i = startDay; i <= endDay; i++) {
+            allDays.push(this.getFallbackDay(i, preferences));
+          }
         }
       } catch (e) {
-        // intentionally ignore parse errors here
-      }
-      return null;
-    };
-
-    const normalized = normalizeQuotes(text || '');
-
-    // Strategy 1: Try direct JSON parse of the cleaned (normalized) text
-    const s1 = tryParse(normalized);
-    if (s1) {
-      logger.info('✅ Strategy 1: Direct parse succeeded');
-      return s1;
-    }
-
-    // Strategy 2: Extract from markdown code fences
-    const fenceMatch = normalized.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-    if (fenceMatch) {
-      const s2 = tryParse(fenceMatch[1]);
-      if (s2) {
-        logger.info('✅ Strategy 2: Markdown extraction succeeded');
-        return s2;
+        logger.warn(`Chunk ${startDay}-${endDay} failed, using fallback`);
+        for (let i = startDay; i <= endDay; i++) {
+          allDays.push(this.getFallbackDay(i, preferences));
+        }
       }
     }
 
-    // Strategy 3: Find JSON-like structure containing "days"
-    const jsonMatches = normalized.match(/\{[\s\S]*"days"[\s\S]*\}/g);
-    if (jsonMatches && jsonMatches.length > 0) {
-      const s3 = tryParse(jsonMatches[0]);
-      if (s3) {
-        logger.info('✅ Strategy 3: Pattern matching succeeded');
-        return s3;
-      }
-    }
-
-    // Strategy 4: Attempt to repair JS-like objects (unquoted keys, smart quotes, currency)
-    try {
-      let attempt = normalized;
-
-      // Extract the outermost braces if present to reduce noise
-      const first = attempt.indexOf('{');
-      const last = attempt.lastIndexOf('}');
-      if (first !== -1 && last !== -1 && last > first) {
-        attempt = attempt.slice(first, last + 1);
-      }
-
-      // Quote unquoted keys (only after { or , or [ )
-      attempt = attempt.replace(/([\{\[,]\s*)([A-Za-z0-9_\-]+)\s*:/g, '$1"$2":');
-
-      const s4 = tryParse(attempt);
-      if (s4) {
-        logger.info('✅ Strategy 4: Key-quoting repair succeeded');
-        return s4;
-      }
-    } catch (e) {
-      logger.warn('Strategy 4 failed:', e.message);
-    }
-
-    logger.error('All parsing strategies failed');
-    return null;
+    return { days: allDays };
   }
 
   /**
-   * Clean JSON string
+   * Generate with manual JSON construction (most reliable)
    */
-  cleanJSON(text) {
-    let cleaned = (text || '').trim();
+  async generateWithStructuredOutput(preferences) {
+    const duration = parseInt(preferences.duration) || 3;
+    const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
+    const restrictions = preferences.restrictions || [];
+    const cuisines = preferences.cuisines || [];
 
-    // Normalize whitespace
-    cleaned = cleaned.replace(/\u00A0/g, ' ');
+    // Build restrictions text
+    let restrictionsText = '';
+    if (restrictions.length > 0) {
+      restrictionsText = `\n\nDIETARY RESTRICTIONS (MUST AVOID):
+${restrictions.map((r) => `- ${r}`).join('\n')}`;
+    }
 
-    // Normalize smart quotes
-    cleaned = cleaned
-      .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'") // single smart
-      .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"'); // double smart
+    // Build cuisines text
+    let cuisinesText = '';
+    if (cuisines.length > 0) {
+      cuisinesText = `\n\nPREFERRED CUISINES:
+${cuisines.map((c) => `- ${c}`).join('\n')}`;
+    }
 
-    // Remove markdown fences (keep inner content)
-    cleaned = cleaned.replace(/```(?:json)?\s*/g, '');
-    cleaned = cleaned.replace(/```\s*/g, '');
+    // Simple, short prompt with explicit structure request
+    const prompt = `Generate a ${duration}-day PCOS-friendly meal plan for ${
+      preferences.region
+    } region, ${preferences.dietType} diet, ₹${preferences.budget}/day budget.
 
-    // Quote unquoted keys: convert { key: to { "key":
-    cleaned = cleaned.replace(/([\{\[,]\s*)([A-Za-z0-9_\-]+)\s*:/g, '$1"$2":');
+Create ${mealsPerDay} meals per day.${restrictionsText}${cuisinesText}
 
-    // Replace single-quoted strings with double quotes (simple heuristic)
-    cleaned = cleaned.replace(/'([^']*)'/g, function (m, p) {
-      return '"' + p.replace(/\"/g, '\\"') + '"';
+CRITICAL: Your response must use this EXACT JSON structure with "days" as the root array key:
+
+{
+  "days": [
+    {
+      "dayNumber": 1,
+      "meals": [
+        {
+          "mealType": "Breakfast",
+          "name": "Dish Name",
+          "ingredients": ["item1 - 50g", "item2 - 30g"],
+          "protein": 15,
+          "carbs": 20,
+          "fats": 5,
+          "gi": "Low",
+          "time": "15 mins",
+          "tip": "Cooking tip"
+        }
+      ]
+    }
+  ]
+}
+
+Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key, not "mealPlan" or "plan".${
+      restrictions.length > 0
+        ? `\n\nIMPORTANT: Avoid all ingredients in the restrictions list.`
+        : ''
+    }${cuisines.length > 0 ? `\n\nFocus on ${cuisines.join(', ')} cuisines when possible.` : ''}`;
+
+    try {
+      // Invoke with simple string prompt (ChatOpenAI handles the message wrapping)
+      const response = await this.structuredLLM.invoke(prompt);
+
+      const content = response.content || response.text || '';
+      logger.info('Structured response received', { length: content.length });
+
+      // Parse response
+      const parsed = JSON.parse(content);
+
+      // DEBUG: Log the actual structure
+      logger.info('Parsed structure', {
+        keys: Object.keys(parsed),
+        hasDays: !!parsed.days,
+        daysType: Array.isArray(parsed.days) ? 'array' : typeof parsed.days,
+        daysLength: parsed.days?.length,
+        firstDayKeys: parsed.days?.[0] ? Object.keys(parsed.days[0]) : 'none',
+        sample: JSON.stringify(parsed).slice(0, 500),
+      });
+
+      // Validate structure
+      if (this.validateStructure(parsed, duration, mealsPerDay)) {
+        logger.info('✅ Structured output validation passed');
+        return parsed;
+      }
+
+      logger.warn('Structured output validation failed, trying cleanup');
+
+      // Try to fix structure
+      const fixed = this.fixStructure(parsed, duration, mealsPerDay);
+      if (fixed) {
+        return fixed;
+      }
+
+      throw new Error('Invalid structure after cleanup');
+    } catch (error) {
+      logger.error('Structured generation failed', { error: error.message });
+
+      // Try fallback
+      return this.getFallbackPlan({
+        ...preferences,
+        duration: duration,
+      });
+    }
+  }
+
+  /**
+   * Validate parsed structure
+   */
+  validateStructure(parsed, expectedDays, expectedMeals) {
+    try {
+      if (!parsed || typeof parsed !== 'object') {
+        logger.debug('Validation failed: not an object');
+        return false;
+      }
+
+      const days = parsed.days;
+      if (!Array.isArray(days)) {
+        logger.debug('Validation failed: days not an array', { daysType: typeof days });
+        return false;
+      }
+      if (days.length === 0) {
+        logger.debug('Validation failed: days array empty');
+        return false;
+      }
+
+      // Check each day
+      for (let i = 0; i < days.length; i++) {
+        const day = days[i];
+        if (!day.meals || !Array.isArray(day.meals)) {
+          logger.debug(`Validation failed: day ${i} has no meals array`);
+          return false;
+        }
+        if (day.meals.length === 0) {
+          logger.debug(`Validation failed: day ${i} meals array empty`);
+          return false;
+        }
+
+        // Check each meal
+        for (let j = 0; j < day.meals.length; j++) {
+          const meal = day.meals[j];
+          const required = ['mealType', 'name', 'ingredients'];
+          for (const field of required) {
+            if (!(field in meal)) {
+              logger.debug(`Validation failed: day ${i} meal ${j} missing ${field}`, {
+                mealKeys: Object.keys(meal),
+              });
+              return false;
+            }
+          }
+        }
+      }
+
+      logger.info('✅ Validation passed', { daysCount: days.length });
+      return true;
+    } catch (e) {
+      logger.debug('Validation error', { error: e.message });
+      return false;
+    }
+  }
+
+  /**
+   * Try to fix common structure issues
+   */
+  fixStructure(parsed, expectedDays, expectedMeals) {
+    try {
+      // If days is missing but there's a nested structure
+      if (!parsed.days) {
+        logger.debug('Attempting to fix structure - days missing');
+
+        // Look for common alternative names: mealPlan, plan, data, etc.
+        const alternativeKeys = ['mealPlan', 'plan', 'data', 'schedule', 'menu'];
+
+        for (const key of alternativeKeys) {
+          if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
+            logger.info(`Found alternative key: ${key}, restructuring`);
+
+            // Check if items have "day" property instead of "dayNumber"
+            parsed[key].forEach((item, idx) => {
+              if (item.day && !item.dayNumber) {
+                item.dayNumber = item.day;
+                delete item.day;
+              }
+              if (!item.dayNumber) {
+                item.dayNumber = idx + 1;
+              }
+            });
+
+            const candidate = { days: parsed[key] };
+            if (this.validateStructure(candidate, expectedDays, expectedMeals)) {
+              logger.info('✅ Structure fixed successfully');
+              return candidate;
+            }
+          }
+        }
+
+        // Look for any array in the object
+        for (const key of Object.keys(parsed)) {
+          if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
+            logger.debug(`Trying key: ${key}`);
+            const candidate = { days: parsed[key] };
+
+            // Try to fix day numbers
+            candidate.days.forEach((item, idx) => {
+              if (item.day && !item.dayNumber) {
+                item.dayNumber = item.day;
+                delete item.day;
+              }
+              if (!item.dayNumber) {
+                item.dayNumber = idx + 1;
+              }
+            });
+
+            if (this.validateStructure(candidate, expectedDays, expectedMeals)) {
+              logger.info(`✅ Structure fixed using key: ${key}`);
+              return candidate;
+            }
+          }
+        }
+
+        logger.debug('Could not find valid array structure');
+        return null;
+      }
+
+      // Ensure dayNumber exists
+      parsed.days.forEach((day, idx) => {
+        if (day.day && !day.dayNumber) {
+          day.dayNumber = day.day;
+          delete day.day;
+        }
+        if (!day.dayNumber) {
+          day.dayNumber = idx + 1;
+        }
+      });
+
+      // Fill missing meal fields with defaults
+      parsed.days.forEach((day) => {
+        day.meals.forEach((meal) => {
+          if (!meal.gi) meal.gi = 'Low';
+          if (!meal.time) meal.time = '20 mins';
+          if (!meal.tip) meal.tip = 'Enjoy fresh';
+          if (!meal.ingredients) meal.ingredients = [];
+          if (typeof meal.protein !== 'number') meal.protein = 10;
+          if (typeof meal.carbs !== 'number') meal.carbs = 20;
+          if (typeof meal.fats !== 'number') meal.fats = 5;
+        });
+      });
+
+      if (this.validateStructure(parsed, expectedDays, expectedMeals)) {
+        logger.info('✅ Structure validated and fixed');
+        return parsed;
+      }
+
+      return null;
+    } catch (e) {
+      logger.error('Fix structure failed', { error: e.message, stack: e.stack });
+      return null;
+    }
+  }
+
+  /**
+   * Get fallback day
+   */
+  getFallbackDay(dayNumber, preferences) {
+    const templates = this.getRegionalTemplates(preferences.region);
+    const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
+    const meals = [];
+
+    const mealTypes = ['breakfast', 'lunch', 'snack', 'dinner'];
+    const selectedTypes =
+      mealsPerDay === 2
+        ? ['breakfast', 'dinner']
+        : mealsPerDay === 4
+        ? ['breakfast', 'lunch', 'snack', 'dinner']
+        : ['breakfast', 'lunch', 'dinner'];
+
+    selectedTypes.forEach((type, idx) => {
+      const typeTemplates = templates[type] || templates.breakfast;
+      const template = typeTemplates[(dayNumber + idx) % typeTemplates.length];
+
+      meals.push({
+        mealType: type.charAt(0).toUpperCase() + type.slice(1),
+        ...template,
+        gi: 'Low',
+        time: '20 mins',
+        tip: 'Fresh and healthy',
+      });
     });
 
-    // Replace remaining single quotes with double quotes
-    cleaned = cleaned.replace(/'/g, '"');
-
-    // Handle currency (e.g., : ₹500 -> : "₹500")
-    cleaned = cleaned.replace(/:\s*₹\s*([0-9]+(?:\.[0-9]+)?)/g, ': "₹$1"');
-
-    // Remove trailing commas before } or ]
-    cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1');
-
-    // Strip non-printable/control characters except tab/newline/carriage return
-    cleaned = cleaned.replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '');
-
-    return cleaned.trim();
+    return { dayNumber, meals };
   }
 
   /**
-   * Fallback meal plan when parsing fails
+   * Get regional templates
    */
-  getFallbackPlan(preferences) {
-    logger.info('Using fallback meal plan');
-
-    const { region, dietType, mealsPerDay = 3, duration = 7 } = preferences;
-
-    // Simple templates by region
+  getRegionalTemplates(region) {
     const templates = {
       'north-india': {
         breakfast: [
@@ -240,38 +414,61 @@ Generate now:
         ],
         lunch: [
           {
-            name: 'Dal Tadka with Brown Rice',
-            ingredients: ['70g dal', '50g brown rice'],
+            name: 'Dal Tadka',
+            ingredients: ['70g dal', '50g rice'],
             protein: 16,
             carbs: 45,
             fats: 6,
           },
           {
-            name: 'Rajma Curry with Roti',
+            name: 'Rajma Curry',
             ingredients: ['100g rajma', '2 roti'],
             protein: 18,
             carbs: 40,
             fats: 5,
           },
           {
-            name: 'Palak Paneer with Roti',
+            name: 'Palak Paneer',
             ingredients: ['200g spinach', '100g paneer'],
             protein: 20,
             carbs: 30,
             fats: 15,
           },
         ],
+        snack: [
+          {
+            name: 'Roasted Chana',
+            ingredients: ['50g chana', 'spices'],
+            protein: 9,
+            carbs: 15,
+            fats: 3,
+          },
+          {
+            name: 'Fruit Bowl',
+            ingredients: ['1 apple', '1 banana'],
+            protein: 2,
+            carbs: 25,
+            fats: 0,
+          },
+          {
+            name: 'Sprouts Salad',
+            ingredients: ['100g sprouts', 'lemon'],
+            protein: 8,
+            carbs: 12,
+            fats: 1,
+          },
+        ],
         dinner: [
           {
             name: 'Vegetable Khichdi',
-            ingredients: ['50g rice', '50g moong dal', 'vegetables'],
+            ingredients: ['50g rice', '50g dal', 'vegetables'],
             protein: 12,
             carbs: 35,
             fats: 4,
           },
           {
             name: 'Quinoa Pulao',
-            ingredients: ['60g quinoa', 'mixed vegetables'],
+            ingredients: ['60g quinoa', 'vegetables'],
             protein: 12,
             carbs: 30,
             fats: 5,
@@ -289,7 +486,7 @@ Generate now:
         breakfast: [
           {
             name: 'Ragi Dosa',
-            ingredients: ['80g ragi flour', '20g urad dal'],
+            ingredients: ['80g ragi', '20g urad dal'],
             protein: 10,
             carbs: 28,
             fats: 4,
@@ -306,101 +503,234 @@ Generate now:
         lunch: [
           {
             name: 'Sambar Rice',
-            ingredients: ['60g brown rice', 'sambar vegetables'],
+            ingredients: ['60g rice', 'sambar'],
             protein: 14,
             carbs: 45,
             fats: 5,
           },
           {
             name: 'Bisi Bele Bath',
-            ingredients: ['50g millet', '30g dal', 'vegetables'],
+            ingredients: ['50g millet', '30g dal'],
             protein: 12,
             carbs: 38,
             fats: 6,
           },
           {
-            name: 'Avial with Brown Rice',
-            ingredients: ['mixed vegetables', '50g rice'],
+            name: 'Avial',
+            ingredients: ['vegetables', '50g rice'],
             protein: 10,
             carbs: 40,
             fats: 8,
           },
         ],
+        snack: [
+          {
+            name: 'Sundal',
+            ingredients: ['100g chickpeas', 'coconut'],
+            protein: 10,
+            carbs: 20,
+            fats: 4,
+          },
+          {
+            name: 'Murukku',
+            ingredients: ['50g rice flour', 'spices'],
+            protein: 5,
+            carbs: 25,
+            fats: 8,
+          },
+          { name: 'Banana', ingredients: ['1 banana'], protein: 1, carbs: 27, fats: 0 },
+        ],
         dinner: [
           {
             name: 'Quinoa Pongal',
-            ingredients: ['60g quinoa', '30g moong dal'],
+            ingredients: ['60g quinoa', '30g dal'],
             protein: 14,
             carbs: 32,
             fats: 6,
           },
           {
-            name: 'Ragi Mudde with Greens',
-            ingredients: ['80g ragi', 'leafy greens'],
+            name: 'Ragi Mudde',
+            ingredients: ['80g ragi', 'greens'],
             protein: 9,
             carbs: 35,
             fats: 7,
           },
           {
             name: 'Vegetable Upma',
-            ingredients: ['50g rava', '100g vegetables'],
+            ingredients: ['50g rava', 'vegetables'],
             protein: 8,
             carbs: 30,
             fats: 5,
           },
         ],
       },
+      'east-india': {
+        breakfast: [
+          { name: 'Poha', ingredients: ['100g poha', 'peanuts'], protein: 8, carbs: 30, fats: 6 },
+          {
+            name: 'Dalia',
+            ingredients: ['80g dalia', 'vegetables'],
+            protein: 10,
+            carbs: 35,
+            fats: 4,
+          },
+          { name: 'Idli', ingredients: ['3 idlis', 'sambar'], protein: 12, carbs: 40, fats: 2 },
+        ],
+        lunch: [
+          {
+            name: 'Fish Curry',
+            ingredients: ['150g fish', 'mustard oil'],
+            protein: 25,
+            carbs: 10,
+            fats: 12,
+          },
+          {
+            name: 'Dal Bhaat',
+            ingredients: ['100g rice', '50g dal'],
+            protein: 14,
+            carbs: 50,
+            fats: 5,
+          },
+          {
+            name: 'Aloo Posto',
+            ingredients: ['200g potato', 'poppy seeds'],
+            protein: 6,
+            carbs: 45,
+            fats: 10,
+          },
+        ],
+        snack: [
+          {
+            name: 'Muri',
+            ingredients: ['50g puffed rice', 'peanuts'],
+            protein: 5,
+            carbs: 20,
+            fats: 4,
+          },
+          { name: 'Coconut Water', ingredients: ['1 coconut'], protein: 1, carbs: 9, fats: 0 },
+          {
+            name: 'Roasted Peanuts',
+            ingredients: ['50g peanuts'],
+            protein: 13,
+            carbs: 8,
+            fats: 25,
+          },
+        ],
+        dinner: [
+          {
+            name: 'Khichuri',
+            ingredients: ['50g rice', '50g dal', 'vegetables'],
+            protein: 12,
+            carbs: 40,
+            fats: 5,
+          },
+          {
+            name: 'Vegetable Stew',
+            ingredients: ['mixed vegetables', 'coconut milk'],
+            protein: 8,
+            carbs: 25,
+            fats: 10,
+          },
+          {
+            name: 'Roti Sabzi',
+            ingredients: ['2 rotis', 'mixed vegetables'],
+            protein: 10,
+            carbs: 35,
+            fats: 6,
+          },
+        ],
+      },
+      'west-india': {
+        breakfast: [
+          { name: 'Dhokla', ingredients: ['100g besan', 'rava'], protein: 15, carbs: 25, fats: 5 },
+          { name: 'Poha', ingredients: ['100g poha', 'peanuts'], protein: 8, carbs: 30, fats: 6 },
+          { name: 'Thepla', ingredients: ['3 theplas', 'curd'], protein: 12, carbs: 35, fats: 8 },
+        ],
+        lunch: [
+          {
+            name: 'Dal Dhokli',
+            ingredients: ['50g dal', 'wheat dough'],
+            protein: 14,
+            carbs: 40,
+            fats: 6,
+          },
+          {
+            name: 'Undhiyu',
+            ingredients: ['mixed vegetables', 'methi'],
+            protein: 10,
+            carbs: 35,
+            fats: 12,
+          },
+          {
+            name: 'Khichdi Kadhi',
+            ingredients: ['50g rice', '50g dal', 'kadhi'],
+            protein: 13,
+            carbs: 38,
+            fats: 8,
+          },
+        ],
+        snack: [
+          {
+            name: 'Bhel Puri',
+            ingredients: ['50g puffed rice', 'vegetables'],
+            protein: 6,
+            carbs: 25,
+            fats: 5,
+          },
+          { name: 'Methi Thepla', ingredients: ['2 theplas'], protein: 8, carbs: 28, fats: 6 },
+          {
+            name: 'Cucumber Salad',
+            ingredients: ['1 cucumber', 'lemon'],
+            protein: 2,
+            carbs: 8,
+            fats: 0,
+          },
+        ],
+        dinner: [
+          {
+            name: 'Bajra Roti',
+            ingredients: ['2 bajra rotis', 'vegetables'],
+            protein: 11,
+            carbs: 40,
+            fats: 7,
+          },
+          {
+            name: 'Dal Tadka',
+            ingredients: ['70g dal', '50g rice'],
+            protein: 15,
+            carbs: 42,
+            fats: 6,
+          },
+          {
+            name: 'Vegetable Pulao',
+            ingredients: ['60g rice', 'vegetables'],
+            protein: 9,
+            carbs: 45,
+            fats: 8,
+          },
+        ],
+      },
     };
 
-    const regionTemplates = templates[region] || templates['north-india'];
+    return templates[region] || templates['north-india'];
+  }
 
-    // Generate days
+  /**
+   * Full fallback plan
+   */
+  getFallbackPlan(preferences) {
+    logger.info('Using complete fallback meal plan');
+    const duration = parseInt(preferences.duration) || 7;
     const days = [];
-    for (let i = 0; i < Math.min(duration, 7); i++) {
-      const dayMeals = [];
 
-      if (mealsPerDay >= 3) {
-        // Breakfast
-        const breakfast = regionTemplates.breakfast[i % regionTemplates.breakfast.length];
-        dayMeals.push({
-          mealType: 'Breakfast',
-          ...breakfast,
-          gi: 'Low',
-          time: '15-20 mins',
-          tip: 'Start your day with protein-rich breakfast',
-        });
-
-        // Lunch
-        const lunch = regionTemplates.lunch[i % regionTemplates.lunch.length];
-        dayMeals.push({
-          mealType: 'Lunch',
-          ...lunch,
-          gi: 'Low',
-          time: '30-40 mins',
-          tip: 'Add vegetables for fiber',
-        });
-
-        // Dinner
-        const dinner = regionTemplates.dinner[i % regionTemplates.dinner.length];
-        dayMeals.push({
-          mealType: 'Dinner',
-          ...dinner,
-          gi: 'Low',
-          time: '25-30 mins',
-          tip: 'Keep dinner light',
-        });
-      }
-
-      days.push({
-        dayNumber: i + 1,
-        meals: dayMeals,
-      });
+    for (let i = 1; i <= duration; i++) {
+      days.push(this.getFallbackDay(i, preferences));
     }
 
     return {
       days,
       fallback: true,
-      message: 'Using pre-designed PCOS-friendly meal templates',
+      message: 'Using pre-designed PCOS-friendly templates',
     };
   }
 }

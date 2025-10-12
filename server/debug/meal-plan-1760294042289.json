@@ -1,0 +1,184 @@
+{
+  "days": [
+    {
+      "dayNumber": 1,
+      "meals": [
+        {
+          "mealType": "Breakfast",
+          "name": "Besan Chilla",
+          "ingredients": ["100g besan", "1 onion", "spices"],
+          "protein": 15,
+          "carbs": 20,
+          "fats": 5,
+          "gi": "Low",
+          "time": "15 mins",
+          "tip": "Add vegetables"
+        },
+        {
+          "mealType": "Lunch",
+          "name": "Quinoa Salad",
+          "ingredients": ["100g quinoa", "1 cucumber", "tomatoes"],
+          "protein": 12,
+          "carbs": 30,
+          "fats": 4,
+          "gi": "Low",
+          "time": "20 mins",
+          "tip": "Use lemon dressing"
+        },
+        {
+          "mealType": "Snack",
+          "name": “Roasted Chana”,
+          “ingredients”: [“50g chana”, “spices”],
+          “protein”: 10,
+          “carbs”: 15,
+          “fats”: 2,
+          “gi”: “Low”,
+          “time”: “10 mins”,
+           “tip”: “Healthy crunch”
+        },
+        {
+          "mealType":"Dinner",
+          "name":"Palak Dal",
+          "ingredients":["100g dal","200g spinach","spices"],
+          "protein":18,
+          "carbs":30,
+          "fats":5,
+          "gi":"Low",
+          "time":"30 mins",
+          "tip":"Serve with brown rice"
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      “meals”: [
+        {
+              "mealType":"Breakfast",
+              "name":"Vegetable Upma",
+              "ingredients":["100g semolina","mixed veggies","spices"],
+              "protein":8,
+              "carbs":40,
+              "fats":6,
+              "gi":"Medium",
+              "time":"20 mins",
+              "tip":"Add nuts for crunch"
+        },
+        {
+            “mealType”:“Lunch”,
+            “name”:“Chickpea Curry”,
+            “ingredients”:[“100g chickpeas”,“onion”,“tomato”,“spices”],
+            “protein”:18,
+            “carbs”:35,
+            “fats”:5,
+            “gi”:“Medium”,
+            “time”:“25 mins”,
+            “tip”:“Pair with roti”
+        },
+        {
+            ”mealType”: ”Snack” ,
+            ”name”： ”Fruit Bowl” ,
+            ”ingredients”： [ ”apple”， ”banana”， ”papaya” ] ,
+            ”protein”：3 ,
+            ”carbs”：25 ,
+            ”fats”：0 ,
+            ”gi”： ”Medium” ,
+            ”time”： ”5 mins” ,
+             ”tip”： ”Choose seasonal fruits”
+        },
+       {
+                                            
+                                                 
+    	}
+      ]
+    },
+    {
+      'dayNumber':3, 
+      'meals':[
+       { 
+       'mealType':'Breakfast', 
+       'name':'Moong Dal Chilla', 
+       'ingredients':['100g moong dal','onion','spices'], 
+       'protein':14, 
+       'carbs':22, 
+       'fats':4, 
+       'gi':'Low', 
+       'time':'15 mins', 
+       'tip':'Serve with chutney' 
+     },  
+     {  
+     'mealType':'Lunch',  
+     'name':'Vegetable Khichdi',  
+     'ingredients':['100g rice','dal','mixed veggies'],  
+     'protein':12,  
+     'carbs':45,  
+     'fats':7,  
+     'gi':'Medium',  
+     'time':'30 mins',  
+     ‘tip’:‘Comfort food’   
+    },   
+    {    
+    ‘mealType’:‘Snack’,    
+    ‘name’:‘Cucumber Sticks’,    
+    ‘ingredients’:[‘1 cucumber’,‘hummus’],    
+    ‘protein’:4,    
+    ‘carbs’:8,    
+    ‘fats’:3,    
+    ‘gi’:‘Low’,    
+    ‘time’:‘10 mins’,    
+    ‘tip’:‘Hydrating snack’   
+   },   
+   {     
+   ’mealType’:’Dinner’,     
+   ’name’:’Mixed Vegetable Curry’,     
+   ’ingredients’:[’200g mixed veggies’,’tofu’,’spices’],     
+   ’protein’:20,     
+   ’carbs’:30,     
+   ’fats’:8,     
+   ’gi’:’Medium’,     
+   ’time:’’35 mins,’      
+   ’tip:’’Serve with chapati’’      
+ }   
+ ]   
+},   
+{   
+'dayNumber':4,   
+'meals':[   
+{   
+'mealType':'Breakfast',   
+'name':'Idli Sambar',   
+'ingredients':['2 idlis','sambar','coconut chutney'],   
+'protein':10,   
+'carbs':40,   
+'fats':5,   
+'gi':'Medium',   
+'time':'25 mins',   
+'tip':'Fermented goodness'  
+},  
+{  
+'maltype:'Lunch',
+'name:'Paneer Bhurji',
+'ingredients':['100g paneer','onion','tomato'],
+'protein':22,'carbs':10,'fats:9,'gi:'Low',
+'time:'20mins',
+'tip:'High protein meal'
+},
+{
+'maltype:'Snack',
+'name:'Masala Peanuts',
+'ingredient:['50g peanuts','spices'],
+'proteins:11,'cars:16,'fat:6,'gl:'low',
+'time='10mins'
+'tip='Great for cravings'
+},
+{
+'maltype:'Dinner',
+'name:'Lentil Soup',
+'ingedients:['200ml lentils','spinach','garlic'],
+'proteins:15,'cars:28,'fat:3,'gl:'low',
+'time='30mins'
+'tip='Warm and filling'
+}
+]
+}
+]
+}

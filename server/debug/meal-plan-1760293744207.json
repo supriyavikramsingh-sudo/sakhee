@@ -1,0 +1,172 @@
+{
+  "days": [
+    {
+      "dayNumber": 1,
+      "meals": [
+        {
+          "mealType": "Breakfast",
+          "name": "Besan Chilla",
+          "ingredients": ["100g besan", "1 onion", "spices"],
+          "protein": 15,
+          "carbs": 20,
+          "fats": 5,
+          "gi": "Low",
+          "time": "15 mins",
+          "tip": "Add vegetables"
+        },
+        {
+          "mealType": "Lunch",
+          "name": "Quinoa Salad",
+          "ingredients": ["50g quinoa", "1 cucumber", "lemon juice"],
+          "protein": 10,
+          "carbs": 30,
+          "fats": 3,
+          "gi": "Low",
+          "time": "20 mins",
+          "tip": "Use fresh herbs"
+        },
+        {
+          "mealType": "Dinner",
+          "name": “Tofu Curry”,
+          “ingredients”: [“100g tofu”, “1 tomato”, “spices”],
+          “protein”: 20,
+          “carbs”: 15,
+          “fats”: 8,
+          “gi”: “Low”,
+          “time”: “30 mins”,
+           “tip”: ”Serve with brown rice”
+        }
+      ]
+    },
+    {
+      “dayNumber”: 2,
+      “meals”: [
+        {
+           “mealType”: ”Breakfast”,
+           “name”: ”Oat Porridge”,
+           “ingredients”: [“50g oats”, ”1 banana”, ”almond milk”],
+           “protein”: 8,
+           “carbs”: 40,
+           “fats”: 4,
+           “gi”: ”Medium”,
+           “time”: ”10 mins”,
+           “tip”: ”Top with nuts”
+         },
+         {
+            ”mealType”: ”Lunch”,
+            ”name”: ”Lentil Soup”,
+            ”ingredients”: [“100g lentils”, ”1 carrot”, ”spices”],
+            ”protein”: 18, 
+            ”carbs”: 25, 
+            ”fats”：3, 
+            ”gi”：”Low”, 
+            ”time”：”30 mins”, 
+            ”tip”：”Add spinach”
+         },
+         {
+             ''mealType'': ''Dinner'',
+             ''name'': ''Vegetable Stir Fry'',
+             ''ingredients'': ['mixed vegetables', 'soy sauce', 'tofu'],
+             ''protein'': 12, 
+             ''carbs'': 20, 
+             ''fats'': 6, 
+             ''gi'': 'Medium', 
+             ''time'': '25 mins', 
+             ''tip'': 'Serve with whole grain'
+         }
+       ]
+     },
+     {
+       'dayNumber': '3',
+       'meals': [
+         {
+           'mealType': 'Breakfast',
+           'name': 'Smoothie Bowl',
+           'ingredients': ['banana', 'spinach', 'almond milk'],
+           'protein': 5, 
+           'carbs': 35, 
+           'fats': 2, 
+           'gi': ‘Medium’, 
+           ‘time’: ’10 mins’,  
+           ‘tip’: ’Add seeds’
+         },
+         {
+              ’mealType’: ’Lunch’ ,
+              ’name’: ’Chickpea Salad’ ,
+              ’ingredients’: [’100g chickpeas’, ’tomato’, ’cucumber’] ,
+              ’protein’: ’15’ ,  
+              ’carbs’: ’30’ ,  
+              ’fats’: ‘4’,  
+              ’gi’: ‘Low’,  
+              ‘time’: ‘20 mins’,  
+              ‘tip’: ‘Use lemon dressing’
+         },
+         {   
+               ‘’mealType’’: ‘’Dinner’’ ,
+               ‘’name’’: ‘’Palak Tofu’’ ,
+               ‘’ingredients’’: [‘100g spinach’, ‘tofu’, ‘spices’] ,   
+               ‘’protein’’: ‘20’ ,   
+               ‘’carbs’’: ‘10’ ,   
+               ‘’fats’’: ‘5’ ,   
+               ‘’gi’’: ‘Low’ ,    
+               ’’time’’: ’’30 mins’’ ,    
+               ’’tip’’: ’’Serve with roti’’
+         }
+       ]
+     },     
+     {    
+       '''dayNumber'' : '''4''' ,
+       '''meals''' : [    
+         {    
+                '''mealType''' : '''Breakfast''' ,
+                '''name''' : '''Idli Sambar''' ,
+                '''ingredients''' : ['idli batter', 'sambar powder', 'vegetables'] ,
+                '''protein''' : '''12''' ,
+                '''carbs''' : '''40''' ,
+                '''fats''' : '''2''' ,
+                '''gi''' : '''Medium''' ,
+                '''time''' : '''25 mins''',
+                '''tip''':'Add coconut chutney'
+         },    
+         
+         {    
+                 """mealType""":""""Lunch"""" ,    
+                 """name""":""""Vegetable Biryani"""" ,     
+                 """ingredients""":[""rice"", ""mixed vegetables"", ""spices""] ,      
+                 """protein""":"15" ,     
+                 """carbs""":"45" ,      
+                 """fats""":"5" ,      
+                 """gi""":"Medium" ,      
+                 """time""":"30 mins" ,      
+                 """tip""":"Use brown rice"
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+          
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                  
+                  
+                  
+                  
+                  
+                  
+                  }        
+                  ]        
+                  }        
+                  ]        
+                  }

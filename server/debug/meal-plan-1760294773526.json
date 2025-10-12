@@ -1,0 +1,195 @@
+{
+  "days": [
+    {
+      "dayNumber": 1,
+      "meals": [
+        {
+          "mealType": "Breakfast",
+          "name": "Besan Chilla",
+          "ingredients": ["100g besan", "1 onion", "spices"],
+          "protein": 15,
+          "carbs": 20,
+          "fats": 5,
+          "gi": "Low",
+          "time": "15 mins",
+          "tip": "Add vegetables"
+        },
+        {
+          "mealType": "Lunch",
+          "name": "Quinoa Salad",
+          "ingredients": ["100g quinoa", "1 cucumber", "lemon juice", "spices"],
+          "protein": 12,
+          "carbs": 30,
+          "fats": 4,
+          "gi": "Low",
+          "time": "20 mins",
+          "tip": "Use fresh herbs"
+        },
+        {
+          "mealType": "Dinner",
+          "name": "Tofu Stir Fry",
+          "ingredients": ["100g tofu", "mixed vegetables", "'soy sauce'"],
+          "protein": 18,
+          "carbs": 10,
+          "fats": 7,
+          'gi': 'Low',
+           'time': '25 mins',
+           'tip': 'Serve with brown rice'
+        }
+      ]
+    },
+    {
+      'dayNumber': 2,
+      'meals': [
+        {
+           'mealType': 'Breakfast',
+           'name': 'Oats Porridge',
+           'ingredients': ['50g oats', 'almond milk', 'banana'],
+           'protein': 8,
+           'carbs': 40,
+           'fats': 3,
+           'gi': 'Medium',
+           'time': '10 mins',
+           'tip': 'Top with nuts'
+         },
+         {
+            'mealType': 'Lunch',
+            'name': 'Chickpea Curry',
+            'ingredients': ['100g chickpeas', 'onion', 
+                          '"tomato"', '"spices"'],
+            ‘protein’: ‘15’,
+            ‘carbs’: ‘35’,
+            ‘fats’: ‘5’,
+            ‘gi’: ‘Low’,
+            ‘time’: ‘30 mins’,
+            ‘tip’: ’Serve with whole wheat roti’
+         },
+         {
+             “mealType”: “Dinner”,
+             “name”: “Vegetable Khichdi”,
+             “ingredients”: [“100g rice”, “mixed vegetables”, “spices”],
+             “protein”: 10, 
+             “carbs”: 45, 
+             “fats”: 6, 
+             “gi”: “Medium”, 
+             “time”: “30 mins”, 
+             “tip”: ”Add ghee for flavor”
+         }
+       ]
+     },
+     {
+       ’dayNumber’: ’3’,
+       ’meals’: [
+         {
+           ’mealType’: ’Breakfast’,
+           ’name’: ’Smoothie Bowl’,
+           ’ingredients’: [’spinach’, ’banana’, ’almond milk’, ’chia seeds’],
+           ’protein’: ’9’,
+           ’carbs’: ’35’,
+           ’fats’: ’4’ ,
+           ”gi”: ”Low” ,  
+              ”time”: ”15 mins” ,  
+              ”tip”: ”Add granola on top”
+         },  
+         {  
+              ”mealType”: ”Lunch”,  
+              ”name”: ”Lentil Soup”,  
+              ”ingredients”: [”100g lentils”, ”onion”, ”garlic”, ”spices”],  
+              ”protein”: ”18”,  
+              ”carbs”: ”25”,  
+              ”fats”: ”2”,   
+              ''gi'':'Low'',   
+               ''time'':'20 mins'',   
+               ''tip'':'Serve with bread''   
+         },   
+         {    
+               ''mealType'':''Dinner'',    
+               ''name'':''Stuffed Bell Peppers'',    
+               ''ingredients'':''[''bell peppers'', ''quinoa'', ''vegetables'']'',    
+                ''protein'':''12'',     
+                ''carbs'':''30'',     
+                ''fats'':''5'',     
+                '''gi''' : '''Low''',     
+                '''time''' : '''25 mins''',     
+                '''tip''' : '''Bake until tender'''
+         }    
+       ]    
+     },    
+     {    
+       ‘’dayNumber’’: ‘’4’’ ,    
+       ‘’meals’’: [    
+         {      
+                 ‘’mealType’’: ‘’Breakfast’’ ,      
+                 ‘’name’’: ‘’Fruit Salad’’ ,      
+                 ‘’ingredients’’: [‘apple’,‘banana’,‘orange’,‘nuts’] ,      
+                 ‘’protein’’: ’’5’’ ,      
+                 ‘’carbs’’: ’’40’’ ,      
+                 ‘’fats’’: ’’6’’ ,      
+                 ’’gi’’: ’’Medium’’ ,      
+                 ’’time’’: ’’10 mins,’’       
+                  ’’tip’’: ’’Use seasonal fruits.’’
+         },        
+         {         
+                   ‘‘mealType‘‘: ‘‘Lunch‘‘,         
+                   ‘‘name‘‘: ‘‘Masoor Dal‘‘,         
+                   ‘‘ingredients‘‘:[‘‘masoor dal‘‘, ‘‘onion‘‘, ‘‘tomato‘‘, ‘‘spices‘‘],         
+                   ‘‘protein‘‘: ‘‘16‘‘,         
+                   ‘‘carbs‘‘: ‘‘28‘’,         
+                   ‘‘fats‘’: «3»,          
+                    «gi»: «Low»,          
+                     «time»: «30 mins»,          
+                      «tip»: «Pair with brown rice»       
+        },        
+        {        
+                  «mealType»: «Dinner»,        
+                  «name»: «Palak Tofu»,        
+                  «ingredients»: [«tofu»,«spinach»,«garlic»],        
+                  «protein»: »14«,        
+                  »carbs« : »12«,        
+                  » fats« : »8«,        
+                  » gi« : » Low«,        
+                  » time« :»20 mins«,        
+                  » tip« :» Serve with roti»
+        }       
+      ]       
+    },       
+    {       
+      „dayNumber“ : „5“,       
+      „meals“ : [       
+        {       
+               „ mealType“ : „ Breakfast“,       
+               „ name“ : „ Dhokla“,       
+               „ ingredients“ : [„ besan“,„ yogurt“,„ spices“],       
+               „ protein“ : „10“,       
+               „ carbs“ : „30“,       
+               „ fats“ : „4“,       
+               „ gi“ : „ Low“,       
+               „ time“ :"20mins",     
+                ‚ tip‘ :"Serve hot"     
+        },     
+        {     
+                    ‟ mealType‟:” Lunch,”     
+                    ‟ name‟:” Vegetable Biryani,”     
+                    ‟ ingredients‟:[„ basmati rice,”„ mixed vegetables,”„ spices.”],     
+                    ‟ protein‟:”8,”     
+                    ‟ carbs‟:”40,”     
+                    ‟ fats‟:”5,”     
+                    ‟ gi‟:” Medium,”     
+                     ‟ time‟:”35 minutes,”      
+                     ‟ tip‟:“Garnish with cilantro.”   
+       },   
+       {   
+                       ‚ mealtype‚:“ Dinner,“   
+                       ‚ name‚:“ Chana Masala,“   
+                       ‚ ingredients‚:[„ chana,“„ onion,“„ tomato,“„ spices.“],   
+                       ‚ protein‚:“14,“   
+                       ‚ carbs‚:“28,“   
+                       ‚ fats‚:“6,“   
+                       ‚ gi‚:“ Low,“   
+                       ‚ time‚:“25 minutes,“   
+                        ‚ tip‚:“ Serve with chapati.” 
+       } 
+     ] 
+   } 
+]
+}
