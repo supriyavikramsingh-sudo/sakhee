@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAuthStore, useChatStore, useUserProfileStore } from '../store'
+import { useChatStore, useUserProfileStore } from '../store'
 import Navbar from '../components/layout/Navbar'
 import ChatInterface from '../components/chat/ChatInterface'
 import MedicalDisclaimer from '../components/chat/MedicalDisclaimer'
 import { LoadingSpinner } from '../components/layout/LoadingSpinner'
+import { firestoreService } from '../services/firestoreService'
+import { useAuthStore } from '../store/authStore'
 
 const ChatPage = () => {
   const { t } = useTranslation()
@@ -26,6 +28,19 @@ const ChatPage = () => {
     setDisclaimerAcknowledged(!!acknowledged)
     setPageLoading(false)
   }, [user])
+
+   useEffect(() => {
+    if (user) {
+      loadChatHistory()
+    }
+  }, [user])
+
+  const loadChatHistory = async () => {
+    const result = await firestoreService.getChatHistory(user.uid)
+    if (result.success) {
+      setMessages(result.data)
+    }
+  }
 
   if (pageLoading) {
     return <LoadingSpinner message={t('common.loading')} />

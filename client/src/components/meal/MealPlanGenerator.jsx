@@ -165,8 +165,8 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated }) => {
             className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
           >
             <option value={7}>7 Days</option>
-            <option value={14}>2 Weeks</option>
-            <option value={30}>1 Month</option>
+            {/* <option value={14}>2 Weeks</option>
+            <option value={30}>1 Month</option> */}
           </select>
         </div>
 

@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useAuthStore } from '../../store'
-import { Menu, LogOut } from 'lucide-react'
-import { useState } from 'react'
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Menu, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { useAuthStore } from '../../store/authStore';
 
 export const Navbar = () => {
-  const { t } = useTranslation()
-  const { user, logout } = useAuthStore()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const { t } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { user, signOut } = useAuthStore();
+
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = '/login';
+  };
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -46,29 +51,30 @@ export const Navbar = () => {
                 <Link to="/settings" className="text-gray-700 hover:text-primary transition">
                   ⚙️ {t('nav.settings')}
                 </Link>
-                <button
-                  onClick={() => {
-                    logout()
-                    window.location.href = '/'
-                  }}
-                  className="text-danger hover:text-opacity-70 transition flex items-center space-x-1"
-                >
-                  <LogOut size={20} />
-                  <span>{t('nav.logout')}</span>
-                </button>
               </>
             ) : (
               <Link to="/onboarding" className="btn-primary">
                 {t('nav.getStarted')}
               </Link>
             )}
+            {/* User Section */}
+            {user && (
+              <div className="flex items-center gap-3">
+                <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full" />
+                <span className="text-sm">{user.displayName}</span>
+                <button
+                  onClick={handleSignOut}
+                  className="text-danger hover:text-opacity-70 transition flex items-center space-x-1"
+                >
+                  <LogOut size={20} />
+                  <span>{t('nav.logout')}</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             <Menu size={24} />
           </button>
         </div>
@@ -93,7 +99,7 @@ export const Navbar = () => {
         </div>
       )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

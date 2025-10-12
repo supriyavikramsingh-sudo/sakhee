@@ -1,5 +1,4 @@
 import { PromptTemplate } from '@langchain/core/prompts'
-import { LLMChain } from 'langchain/chains'
 import { llmClient } from '../llmClient.js'
 import { Logger } from '../../utils/logger.js'
 
@@ -22,46 +21,54 @@ Gender: Female
 Diagnosed PCOS: {diagnosedPCOS}
 
 TASK:
-1. Identify abnormal values (mark with ⚠️)
-2. Explain what each value means in the context of PCOS
-3. Highlight correlations between values
-4. Suggest lifestyle interventions
-5. Identify if doctor consultation is needed (mark with 🚨)
-6. Provide educational context without diagnosis
+Provide a clear, structured analysis in plain text format.
 
-FORMAT YOUR RESPONSE AS:
+FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
+
 ## Lab Analysis
-- [Value Name]: [Value] [Normal Range] - [Explanation]
+
+[For each lab value, write one line with the format:]
+- [Value Name]: [Value] [Unit] [Status: Normal/Elevated/Low] - [Brief explanation]
 
 ## Key Findings
-- Finding 1
-- Finding 2
+
+- [Finding 1]
+- [Finding 2]
+- [Finding 3]
 
 ## Recommended Actions
-- Action 1
-- Action 2
+
+- [Actionable recommendation 1]
+- [Actionable recommendation 2]
+- [Actionable recommendation 3]
 
 ## When to Consult Doctor
-- [Red flags if any]
 
-Remember: Provide EDUCATIONAL analysis only, not medical diagnosis.
+- [Red flag 1 if any]
+- [Red flag 2 if any]
+
+IMPORTANT:
+- Use simple language
+- Be encouraging and supportive
+- Highlight what's normal too
+- Mark abnormal values with ⚠️
+- This is EDUCATIONAL only, not medical diagnosis
 `)
 
-      const chain = new LLMChain({
-        llm: llmClient.getModel(),
-        prompt
-      })
-
-      const result = await chain.call({
+      // LLMChain is deprecated — format the prompt and call the LLM client directly.
+      const formattedPrompt = await prompt.format({
         labValues: this.formatLabValues(reportData.labValues),
         age: reportData.age,
         diagnosedPCOS: reportData.diagnosedPCOS ? 'Yes' : 'No'
       })
 
+      const raw = await llmClient.invoke(formattedPrompt)
+      const analysisText = typeof raw === 'string' ? raw : raw?.text ?? raw?.output_text ?? JSON.stringify(raw)
+
       logger.info('Report analysis completed')
 
       return {
-        analysis: result.text,
+        analysis: analysisText,
         timestamp: new Date().toISOString(),
         reportDate: reportData.reportDate
       }
@@ -72,8 +79,17 @@ Remember: Provide EDUCATIONAL analysis only, not medical diagnosis.
   }
 
   formatLabValues(labValues) {
+    if (!labValues || Object.keys(labValues).length === 0) {
+      return 'No lab values detected in report'
+    }
+
     return Object.entries(labValues)
-      .map(([key, value]) => `${key}: ${value}`)
+      .map(([key, value]) => {
+        if (typeof value === 'object') {
+          return `${key}: ${value.value} ${value.unit || ''}`
+        }
+        return `${key}: ${value}`
+      })
       .join('\n')
   }
 }

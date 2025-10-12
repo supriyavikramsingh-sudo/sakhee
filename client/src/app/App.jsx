@@ -4,6 +4,10 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../utils/i18n';
 import ErrorBoundary from '../components/layout/ErrorBoundary';
 import LoadingSpinner from '../components/layout/LoadingSpinner';
+import { useEffect } from 'react';
+import { useAuthStore } from '../store/authStore';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+import LoginPage from '../pages/LoginPage';
 
 // Lazy load pages
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -15,19 +19,76 @@ const SettingsPage = lazy(() => import('../pages/SettingsPage'));
 const ReportsPage = lazy(() => import('../pages/ReportsPage'));
 
 function App() {
+  const { initAuth } = useAuthStore();
+
+  // Initialize auth listener on mount
+  useEffect(() => {
+    initAuth();
+  }, []);
+
   return (
     <ErrorBoundary>
       <I18nextProvider i18n={i18n}>
         <Router>
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/onboarding" element={<OnboardingPage />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/meals" element={<MealPlanPage />} />
-              <Route path="/progress" element={<ProgressPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <HomePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/onboarding"
+                element={
+                  <ProtectedRoute>
+                    <OnboardingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat"
+                element={
+                  <ProtectedRoute>
+                    <ChatPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/meals"
+                element={
+                  <ProtectedRoute>
+                    <MealPlanPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/progress"
+                element={
+                  <ProtectedRoute>
+                    <ProgressPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/reports"
+                element={
+                  <ProtectedRoute>
+                    <ReportsPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

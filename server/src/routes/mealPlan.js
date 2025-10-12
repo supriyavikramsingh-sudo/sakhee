@@ -37,6 +37,7 @@ router.post('/generate', async (req, res) => {
 
     // Generate plan using LLM
     const mealPlan = await mealPlanChain.generateMealPlan({
+      duration,
       region,
       dietType,
       budget,
