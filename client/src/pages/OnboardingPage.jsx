@@ -13,13 +13,25 @@ const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
+
   console.log('User Profile:', userProfile, user);
+
   // Redirect if already onboarded
   useEffect(() => {
     if (userProfile?.onboarded === true) {
       navigate('/', { replace: true });
     }
   }, [userProfile, navigate]);
+
+  // Auto-populate email from Google Auth
+  useEffect(() => {
+    if (user?.email && !userData.email) {
+      setUserData((prev) => ({
+        ...prev,
+        email: user.email,
+      }));
+    }
+  }, [user]);
 
   const steps = [
     { title: t('onboarding.step1.title'), description: t('onboarding.step1.desc') },
@@ -43,7 +55,9 @@ const OnboardingPage = () => {
           // Success! Redirect to home
           navigate('/', { replace: true });
         } else {
-          alert('Failed to save your profile. Please try again.');
+          alert(
+            `Failed to save your profile: ${result.error || 'Unknown error'}. Please try again.`
+          );
         }
       } else {
         // Move to next step
@@ -51,7 +65,7 @@ const OnboardingPage = () => {
       }
     } catch (error) {
       console.error('Onboarding error:', error);
-      alert('An error occurred. Please try again.');
+      alert(`An error occurred: ${error.message}. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -79,14 +93,14 @@ const OnboardingPage = () => {
                       ? 'bg-success text-white'
                       : idx === currentStep
                       ? 'bg-primary text-white'
-                      : 'bg-surface text-muted'
+                      : 'bg-surface text-textSecondary'
                   }`}
                 >
                   {idx < currentStep ? <CheckCircle size={20} /> : idx + 1}
                 </div>
                 {idx < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-2 rounded-full transition-all ${
+                    className={`h-1 flex-1 mx-2 transition-all ${
                       idx < currentStep ? 'bg-success' : 'bg-surface'
                     }`}
                   />
@@ -94,25 +108,27 @@ const OnboardingPage = () => {
               </div>
             ))}
           </div>
+
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-primary mb-2">{steps[currentStep].title}</h2>
-            <p className="text-muted">{steps[currentStep].description}</p>
+            <h2 className="text-2xl font-bold text-textPrimary mb-2">{steps[currentStep].title}</h2>
+            <p className="text-textSecondary">{steps[currentStep].description}</p>
           </div>
         </div>
 
-        {/* Form */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        {/* Onboarding Form */}
+        <div className="bg-white rounded-xl shadow-md p-8">
           <OnboardingForm
             step={currentStep}
             onComplete={handleStepComplete}
             onBack={handleBack}
             loading={loading}
+            initialData={userData}
           />
         </div>
 
         {/* Medical Disclaimer */}
-        <div className="mt-8 bg-warning bg-opacity-10 border-l-4 border-warning p-4 rounded">
-          <p className="text-sm text-gray-700">⚠️ {t('common.disclaimerText')}</p>
+        <div className="mt-8 p-4 bg-warning/10 border-l-4 border-warning rounded">
+          <p className="text-sm text-textSecondary">⚠️ {t('common.disclaimerText')}</p>
         </div>
       </div>
     </div>
