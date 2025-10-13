@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuthStore, useUserProfileStore, useMealStore } from '../store';
+import { useMealStore } from '../store';
+import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import MealPlanGenerator from '../components/meal/MealPlanGenerator';
 import MealPlanDisplay from '../components/meal/MealPlanDisplay';
@@ -8,8 +9,7 @@ import { Plus } from 'lucide-react';
 
 const MealPlanPage = () => {
   const { t } = useTranslation();
-  const { user } = useAuthStore();
-  const { profile } = useUserProfileStore();
+  const { user, userProfile } = useAuthStore();
   const { currentMealPlan } = useMealStore();
   const [showGenerator, setShowGenerator] = useState(!currentMealPlan);
 
@@ -26,7 +26,7 @@ const MealPlanPage = () => {
 
         {showGenerator ? (
           <MealPlanGenerator
-            userProfile={profile}
+            userProfile={userProfile.profileData}
             userId={user?.id}
             onGenerated={() => setShowGenerator(false)}
           />

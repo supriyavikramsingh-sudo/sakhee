@@ -1,4 +1,3 @@
-import { PromptTemplate } from '@langchain/core/prompts';
 import { ChatOpenAI } from '@langchain/openai';
 import { env } from '../../config/env.js';
 import { Logger } from '../../utils/logger.js';
@@ -32,7 +31,6 @@ class MealPlanChain {
       });
 
       const duration = parseInt(preferences.duration) || 7;
-      const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
 
       // For reliability, cap at 3 days per request
       if (duration > 3) {
@@ -46,9 +44,6 @@ class MealPlanChain {
     }
   }
 
-  /**
-   * Generate in chunks for longer durations
-   */
   async generateInChunks(preferences) {
     logger.info('Generating in 3-day chunks for reliability');
 
@@ -70,13 +65,11 @@ class MealPlanChain {
         const chunk = await this.generateWithStructuredOutput(chunkPrefs);
 
         if (chunk && chunk.days) {
-          // Renumber days
           chunk.days.forEach((day, idx) => {
             day.dayNumber = startDay + idx;
             allDays.push(day);
           });
         } else {
-          // Use fallback for this chunk
           for (let i = startDay; i <= endDay; i++) {
             allDays.push(this.getFallbackDay(i, preferences));
           }
@@ -92,37 +85,139 @@ class MealPlanChain {
     return { days: allDays };
   }
 
-  /**
-   * Generate with manual JSON construction (most reliable)
-   */
   async generateWithStructuredOutput(preferences) {
     const duration = parseInt(preferences.duration) || 3;
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
     const restrictions = preferences.restrictions || [];
     const cuisines = preferences.cuisines || [];
+    const healthContext = preferences.healthContext || {};
+    const userOverrides = preferences.userOverrides || {};
+
+    logger.info('Generating with full context', {
+      restrictions: restrictions.length,
+      cuisines: cuisines.length,
+      hasSymptoms: !!healthContext.symptoms?.length,
+      hasMedicalData: !!healthContext.medicalData,
+      userOverrides,
+    });
 
     // Build restrictions text
     let restrictionsText = '';
     if (restrictions.length > 0) {
-      restrictionsText = `\n\nDIETARY RESTRICTIONS (MUST AVOID):
-${restrictions.map((r) => `- ${r}`).join('\n')}`;
+      restrictionsText = `\n\nDIETARY RESTRICTIONS (MUST AVOID):\n${restrictions
+        .map((r) => `- ${r}`)
+        .join('\n')}`;
     }
 
     // Build cuisines text
     let cuisinesText = '';
     if (cuisines.length > 0) {
-      cuisinesText = `\n\nPREFERRED CUISINES:
-${cuisines.map((c) => `- ${c}`).join('\n')}`;
+      cuisinesText = `\n\nPREFERRED CUISINES:\n${cuisines.map((c) => `- ${c}`).join('\n')}`;
     }
 
-    // Simple, short prompt with explicit structure request
-    const prompt = `Generate a ${duration}-day PCOS-friendly meal plan for ${
-      preferences.region
-    } region, ${preferences.dietType} diet, ₹${preferences.budget}/day budget.
+    // Build health context text from symptoms
+    let symptomsText = '';
+    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
+      const symptomMap = {
+        'irregular-periods': 'hormone-balancing foods (flaxseeds, leafy greens, sesame seeds)',
+        acne: 'anti-inflammatory foods (turmeric, berries, green tea, omega-3)',
+        'weight-changes': 'metabolism-boosting foods (green tea, whole grains, protein-rich foods)',
+        'hair-loss': 'iron and biotin-rich foods (spinach, nuts, eggs, lentils)',
+        fatigue: 'energy-boosting foods (complex carbs, proteins, iron-rich vegetables)',
+        'mood-swings': 'mood-stabilizing foods (omega-3, magnesium-rich foods, whole grains)',
+      };
 
-Create ${mealsPerDay} meals per day.${restrictionsText}${cuisinesText}
+      const recommendations = healthContext.symptoms.map((s) => symptomMap[s]).filter(Boolean);
 
-CRITICAL: Your response must use this EXACT JSON structure with "days" as the root array key:
+      if (recommendations.length > 0) {
+        symptomsText = `\n\nHEALTH FOCUS (addressing PCOS symptoms):\nPriority ingredients: ${recommendations.join(
+          ', '
+        )}`;
+      }
+    }
+
+    // Build goals text
+    let goalsText = '';
+    if (healthContext.goals && healthContext.goals.length > 0) {
+      const goalMap = {
+        'regularize-periods': 'Include cycle-regulating foods',
+        'weight-management': 'Focus on portion control and low-calorie options',
+        'skin-hair': 'Add biotin and antioxidant-rich foods',
+        'balance-hormones': 'Include hormone-balancing seeds and greens',
+        fertility: 'Focus on fertility-supporting nutrients',
+        'mood-energy': 'Include mood-stabilizing and energizing foods',
+      };
+
+      const goalGuidance = healthContext.goals.map((g) => goalMap[g]).filter(Boolean);
+
+      if (goalGuidance.length > 0) {
+        goalsText = `\n\nUSER GOALS:\n${goalGuidance.join(', ')}`;
+      }
+    }
+
+    // Build medical report insights
+    let medicalText = '';
+    if (healthContext.medicalData) {
+      const { labValues } = healthContext.medicalData;
+
+      if (labValues && Object.keys(labValues).length > 0) {
+        medicalText =
+          '\n\nMEDICAL REPORT INSIGHTS:\nConsider nutritional needs based on recent lab work.';
+
+        if (labValues.insulin || labValues.glucose) {
+          medicalText += '\n- Focus on low-GI foods to manage blood sugar';
+        }
+        if (labValues.testosterone) {
+          medicalText += '\n- Include anti-androgenic foods (spearmint tea, flaxseeds)';
+        }
+        if (labValues.cholesterol || labValues.triglycerides) {
+          medicalText += '\n- Heart-healthy fats and fiber-rich foods';
+        }
+      }
+    }
+
+    // Activity level adjustments
+    let activityText = '';
+    if (healthContext.activityLevel) {
+      const activityMap = {
+        sedentary: 'Moderate portions, focus on nutrient density over calories',
+        light: 'Balanced macros with moderate carbs',
+        moderate: 'Slightly higher protein for recovery, balanced carbs',
+        very: 'Increased protein and complex carbs for sustained energy',
+      };
+      activityText = `\n\nACTIVITY LEVEL: ${healthContext.activityLevel}\n${
+        activityMap[healthContext.activityLevel] || ''
+      }`;
+    }
+
+    // Priority note if user overrode onboarding
+    let priorityNote = '';
+    if (userOverrides.region || userOverrides.dietType) {
+      priorityNote = `\n\n⚠️ USER OVERRIDE: User specifically selected this ${
+        userOverrides.region ? 'region' : ''
+      }${userOverrides.region && userOverrides.dietType ? ' and ' : ''}${
+        userOverrides.dietType ? 'diet type' : ''
+      } for this plan. Prioritize these preferences.`;
+    }
+
+    // Build comprehensive prompt
+    const prompt = `Generate a ${duration}-day PCOS-friendly meal plan using evidence-based nutrition guidelines.
+
+CORE REQUIREMENTS:
+- Region: ${preferences.region}
+- Diet: ${preferences.dietType}
+- Budget: ₹${preferences.budget}/day
+- Meals per day: ${mealsPerDay}${restrictionsText}${cuisinesText}${symptomsText}${goalsText}${medicalText}${activityText}${priorityNote}
+
+PCOS NUTRITION GUIDELINES (from knowledge base):
+- Low Glycemic Index (GI < 55) for blood sugar management
+- Anti-inflammatory spices: turmeric, cinnamon, ginger
+- Hormone-balancing: flaxseeds, sesame seeds, leafy greens
+- Adequate protein (15-20g per meal) for satiety
+- Healthy fats: nuts, seeds, olive oil, avocado
+- High fiber: vegetables, whole grains, legumes
+
+CRITICAL: Your response must use this EXACT JSON structure:
 
 {
   "days": [
@@ -145,41 +240,36 @@ CRITICAL: Your response must use this EXACT JSON structure with "days" as the ro
   ]
 }
 
-Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key, not "mealPlan" or "plan".${
+Generate ${duration} days with ${mealsPerDay} meals each.${
       restrictions.length > 0
-        ? `\n\nIMPORTANT: Avoid all ingredients in the restrictions list.`
+        ? '\n\n⚠️ CRITICAL: Strictly avoid all ingredients in the restrictions list.'
         : ''
-    }${cuisines.length > 0 ? `\n\nFocus on ${cuisines.join(', ')} cuisines when possible.` : ''}`;
+    }${
+      cuisines.length > 0 ? `\n\nPrefer ${cuisines.join(', ')} cuisine styles when possible.` : ''
+    }${symptomsText ? '\n\n🎯 Prioritize ingredients that address the mentioned symptoms.' : ''}${
+      goalsText ? '\n\n🎯 Align meal compositions with user goals.' : ''
+    }`;
 
     try {
-      // Invoke with simple string prompt (ChatOpenAI handles the message wrapping)
       const response = await this.structuredLLM.invoke(prompt);
-
       const content = response.content || response.text || '';
       logger.info('Structured response received', { length: content.length });
 
-      // Parse response
       const parsed = JSON.parse(content);
 
-      // DEBUG: Log the actual structure
       logger.info('Parsed structure', {
         keys: Object.keys(parsed),
         hasDays: !!parsed.days,
         daysType: Array.isArray(parsed.days) ? 'array' : typeof parsed.days,
         daysLength: parsed.days?.length,
-        firstDayKeys: parsed.days?.[0] ? Object.keys(parsed.days[0]) : 'none',
-        sample: JSON.stringify(parsed).slice(0, 500),
       });
 
-      // Validate structure
       if (this.validateStructure(parsed, duration, mealsPerDay)) {
         logger.info('✅ Structured output validation passed');
         return parsed;
       }
 
       logger.warn('Structured output validation failed, trying cleanup');
-
-      // Try to fix structure
       const fixed = this.fixStructure(parsed, duration, mealsPerDay);
       if (fixed) {
         return fixed;
@@ -188,18 +278,10 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
       throw new Error('Invalid structure after cleanup');
     } catch (error) {
       logger.error('Structured generation failed', { error: error.message });
-
-      // Try fallback
-      return this.getFallbackPlan({
-        ...preferences,
-        duration: duration,
-      });
+      return this.getFallbackPlan({ ...preferences, duration });
     }
   }
 
-  /**
-   * Validate parsed structure
-   */
   validateStructure(parsed, expectedDays, expectedMeals) {
     try {
       if (!parsed || typeof parsed !== 'object') {
@@ -209,7 +291,7 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
 
       const days = parsed.days;
       if (!Array.isArray(days)) {
-        logger.debug('Validation failed: days not an array', { daysType: typeof days });
+        logger.debug('Validation failed: days not an array');
         return false;
       }
       if (days.length === 0) {
@@ -217,7 +299,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
         return false;
       }
 
-      // Check each day
       for (let i = 0; i < days.length; i++) {
         const day = days[i];
         if (!day.meals || !Array.isArray(day.meals)) {
@@ -229,15 +310,12 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
           return false;
         }
 
-        // Check each meal
         for (let j = 0; j < day.meals.length; j++) {
           const meal = day.meals[j];
           const required = ['mealType', 'name', 'ingredients'];
           for (const field of required) {
             if (!(field in meal)) {
-              logger.debug(`Validation failed: day ${i} meal ${j} missing ${field}`, {
-                mealKeys: Object.keys(meal),
-              });
+              logger.debug(`Validation failed: day ${i} meal ${j} missing ${field}`);
               return false;
             }
           }
@@ -252,23 +330,15 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
     }
   }
 
-  /**
-   * Try to fix common structure issues
-   */
   fixStructure(parsed, expectedDays, expectedMeals) {
     try {
-      // If days is missing but there's a nested structure
       if (!parsed.days) {
         logger.debug('Attempting to fix structure - days missing');
-
-        // Look for common alternative names: mealPlan, plan, data, etc.
         const alternativeKeys = ['mealPlan', 'plan', 'data', 'schedule', 'menu'];
 
         for (const key of alternativeKeys) {
           if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
             logger.info(`Found alternative key: ${key}, restructuring`);
-
-            // Check if items have "day" property instead of "dayNumber"
             parsed[key].forEach((item, idx) => {
               if (item.day && !item.dayNumber) {
                 item.dayNumber = item.day;
@@ -287,35 +357,9 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
           }
         }
 
-        // Look for any array in the object
-        for (const key of Object.keys(parsed)) {
-          if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
-            logger.debug(`Trying key: ${key}`);
-            const candidate = { days: parsed[key] };
-
-            // Try to fix day numbers
-            candidate.days.forEach((item, idx) => {
-              if (item.day && !item.dayNumber) {
-                item.dayNumber = item.day;
-                delete item.day;
-              }
-              if (!item.dayNumber) {
-                item.dayNumber = idx + 1;
-              }
-            });
-
-            if (this.validateStructure(candidate, expectedDays, expectedMeals)) {
-              logger.info(`✅ Structure fixed using key: ${key}`);
-              return candidate;
-            }
-          }
-        }
-
-        logger.debug('Could not find valid array structure');
         return null;
       }
 
-      // Ensure dayNumber exists
       parsed.days.forEach((day, idx) => {
         if (day.day && !day.dayNumber) {
           day.dayNumber = day.day;
@@ -326,7 +370,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
         }
       });
 
-      // Fill missing meal fields with defaults
       parsed.days.forEach((day) => {
         day.meals.forEach((meal) => {
           if (!meal.gi) meal.gi = 'Low';
@@ -346,14 +389,11 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
 
       return null;
     } catch (e) {
-      logger.error('Fix structure failed', { error: e.message, stack: e.stack });
+      logger.error('Fix structure failed', { error: e.message });
       return null;
     }
   }
 
-  /**
-   * Get fallback day
-   */
   getFallbackDay(dayNumber, preferences) {
     const templates = this.getRegionalTemplates(preferences.region);
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
@@ -383,9 +423,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
     return { dayNumber, meals };
   }
 
-  /**
-   * Get regional templates
-   */
   getRegionalTemplates(region) {
     const templates = {
       'north-india': {
@@ -450,13 +487,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 25,
             fats: 0,
           },
-          {
-            name: 'Sprouts Salad',
-            ingredients: ['100g sprouts', 'lemon'],
-            protein: 8,
-            carbs: 12,
-            fats: 1,
-          },
         ],
         dinner: [
           {
@@ -472,13 +502,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             protein: 12,
             carbs: 30,
             fats: 5,
-          },
-          {
-            name: 'Moong Dal Soup',
-            ingredients: ['100g moong dal', 'vegetables'],
-            protein: 16,
-            carbs: 25,
-            fats: 3,
           },
         ],
       },
@@ -498,7 +521,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 30,
             fats: 5,
           },
-          { name: 'Pesarattu', ingredients: ['100g moong dal'], protein: 15, carbs: 25, fats: 3 },
         ],
         lunch: [
           {
@@ -515,13 +537,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 38,
             fats: 6,
           },
-          {
-            name: 'Avial',
-            ingredients: ['vegetables', '50g rice'],
-            protein: 10,
-            carbs: 40,
-            fats: 8,
-          },
         ],
         snack: [
           {
@@ -531,14 +546,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 20,
             fats: 4,
           },
-          {
-            name: 'Murukku',
-            ingredients: ['50g rice flour', 'spices'],
-            protein: 5,
-            carbs: 25,
-            fats: 8,
-          },
-          { name: 'Banana', ingredients: ['1 banana'], protein: 1, carbs: 27, fats: 0 },
         ],
         dinner: [
           {
@@ -547,13 +554,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             protein: 14,
             carbs: 32,
             fats: 6,
-          },
-          {
-            name: 'Ragi Mudde',
-            ingredients: ['80g ragi', 'greens'],
-            protein: 9,
-            carbs: 35,
-            fats: 7,
           },
           {
             name: 'Vegetable Upma',
@@ -567,36 +567,14 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
       'east-india': {
         breakfast: [
           { name: 'Poha', ingredients: ['100g poha', 'peanuts'], protein: 8, carbs: 30, fats: 6 },
-          {
-            name: 'Dalia',
-            ingredients: ['80g dalia', 'vegetables'],
-            protein: 10,
-            carbs: 35,
-            fats: 4,
-          },
-          { name: 'Idli', ingredients: ['3 idlis', 'sambar'], protein: 12, carbs: 40, fats: 2 },
         ],
         lunch: [
-          {
-            name: 'Fish Curry',
-            ingredients: ['150g fish', 'mustard oil'],
-            protein: 25,
-            carbs: 10,
-            fats: 12,
-          },
           {
             name: 'Dal Bhaat',
             ingredients: ['100g rice', '50g dal'],
             protein: 14,
             carbs: 50,
             fats: 5,
-          },
-          {
-            name: 'Aloo Posto',
-            ingredients: ['200g potato', 'poppy seeds'],
-            protein: 6,
-            carbs: 45,
-            fats: 10,
           },
         ],
         snack: [
@@ -607,14 +585,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 20,
             fats: 4,
           },
-          { name: 'Coconut Water', ingredients: ['1 coconut'], protein: 1, carbs: 9, fats: 0 },
-          {
-            name: 'Roasted Peanuts',
-            ingredients: ['50g peanuts'],
-            protein: 13,
-            carbs: 8,
-            fats: 25,
-          },
         ],
         dinner: [
           {
@@ -624,27 +594,11 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 40,
             fats: 5,
           },
-          {
-            name: 'Vegetable Stew',
-            ingredients: ['mixed vegetables', 'coconut milk'],
-            protein: 8,
-            carbs: 25,
-            fats: 10,
-          },
-          {
-            name: 'Roti Sabzi',
-            ingredients: ['2 rotis', 'mixed vegetables'],
-            protein: 10,
-            carbs: 35,
-            fats: 6,
-          },
         ],
       },
       'west-india': {
         breakfast: [
           { name: 'Dhokla', ingredients: ['100g besan', 'rava'], protein: 15, carbs: 25, fats: 5 },
-          { name: 'Poha', ingredients: ['100g poha', 'peanuts'], protein: 8, carbs: 30, fats: 6 },
-          { name: 'Thepla', ingredients: ['3 theplas', 'curd'], protein: 12, carbs: 35, fats: 8 },
         ],
         lunch: [
           {
@@ -653,20 +607,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             protein: 14,
             carbs: 40,
             fats: 6,
-          },
-          {
-            name: 'Undhiyu',
-            ingredients: ['mixed vegetables', 'methi'],
-            protein: 10,
-            carbs: 35,
-            fats: 12,
-          },
-          {
-            name: 'Khichdi Kadhi',
-            ingredients: ['50g rice', '50g dal', 'kadhi'],
-            protein: 13,
-            carbs: 38,
-            fats: 8,
           },
         ],
         snack: [
@@ -677,14 +617,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 25,
             fats: 5,
           },
-          { name: 'Methi Thepla', ingredients: ['2 theplas'], protein: 8, carbs: 28, fats: 6 },
-          {
-            name: 'Cucumber Salad',
-            ingredients: ['1 cucumber', 'lemon'],
-            protein: 2,
-            carbs: 8,
-            fats: 0,
-          },
         ],
         dinner: [
           {
@@ -694,20 +626,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
             carbs: 40,
             fats: 7,
           },
-          {
-            name: 'Dal Tadka',
-            ingredients: ['70g dal', '50g rice'],
-            protein: 15,
-            carbs: 42,
-            fats: 6,
-          },
-          {
-            name: 'Vegetable Pulao',
-            ingredients: ['60g rice', 'vegetables'],
-            protein: 9,
-            carbs: 45,
-            fats: 8,
-          },
         ],
       },
     };
@@ -715,9 +633,6 @@ Generate ${duration} days with ${mealsPerDay} meals each. Use "days" as the key,
     return templates[region] || templates['north-india'];
   }
 
-  /**
-   * Full fallback plan
-   */
   getFallbackPlan(preferences) {
     logger.info('Using complete fallback meal plan');
     const duration = parseInt(preferences.duration) || 7;

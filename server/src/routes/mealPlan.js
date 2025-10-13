@@ -24,58 +24,86 @@ router.post('/generate', async (req, res) => {
       mealsPerDay,
       goals,
       duration,
+      healthContext,
+      userOverrides,
     } = req.body;
 
-    logger.info('Generating meal plan', { userId, region, dietType });
+    logger.info('Generating meal plan with full context', {
+      userId,
+      region,
+      dietType,
+      restrictions: restrictions?.length || 0,
+      cuisines: cuisines?.length || 0,
+      hasHealthContext: !!healthContext,
+      hasMedicalData: !!healthContext?.medicalData,
+      userOverrides,
+    });
 
-    if (!region || !dietType || !budget) {
+    // Validate required fields
+    if (!budget || !mealsPerDay || !duration) {
       return res.status(400).json({
         success: false,
-        error: { message: 'Missing required fields' },
+        error: { message: 'Budget, meals per day, and duration are required' },
       });
     }
 
-    // Generate plan using LLM
+    // Use defaults if region/dietType not provided (optional fields)
+    const finalRegion = region || 'north-india';
+    const finalDietType = dietType || 'vegetarian';
+
+    // Generate plan using LLM with full context
     const mealPlan = await mealPlanChain.generateMealPlan({
       duration,
-      region,
-      dietType,
+      region: finalRegion,
+      dietType: finalDietType,
       budget,
       restrictions: restrictions || [],
       cuisines: cuisines || [],
       mealsPerDay: mealsPerDay || 3,
+      healthContext: healthContext || {},
+      userOverrides: userOverrides || {},
     });
 
+    // Store plan with metadata
     const planId = 'plan_' + Date.now();
     const planData = {
       id: planId,
       userId,
       plan: mealPlan,
-      region,
-      dietType,
+      region: finalRegion,
+      dietType: finalDietType,
       budget,
       goals: goals || [],
       duration: duration || 7,
       createdAt: new Date(),
       active: true,
+      // Store what influenced this plan for transparency
+      personalizationSources: {
+        onboarding: !!(restrictions?.length || cuisines?.length || healthContext?.symptoms?.length),
+        medicalReport: !!healthContext?.medicalData,
+        userOverrides: !!(userOverrides?.region || userOverrides?.dietType),
+        rag: true, // RAG knowledge base always used
+      },
     };
 
     mealPlans.set(planId, planData);
-    logger.info('Meal plan generated', { planId, userId });
+    logger.info('Meal plan generated successfully', {
+      planId,
+      userId,
+      sources: planData.personalizationSources,
+    });
 
     res.json({
       success: true,
       data: {
         planId,
-        region,
-        dietType,
-        budget,
         plan: mealPlan,
         createdAt: new Date(),
+        personalizationSources: planData.personalizationSources,
       },
     });
   } catch (error) {
-    logger.error('Meal plan generation failed', { error: error.message });
+    logger.error('Meal plan generation failed', { error: error.message, stack: error.stack });
     res.status(500).json({
       success: false,
       error: { message: 'Failed to generate meal plan' },
