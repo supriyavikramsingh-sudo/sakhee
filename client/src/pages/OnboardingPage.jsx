@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
 import { CheckCircle } from 'lucide-react';
