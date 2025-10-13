@@ -616,6 +616,10 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 - **Tailwind CSS** for beautiful styling
 - PCOS community for inspiration and feedback
 
+## 🧑‍💼 Maintainer
+
+This repository is maintained by @supriyavikramsingh-sudo. For questions about the project, open an issue or reach out via GitHub.
+
 ---
 
 ## 📧 Support
