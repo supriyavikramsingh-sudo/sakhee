@@ -1,20 +1,21 @@
-import { useTranslation } from 'react-i18next'
-import QuestionField from './QuestionField'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useTranslation } from 'react-i18next';
+import QuestionField from './QuestionField';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
 const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
-  const { t } = useTranslation()
-  const [formData, setFormData] = useState({})
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState({});
 
   const questions = {
-    0: [ // Personal Info
+    0: [
+      // Personal Info
       {
         key: 'email',
         type: 'email',
         label: t('onboarding.email'),
         required: true,
-        placeholder: 'your@email.com'
+        placeholder: 'your@email.com',
       },
       {
         key: 'age',
@@ -26,18 +27,19 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: '25-30', label: '25-30' },
           { value: '31-35', label: '31-35' },
           { value: '36-40', label: '36-40' },
-          { value: '41-45', label: '41-45' }
-        ]
+          { value: '41-45', label: '41-45' },
+        ],
       },
       {
         key: 'location',
         type: 'text',
         label: t('onboarding.location'),
         required: true,
-        placeholder: 'City, State'
-      }
+        placeholder: 'City, State',
+      },
     ],
-    1: [ // Health Info
+    1: [
+      // Health Info
       {
         key: 'diagnosisTime',
         type: 'select',
@@ -46,8 +48,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
         options: [
           { value: '0-6', label: 'Within 6 months' },
           { value: '6-12', label: '6-12 months' },
-          { value: '12+', label: 'Over a year ago' }
-        ]
+          { value: '12+', label: 'Over a year ago' },
+        ],
       },
       {
         key: 'symptoms',
@@ -60,11 +62,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'weight-changes', label: 'Weight changes' },
           { value: 'hair-loss', label: 'Hair loss' },
           { value: 'fatigue', label: 'Fatigue' },
-          { value: 'mood-swings', label: 'Mood swings' }
-        ]
-      }
+          { value: 'mood-swings', label: 'Mood swings' },
+        ],
+      },
     ],
-    2: [ // Diet & Lifestyle
+    2: [
+      // Diet & Lifestyle
       {
         key: 'dietType',
         type: 'select',
@@ -74,8 +77,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'vegetarian', label: 'Vegetarian' },
           { value: 'non-vegetarian', label: 'Non-vegetarian' },
           { value: 'vegan', label: 'Vegan' },
-          { value: 'jain', label: 'Jain' }
-        ]
+          { value: 'jain', label: 'Jain' },
+        ],
       },
       {
         key: 'allergies',
@@ -86,8 +89,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'dairy', label: 'Dairy' },
           { value: 'gluten', label: 'Gluten' },
           { value: 'nuts', label: 'Nuts' },
-          { value: 'eggs', label: 'Eggs' }
-        ]
+          { value: 'eggs', label: 'Eggs' },
+        ],
       },
       {
         key: 'activityLevel',
@@ -98,11 +101,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'sedentary', label: 'Sedentary' },
           { value: 'light', label: 'Lightly active' },
           { value: 'moderate', label: 'Moderately active' },
-          { value: 'very', label: 'Very active' }
-        ]
-      }
+          { value: 'very', label: 'Very active' },
+        ],
+      },
     ],
-    3: [ // Goals
+    3: [
+      // Goals
       {
         key: 'goals',
         type: 'checkbox',
@@ -114,8 +118,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'skin-hair', label: 'Improve skin/hair' },
           { value: 'balance-hormones', label: 'Balance hormones' },
           { value: 'fertility', label: 'Boost fertility' },
-          { value: 'mood-energy', label: 'Improve mood & energy' }
-        ]
+          { value: 'mood-energy', label: 'Improve mood & energy' },
+        ],
       },
       {
         key: 'income',
@@ -127,11 +131,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: '25-50k', label: '₹25,000 - ₹50,000' },
           { value: '50-100k', label: '₹50,000 - ₹1L' },
           { value: '100-300k', label: '₹1L - ₹3L' },
-          { value: '300k+', label: '> ₹3L' }
-        ]
-      }
+          { value: '300k+', label: '> ₹3L' },
+        ],
+      },
     ],
-    4: [ // Preferences
+    4: [
+      // Preferences
       {
         key: 'language',
         type: 'select',
@@ -141,8 +146,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           { value: 'en', label: 'English' },
           { value: 'hi', label: 'हिंदी' },
           { value: 'ta', label: 'தமிழ்' },
-          { value: 'te', label: 'తెలుగు' }
-        ]
+          { value: 'te', label: 'తెలుగు' },
+        ],
       },
       {
         key: 'cuisine',
@@ -152,34 +157,32 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
         options: [
           { value: 'north-indian', label: 'North Indian' },
           { value: 'south-indian', label: 'South Indian' },
-          { value: 'bengali', label: 'Bengali' },
-          { value: 'gujarati', label: 'Gujarati' }
-        ]
-      }
-    ]
-  }
+          { value: 'east-indian', label: 'East Indian' },
+          { value: 'west-indian', label: 'West Indian' },
+        ],
+      },
+    ],
+  };
 
-  const currentQuestions = questions[step] || []
+  const currentQuestions = questions[step] || [];
 
   const handleFieldChange = (key, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [key]: value
-    }))
-  }
+      [key]: value,
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onComplete(formData)
-  }
+    e.preventDefault();
+    onComplete(formData);
+  };
 
-  const isValid = currentQuestions
-    .filter(q => q.required)
-    .every(q => formData[q.key])
+  const isValid = currentQuestions.filter((q) => q.required).every((q) => formData[q.key]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {currentQuestions.map(question => (
+      {currentQuestions.map((question) => (
         <QuestionField
           key={question.key}
           {...question}
@@ -210,7 +213,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default OnboardingForm
+export default OnboardingForm;

@@ -9,7 +9,7 @@ class MealPlanChain {
     // Create dedicated LLM for structured output with JSON mode enabled
     this.structuredLLM = new ChatOpenAI({
       modelName: 'gpt-4o-mini',
-      temperature: 0.1,
+      temperature: 0.8,
       maxTokens: 8192,
       openAIApiKey: env.OPENAI_API_KEY,
       modelKwargs: {
@@ -208,6 +208,12 @@ CORE REQUIREMENTS:
 - Diet: ${preferences.dietType}
 - Budget: ₹${preferences.budget}/day
 - Meals per day: ${mealsPerDay}${restrictionsText}${cuisinesText}${symptomsText}${goalsText}${medicalText}${activityText}${priorityNote}
+- All meals must strictly adhere to PCOS nutrition guidelines provided below.
+- All meals must include exact protein, carb, fat grams, and glycemic index (Low/Medium/High).
+- Generate new meals, do NOT repeat dishes for any of the days.
+- Provide a quick cooking tip for each meal.
+- Format the output EXACTLY as the provided JSON structure.
+- Include a variety of ingredients as per user onboarding preferences (allergies, cuisines, region, goals, symptoms) to ensure nutritional and culinary diversity.
 
 PCOS NUTRITION GUIDELINES (from knowledge base):
 - Low Glycemic Index (GI < 55) for blood sugar management

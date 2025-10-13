@@ -11,7 +11,9 @@
     "lint": "eslint src/**/*.{jsx,js}",
     "lint:fix": "eslint --fix src/**/*.{jsx,js}",
     "format": "prettier --write \"src/**/*.{js,jsx,css,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,css,json,md}\""
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css,json,md}\"",
+    "ingest:meals": "node server/src/scripts/ingestMealTemplates.js",
+    "ingest:meals:watch": "node --watch server/src/scripts/ingestMealTemplates.js"
   },
   "dependencies": {
     "axios": "^1.6.2",

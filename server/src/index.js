@@ -6,13 +6,28 @@ import { rateLimiter } from './middleware/rateLimit.js';
 import { safetyGuards } from './middleware/safetyGuards.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { Logger } from './utils/logger.js';
-import chatRoutes from './routes/chat.js'
-import mealPlanRoutes from './routes/mealPlan.js'
-import uploadRoutes from './routes/upload.js'
-import progressRoutes from './routes/progress.js'
+import chatRoutes from './routes/chat.js';
+import mealPlanRoutes from './routes/mealPlan.js';
+import uploadRoutes from './routes/upload.js';
+import progressRoutes from './routes/progress.js';
+import ragStatusRoutes from './routes/ragStatus.js';
+import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
 const logger = new Logger('Server');
+
+// ============================================
+// RAG SYSTEM INITIALIZATION
+// ============================================
+logger.info('🤖 Initializing RAG system for meal templates...');
+const ragReady = await initializeRAG();
+
+if (ragReady) {
+  logger.info('✅ RAG system ready - meal plans will use semantic search');
+} else {
+  logger.warn('⚠️  RAG system not fully initialized - using fallback templates');
+  logger.info('💡 To enable RAG with new templates: npm run ingest:meals');
+}
 
 // ============================================
 // MIDDLEWARE
@@ -40,42 +55,39 @@ app.use('/api/chat', safetyGuards);
 app.use('/api/chat', chatRoutes);
 app.use('/api/meals', mealPlanRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/progress', progressRoutes)
+app.use('/api/progress', progressRoutes);
+app.use('/api/rag', ragStatusRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    rag: ragReady ? 'ready' : 'fallback-mode',
+  });
 });
 
-// API Routes (placeholder for now)
+// API Health check with detailed info
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'API is running',
     version: '1.0.0',
-    environment: env.NODE_ENV
+    environment: env.NODE_ENV,
+    rag: {
+      initialized: ragReady,
+      status: ragReady ? 'ready' : 'needs-ingestion',
+      message: ragReady
+        ? 'RAG system active - meal plans use semantic search'
+        : 'RAG not initialized - run: npm run ingest:meals',
+    },
   });
-});
-
-// Chat API (placeholder)
-app.post('/api/chat', (req, res) => {
-  res.json({ message: 'Chat endpoint placeholder' });
-});
-
-// Meal Planning API (placeholder)
-app.post('/api/meals/generate', (req, res) => {
-  res.json({ message: 'Meal planning endpoint placeholder' });
-});
-
-// Onboarding API (placeholder)
-app.post('/api/onboarding/create', (req, res) => {
-  res.json({ message: 'Onboarding endpoint placeholder' });
 });
 
 // 404 Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    error: { message: 'Endpoint not found' }
+    error: { message: 'Endpoint not found' },
   });
 });
 
@@ -90,14 +102,26 @@ const server = app.listen(env.PORT, () => {
   logger.info(`🚀 Server running on http://localhost:${env.PORT}`);
   logger.info(`📦 Environment: ${env.NODE_ENV}`);
   logger.info(`🌐 CORS Origin: ${env.CORS_ORIGIN}`);
+  logger.info(`🏥 Health: http://localhost:${env.PORT}/api/health`);
+  logger.info(`📊 RAG Status: http://localhost:${env.PORT}/api/rag/status`);
+  logger.info('');
+
+  if (!ragReady) {
+    logger.info('⚠️  SETUP REQUIRED:');
+    logger.info('   1. Ensure meal template .txt files are in: server/src/data/meal_templates/');
+    logger.info('   2. Run ingestion: npm run ingest:meals');
+    logger.info('   3. Restart server to enable RAG-powered meal plans');
+    logger.info('');
+  }
 });
 
 // Provide a friendly error message if the port is already in use
 server.on('error', (err) => {
   if (err && err.code === 'EADDRINUSE') {
-    logger.error(`Port ${env.PORT} is already in use.\n` +
-      `• Option 1: Stop the process using the port (e.g. with \`lsof -iTCP:${env.PORT} -sTCP:LISTEN -n -P\` and \`kill <PID>\`).\n` +
-      `• Option 2: Start the server on a different port: \`PORT=5001 npm run start\` or set PORT in your .env file.`
+    logger.error(
+      `Port ${env.PORT} is already in use.\n` +
+        `• Option 1: Stop the process using the port (e.g. with \`lsof -iTCP:${env.PORT} -sTCP:LISTEN -n -P\` and \`kill <PID>\`).\n` +
+        `• Option 2: Start the server on a different port: \`PORT=5001 npm run start\` or set PORT in your .env file.`
     );
     process.exit(1);
   }
