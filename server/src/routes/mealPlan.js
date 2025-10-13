@@ -96,6 +96,9 @@ router.post('/generate', async (req, res) => {
     res.json({
       success: true,
       data: {
+        region: finalRegion,
+        dietType: finalDietType,
+        budget,
         planId,
         plan: mealPlan,
         createdAt: new Date(),
