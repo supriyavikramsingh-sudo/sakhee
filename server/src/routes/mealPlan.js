@@ -1,3 +1,4 @@
+// server/src/routes/mealPlan.js
 import express from 'express';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
@@ -10,7 +11,7 @@ const mealPlans = new Map();
 
 /**
  * POST /api/meals/generate
- * Generate a personalized meal plan
+ * Generate a personalized meal plan with RAG retrieval
  */
 router.post('/generate', async (req, res) => {
   try {
@@ -28,7 +29,7 @@ router.post('/generate', async (req, res) => {
       userOverrides,
     } = req.body;
 
-    logger.info('Generating meal plan with full context', {
+    logger.info('Generating RAG-enhanced meal plan', {
       userId,
       region,
       dietType,
@@ -51,7 +52,7 @@ router.post('/generate', async (req, res) => {
     const finalRegion = region || 'north-india';
     const finalDietType = dietType || 'vegetarian';
 
-    // Generate plan using LLM with full context
+    // Generate plan using RAG-enhanced LLM
     const mealPlan = await mealPlanChain.generateMealPlan({
       duration,
       region: finalRegion,
@@ -63,6 +64,10 @@ router.post('/generate', async (req, res) => {
       healthContext: healthContext || {},
       userOverrides: userOverrides || {},
     });
+
+    // Extract RAG metadata if available
+    const ragMetadata = mealPlan.ragMetadata || null;
+    delete mealPlan.ragMetadata; // Remove from plan data
 
     // Store plan with metadata
     const planId = 'plan_' + Date.now();
@@ -77,32 +82,41 @@ router.post('/generate', async (req, res) => {
       duration: duration || 7,
       createdAt: new Date(),
       active: true,
-      // Store what influenced this plan for transparency
+
+      // Enhanced personalization sources with RAG tracking
       personalizationSources: {
         onboarding: !!(restrictions?.length || cuisines?.length || healthContext?.symptoms?.length),
         medicalReport: !!healthContext?.medicalData,
         userOverrides: !!(userOverrides?.region || userOverrides?.dietType),
-        rag: true, // RAG knowledge base always used
+        rag: true, // RAG always attempted
+        ragQuality: ragMetadata?.retrievalQuality || 'unknown',
+        ragSources: ragMetadata
+          ? {
+              mealTemplates: ragMetadata.mealTemplatesUsed || 0,
+              nutritionGuidelines: ragMetadata.nutritionGuidelinesUsed || 0,
+              symptomRecommendations: ragMetadata.symptomSpecificRecommendations || false,
+            }
+          : null,
       },
     };
 
     mealPlans.set(planId, planData);
-    logger.info('Meal plan generated successfully', {
+
+    logger.info('RAG-enhanced meal plan generated successfully', {
       planId,
       userId,
+      ragQuality: ragMetadata?.retrievalQuality,
       sources: planData.personalizationSources,
     });
 
     res.json({
       success: true,
       data: {
-        region: finalRegion,
-        dietType: finalDietType,
-        budget,
         planId,
         plan: mealPlan,
         createdAt: new Date(),
         personalizationSources: planData.personalizationSources,
+        ragMetadata: ragMetadata, // Send to frontend for transparency
       },
     });
   } catch (error) {
@@ -185,12 +199,11 @@ router.put('/:planId', (req, res) => {
       });
     }
 
-    plan.feedback = feedback || plan.feedback;
-    plan.ratings = ratings || plan.ratings;
+    plan.feedback = feedback;
+    plan.ratings = ratings;
     plan.updatedAt = new Date();
-    mealPlans.set(planId, plan);
 
-    logger.info('Meal plan updated', { planId });
+    mealPlans.set(planId, plan);
 
     res.json({
       success: true,
@@ -221,11 +234,10 @@ router.delete('/:planId', (req, res) => {
     }
 
     mealPlans.delete(planId);
-    logger.info('Meal plan deleted', { planId });
 
     res.json({
       success: true,
-      message: 'Meal plan deleted',
+      message: 'Meal plan deleted successfully',
     });
   } catch (error) {
     logger.error('Delete meal plan failed', { error: error.message });

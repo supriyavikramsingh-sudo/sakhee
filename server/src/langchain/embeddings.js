@@ -1,43 +1,65 @@
-import { OpenAIEmbeddings } from '@langchain/openai'
-import { env } from '../config/env.js'
-import { appConfig } from '../config/appConfig.js'
-import { Logger } from '../utils/logger.js'
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { env } from '../config/env.js';
+import { Logger } from '../utils/logger.js';
 
-const logger = new Logger('Embeddings')
+const logger = new Logger('Embeddings');
 
 class EmbeddingsManager {
   constructor() {
-    this.embeddings = new OpenAIEmbeddings({
-      modelName: appConfig.embeddings.model,
-      openAIApiKey: env.OPENAI_API_KEY
-    })
-    logger.info('🔗 Embeddings initialized')
+    this.embeddings = null;
   }
 
-  async generateEmbedding(text) {
+  /**
+   * Initialize embeddings
+   */
+  initialize() {
+    if (this.embeddings) {
+      logger.info('✅ Embeddings already initialized');
+      return this.embeddings;
+    }
+
     try {
-      const embedding = await this.embeddings.embedQuery(text)
-      return embedding
+      this.embeddings = new OpenAIEmbeddings({
+        openAIApiKey: env.OPENAI_API_KEY,
+        modelName: 'text-embedding-3-small',
+        stripNewLines: true,
+      });
+
+      logger.info('🔗 Embeddings initialized');
+      return this.embeddings;
     } catch (error) {
-      logger.error('Embedding generation failed', { error: error.message })
-      throw error
+      logger.error('Failed to initialize embeddings', { error: error.message });
+      throw error;
     }
   }
 
-  async generateBatchEmbeddings(texts) {
-    try {
-      const embeddings = await this.embeddings.embedDocuments(texts)
-      return embeddings
-    } catch (error) {
-      logger.error('Batch embedding generation failed', { error: error.message })
-      throw error
-    }
-  }
-
+  /**
+   * Get embeddings instance
+   */
   getEmbeddings() {
-    return this.embeddings
+    if (!this.embeddings) {
+      this.initialize();
+    }
+    return this.embeddings;
+  }
+
+  /**
+   * Generate embeddings for text
+   */
+  async embedQuery(text) {
+    const embeddings = this.getEmbeddings();
+    return await embeddings.embedQuery(text);
+  }
+
+  /**
+   * Generate embeddings for multiple documents
+   */
+  async embedDocuments(texts) {
+    const embeddings = this.getEmbeddings();
+    return await embeddings.embedDocuments(texts);
   }
 }
 
-export const embeddingsManager = new EmbeddingsManager()
-export default embeddingsManager
+// Export singleton instance
+export const embeddingsManager = new EmbeddingsManager();
+export default embeddingsManager;

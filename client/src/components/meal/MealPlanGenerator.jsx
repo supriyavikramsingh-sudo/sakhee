@@ -1,14 +1,24 @@
+// client/src/components/meal/MealPlanGenerator.jsx
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMealStore } from '../../store';
 import { apiClient } from '../../services/apiClient';
 import { Loader, AlertCircle, Info, Sparkles, FileText, Activity, Target } from 'lucide-react';
+// ========== NEW IMPORT FOR RAG DISPLAY ==========
+import RAGMetadataDisplay from './RAGMetadataDisplay';
+// ================================================
 
 const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) => {
   const { t } = useTranslation();
   const { setMealPlan } = useMealStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // ========== NEW STATE FOR RAG METADATA ==========
+  const [ragMetadata, setRagMetadata] = useState(null);
+  const [personalizationSources, setPersonalizationSources] = useState(null);
+  // ================================================
+
   const [formData, setFormData] = useState({
     region: '', // Optional - defaults to onboarding
     dietType: '', // Optional - defaults to onboarding
@@ -49,6 +59,11 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // ========== RESET RAG METADATA ON NEW GENERATION ==========
+    setRagMetadata(null);
+    setPersonalizationSources(null);
+    // ==========================================================
 
     try {
       // Extract profile data (handle nested structure)
@@ -111,6 +126,20 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
         },
       });
 
+      // ========== CAPTURE RAG METADATA FROM RESPONSE ==========
+      if (response.data.ragMetadata) {
+        console.log('✅ RAG Metadata received:', response.data.ragMetadata);
+        setRagMetadata(response.data.ragMetadata);
+      } else {
+        console.warn('⚠️ No RAG metadata in response');
+      }
+
+      if (response.data.personalizationSources) {
+        console.log('✅ Personalization sources:', response.data.personalizationSources);
+        setPersonalizationSources(response.data.personalizationSources);
+      }
+      // ========================================================
+
       setMealPlan(response.data);
       onGenerated();
     } catch (err) {
@@ -120,77 +149,67 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
     }
   };
 
-  // Count personalization sources
-  const personalizationSources = {
+  // Count personalization sources for display
+  const displayPersonalizationSources = personalizationSources || {
     onboarding: !!(
       userProfile?.allergies?.length ||
       userProfile?.symptoms?.length ||
       userProfile?.goals?.length
     ),
     medicalReport: !!latestReport,
-    rag: true, // RAG is always available
-    selections: formData.region !== '' || formData.dietType !== '' || formData.budget !== 200,
+    userOverrides: !!(formData.region || formData.dietType),
+    rag: false,
   };
 
-  const activeSourcesCount = Object.values(personalizationSources).filter(Boolean).length;
-
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl">
-      <div className="flex items-start gap-3 mb-6">
-        <Sparkles className="text-primary flex-shrink-0 mt-1" size={28} />
-        <div>
-          <h2 className="text-2xl font-bold text-primary">Create Your Personalized Meal Plan</h2>
-          <p className="text-sm text-gray-600 mt-1">
-            AI-powered recommendations based on multiple data sources
-          </p>
-        </div>
-      </div>
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <h2 className="text-2xl font-bold text-primary mb-4">✨ Generate Your Meal Plan</h2>
+      <p className="text-muted mb-6">
+        Create a personalized, PCOS-friendly meal plan based on your preferences and health goals.
+      </p>
 
+      {/* Error Display */}
       {error && (
-        <div className="mb-6 p-4 bg-danger bg-opacity-10 border-l-4 border-danger rounded flex items-start gap-3">
-          <AlertCircle className="text-danger flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="font-bold text-danger">Error</p>
-            <p className="text-sm">{error}</p>
+        <div className="mb-4 p-4 bg-danger bg-opacity-10 border-l-4 border-danger rounded-lg">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="text-danger flex-shrink-0" size={20} />
+            <p className="text-sm text-danger">{error}</p>
           </div>
         </div>
       )}
 
-      {/* Personalization Info Box */}
-      <div className="mb-6 p-5 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border-l-4 border-primary">
-        <div className="flex items-start gap-3 mb-3">
-          <Info className="text-primary flex-shrink-0 mt-0.5" size={20} />
-          <div>
-            <p className="font-semibold text-gray-800 mb-2">
-              🎯 Your meal plan will be customized using {activeSourcesCount} data source
-              {activeSourcesCount > 1 ? 's' : ''}:
-            </p>
-          </div>
+      {/* How is this personalized? */}
+      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex items-center gap-2 mb-3">
+          <Info className="text-info" size={20} />
+          <h3 className="text-sm font-bold text-gray-800">How is this personalized for you?</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-          {/* Onboarding Data */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Onboarding Profile */}
           <div
             className={`p-3 rounded-lg ${
-              personalizationSources.onboarding
+              displayPersonalizationSources.onboarding
                 ? 'bg-white border-2 border-primary'
                 : 'bg-gray-100 border-2 border-gray-300'
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
-              <Activity
-                className={personalizationSources.onboarding ? 'text-primary' : 'text-gray-400'}
+              <Sparkles
+                className={
+                  displayPersonalizationSources.onboarding ? 'text-primary' : 'text-gray-400'
+                }
                 size={16}
               />
               <span
                 className={`text-xs font-semibold ${
-                  personalizationSources.onboarding ? 'text-primary' : 'text-gray-500'
+                  displayPersonalizationSources.onboarding ? 'text-primary' : 'text-gray-500'
                 }`}
               >
                 ONBOARDING PROFILE
               </span>
             </div>
-            {personalizationSources.onboarding ? (
+            {displayPersonalizationSources.onboarding ? (
               <ul className="text-xs text-gray-700 space-y-1">
                 {userProfile?.allergies?.length > 0 && (
                   <li>• Allergies: {userProfile.allergies.join(', ')}</li>
@@ -212,7 +231,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
           {/* Medical Reports */}
           <div
             className={`p-3 rounded-lg ${
-              personalizationSources.medicalReport
+              displayPersonalizationSources.medicalReport
                 ? 'bg-white border-2 border-secondary'
                 : 'bg-gray-100 border-2 border-gray-300'
             }`}
@@ -220,19 +239,19 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
             <div className="flex items-center gap-2 mb-2">
               <FileText
                 className={
-                  personalizationSources.medicalReport ? 'text-secondary' : 'text-gray-400'
+                  displayPersonalizationSources.medicalReport ? 'text-secondary' : 'text-gray-400'
                 }
                 size={16}
               />
               <span
                 className={`text-xs font-semibold ${
-                  personalizationSources.medicalReport ? 'text-secondary' : 'text-gray-500'
+                  displayPersonalizationSources.medicalReport ? 'text-secondary' : 'text-gray-500'
                 }`}
               >
                 MEDICAL REPORTS
               </span>
             </div>
-            {personalizationSources.medicalReport ? (
+            {displayPersonalizationSources.medicalReport ? (
               <ul className="text-xs text-gray-700 space-y-1">
                 <li>✓ Latest report analyzed</li>
                 <li>• Lab values considered</li>
@@ -255,38 +274,6 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
               <li>✓ PCOS-friendly ingredients</li>
             </ul>
           </div>
-
-          {/* User Selections */}
-          <div
-            className={`p-3 rounded-lg ${
-              personalizationSources.selections
-                ? 'bg-white border-2 border-primary'
-                : 'bg-gray-100 border-2 border-gray-300'
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles
-                className={personalizationSources.selections ? 'text-primary' : 'text-gray-400'}
-                size={16}
-              />
-              <span
-                className={`text-xs font-semibold ${
-                  personalizationSources.selections ? 'text-primary' : 'text-gray-500'
-                }`}
-              >
-                YOUR SELECTIONS
-              </span>
-            </div>
-            {personalizationSources.selections ? (
-              <ul className="text-xs text-gray-700 space-y-1">
-                {formData.region && <li>• Custom region selected</li>}
-                {formData.dietType && <li>• Custom diet type selected</li>}
-                <li>• Budget & preferences applied</li>
-              </ul>
-            ) : (
-              <p className="text-xs text-gray-500">Override defaults below</p>
-            )}
-          </div>
         </div>
 
         <div className="mt-3 p-3 bg-white rounded-lg">
@@ -298,23 +285,31 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
         </div>
       </div>
 
+      {/* ========== NEW: RAG METADATA DISPLAY SECTION ========== */}
+      {ragMetadata && personalizationSources && (
+        <RAGMetadataDisplay
+          ragMetadata={ragMetadata}
+          personalizationSources={personalizationSources}
+        />
+      )}
+      {/* ======================================================= */}
+
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Region - Optional */}
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Region <span className="text-gray-400 text-xs">(optional)</span>
-            </label>
+            <label className="block text-sm font-medium mb-2">Region (Optional)</label>
             <select
               name="region"
               value={formData.region}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
             >
-              {regions.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                  {r.value === '' && userProfile?.location ? ` (${userProfile.location})` : ''}
+              {regions.map((region) => (
+                <option key={region.value} value={region.value}>
+                  {region.label}
+                  {!region.value && userProfile?.location ? ` (${userProfile.location})` : ''}
                 </option>
               ))}
             </select>
@@ -323,19 +318,17 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
 
           {/* Diet Type - Optional */}
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Diet Type <span className="text-gray-400 text-xs">(optional)</span>
-            </label>
+            <label className="block text-sm font-medium mb-2">Diet Type (Optional)</label>
             <select
               name="dietType"
               value={formData.dietType}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
             >
-              {dietTypes.map((d) => (
-                <option key={d.value} value={d.value}>
-                  {d.label}
-                  {d.value === '' && userProfile?.dietType ? ` (${userProfile.dietType})` : ''}
+              {dietTypes.map((diet) => (
+                <option key={diet.value} value={diet.value}>
+                  {diet.label}
+                  {!diet.value && userProfile?.dietType ? ` (${userProfile.dietType})` : ''}
                 </option>
               ))}
             </select>

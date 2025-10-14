@@ -83,6 +83,22 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    name: 'Sakhee API',
+    version: '1.0.0',
+    status: 'running',
+    message: 'AI-Powered PCOS Management Assistant API',
+    endpoints: {
+      health: '/api/health',
+      ragStatus: '/api/rag/status',
+      chat: '/api/chat (POST)',
+      mealPlan: '/api/meal-plan (POST)',
+    },
+    documentation: 'Visit /api/health for system status',
+  });
+});
+
 // 404 Handler
 app.use((req, res) => {
   res.status(404).json({

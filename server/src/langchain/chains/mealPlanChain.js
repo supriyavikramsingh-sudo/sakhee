@@ -1,5 +1,7 @@
+// server/src/langchain/chains/mealPlanChain.js
 import { ChatOpenAI } from '@langchain/openai';
 import { env } from '../../config/env.js';
+import { retriever } from '../retriever.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('MealPlanChain');
@@ -18,9 +20,12 @@ class MealPlanChain {
     });
   }
 
+  /**
+   * Main entry point for meal plan generation with RAG
+   */
   async generateMealPlan(preferences) {
     try {
-      logger.info('Generating meal plan with structured output', {
+      logger.info('Generating meal plan with RAG-enhanced context', {
         duration: preferences.duration,
         region: preferences.region,
         dietType: preferences.dietType,
@@ -37,55 +42,17 @@ class MealPlanChain {
         return await this.generateInChunks(preferences);
       }
 
-      return await this.generateWithStructuredOutput(preferences);
+      return await this.generateWithRAG(preferences);
     } catch (error) {
       logger.error('Meal plan generation failed', { error: error.message, stack: error.stack });
       return this.getFallbackPlan(preferences);
     }
   }
 
-  async generateInChunks(preferences) {
-    logger.info('Generating in 3-day chunks for reliability');
-
-    const duration = parseInt(preferences.duration) || 7;
-    const allDays = [];
-    const chunkSize = 3;
-
-    for (let startDay = 1; startDay <= duration; startDay += chunkSize) {
-      const endDay = Math.min(startDay + chunkSize - 1, duration);
-      const chunkDuration = endDay - startDay + 1;
-
-      try {
-        const chunkPrefs = {
-          ...preferences,
-          duration: chunkDuration,
-          startDay,
-        };
-
-        const chunk = await this.generateWithStructuredOutput(chunkPrefs);
-
-        if (chunk && chunk.days) {
-          chunk.days.forEach((day, idx) => {
-            day.dayNumber = startDay + idx;
-            allDays.push(day);
-          });
-        } else {
-          for (let i = startDay; i <= endDay; i++) {
-            allDays.push(this.getFallbackDay(i, preferences));
-          }
-        }
-      } catch (e) {
-        logger.warn(`Chunk ${startDay}-${endDay} failed, using fallback`);
-        for (let i = startDay; i <= endDay; i++) {
-          allDays.push(this.getFallbackDay(i, preferences));
-        }
-      }
-    }
-
-    return { days: allDays };
-  }
-
-  async generateWithStructuredOutput(preferences) {
+  /**
+   * Generate meal plan with RAG context retrieval
+   */
+  async generateWithRAG(preferences) {
     const duration = parseInt(preferences.duration) || 3;
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
     const restrictions = preferences.restrictions || [];
@@ -93,137 +60,89 @@ class MealPlanChain {
     const healthContext = preferences.healthContext || {};
     const userOverrides = preferences.userOverrides || {};
 
-    logger.info('Generating with full context', {
+    logger.info('Fetching RAG context for meal generation', {
       restrictions: restrictions.length,
       cuisines: cuisines.length,
       hasSymptoms: !!healthContext.symptoms?.length,
       hasMedicalData: !!healthContext.medicalData,
-      userOverrides,
     });
 
-    // Build restrictions text
-    let restrictionsText = '';
-    if (restrictions.length > 0) {
-      restrictionsText = `\n\nDIETARY RESTRICTIONS (MUST AVOID):\n${restrictions
-        .map((r) => `- ${r}`)
-        .join('\n')}`;
-    }
+    // ===== STEP 1: RETRIEVE MEAL TEMPLATES FROM VECTOR STORE =====
+    const mealTemplateQuery = this.buildMealTemplateQuery(preferences, healthContext);
+    logger.info('Retrieving meal templates', { query: mealTemplateQuery });
 
-    // Build cuisines text
-    let cuisinesText = '';
-    if (cuisines.length > 0) {
-      cuisinesText = `\n\nPREFERRED CUISINES:\n${cuisines.map((c) => `- ${c}`).join('\n')}`;
-    }
+    const mealTemplates = await retriever.retrieve(mealTemplateQuery, { topK: 8 });
+    const mealTemplatesContext = retriever.formatContextFromResults(mealTemplates);
 
-    // Build health context text from symptoms
-    let symptomsText = '';
+    // ===== STEP 2: RETRIEVE PCOS NUTRITION GUIDELINES =====
+    const nutritionQuery = this.buildNutritionQuery(healthContext);
+    logger.info('Retrieving PCOS nutrition guidelines', { query: nutritionQuery });
+
+    const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
+    const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
+
+    // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
+    let symptomContext = '';
     if (healthContext.symptoms && healthContext.symptoms.length > 0) {
-      const symptomMap = {
-        'irregular-periods': 'hormone-balancing foods (flaxseeds, leafy greens, sesame seeds)',
-        acne: 'anti-inflammatory foods (turmeric, berries, green tea, omega-3)',
-        'weight-changes': 'metabolism-boosting foods (green tea, whole grains, protein-rich foods)',
-        'hair-loss': 'iron and biotin-rich foods (spinach, nuts, eggs, lentils)',
-        fatigue: 'energy-boosting foods (complex carbs, proteins, iron-rich vegetables)',
-        'mood-swings': 'mood-stabilizing foods (omega-3, magnesium-rich foods, whole grains)',
-      };
+      const symptomQuery = `PCOS dietary recommendations for ${healthContext.symptoms.join(
+        ' '
+      )} management`;
+      logger.info('Retrieving symptom-specific recommendations', { query: symptomQuery });
 
-      const recommendations = healthContext.symptoms.map((s) => symptomMap[s]).filter(Boolean);
-
-      if (recommendations.length > 0) {
-        symptomsText = `\n\nHEALTH FOCUS (addressing PCOS symptoms):\nPriority ingredients: ${recommendations.join(
-          ', '
-        )}`;
-      }
+      const symptomDocs = await retriever.retrieve(symptomQuery, { topK: 3 });
+      symptomContext = retriever.formatContextFromResults(symptomDocs);
     }
 
-    // Build goals text
-    let goalsText = '';
-    if (healthContext.goals && healthContext.goals.length > 0) {
-      const goalMap = {
-        'regularize-periods': 'Include cycle-regulating foods',
-        'weight-management': 'Focus on portion control and low-calorie options',
-        'skin-hair': 'Add biotin and antioxidant-rich foods',
-        'balance-hormones': 'Include hormone-balancing seeds and greens',
-        fertility: 'Focus on fertility-supporting nutrients',
-        'mood-energy': 'Include mood-stabilizing and energizing foods',
-      };
+    // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
+    let enhancedContext = '';
 
-      const goalGuidance = healthContext.goals.map((g) => goalMap[g]).filter(Boolean);
-
-      if (goalGuidance.length > 0) {
-        goalsText = `\n\nUSER GOALS:\n${goalGuidance.join(', ')}`;
-      }
+    if (mealTemplatesContext) {
+      enhancedContext += '📋 MEAL TEMPLATES FROM KNOWLEDGE BASE:\n';
+      enhancedContext += '(Use these as inspiration and adapt to user preferences)\n\n';
+      enhancedContext += mealTemplatesContext + '\n\n';
     }
 
-    // Build medical report insights
-    let medicalText = '';
-    if (healthContext.medicalData) {
-      const { labValues } = healthContext.medicalData;
-
-      if (labValues && Object.keys(labValues).length > 0) {
-        medicalText =
-          '\n\nMEDICAL REPORT INSIGHTS:\nConsider nutritional needs based on recent lab work.';
-
-        if (labValues.insulin || labValues.glucose) {
-          medicalText += '\n- Focus on low-GI foods to manage blood sugar';
-        }
-        if (labValues.testosterone) {
-          medicalText += '\n- Include anti-androgenic foods (spearmint tea, flaxseeds)';
-        }
-        if (labValues.cholesterol || labValues.triglycerides) {
-          medicalText += '\n- Heart-healthy fats and fiber-rich foods';
-        }
-      }
+    if (nutritionContext) {
+      enhancedContext += '🥗 PCOS NUTRITION GUIDELINES:\n';
+      enhancedContext += nutritionContext + '\n\n';
     }
 
-    // Activity level adjustments
-    let activityText = '';
-    if (healthContext.activityLevel) {
-      const activityMap = {
-        sedentary: 'Moderate portions, focus on nutrient density over calories',
-        light: 'Balanced macros with moderate carbs',
-        moderate: 'Slightly higher protein for recovery, balanced carbs',
-        very: 'Increased protein and complex carbs for sustained energy',
-      };
-      activityText = `\n\nACTIVITY LEVEL: ${healthContext.activityLevel}\n${
-        activityMap[healthContext.activityLevel] || ''
-      }`;
+    if (symptomContext) {
+      enhancedContext += '💊 SYMPTOM-SPECIFIC DIETARY RECOMMENDATIONS:\n';
+      enhancedContext += symptomContext + '\n\n';
     }
 
-    // Priority note if user overrode onboarding
-    let priorityNote = '';
-    if (userOverrides.region || userOverrides.dietType) {
-      priorityNote = `\n\n⚠️ USER OVERRIDE: User specifically selected this ${
-        userOverrides.region ? 'region' : ''
-      }${userOverrides.region && userOverrides.dietType ? ' and ' : ''}${
-        userOverrides.dietType ? 'diet type' : ''
-      } for this plan. Prioritize these preferences.`;
+    if (!enhancedContext) {
+      logger.warn('No RAG context retrieved, using fallback guidelines');
+      enhancedContext = this.getFallbackGuidelines();
     }
 
-    // Build comprehensive prompt
-    const prompt = `Generate a ${duration}-day PCOS-friendly meal plan using evidence-based nutrition guidelines.
+    // ===== STEP 5: BUILD USER-SPECIFIC CONTEXT =====
+    const userContext = this.buildUserContext(
+      preferences,
+      restrictions,
+      cuisines,
+      healthContext,
+      userOverrides
+    );
 
-CORE REQUIREMENTS:
-- Region: ${preferences.region}
-- Diet: ${preferences.dietType}
-- Budget: ₹${preferences.budget}/day
-- Meals per day: ${mealsPerDay}${restrictionsText}${cuisinesText}${symptomsText}${goalsText}${medicalText}${activityText}${priorityNote}
-- All meals must strictly adhere to PCOS nutrition guidelines provided below.
-- All meals must include exact protein, carb, fat grams, and glycemic index (Low/Medium/High).
-- Generate new meals, do NOT repeat dishes for any of the days.
-- Provide a quick cooking tip for each meal.
-- Format the output EXACTLY as the provided JSON structure.
-- Include a variety of ingredients as per user onboarding preferences (allergies, cuisines, region, goals, symptoms) to ensure nutritional and culinary diversity.
+    // ===== STEP 6: CREATE COMPREHENSIVE PROMPT =====
+    const prompt = `Generate a ${duration}-day PCOS-friendly meal plan using the evidence-based knowledge below.
 
-PCOS NUTRITION GUIDELINES (from knowledge base):
-- Low Glycemic Index (GI < 55) for blood sugar management
-- Anti-inflammatory spices: turmeric, cinnamon, ginger
-- Hormone-balancing: flaxseeds, sesame seeds, leafy greens
-- Adequate protein (15-20g per meal) for satiety
-- Healthy fats: nuts, seeds, olive oil, avocado
-- High fiber: vegetables, whole grains, legumes
+${enhancedContext}
 
-CRITICAL: Your response must use this EXACT JSON structure:
+${userContext}
+
+CRITICAL REQUIREMENTS:
+- All meals must strictly adhere to PCOS nutrition guidelines provided above
+- Use meal templates from knowledge base as inspiration, but create NEW variations
+- All meals must include exact protein, carb, fat grams, and glycemic index (Low/Medium/High)
+- Generate DIVERSE meals - do NOT repeat dishes across any days
+- Provide a quick cooking tip for each meal
+- Format output EXACTLY as the provided JSON structure
+- Ensure variety in ingredients to meet nutritional and culinary diversity
+
+REQUIRED JSON STRUCTURE:
 
 {
   "days": [
@@ -246,48 +165,285 @@ CRITICAL: Your response must use this EXACT JSON structure:
   ]
 }
 
-Generate ${duration} days with ${mealsPerDay} meals each.${
-      restrictions.length > 0
-        ? '\n\n⚠️ CRITICAL: Strictly avoid all ingredients in the restrictions list.'
-        : ''
-    }${
-      cuisines.length > 0 ? `\n\nPrefer ${cuisines.join(', ')} cuisine styles when possible.` : ''
-    }${symptomsText ? '\n\n🎯 Prioritize ingredients that address the mentioned symptoms.' : ''}${
-      goalsText ? '\n\n🎯 Align meal compositions with user goals.' : ''
-    }`;
+Generate ${duration} days with ${mealsPerDay} meals each day.`;
 
     try {
       const response = await this.structuredLLM.invoke(prompt);
       const content = response.content || response.text || '';
-      logger.info('Structured response received', { length: content.length });
+      logger.info('RAG-enhanced structured response received', {
+        length: content.length,
+        sourcesUsed: {
+          mealTemplates: mealTemplates.length,
+          nutritionGuidelines: nutritionGuidelines.length,
+          symptomRecommendations: symptomContext ? true : false,
+        },
+      });
 
       const parsed = JSON.parse(content);
 
-      logger.info('Parsed structure', {
-        keys: Object.keys(parsed),
-        hasDays: !!parsed.days,
-        daysType: Array.isArray(parsed.days) ? 'array' : typeof parsed.days,
-        daysLength: parsed.days?.length,
-      });
-
       if (this.validateStructure(parsed, duration, mealsPerDay)) {
-        logger.info('✅ Structured output validation passed');
+        logger.info('✅ RAG-enhanced meal plan validation passed');
+
+        // Attach RAG metadata for transparency
+        parsed.ragMetadata = {
+          mealTemplatesUsed: mealTemplates.length,
+          nutritionGuidelinesUsed: nutritionGuidelines.length,
+          symptomSpecificRecommendations: !!symptomContext,
+          retrievalQuality: this.assessRetrievalQuality(mealTemplates, nutritionGuidelines),
+        };
+
         return parsed;
       }
 
-      logger.warn('Structured output validation failed, trying cleanup');
+      logger.warn('RAG-enhanced structured output validation failed, attempting fix');
       const fixed = this.fixStructure(parsed, duration, mealsPerDay);
       if (fixed) {
+        fixed.ragMetadata = {
+          mealTemplatesUsed: mealTemplates.length,
+          nutritionGuidelinesUsed: nutritionGuidelines.length,
+          structureFixed: true,
+        };
         return fixed;
       }
 
       throw new Error('Invalid structure after cleanup');
     } catch (error) {
-      logger.error('Structured generation failed', { error: error.message });
-      return this.getFallbackPlan({ ...preferences, duration });
+      logger.error('RAG-enhanced generation failed', { error: error.message });
+      return this.getFallbackPlan(preferences);
     }
   }
 
+  /**
+   * Build meal template retrieval query
+   */
+  buildMealTemplateQuery(preferences, healthContext) {
+    const parts = [];
+
+    // Region and cuisine
+    if (preferences.region) {
+      parts.push(preferences.region.replace('-', ' '));
+    }
+    if (preferences.cuisines && preferences.cuisines.length > 0) {
+      parts.push(preferences.cuisines.join(' '));
+    }
+
+    // Diet type
+    if (preferences.dietType) {
+      parts.push(preferences.dietType);
+    }
+
+    // Health goals
+    if (healthContext.goals && healthContext.goals.length > 0) {
+      parts.push(healthContext.goals.join(' '));
+    }
+
+    // Symptoms (for targeted meals)
+    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
+      const symptomKeywords = healthContext.symptoms.map((s) => s.replace('-', ' ')).join(' ');
+      parts.push(symptomKeywords);
+    }
+
+    parts.push('PCOS meal templates breakfast lunch dinner snacks');
+
+    return parts.join(' ');
+  }
+
+  /**
+   * Build nutrition guidelines retrieval query
+   */
+  buildNutritionQuery(healthContext) {
+    const parts = ['PCOS nutrition guidelines'];
+
+    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
+      parts.push('for', healthContext.symptoms.join(' '));
+    }
+
+    if (healthContext.goals && healthContext.goals.length > 0) {
+      parts.push(healthContext.goals.join(' '));
+    }
+
+    parts.push('low glycemic index hormone balance insulin resistance');
+
+    return parts.join(' ');
+  }
+
+  /**
+   * Build user-specific context section
+   */
+  buildUserContext(preferences, restrictions, cuisines, healthContext, userOverrides) {
+    let context = 'USER PREFERENCES:\n';
+    context += `- Region: ${preferences.region}\n`;
+    context += `- Diet Type: ${preferences.dietType}\n`;
+    context += `- Budget: ₹${preferences.budget}/day\n`;
+    context += `- Meals per day: ${preferences.mealsPerDay}\n`;
+
+    if (restrictions.length > 0) {
+      context += '\n⚠️ DIETARY RESTRICTIONS (MUST AVOID):\n';
+      restrictions.forEach((r) => {
+        context += `- ${r}\n`;
+      });
+    }
+
+    if (cuisines.length > 0) {
+      context += '\nPREFERRED CUISINES:\n';
+      cuisines.forEach((c) => {
+        context += `- ${c}\n`;
+      });
+    }
+
+    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
+      context += '\n🎯 HEALTH FOCUS (addressing PCOS symptoms):\n';
+      const symptomMap = {
+        'irregular-periods': 'hormone-balancing foods (flaxseeds, leafy greens, sesame seeds)',
+        acne: 'anti-inflammatory foods (turmeric, berries, green tea, omega-3)',
+        'weight-changes': 'metabolism-boosting foods (green tea, whole grains, protein-rich foods)',
+        'hair-loss': 'iron and biotin-rich foods (spinach, nuts, eggs, lentils)',
+        fatigue: 'energy-boosting foods (complex carbs, proteins, iron-rich vegetables)',
+        'mood-swings': 'mood-stabilizing foods (omega-3, magnesium-rich foods, whole grains)',
+      };
+
+      healthContext.symptoms.forEach((s) => {
+        const recommendation = symptomMap[s];
+        if (recommendation) {
+          context += `- ${s.replace('-', ' ')}: ${recommendation}\n`;
+        }
+      });
+    }
+
+    if (healthContext.goals && healthContext.goals.length > 0) {
+      context += '\nUSER GOALS:\n';
+      const goalMap = {
+        'regularize-periods': 'Include cycle-regulating foods',
+        'weight-management': 'Focus on portion control and low-calorie options',
+        'skin-hair': 'Add biotin and antioxidant-rich foods',
+        'balance-hormones': 'Include hormone-balancing seeds and greens',
+        fertility: 'Focus on fertility-supporting nutrients',
+        'mood-energy': 'Include mood-stabilizing and energizing foods',
+      };
+
+      healthContext.goals.forEach((g) => {
+        const guidance = goalMap[g];
+        if (guidance) {
+          context += `- ${g.replace('-', ' ')}: ${guidance}\n`;
+        }
+      });
+    }
+
+    if (healthContext.medicalData) {
+      context += '\n📊 MEDICAL REPORT INSIGHTS:\n';
+      context += 'Consider nutritional needs based on recent lab work.\n';
+
+      const { labValues } = healthContext.medicalData;
+      if (labValues) {
+        if (labValues.insulin || labValues.glucose) {
+          context += '- Focus on low-GI foods to manage blood sugar\n';
+        }
+        if (labValues.testosterone) {
+          context += '- Include anti-androgenic foods (spearmint tea, flaxseeds)\n';
+        }
+        if (labValues.cholesterol || labValues.triglycerides) {
+          context += '- Heart-healthy fats and fiber-rich foods\n';
+        }
+      }
+    }
+
+    if (healthContext.activityLevel) {
+      context += `\nACTIVITY LEVEL: ${healthContext.activityLevel}\n`;
+      const activityMap = {
+        sedentary: 'Moderate portions, focus on nutrient density',
+        light: 'Balanced macros with moderate carbs',
+        moderate: 'Slightly higher protein for recovery',
+        very: 'Increased protein and complex carbs for sustained energy',
+      };
+      context += activityMap[healthContext.activityLevel] || '';
+      context += '\n';
+    }
+
+    if (userOverrides.region || userOverrides.dietType) {
+      context += `\n⚠️ USER OVERRIDE: User specifically selected this ${
+        userOverrides.region ? 'region' : ''
+      }${userOverrides.region && userOverrides.dietType ? ' and ' : ''}${
+        userOverrides.dietType ? 'diet type' : ''
+      } for this plan. Prioritize these preferences.\n`;
+    }
+
+    return context;
+  }
+
+  /**
+   * Get fallback PCOS guidelines when RAG retrieval fails
+   */
+  getFallbackGuidelines() {
+    return `PCOS NUTRITION GUIDELINES (fallback):
+- Low Glycemic Index (GI < 55) for blood sugar management
+- Anti-inflammatory spices: turmeric, cinnamon, ginger
+- Hormone-balancing: flaxseeds, sesame seeds, leafy greens
+- Adequate protein (15-20g per meal) for satiety
+- Healthy fats: nuts, seeds, olive oil, avocado
+- High fiber: vegetables, whole grains, legumes
+- Limit refined carbs, sugary foods, and processed items
+`;
+  }
+
+  /**
+   * Assess quality of RAG retrieval
+   */
+  assessRetrievalQuality(mealTemplates, nutritionGuidelines) {
+    const totalDocs = mealTemplates.length + nutritionGuidelines.length;
+
+    if (totalDocs === 0) return 'none';
+    if (totalDocs < 3) return 'low';
+    if (totalDocs < 8) return 'medium';
+    return 'high';
+  }
+
+  /**
+   * Generate in chunks for longer durations
+   */
+  async generateInChunks(preferences) {
+    logger.info('Generating in 3-day chunks with RAG for reliability');
+
+    const duration = parseInt(preferences.duration) || 7;
+    const allDays = [];
+    const chunkSize = 3;
+
+    for (let startDay = 1; startDay <= duration; startDay += chunkSize) {
+      const endDay = Math.min(startDay + chunkSize - 1, duration);
+      const chunkDuration = endDay - startDay + 1;
+
+      try {
+        const chunkPrefs = {
+          ...preferences,
+          duration: chunkDuration,
+          startDay,
+        };
+
+        const chunk = await this.generateWithRAG(chunkPrefs);
+
+        if (chunk && chunk.days) {
+          chunk.days.forEach((day, idx) => {
+            day.dayNumber = startDay + idx;
+            allDays.push(day);
+          });
+        } else {
+          for (let i = startDay; i <= endDay; i++) {
+            allDays.push(this.getFallbackDay(i, preferences));
+          }
+        }
+      } catch (e) {
+        logger.warn(`RAG chunk ${startDay}-${endDay} failed, using fallback`);
+        for (let i = startDay; i <= endDay; i++) {
+          allDays.push(this.getFallbackDay(i, preferences));
+        }
+      }
+    }
+
+    return { days: allDays };
+  }
+
+  /**
+   * Validate meal plan structure
+   */
   validateStructure(parsed, expectedDays, expectedMeals) {
     try {
       if (!parsed || typeof parsed !== 'object') {
@@ -336,6 +492,9 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
     }
   }
 
+  /**
+   * Fix structure issues
+   */
   fixStructure(parsed, expectedDays, expectedMeals) {
     try {
       if (!parsed.days) {
@@ -400,6 +559,9 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
     }
   }
 
+  /**
+   * Get fallback day (used when RAG fails)
+   */
   getFallbackDay(dayNumber, preferences) {
     const templates = this.getRegionalTemplates(preferences.region);
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
@@ -429,6 +591,9 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
     return { dayNumber, meals };
   }
 
+  /**
+   * Get hardcoded regional templates (fallback)
+   */
   getRegionalTemplates(region) {
     const templates = {
       'north-india': {
@@ -447,13 +612,6 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
             carbs: 22,
             fats: 4,
           },
-          {
-            name: 'Oats Upma',
-            ingredients: ['50g oats', 'vegetables'],
-            protein: 10,
-            carbs: 30,
-            fats: 5,
-          },
         ],
         lunch: [
           {
@@ -462,20 +620,6 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
             protein: 16,
             carbs: 45,
             fats: 6,
-          },
-          {
-            name: 'Rajma Curry',
-            ingredients: ['100g rajma', '2 roti'],
-            protein: 18,
-            carbs: 40,
-            fats: 5,
-          },
-          {
-            name: 'Palak Paneer',
-            ingredients: ['200g spinach', '100g paneer'],
-            protein: 20,
-            carbs: 30,
-            fats: 15,
           },
         ],
         snack: [
@@ -486,13 +630,6 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
             carbs: 15,
             fats: 3,
           },
-          {
-            name: 'Fruit Bowl',
-            ingredients: ['1 apple', '1 banana'],
-            protein: 2,
-            carbs: 25,
-            fats: 0,
-          },
         ],
         dinner: [
           {
@@ -501,13 +638,6 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
             protein: 12,
             carbs: 35,
             fats: 4,
-          },
-          {
-            name: 'Quinoa Pulao',
-            ingredients: ['60g quinoa', 'vegetables'],
-            protein: 12,
-            carbs: 30,
-            fats: 5,
           },
         ],
       },
@@ -520,34 +650,20 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
             carbs: 28,
             fats: 4,
           },
-          {
-            name: 'Oats Idli',
-            ingredients: ['60g oats', '50ml curd'],
-            protein: 12,
-            carbs: 30,
-            fats: 5,
-          },
         ],
         lunch: [
           {
             name: 'Sambar Rice',
-            ingredients: ['60g rice', 'sambar'],
-            protein: 14,
-            carbs: 45,
-            fats: 5,
-          },
-          {
-            name: 'Bisi Bele Bath',
-            ingredients: ['50g millet', '30g dal'],
+            ingredients: ['50g rice', '50g dal', 'vegetables'],
             protein: 12,
-            carbs: 38,
-            fats: 6,
+            carbs: 40,
+            fats: 5,
           },
         ],
         snack: [
           {
             name: 'Sundal',
-            ingredients: ['100g chickpeas', 'coconut'],
+            ingredients: ['50g chickpeas', 'coconut'],
             protein: 10,
             carbs: 20,
             fats: 4,
@@ -555,92 +671,25 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
         ],
         dinner: [
           {
-            name: 'Quinoa Pongal',
-            ingredients: ['60g quinoa', '30g dal'],
-            protein: 14,
-            carbs: 32,
-            fats: 6,
-          },
-          {
-            name: 'Vegetable Upma',
-            ingredients: ['50g rava', 'vegetables'],
-            protein: 8,
-            carbs: 30,
-            fats: 5,
-          },
-        ],
-      },
-      'east-india': {
-        breakfast: [
-          { name: 'Poha', ingredients: ['100g poha', 'peanuts'], protein: 8, carbs: 30, fats: 6 },
-        ],
-        lunch: [
-          {
-            name: 'Dal Bhaat',
-            ingredients: ['100g rice', '50g dal'],
-            protein: 14,
-            carbs: 50,
-            fats: 5,
-          },
-        ],
-        snack: [
-          {
-            name: 'Muri',
-            ingredients: ['50g puffed rice', 'peanuts'],
-            protein: 5,
-            carbs: 20,
-            fats: 4,
-          },
-        ],
-        dinner: [
-          {
-            name: 'Khichuri',
-            ingredients: ['50g rice', '50g dal', 'vegetables'],
-            protein: 12,
-            carbs: 40,
-            fats: 5,
-          },
-        ],
-      },
-      'west-india': {
-        breakfast: [
-          { name: 'Dhokla', ingredients: ['100g besan', 'rava'], protein: 15, carbs: 25, fats: 5 },
-        ],
-        lunch: [
-          {
-            name: 'Dal Dhokli',
-            ingredients: ['50g dal', 'wheat dough'],
-            protein: 14,
-            carbs: 40,
-            fats: 6,
-          },
-        ],
-        snack: [
-          {
-            name: 'Bhel Puri',
-            ingredients: ['50g puffed rice', 'vegetables'],
-            protein: 6,
-            carbs: 25,
-            fats: 5,
-          },
-        ],
-        dinner: [
-          {
-            name: 'Bajra Roti',
-            ingredients: ['2 bajra rotis', 'vegetables'],
+            name: 'Ragi Mudde',
+            ingredients: ['100g ragi', 'sambar'],
             protein: 11,
-            carbs: 40,
-            fats: 7,
+            carbs: 35,
+            fats: 3,
           },
         ],
       },
+      // Add more regions as needed
     };
 
     return templates[region] || templates['north-india'];
   }
 
+  /**
+   * Get complete fallback plan
+   */
   getFallbackPlan(preferences) {
-    logger.info('Using complete fallback meal plan');
+    logger.info('Using complete fallback meal plan (no RAG)');
     const duration = parseInt(preferences.duration) || 7;
     const days = [];
 
@@ -651,7 +700,7 @@ Generate ${duration} days with ${mealsPerDay} meals each.${
     return {
       days,
       fallback: true,
-      message: 'Using pre-designed PCOS-friendly templates',
+      message: 'Using pre-designed PCOS-friendly templates (RAG unavailable)',
     };
   }
 }

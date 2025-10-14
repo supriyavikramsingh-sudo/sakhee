@@ -4,19 +4,42 @@ Sakhee is an AI-driven, culturally-localized health companion focused on helping
 
 This README covers how to get the project running locally, available scripts, environment variables, features, and code organization.
 
----
+--### Development Notes
 
-## ✨ Features
+### Server
+- Uses **LangChain.js + OpenAI** for chat and RAG
+- Keep the OpenAI key in `server/.env` (never commit)
+- Auto-restarts on file changes with `node --watch`
+- Uploaded files stored temporarily in `server/src/storage/tmpUploads`
+- Vector store cached in `server/src/storage/localCache/vectordb`
+- **RAG System**: 
+  - Meal templates stored as `.txt` files in `server/src/data/meal_templates/`
+  - Run `npm run ingest:meals` after adding/updating templates
+  - Server checks RAG status on startup and logs warnings if not initialized
+  - Vector store uses HNSWLib for fast similarity search
+  - Each meal plan includes RAG metadata showing retrieval quality and sources used
+- **Meal Plan Generation**:
+  - Plans are generated in chunks (3 days max per LLM call) for reliability
+  - Structure validation ensures consistent JSON format
+  - Fallback templates used if AI generation fails
+  - All plans stored in-memory (consider migrating to Firestore for persistence)Features
 
 - **🤖 AI Chat Assistant** - Conversational AI powered by GPT-4o-mini with RAG (Retrieval-Augmented Generation) for PCOS-specific guidance
-- **🍽️ Personalized Meal Planning** - AI-generated meal plans tailored to Indian cuisine and PCOS dietary needs
-- **📄 Medical Report Analysis** - OCR-based parsing of lab reports (PDF, DOCX, images) with intelligent data extraction
+- **🍽️ Personalized Meal Planning** - AI-generated meal plans tailored to Indian cuisine and PCOS dietary needs with:
+  - RAG-powered knowledge retrieval from curated meal templates and nutrition guidelines
+  - Transparent personalization sources showing what influenced each plan (onboarding data, medical reports, RAG knowledge base)
+  - Visual RAG metadata display showing knowledge base coverage and sources used
+  - Automatic chunking for longer meal plans to ensure reliability
+  - PDF export functionality for all meals
+  - Regional cuisine variations (North, South, East, West Indian)
+- **📄 Medical Report Analysis** - OCR-based parsing of lab reports (PDF, DOCX, images) with intelligent data extraction and integration into meal plan generation
 - **📊 Progress Tracking** - Visual dashboards to monitor health metrics, symptoms, and lifestyle changes over time
 - **🌐 Multi-language Support** - English and Hindi with i18next internationalization
 - **🔐 Firebase Authentication** - Secure Google OAuth login with Firestore for user profiles and data persistence
 - **🛡️ Safety & Privacy** - Content safety guards, rate limiting, and medical disclaimers
 - **🔄 Community Insights** - Reddit integration for anonymized community experiences (optional)
 - **🎨 Modern UI** - Responsive design with Tailwind CSS, Lucide icons, and Recharts visualizations
+- **🔍 RAG System Status** - Real-time monitoring of RAG system health, vector store status, and template indexing
 
 ---
 
@@ -90,7 +113,24 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 ```
 
-3. **Start development servers**
+3. **Initialize RAG system (Optional but Recommended)**
+
+To enable full RAG functionality with meal templates:
+```bash
+# Create meal templates folder (if not exists)
+mkdir -p server/src/data/meal_templates
+
+# Add your meal template .txt files to the folder
+# Each template should contain meal information, recipes, and nutrition data
+
+# Index the templates into the vector store
+cd server
+npm run ingest:meals
+```
+
+The server will work without this step but will use fallback templates instead of RAG retrieval.
+
+4. **Start development servers**
 ```bash
 npm run dev
 ```
@@ -159,6 +199,8 @@ cd client && npm run dev
 |--------|-------------|
 | `npm run dev` | Start server with auto-restart on changes (node --watch) |
 | `npm run start` | Start server in production mode |
+| `npm run ingest:meals` | Index meal templates into vector store for RAG |
+| `npm run ingest:all` | Index all data sources (meals, medical, nutritional) |
 | `npm run test` | Run server tests with Vitest |
 | `npm run lint` | Lint server code |
 | `npm run lint:fix` | Auto-fix server linting issues |
@@ -210,9 +252,10 @@ client/
 │   │   │   ├── LoadingSpinner.jsx
 │   │   │   └── ErrorBoundary.jsx
 │   │   ├── meal/                      # Meal planning components
-│   │   │   ├── MealPlanGenerator.jsx
-│   │   │   ├── MealPlanDisplay.jsx
-│   │   │   └── MealCard.jsx
+│   │   │   ├── MealPlanGenerator.jsx  # Form with personalization tracking
+│   │   │   ├── MealPlanDisplay.jsx    # Display with PDF export
+│   │   │   ├── MealCard.jsx
+│   │   │   └── RAGMetadataDisplay.jsx # RAG transparency component
 │   │   ├── onboarding/                # Onboarding flow
 │   │   │   ├── OnboardingForm.jsx
 │   │   │   └── QuestionField.jsx
@@ -274,9 +317,10 @@ server/
 │   │   ├── embeddings.js              # Text embeddings
 │   │   ├── vectorStore.js             # Vector database (HNSWLib)
 │   │   ├── retriever.js               # RAG retriever
+│   │   ├── initializeRAG.js           # RAG initialization & status checks
 │   │   ├── chains/
 │   │   │   ├── chatChain.js           # Chat conversation chain
-│   │   │   ├── mealPlanChain.js       # Meal planning chain
+│   │   │   ├── mealPlanChain.js       # Meal planning chain (with RAG metadata)
 │   │   │   ├── reportChain.js         # Report analysis chain
 │   │   │   └── index.js
 │   │   └── prompts/
@@ -291,24 +335,33 @@ server/
 │   │   └── safetyGuards.js            # Content safety checks
 │   ├── routes/
 │   │   ├── chat.js                    # Chat endpoints
-│   │   ├── mealPlan.js                # Meal planning endpoints
+│   │   ├── mealPlan.js                # Meal planning endpoints (with personalization tracking)
 │   │   ├── upload.js                  # File upload endpoints
 │   │   ├── progress.js                # Progress tracking endpoints
-│   │   └── onboarding.js              # Onboarding endpoints
+│   │   ├── onboarding.js              # Onboarding endpoints
+│   │   └── ragStatus.js               # RAG system status endpoints
 │   ├── services/
 │   │   ├── ocrService.js              # OCR for images (Tesseract.js)
 │   │   ├── parserService.js           # PDF/DOCX parsing
 │   │   ├── redditService.js           # Reddit API integration
 │   │   ├── serpService.js             # SERP API for web search
 │   │   └── firebaseCacheService.js    # Firebase caching
+│   ├── scripts/
+│   │   ├── ingestAll.js               # Ingest all data sources
+│   │   ├── ingestMealTemplates.js     # Index meal templates for RAG
+│   │   ├── ingestMedicalKnowledge.js  # Index medical knowledge
+│   │   └── ingestNutritionalData.js   # Index nutritional data
 │   ├── storage/
 │   │   ├── tmpUploads/                # Temporary file uploads
-│   │   └── localCache/                # Local caching
+│   │   └── localCache/
+│   │       └── vectordb/              # HNSWLib vector store
 │   ├── utils/
 │   │   ├── logger.js                  # Winston logger
 │   │   └── labRanges.js               # Medical lab reference ranges
 │   └── data/
-│       └── meal_templates/            # Meal plan templates
+│       ├── meal_templates/            # Meal plan templates (.txt files)
+│       ├── medical/                   # Medical knowledge base
+│       └── nutritional/               # Nutritional guidelines
 ├── debug/                             # Debug output files
 ├── public/                            # Static files
 └── package.json
@@ -328,6 +381,7 @@ server/
 - **Icons**: Lucide React 0.294
 - **Charts**: Recharts 2.10
 - **Date Utilities**: date-fns 2.30
+- **PDF Generation**: jsPDF 2.5.1 (for meal plan export)
 - **Testing**: Vitest 0.34 + Testing Library
 
 ### Backend
@@ -363,6 +417,32 @@ server/
 
 ## 🎯 Key Features Explained
 
+### 0. RAG Transparency & Personalization Tracking
+
+**New Feature**: Every meal plan now shows users exactly how it was personalized:
+
+**Personalization Sources Display**:
+- Visual cards showing data sources used:
+  - 🌟 **Onboarding Profile**: User's allergies, symptoms, goals, activity level, cuisine preferences
+  - 📋 **Medical Reports**: Latest lab results, hormone levels, nutrient deficiencies
+  - 🔧 **User Overrides**: Manual region/diet type changes
+  - 🧠 **RAG Knowledge Base**: Retrieved meal templates and nutrition guidelines
+
+**RAG Metadata Component** (`RAGMetadataDisplay.jsx`):
+- Shows knowledge base coverage quality (Excellent/Good/Limited)
+- Displays specific metrics:
+  - Number of meal templates retrieved
+  - Number of nutrition guidelines applied
+  - Whether symptom-specific recommendations were used
+- Color-coded quality indicators
+- Informational tooltip explaining RAG process
+
+**Benefits**:
+- Users understand why they received specific meals
+- Builds trust in AI recommendations
+- Encourages users to complete onboarding and upload reports for better personalization
+- Transparent about AI decision-making process
+
 ### 1. AI Chat Assistant
 - **Technology**: GPT-4o-mini with RAG (Retrieval-Augmented Generation)
 - **Features**:
@@ -376,10 +456,28 @@ server/
 ### 2. Personalized Meal Planning
 - **AI-generated meal plans** tailored to:
   - User's dietary preferences (vegetarian, vegan, non-veg)
-  - Cultural cuisine preferences (North Indian, South Indian, etc.)
+  - Cultural cuisine preferences (North Indian, South Indian, East Indian, West Indian)
   - PCOS-specific nutritional requirements
   - Allergies and restrictions
-- **Output**: 7-day meal plans with recipes, nutritional info, and cooking instructions
+  - User's symptoms and health goals
+  - Latest medical report data (hormones, nutrients)
+- **RAG-Enhanced Generation**:
+  - Retrieves relevant meal templates from curated knowledge base
+  - Applies nutrition guidelines specific to PCOS management
+  - Uses symptom-specific ingredient recommendations
+  - Tracks and displays RAG quality metrics (high/medium/low coverage)
+- **Personalization Transparency**:
+  - Shows what data sources influenced the plan (onboarding, medical reports, user overrides, RAG)
+  - Displays RAG metadata: templates used, guidelines applied, symptom-specific recommendations
+  - Visual indicators for personalization source quality
+- **Reliability Features**:
+  - Automatic chunking for plans longer than 3 days to ensure consistent generation
+  - Fallback to expert-curated templates if AI generation fails
+  - Structure validation and auto-repair for malformed responses
+- **Export & Sharing**:
+  - PDF export for entire meal plans with all days
+  - Formatted with ingredients, recipes, and nutrition information
+- **Output**: 1-7+ day meal plans with recipes, nutritional info (protein, carbs, fats, GI), cooking tips, and time estimates
 
 ### 3. Medical Report Analysis
 - **Supported formats**: PDF, DOCX, JPG, PNG
@@ -427,7 +525,115 @@ server/
 
 ---
 
-## 🧪 Testing & Linting
+## � RAG System Architecture
+
+### Overview
+Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personalization with a curated knowledge base of meal templates, nutritional guidelines, and PCOS-specific dietary recommendations.
+
+### Components
+
+**1. Vector Store (HNSWLib)**
+- Fast similarity search for meal templates
+- Stores embeddings of meal data, recipes, and nutrition guidelines
+- Located at: `server/src/storage/localCache/vectordb/`
+
+**2. Embeddings (OpenAI)**
+- Uses `text-embedding-3-small` model
+- Converts meal templates to dense vector representations
+- Enables semantic search across knowledge base
+
+**3. Meal Templates**
+- Stored as `.txt` files in `server/src/data/meal_templates/`
+- Each template contains regional meal variations with:
+  - Meal name, ingredients, and quantities
+  - Macros (protein, carbs, fats) and glycemic index
+  - Cooking instructions and tips
+- Organized by region (North, South, East, West Indian)
+
+**4. Ingestion Pipeline**
+- Script: `server/src/scripts/ingestMealTemplates.js`
+- Reads all `.txt` files from templates folder
+- Splits documents into chunks
+- Generates embeddings and builds vector store
+- Run with: `npm run ingest:meals`
+
+**5. Retrieval & Generation**
+- Query user preferences to retrieve relevant templates
+- Top-k similarity search (configurable, default k=5)
+- Retrieved context injected into LLM prompt
+- RAG metadata tracked for transparency:
+  - Number of templates used
+  - Nutrition guidelines applied
+  - Symptom-specific recommendations
+  - Retrieval quality score (high/medium/low)
+
+### RAG Status Monitoring
+
+Check RAG system health:
+```bash
+# Detailed status
+curl http://localhost:5000/api/rag/status
+
+# Quick health check
+curl http://localhost:5000/api/rag/health
+```
+
+Response includes:
+- Vector store existence
+- Template count and file names
+- Indexed document count (approximate)
+- Retrieval functionality status
+- Recommendations for fixes
+
+### RAG Quality Metrics
+
+Each meal plan includes personalization metadata:
+```json
+{
+  "personalizationSources": {
+    "onboarding": true,
+    "medicalReport": true,
+    "userOverrides": false,
+    "ragQuality": "high",
+    "ragSources": {
+      "mealTemplates": 5,
+      "nutritionGuidelines": 8,
+      "symptomRecommendations": true
+    }
+  }
+}
+```
+
+Quality levels:
+- **High**: 5+ relevant templates retrieved, comprehensive guidelines
+- **Medium**: 2-4 templates retrieved, partial guidelines
+- **Low**: 0-1 templates retrieved, fallback mode
+
+### Adding New Templates
+
+1. Create `.txt` file in `server/src/data/meal_templates/`
+2. Format with meal name, ingredients, macros, and tips
+3. Run ingestion: `cd server && npm run ingest:meals`
+4. Restart server
+5. Verify: `curl http://localhost:5000/api/rag/status`
+
+Example template format:
+```
+Meal: South Indian Idli Sambar
+Region: south-india
+Type: breakfast
+Ingredients: 3 idlis (150g), sambar (200ml), coconut chutney (50g)
+Protein: 12g
+Carbs: 45g
+Fats: 5g
+GI: Low
+Time: 20 mins
+Tip: Use brown rice idlis for extra fiber and lower GI
+```
+
+---
+
+## �🧪 Testing & Linting
 
 ### Testing
 The repository uses **Vitest** for unit and integration tests:
@@ -480,11 +686,17 @@ npm run format:check
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/health` | GET | Health check |
-| `/api/chat` | POST | Send chat message |
-| `/api/meals/generate` | POST | Generate meal plan |
-| `/api/upload` | POST | Upload medical report |
+| `/api/chat` | POST | Send chat message with RAG context |
+| `/api/meals/generate` | POST | Generate personalized meal plan with RAG |
+| `/api/meals/:planId` | GET | Get specific meal plan |
+| `/api/meals/user/:userId` | GET | Get user's meal plan history |
+| `/api/meals/:planId` | PUT | Update meal plan (feedback, ratings) |
+| `/api/meals/:planId` | DELETE | Delete meal plan |
+| `/api/upload` | POST | Upload medical report (PDF/DOCX/image) |
 | `/api/progress` | GET/POST | Get/update progress data |
 | `/api/onboarding/create` | POST | Complete onboarding |
+| `/api/rag/status` | GET | Get RAG system status and metrics |
+| `/api/rag/health` | GET | Quick RAG health check |
 
 ---
 
@@ -513,6 +725,29 @@ PORT=5001 npm run dev
 - Check API key is valid and has credits
 - Verify model name is correct (`gpt-4o-mini`)
 - Check rate limits on OpenAI dashboard
+
+### RAG System Issues
+**Vector Store Not Found**:
+```bash
+# Create templates folder if missing
+mkdir -p server/src/data/meal_templates
+
+# Add .txt template files with meal data
+# Then run ingestion
+cd server && npm run ingest:meals
+```
+
+**Templates Not Being Used**:
+- Check RAG status: `curl http://localhost:5000/api/rag/status`
+- Verify templates exist: `ls server/src/data/meal_templates/*.txt`
+- Re-ingest templates: `npm run ingest:meals`
+- Check server logs for RAG initialization messages
+
+**Meal Plans Using Fallback Templates**:
+- This happens when vector store is not initialized
+- Run `npm run ingest:meals` in the server directory
+- Restart the server after ingestion
+- Check for "✅ RAG system initialized successfully" in logs
 
 ### Module Not Found Errors
 ```bash
@@ -635,23 +870,37 @@ For questions, issues, or suggestions:
 
 ### Completed ✅
 - [x] AI chat assistant with RAG
-- [x] Personalized meal planning
-- [x] Medical report analysis (OCR + parsing)
+- [x] Personalized meal planning with RAG-enhanced generation
+- [x] RAG system with vector store and template indexing
+- [x] RAG metadata transparency and quality tracking
+- [x] Personalization source tracking (onboarding, medical reports, user overrides)
+- [x] Meal plan PDF export functionality
+- [x] Regional cuisine templates (North, South, East, West Indian)
+- [x] Chunked generation for reliable long meal plans
+- [x] RAG system status monitoring endpoints
+- [x] Medical report analysis (OCR + parsing) with meal plan integration
 - [x] Progress tracking dashboard
 - [x] Firebase authentication
 - [x] Multi-language support (EN, HI)
 - [x] Community insights (Reddit integration)
 
 ### Planned 🔜
+- [ ] Persistent meal plan storage in Firestore (currently in-memory)
+- [ ] User meal plan history and favorites
+- [ ] Grocery shopping list generation from meal plans
+- [ ] Meal plan sharing and social features
 - [ ] Mobile app (React Native)
-- [ ] Exercise recommendations
+- [ ] Exercise recommendations with RAG
 - [ ] Medication reminders
 - [ ] Doctor appointment scheduling
 - [ ] Community forum
 - [ ] More languages (Tamil, Telugu, Bengali)
-- [ ] Integration with health tracking devices
+- [ ] Integration with health tracking devices (Fitbit, Apple Health)
+- [ ] Advanced RAG with medical knowledge base
 - [ ] Symptom prediction models
 - [ ] Cycle tracking with predictions
+- [ ] Recipe image generation with DALL-E
+- [ ] Voice input for chat and meal preferences
 
 ---
 
@@ -663,6 +912,57 @@ For questions, issues, or suggestions:
 - [React Documentation](https://react.dev/)
 - [Vite Documentation](https://vitejs.dev/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/)
+
+---
+
+## 📋 Changelog
+
+### Latest Updates (v1.1.0)
+
+**🧠 RAG System Enhancements**:
+- Added RAG-powered meal plan generation with vector store
+- Implemented meal template indexing pipeline (`ingest:meals` script)
+- Created RAG status monitoring endpoints (`/api/rag/status`, `/api/rag/health`)
+- Added `initializeRAG.js` for automatic system initialization on server startup
+- Vector store health checks and template freshness validation
+
+**🎨 Frontend Transparency Features**:
+- New `RAGMetadataDisplay` component showing knowledge sources used
+- Personalization tracking across onboarding, medical reports, and RAG
+- Visual quality indicators (high/medium/low coverage)
+- Detailed breakdown of templates, guidelines, and recommendations used
+- Enhanced `MealPlanGenerator` with source visualization cards
+
+**📄 PDF Export**:
+- Full meal plan PDF export functionality
+- Includes all days, meals, ingredients, recipes, and nutrition info
+- Automatic page breaks and proper formatting
+- Download button integrated into `MealPlanDisplay`
+
+**🔧 Meal Plan Improvements**:
+- Chunked generation (3 days per request) for reliability
+- Structure validation and auto-repair for malformed LLM responses
+- Regional template fallbacks (North, South, East, West Indian)
+- Enhanced error handling with user-friendly fallback messages
+- Medical report integration into meal plan context
+
+**🛠️ Backend Infrastructure**:
+- Added meal plan CRUD endpoints (GET, PUT, DELETE)
+- User meal plan history endpoint (`/api/meals/user/:userId`)
+- RAG metadata injection into responses
+- Personalization source tracking in all generated plans
+- Improved logging with RAG quality metrics
+
+**📦 New Dependencies**:
+- `jsPDF` for client-side PDF generation
+- HNSWLib integration for vector similarity search
+- LangChain document loaders and text splitters
+
+**🐛 Bug Fixes**:
+- Fixed meal plan structure parsing issues
+- Improved error boundaries for failed generations
+- Better handling of missing vector store scenarios
+- Fixed PDF generation for multi-day plans
 
 ---
 

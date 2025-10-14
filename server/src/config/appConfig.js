@@ -20,7 +20,7 @@ export const appConfig = {
     chunkSize: 1000,
     chunkOverlap: 200,
     topK: 5,
-    minScore: 0.5,
+    minScore: 0.3,
   },
 
   // Rate Limiting

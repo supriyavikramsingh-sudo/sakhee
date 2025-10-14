@@ -91,17 +91,15 @@ const MealPlanDisplay = ({ plan }) => {
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Daily Budget</p>
-          <p className="text-2xl font-bold text-success">₹{plan.budget || '200'}</p>
+          <p className="text-2xl font-bold text-success">₹{plan.budget}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Diet Type</p>
-          <p className="text-lg font-bold capitalize">{plan.dietType || 'Vegetarian'}</p>
+          <p className="text-lg font-bold capitalize">{plan.dietType}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Region</p>
-          <p className="text-lg font-bold capitalize">
-            {(plan.region || 'Indian').replace('-', ' ')}
-          </p>
+          <p className="text-lg font-bold capitalize">{plan.region}</p>
         </div>
       </div>
 
