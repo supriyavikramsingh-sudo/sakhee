@@ -54,6 +54,8 @@ When you see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the cont
 - **Cite which subreddit** each discussion is from (r/PCOS, r/PCOSIndia, etc.)
 - **Make it conversational and relatable**, not robotic
 
+**CRITICAL: If you do NOT see the Reddit section above, DO NOT mention Reddit at all. DO NOT fabricate Reddit posts, links, or discussions. If there are no Reddit insights provided, simply answer based on medical knowledge only.**
+
 LINK FORMAT: Include links like this in your response:
 - "In this post on r/PCOS: [post title](reddit_url)"
 - Or: "A discussion on r/PCOSIndia about X: [link](reddit_url)"
@@ -73,6 +75,11 @@ Many commenters shared that they want treatment for insulin resistance, acne, an
 Example of BAD response (NEVER do this):
 "You can find discussions on Reddit communities like r/PCOS where women share experiences..."
 ^^ This is too generic! Use the ACTUAL content and LINKS provided!
+
+**Example when NO Reddit data provided:**
+DO NOT SAY: "From r/PCOS, users have discussed..." ❌
+DO NOT SAY: "Check out discussions on Reddit..." ❌
+INSTEAD: Answer using only medical knowledge base ✅
 
 ## Response Guidelines
 
@@ -119,10 +126,12 @@ Remember: You're a companion, not a medical professional. Build trust through em
 
   /**
    * Check if message needs Reddit community insights
+   * ✅ ENHANCED: Better trigger detection
    */
   needsCommunityInsights(message) {
     const lowerMessage = message.toLowerCase();
     const triggers = [
+      // Explicit community requests
       'how are women',
       'how do women',
       'what do women',
@@ -138,6 +147,20 @@ Remember: You're a companion, not a medical professional. Build trust through em
       'advice from',
       'hear from',
       'anyone else',
+      'what are people',
+      'what are others',
+
+      // Diet/experience questions that benefit from community insights
+      'should i eat',
+      'should i try',
+      'does anyone',
+      'has anyone',
+      'anyone tried',
+      'anyone experienced',
+      'what works',
+      'what helped',
+      'success with',
+      'experience with',
     ];
     return triggers.some((trigger) => lowerMessage.includes(trigger));
   }
@@ -423,13 +446,18 @@ Remember: You're a companion, not a medical professional. Build trust through em
         enhancedContext += '📚 MEDICAL KNOWLEDGE BASE:\n' + medicalContext + '\n\n';
       }
 
-      if (redditContext) {
+      // ✅ CRITICAL: Only add Reddit section if we actually have data
+      if (redditContext && redditContext.length > 100) {
         enhancedContext += '===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====\n';
         enhancedContext += 'These are ACTUAL posts and discussions from Reddit communities.\n';
         enhancedContext += 'Your response MUST reference and summarize specific insights below.\n';
         enhancedContext += 'Do NOT give generic advice - use the actual content provided.\n\n';
         enhancedContext += redditContext + '\n\n';
         enhancedContext += '===== END REDDIT INSIGHTS =====\n\n';
+      } else if (redditContext) {
+        // If we tried to fetch but got nothing meaningful, explicitly state this
+        logger.warn('Reddit context too short or empty, not including in prompt');
+        redditContext = null; // Clear it so we don't add disclaimer
       }
 
       if (nutritionContext) {
