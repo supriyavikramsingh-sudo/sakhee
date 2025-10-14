@@ -5,7 +5,6 @@ import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import MealPlanGenerator from '../components/meal/MealPlanGenerator';
 import MealPlanDisplay from '../components/meal/MealPlanDisplay';
-import { Plus } from 'lucide-react';
 
 const MealPlanPage = () => {
   const { t } = useTranslation();
@@ -27,18 +26,11 @@ const MealPlanPage = () => {
         {showGenerator ? (
           <MealPlanGenerator
             userProfile={userProfile.profileData}
-            userId={user?.id}
+            userId={user?.uid}
             onGenerated={() => setShowGenerator(false)}
           />
         ) : currentMealPlan ? (
           <div>
-            <button
-              onClick={() => setShowGenerator(true)}
-              className="flex items-center gap-2 mb-6 btn-secondary"
-            >
-              <Plus size={20} />
-              {t('meals.generateNew')}
-            </button>
             <MealPlanDisplay plan={currentMealPlan} />
           </div>
         ) : (

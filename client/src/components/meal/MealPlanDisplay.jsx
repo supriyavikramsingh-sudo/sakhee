@@ -1,12 +1,172 @@
-import { useState } from 'react';
-import { Calendar, Download, Share2, AlertCircle, Info } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Calendar, Download, AlertCircle, Info, HelpCircle } from 'lucide-react';
 import MealCard from './MealCard';
 import { jsPDF } from 'jspdf';
-import { replace } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import firestoreService from '../../services/firestoreService';
 
 const MealPlanDisplay = ({ plan }) => {
   const [selectedDay, setSelectedDay] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const [canGenerateMore, setCanGenerateMore] = useState(false);
+  const [isTestAccount, setIsTestAccount] = useState(false);
+
+  useEffect(() => {
+    const checkLimits = async () => {
+      if (!user?.email || !user?.uid) return;
+      const testAccount = firestoreService.isTestAccount(user.email);
+      setIsTestAccount(testAccount);
+      if (testAccount) {
+        setCanGenerateMore(true);
+        return;
+      }
+      const result = await firestoreService.checkMealPlanLimit(user.uid);
+      if (result.success) {
+        setCanGenerateMore(result.canGenerate || result.isPro);
+      }
+    };
+    checkLimits();
+  }, []);
+
+  const downloadPDF = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const pdf = new jsPDF('p', 'pt', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 40;
+      const maxWidth = pageWidth - 2 * margin;
+      let yPos = margin;
+
+      // Helper to add new page if needed
+      const checkPageBreak = (requiredSpace) => {
+        if (yPos + requiredSpace > pageHeight - margin) {
+          pdf.addPage();
+          yPos = margin;
+          return true;
+        }
+        return false;
+      };
+
+      // Title
+      pdf.setFontSize(24);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Meal Plan', margin, yPos);
+      yPos += 30;
+
+      // Summary Info
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Duration: ${days.length} Days`, margin, yPos);
+      yPos += 20;
+      pdf.text(`Daily Budget: Rs${plan.budget || '200'}`, margin, yPos);
+      yPos += 20;
+      pdf.text(`Diet Type: ${plan.dietType || 'Vegetarian'}`, margin, yPos);
+      yPos += 20;
+      pdf.text(`Region: ${(plan.region || 'Indian').replace('-', ' ')}`, margin, yPos);
+      yPos += 30;
+
+      // Loop through all days
+      days.forEach((day, dayIndex) => {
+        if (!day) return;
+
+        checkPageBreak(40);
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(`Day ${dayIndex + 1} Meals`, margin, yPos);
+        yPos += 30;
+
+        // Render each meal
+        if (day.meals && day.meals.length > 0) {
+          day.meals.forEach((meal, idx) => {
+            checkPageBreak(80);
+
+            // Meal type header
+            pdf.setFontSize(14);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(meal.type || `Meal ${idx + 1}`, margin, yPos);
+            yPos += 20;
+
+            // Meal name
+            if (meal.name) {
+              pdf.setFontSize(12);
+              pdf.setFont('helvetica', 'italic');
+              const nameLines = pdf.splitTextToSize(meal.name, maxWidth);
+              pdf.text(nameLines, margin, yPos);
+              yPos += nameLines.length * 15;
+            }
+
+            // Ingredients
+            if (meal.ingredients && meal.ingredients.length > 0) {
+              checkPageBreak(20 + meal.ingredients.length * 15);
+              pdf.setFontSize(11);
+              pdf.setFont('helvetica', 'bold');
+              pdf.text('Ingredients:', margin, yPos);
+              yPos += 15;
+              pdf.setFont('helvetica', 'normal');
+              meal.ingredients.forEach((ingredient) => {
+                const ingLines = pdf.splitTextToSize(`• ${ingredient}`, maxWidth - 10);
+                pdf.text(ingLines, margin + 10, yPos);
+                yPos += ingLines.length * 14;
+              });
+              yPos += 5;
+            }
+
+            // Recipe/Instructions
+            if (meal.recipe) {
+              checkPageBreak(40);
+              pdf.setFontSize(11);
+              pdf.setFont('helvetica', 'bold');
+              pdf.text('Recipe:', margin, yPos);
+              yPos += 15;
+              pdf.setFont('helvetica', 'normal');
+              const recipeLines = pdf.splitTextToSize(meal.recipe, maxWidth - 10);
+              recipeLines.forEach((line) => {
+                checkPageBreak(14);
+                pdf.text(line, margin + 10, yPos);
+                yPos += 14;
+              });
+              yPos += 5;
+            }
+
+            // Nutrition info
+            if (meal.nutrition) {
+              checkPageBreak(40);
+              pdf.setFontSize(11);
+              pdf.setFont('helvetica', 'bold');
+              pdf.text('Nutrition:', margin, yPos);
+              yPos += 15;
+              pdf.setFont('helvetica', 'normal');
+              const nutritionText = Object.entries(meal.nutrition)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join(', ');
+              const nutritionLines = pdf.splitTextToSize(nutritionText, maxWidth - 10);
+              pdf.text(nutritionLines, margin + 10, yPos);
+              yPos += nutritionLines.length * 14 + 5;
+            }
+
+            yPos += 15; // Space between meals
+          });
+        }
+
+        // Add extra space between days
+        yPos += 20;
+      });
+
+      const filename = `meal-plan-all-days.pdf`;
+      pdf.save(filename);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('PDF generation failed', err);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   if (!plan || !plan.plan) {
     return (
@@ -106,6 +266,59 @@ const MealPlanDisplay = ({ plan }) => {
         </div>
       </div>
 
+      {/* REPLACE THE ENTIRE HEADER/ACTIONS SECTION WITH THIS: */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-primary mb-2">Your Meal Plan</h2>
+            <p className="text-sm text-muted">
+              {plan.duration || days.length} days • {plan.dietType || 'Custom'} • ₹
+              {plan.budget || 'N/A'}/day
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Download PDF Button - EXISTING, KEEP AS IS */}
+            <button
+              onClick={downloadPDF}
+              disabled={isDownloading}
+              className={`flex items-center gap-2 px-4 py-2 bg-surface rounded-lg hover:bg-accent hover:text-white transition ${
+                isDownloading ? 'opacity-60 pointer-events-none' : ''
+              }`}
+            >
+              <Download size={20} />
+              {isDownloading ? 'Preparing...' : 'Download PDF'}
+            </button>
+
+            {/* 🆕 NEW: Generate New Plan Button with Upgrade Logic */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  if (canGenerateMore) {
+                    window.location.reload();
+                  } else {
+                    navigate('/coming-soon');
+                  }
+                }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition bg-primary text-white hover:bg-secondary`}
+              >
+                <Calendar size={20} />
+                Generate New Plan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 🆕 NEW: Test Account Badge */}
+        {isTestAccount && (
+          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              🧪 <strong>Test Account:</strong> Unlimited meal plan generation enabled
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Day Selector */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="font-bold mb-4 flex items-center gap-2">
@@ -144,155 +357,6 @@ const MealPlanDisplay = ({ plan }) => {
             <p className="text-muted">No meals available for this day</p>
           </div>
         )}
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-4">
-        <button
-          onClick={async () => {
-            if (isDownloading) return;
-            setIsDownloading(true);
-            try {
-              const pdf = new jsPDF('p', 'pt', 'a4');
-              const pageWidth = pdf.internal.pageSize.getWidth();
-              const pageHeight = pdf.internal.pageSize.getHeight();
-              const margin = 40;
-              const maxWidth = pageWidth - 2 * margin;
-              let yPos = margin;
-
-              // Helper to add new page if needed
-              const checkPageBreak = (requiredSpace) => {
-                if (yPos + requiredSpace > pageHeight - margin) {
-                  pdf.addPage();
-                  yPos = margin;
-                  return true;
-                }
-                return false;
-              };
-
-              // Title
-              pdf.setFontSize(24);
-              pdf.setFont('helvetica', 'bold');
-              pdf.text('Meal Plan', margin, yPos);
-              yPos += 30;
-
-              // Summary Info
-              pdf.setFontSize(12);
-              pdf.setFont('helvetica', 'normal');
-              pdf.text(`Duration: ${days.length} Days`, margin, yPos);
-              yPos += 20;
-              pdf.text(`Daily Budget: Rs${plan.budget || '200'}`, margin, yPos);
-              yPos += 20;
-              pdf.text(`Diet Type: ${plan.dietType || 'Vegetarian'}`, margin, yPos);
-              yPos += 20;
-              pdf.text(`Region: ${(plan.region || 'Indian').replace('-', ' ')}`, margin, yPos);
-              yPos += 30;
-
-              // Loop through all days
-              days.forEach((day, dayIndex) => {
-                if (!day) return;
-
-                checkPageBreak(40);
-                pdf.setFontSize(18);
-                pdf.setFont('helvetica', 'bold');
-                pdf.text(`Day ${dayIndex + 1} Meals`, margin, yPos);
-                yPos += 30;
-
-                // Render each meal
-                if (day.meals && day.meals.length > 0) {
-                  day.meals.forEach((meal, idx) => {
-                    checkPageBreak(80);
-
-                    // Meal type header
-                    pdf.setFontSize(14);
-                    pdf.setFont('helvetica', 'bold');
-                    pdf.text(meal.type || `Meal ${idx + 1}`, margin, yPos);
-                    yPos += 20;
-
-                    // Meal name
-                    if (meal.name) {
-                      pdf.setFontSize(12);
-                      pdf.setFont('helvetica', 'italic');
-                      const nameLines = pdf.splitTextToSize(meal.name, maxWidth);
-                      pdf.text(nameLines, margin, yPos);
-                      yPos += nameLines.length * 15;
-                    }
-
-                    // Ingredients
-                    if (meal.ingredients && meal.ingredients.length > 0) {
-                      checkPageBreak(20 + meal.ingredients.length * 15);
-                      pdf.setFontSize(11);
-                      pdf.setFont('helvetica', 'bold');
-                      pdf.text('Ingredients:', margin, yPos);
-                      yPos += 15;
-                      pdf.setFont('helvetica', 'normal');
-                      meal.ingredients.forEach((ingredient) => {
-                        const ingLines = pdf.splitTextToSize(`• ${ingredient}`, maxWidth - 10);
-                        pdf.text(ingLines, margin + 10, yPos);
-                        yPos += ingLines.length * 14;
-                      });
-                      yPos += 5;
-                    }
-
-                    // Recipe/Instructions
-                    if (meal.recipe) {
-                      checkPageBreak(40);
-                      pdf.setFontSize(11);
-                      pdf.setFont('helvetica', 'bold');
-                      pdf.text('Recipe:', margin, yPos);
-                      yPos += 15;
-                      pdf.setFont('helvetica', 'normal');
-                      const recipeLines = pdf.splitTextToSize(meal.recipe, maxWidth - 10);
-                      recipeLines.forEach((line) => {
-                        checkPageBreak(14);
-                        pdf.text(line, margin + 10, yPos);
-                        yPos += 14;
-                      });
-                      yPos += 5;
-                    }
-
-                    // Nutrition info
-                    if (meal.nutrition) {
-                      checkPageBreak(40);
-                      pdf.setFontSize(11);
-                      pdf.setFont('helvetica', 'bold');
-                      pdf.text('Nutrition:', margin, yPos);
-                      yPos += 15;
-                      pdf.setFont('helvetica', 'normal');
-                      const nutritionText = Object.entries(meal.nutrition)
-                        .map(([key, value]) => `${key}: ${value}`)
-                        .join(', ');
-                      const nutritionLines = pdf.splitTextToSize(nutritionText, maxWidth - 10);
-                      pdf.text(nutritionLines, margin + 10, yPos);
-                      yPos += nutritionLines.length * 14 + 5;
-                    }
-
-                    yPos += 15; // Space between meals
-                  });
-                }
-
-                // Add extra space between days
-                yPos += 20;
-              });
-
-              const filename = `meal-plan-all-days.pdf`;
-              pdf.save(filename);
-            } catch (err) {
-              // eslint-disable-next-line no-console
-              console.error('PDF generation failed', err);
-              alert('Failed to generate PDF. Please try again.');
-            } finally {
-              setIsDownloading(false);
-            }
-          }}
-          className={`flex items-center gap-2 px-4 py-2 bg-surface rounded-lg hover:bg-accent hover:text-white transition ${
-            isDownloading ? 'opacity-60 pointer-events-none' : ''
-          }`}
-          aria-disabled={isDownloading}
-        >
-          <Download size={20} />
-          {isDownloading ? 'Preparing PDF...' : 'Download PDF'}
-        </button>
       </div>
     </div>
   );

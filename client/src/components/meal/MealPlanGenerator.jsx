@@ -1,18 +1,38 @@
 // client/src/components/meal/MealPlanGenerator.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMealStore } from '../../store';
+import { useAuthStore } from '../../store/authStore';
 import { apiClient } from '../../services/apiClient';
-import { Loader, AlertCircle, Info, Sparkles, FileText, Activity, Target } from 'lucide-react';
+import {
+  Loader,
+  AlertCircle,
+  Info,
+  Sparkles,
+  FileText,
+  Activity,
+  Target,
+  Crown,
+} from 'lucide-react';
+import firestoreService from '../../services/firestoreService';
+import { useNavigate } from 'react-router-dom';
+
 // ========== NEW IMPORT FOR RAG DISPLAY ==========
 import RAGMetadataDisplay from './RAGMetadataDisplay';
 // ================================================
 
-const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) => {
-  const { t } = useTranslation();
+const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = false }) => {
+  const navigate = useNavigate(); // 🆕 Added navigation
+  const { user } = useAuthStore(); // 🆕 Added user from auth store
   const { setMealPlan } = useMealStore();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // 🆕 NEW STATE VARIABLES FOR USAGE TRACKING
+  const [canGenerate, setCanGenerate] = useState(true);
+  const [usageInfo, setUsageInfo] = useState(null);
+  const [isTestAccount, setIsTestAccount] = useState(false);
 
   // ========== NEW STATE FOR RAG METADATA ==========
   const [ragMetadata, setRagMetadata] = useState(null);
@@ -26,6 +46,42 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
     mealsPerDay: 3, // Required
     duration: 7, // Required
   });
+
+  // 🆕 NEW EFFECT: Check meal plan limits on mount
+  useEffect(() => {
+    const checkLimits = async () => {
+      console.log('🔍 Checking meal plan limits for user:', !user?.email, !userId);
+      if (!user?.email || !userId) return;
+      // Check if test account
+      const testAccount = firestoreService.isTestAccount(user.email);
+      setIsTestAccount(testAccount);
+
+      if (testAccount) {
+        console.log('✅ Test account detected - bypassing limits');
+        setCanGenerate(true);
+        return;
+      }
+
+      // Check usage limits for regular users
+      const result = await firestoreService.checkMealPlanLimit(userId);
+      console.log('📊 Meal plan usage check result:', result);
+      if (result.success) {
+        setCanGenerate(result.canGenerate);
+        setUsageInfo({
+          planCount: result.planCount,
+          isPro: result.isPro,
+        });
+
+        console.log('📊 Meal plan usage:', {
+          canGenerate: result.canGenerate,
+          planCount: result.planCount,
+          isPro: result.isPro,
+        });
+      }
+    };
+
+    checkLimits();
+  }, []);
 
   const regions = [
     { value: '', label: 'Use my onboarding preference' },
@@ -45,7 +101,6 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value, 'input changed');
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -57,18 +112,29 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🆕 NEW: Block submission if user can't generate and is not a test account
+    if (!canGenerate && !isTestAccount) {
+      navigate('/coming-soon');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
-    // ========== RESET RAG METADATA ON NEW GENERATION ==========
-    setRagMetadata(null);
-    setPersonalizationSources(null);
-    // ==========================================================
-
     try {
-      // Extract profile data (handle nested structure)
       const profileData = userProfile?.profileData || userProfile || {};
+      const latestReport = useMealStore.getState().latestReport;
 
+      setLoading(true);
+      setError(null);
+
+      // ========== RESET RAG METADATA ON NEW GENERATION ==========
+      setRagMetadata(null);
+      setPersonalizationSources(null);
+      // ==========================================================
+
+      // Extract profile data (handle nested structure)
       // Debug logging
       console.log('🔍 User Profile:', userProfile);
       console.log('🔍 Profile Data:', profileData);
@@ -141,15 +207,25 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
       // ========================================================
 
       setMealPlan(response.data);
+      if (!isTestAccount) {
+        await firestoreService.incrementMealPlanUsage(userId);
+        setCanGenerate(false);
+        setUsageInfo((prev) => ({ ...prev, planCount: (prev?.planCount || 0) + 1 }));
+      }
       onGenerated();
     } catch (err) {
-      setError(err.message || 'Failed to generate meal plan');
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          'Failed to generate meal plan. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
   };
 
   // Count personalization sources for display
+  const latestReport = useMealStore.getState().latestReport;
   const displayPersonalizationSources = personalizationSources || {
     onboarding: !!(
       userProfile?.allergies?.length ||
@@ -161,8 +237,41 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
     rag: false,
   };
 
+  if (!canGenerate && !isRegenerating && !isTestAccount) {
+    return (
+      <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary bg-opacity-10 rounded-full mb-4">
+          <Crown className="text-primary" size={32} />
+        </div>
+        <h2 className="text-2xl font-bold text-primary mb-3">Upgrade to Sakhee Pro</h2>
+        <p className="text-gray-600 mb-6">
+          You've used your free meal plan! Upgrade to Sakhee Pro for unlimited meal plans.
+        </p>
+        <div className="bg-surface p-4 rounded-lg mb-6">
+          <p className="text-sm text-gray-700">
+            <strong>Your usage:</strong> {usageInfo?.planCount || 1} / 1 free meal plan used
+          </p>
+        </div>
+        <button
+          onClick={() => navigate('/coming-soon')}
+          className="px-6 py-3 bg-primary text-white rounded-lg font-bold hover:bg-secondary transition flex items-center gap-2 justify-center mx-auto"
+        >
+          <Crown size={20} />
+          Upgrade Now
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
+      {isTestAccount && (
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-sm text-yellow-800">
+            🧪 <strong>Test Account Mode:</strong> Usage limits bypassed
+          </p>
+        </div>
+      )}
       <h2 className="text-2xl font-bold text-primary mb-4">✨ Generate Your Meal Plan</h2>
       <p className="text-muted mb-6">
         Create a personalized, PCOS-friendly meal plan based on your preferences and health goals.
@@ -396,11 +505,15 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, latestReport }) =
         {/* Submit */}
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || (!canGenerate && !isTestAccount)}
           className="w-full py-3 bg-primary text-white rounded-lg font-bold hover:bg-secondary disabled:opacity-50 transition flex items-center justify-center gap-2"
         >
           {loading && <Loader className="animate-spin" size={20} />}
-          {loading ? 'Generating Your Personalized Plan...' : 'Generate Meal Plan'}
+          {loading
+            ? 'Generating Your Personalized Plan...'
+            : !canGenerate && !isTestAccount
+            ? 'Upgrade to Pro to Generate Meal Plans'
+            : 'Generate Meal Plan'}
         </button>
       </form>
 

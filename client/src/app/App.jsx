@@ -7,8 +7,7 @@ import ErrorBoundary from '../components/layout/ErrorBoundary';
 import LoadingSpinner from '../components/layout/LoadingSpinner';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import OnboardingRoute from '../components/auth/OnboardingRoute';
-
-// Lazy load pages
+import ComingSoonPage from '../pages/ComingSoonPage';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
 import OnboardingPage from '../pages/OnboardingPage';
@@ -37,6 +36,15 @@ function App() {
           <Routes>
             {/* Public Route */}
             <Route path="/login" element={<LoginPage />} />
+
+            <Route
+              path="/coming-soon"
+              element={
+                <ProtectedRoute>
+                  <ComingSoonPage />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Onboarding Route - Only accessible if NOT onboarded */}
             <Route

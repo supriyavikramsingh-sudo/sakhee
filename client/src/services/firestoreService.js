@@ -20,6 +20,124 @@ class FirestoreService {
   // USER PROFILE
   // ==========================================
 
+  async checkMealPlanLimit(userId) {
+    try {
+      const usageRef = doc(db, 'users', userId, 'mealPlanUsage', 'counter');
+
+      const usageDoc = await getDoc(usageRef);
+
+      if (!usageDoc.exists()) {
+        // First time user - can generate
+        return {
+          success: true,
+          canGenerate: true,
+          planCount: 0,
+          isPro: false,
+        };
+      }
+
+      const data = usageDoc.data();
+      const isPro = data.isPro || false;
+      const planCount = data.totalGenerated || 0;
+
+      // Pro users have unlimited plans
+      if (isPro) {
+        return {
+          success: true,
+          canGenerate: true,
+          planCount,
+          isPro: true,
+        };
+      }
+
+      // Free users: limit to 1 plan
+      const canGenerate = planCount < 1;
+
+      return {
+        success: true,
+        canGenerate,
+        planCount,
+        isPro: false,
+      };
+    } catch (error) {
+      console.error('Check meal plan limit error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+  /**
+   * Increment meal plan usage counter after successful generation
+   * @param {string} userId
+   */
+  async incrementMealPlanUsage(userId) {
+    try {
+      const usageRef = doc(db, 'users', userId, 'mealPlanUsage', 'counter');
+      const usageDoc = await getDoc(usageRef);
+
+      if (!usageDoc.exists()) {
+        // Create initial usage document
+        await setDoc(usageRef, {
+          totalGenerated: 1,
+          firstGeneratedAt: serverTimestamp(),
+          lastGeneratedAt: serverTimestamp(),
+          isPro: false,
+        });
+      } else {
+        // Increment existing counter
+        const currentCount = usageDoc.data().totalGenerated || 0;
+        await updateDoc(usageRef, {
+          totalGenerated: currentCount + 1,
+          lastGeneratedAt: serverTimestamp(),
+        });
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Increment meal plan usage error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Check if user is whitelisted for testing (bypass limits)
+   * @param {string} email
+   * @returns {boolean}
+   */
+  isTestAccount(email) {
+    // ⚠️ IMPORTANT: Add your test email here
+    const testEmails = ['supriyavikramsingh@gmail.com'];
+
+    return testEmails.includes(email.toLowerCase());
+  }
+
+  /**
+   * Get meal plan usage for a user
+   * @param {string} userId
+   */
+  async getMealPlanUsage(userId) {
+    try {
+      const usageRef = doc(db, 'users', userId, 'mealPlanUsage', 'counter');
+      const usageDoc = await getDoc(usageRef);
+
+      if (!usageDoc.exists()) {
+        return {
+          success: true,
+          data: {
+            totalGenerated: 0,
+            isPro: false,
+          },
+        };
+      }
+
+      return {
+        success: true,
+        data: usageDoc.data(),
+      };
+    } catch (error) {
+      console.error('Get meal plan usage error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
   async getUserProfile(userId) {
     try {
       const userRef = doc(db, 'users', userId);
