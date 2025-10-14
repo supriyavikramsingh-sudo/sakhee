@@ -1,11 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import QuestionField from './QuestionField';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
+const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({});
+
+  // ✅ Sync with initialData changes (for email auto-population)
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      ...initialData,
+    }));
+  }, [initialData]);
 
   const questions = {
     0: [
@@ -15,7 +23,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
         type: 'email',
         label: t('onboarding.email'),
         required: true,
-        placeholder: 'your@email.com',
+        helpText: 'Pre-filled from your Google account. You can edit if needed.',
       },
       {
         key: 'age',
@@ -112,6 +120,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
         type: 'checkbox',
         label: t('onboarding.primaryGoals'),
         required: true,
+        maxSelections: 2, // ✅ Limit to 2 goals
         options: [
           { value: 'regularize-periods', label: 'Regularize periods' },
           { value: 'weight-management', label: 'Weight management' },
@@ -178,7 +187,17 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
     onComplete(formData);
   };
 
-  const isValid = currentQuestions.filter((q) => q.required).every((q) => formData[q.key]);
+  // ✅ Updated validation to handle checkbox arrays properly
+  const isValid = currentQuestions
+    .filter((q) => q.required)
+    .every((q) => {
+      const value = formData[q.key];
+      // For checkbox fields, ensure at least one is selected
+      if (q.type === 'checkbox' && q.required) {
+        return Array.isArray(value) && value.length > 0;
+      }
+      return value;
+    });
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
