@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Calendar, Download, Share2, AlertCircle, Info } from 'lucide-react';
 import MealCard from './MealCard';
 import { jsPDF } from 'jspdf';
+import { replace } from 'react-router-dom';
 
 const MealPlanDisplay = ({ plan }) => {
   const [selectedDay, setSelectedDay] = useState(0);
@@ -87,19 +88,21 @@ const MealPlanDisplay = ({ plan }) => {
       <div className="grid md:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Duration</p>
-          <p className="text-2xl font-bold text-primary">{days.length} Days</p>
+          <p className="text-2xl font-bold text-primary">{days.length || '3'} Days</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Daily Budget</p>
-          <p className="text-2xl font-bold text-success">₹{plan.budget}</p>
+          <p className="text-2xl font-bold text-success">₹{plan.budget || '200'}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Diet Type</p>
-          <p className="text-lg font-bold capitalize">{plan.dietType}</p>
+          <p className="text-lg font-bold capitalize">{plan.dietType || 'Vegetarian'}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Region</p>
-          <p className="text-lg font-bold capitalize">{plan.region}</p>
+          <p className="text-lg font-bold capitalize">
+            {(plan.region || 'Indian').replace('-', ' ')}
+          </p>
         </div>
       </div>
 

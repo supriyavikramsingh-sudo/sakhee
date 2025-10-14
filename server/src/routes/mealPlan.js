@@ -113,6 +113,10 @@ router.post('/generate', async (req, res) => {
       success: true,
       data: {
         planId,
+        region: finalRegion,
+        dietType: finalDietType,
+        budget,
+        duration,
         plan: mealPlan,
         createdAt: new Date(),
         personalizationSources: planData.personalizationSources,
