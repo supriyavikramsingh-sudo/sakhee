@@ -19,7 +19,10 @@
     "lint": "npm run lint --workspace=client && npm run lint --workspace=server",
     "lint:fix": "npm run lint:fix --workspace=client && npm run lint:fix --workspace=server",
     "format": "prettier --write \"**/*.{js,jsx,json,css,md}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,json,css,md}\""
+    "format:check": "prettier --check \"**/*.{js,jsx,json,css,md}\"",
+    "test:vitest": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
     "concurrently": "^8.2.0",
