@@ -1,7 +1,4 @@
 // server/src/langchain/chains/chatChain.js
-// ✅ COMPLETE FIXED VERSION - All method calls corrected
-// Fixed: substring error, Reddit integration, SERP nutrition API
-
 import { ConversationChain } from 'langchain/chains';
 import { BufferMemory } from 'langchain/memory';
 import { PromptTemplate } from '@langchain/core/prompts';
@@ -10,12 +7,6 @@ import { retriever } from '../retriever.js';
 import { redditService } from '../../services/redditService.js';
 import { serpService } from '../../services/serpService.js';
 import { Logger } from '../../utils/logger.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const logger = new Logger('ChatChain');
 
@@ -25,10 +16,10 @@ class ChatChain {
       returnMessages: true,
       memoryKey: 'history',
     });
+  }
 
-    // Load system prompt with comprehensive instructions
-    const promptPath = path.join(__dirname, '../prompts/systemPrompt.md');
-    const defaultPrompt = `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women
+  get systemPrompt() {
+    return `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women.
 
 ## Your Core Role
 - Provide evidence-based, educational guidance on PCOS symptoms and lifestyle management
@@ -45,7 +36,7 @@ You have access to:
 
 ## CRITICAL: When Reddit Insights Are Provided
 
-When you see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the context:
+When you see "🔥 REAL REDDIT POSTS" in the context:
 - **YOU MUST reference specific post titles provided**
 - **YOU MUST include the direct Reddit links (🔗) in your response**
 - **DO NOT give generic advice about "searching Reddit" or "communities exist"**
@@ -111,86 +102,133 @@ Example of BAD response (NEVER do this):
 5. **Supportive closing**
 
 Remember: You're a companion, not a medical professional. Build trust through empathy, accuracy, and cultural sensitivity.`;
-
-    this.systemPrompt = fs.existsSync(promptPath)
-      ? fs.readFileSync(promptPath, 'utf-8')
-      : defaultPrompt;
   }
 
   /**
-   * Check if message needs Reddit community insights
+   * Detect if query needs community insights
    */
   needsCommunityInsights(message) {
-    const lowerMessage = message.toLowerCase();
     const triggers = [
-      'how are women',
-      'how do women',
-      'what do women',
-      'women dealing',
-      'women managing',
-      'women coping',
-      'community',
-      'others',
-      'real experiences',
-      'personal stories',
-      'success stories',
-      'tips from',
-      'advice from',
-      'hear from',
+      // Direct Reddit mentions
+      'reddit',
+      'reddit thread',
+      'subreddit',
+      'on reddit',
+
+      // Community experience queries
       'anyone else',
+      'am i the only one',
+      'others experience',
+      'other women',
+      'what do people',
+      'what do others',
+
+      // Validation seeking
+      'is this normal',
+      'is it common',
+      'typical',
+      'common',
+
+      // Success stories
+      'success stories',
+      'has anyone',
+      'anyone tried',
+
+      // Community discussions
+      'community',
+      'forum',
+      'discussion',
+      'what are people saying',
     ];
-    return triggers.some((trigger) => lowerMessage.includes(trigger));
+
+    return triggers.some((trigger) => message.toLowerCase().includes(trigger));
   }
 
   /**
-   * Check if message needs nutritional data
+   * Detect if query needs nutritional data
    */
   needsNutritionData(message) {
-    const lowerMessage = message.toLowerCase();
     const triggers = [
-      'nutrition',
-      'nutritional',
       'calories',
+      'nutrition',
       'protein',
       'carbs',
-      'carbohydrate',
       'fat',
-      'macro',
+      'nutritional value',
       'macros',
-      'vitamin',
-      'mineral',
-      'nutrient',
-      'food',
-      'diet',
-      'breakdown',
+      'how healthy is',
+      'nutrients',
+      'food comparison',
     ];
-    return triggers.some((trigger) => lowerMessage.includes(trigger));
+
+    return triggers.some((trigger) => message.toLowerCase().includes(trigger));
   }
 
   /**
-   * ✅ FIXED: Fetch Reddit context using correct method names
+   * Extract food items from message
+   */
+  extractFoodItems(message) {
+    // Simple extraction - can be improved with NER
+    const words = message.split(' ');
+    const potentialFoods = [];
+
+    // Look for common Indian foods
+    const commonFoods = [
+      'roti',
+      'rice',
+      'dal',
+      'chapati',
+      'idli',
+      'dosa',
+      'paneer',
+      'chicken',
+      'fish',
+      'egg',
+      'milk',
+      'apple',
+      'banana',
+      'orange',
+      'vegetables',
+    ];
+
+    words.forEach((word) => {
+      const normalized = word.toLowerCase().replace(/[^\w]/g, '');
+      if (commonFoods.includes(normalized)) {
+        potentialFoods.push(normalized);
+      }
+    });
+
+    return potentialFoods;
+  }
+
+  /**
+   * Fetch relevant Reddit insights
    */
   async fetchRedditContext(message) {
     try {
-      const keyword = this.extractKeyword(message);
-      if (!keyword) {
-        logger.warn('No keyword extracted for Reddit search');
-        return null;
+      // Extract topic from message (improved)
+      const topic = this.extractTopic(message);
+
+      // Use the full message as query for better matching
+      // This ensures we search for the actual question, not just extracted topic
+      const searchQuery = message.length > 100 ? topic || message.substring(0, 100) : message;
+
+      // Search with more results for better coverage
+      const insights = await redditService.searchPosts(
+        searchQuery,
+        10 // Fetch 10, will be filtered by relevance
+      );
+
+      if (insights.length === 0) {
+        logger.warn('No Reddit insights found', { searchQuery });
+
+        // Return a helpful message instead of null
+        return `No specific Reddit posts found for "${searchQuery}". This might be a less commonly discussed topic in the PCOS communities, or the search terms might be too specific. Consider asking about related topics or broader PCOS experiences.`;
       }
 
-      logger.info('Searching Reddit with keyword', { keyword });
+      logger.info(`Found ${insights.length} relevant Reddit insights`, { searchQuery });
 
-      // ✅ FIX: Use searchPosts (correct method name)
-      const insights = await redditService.searchPosts(keyword, 5);
-
-      if (!insights || insights.length === 0) {
-        logger.info('No Reddit insights found');
-        return null;
-      }
-
-      logger.info(`Found ${insights.length} Reddit insights`);
-
-      // ✅ FIX: Use formatInsightsForChat (correct method name)
+      // Format with more detail - show top 5
       return redditService.formatInsightsForChat(insights, 5);
     } catch (error) {
       logger.error('Failed to fetch Reddit context', { error: error.message });
@@ -199,41 +237,56 @@ Remember: You're a companion, not a medical professional. Build trust through em
   }
 
   /**
-   * ✅ FIXED: Fetch nutrition context using correct method name
+   * Fetch nutritional data
    */
   async fetchNutritionContext(message) {
     try {
       const foodItems = this.extractFoodItems(message);
+
       if (foodItems.length === 0) {
         return null;
       }
 
-      logger.info('Fetching nutrition data for foods', { foodItems });
-
-      // ✅ FIX: Use searchNutrition (correct method name)
+      // Fetch nutrition for first 2 food items
       const nutritionPromises = foodItems
-        .slice(0, 3)
-        .map((item) => serpService.searchNutrition(item));
+        .slice(0, 2)
+        .map((food) => serpService.searchNutrition(food));
 
       const nutritionData = await Promise.all(nutritionPromises);
 
       // Format for context
-      let formatted = '🥗 NUTRITIONAL INFORMATION:\n\n';
+      let formatted = '🥗 Nutritional Information:\n\n';
 
       nutritionData.forEach((data) => {
         if (data.found) {
-          formatted += `**${data.foodItem}** (per ${data.servingSize}):\n`;
-          formatted += `  • Calories: ${data.calories || 'N/A'} kcal\n`;
-          formatted += `  • Protein: ${data.protein || 'N/A'}g\n`;
-          formatted += `  • Carbs: ${data.carbs || 'N/A'}g\n`;
-          formatted += `  • Fat: ${data.fat || 'N/A'}g\n`;
-          if (data.fiber) formatted += `  • Fiber: ${data.fiber}g\n`;
-          if (data.sugar) formatted += `  • Sugar: ${data.sugar}g\n`;
-          formatted += `  • Source: ${data.source}\n\n`;
+          formatted += `${data.foodItem} (per ${data.servingSize}):\n`;
+          formatted += `  - Calories: ${data.calories || 'N/A'} kcal\n`;
+          formatted += `  - Protein: ${data.protein || 'N/A'}g\n`;
+          formatted += `  - Carbs: ${data.carbs || 'N/A'}g\n`;
+          formatted += `  - Fat: ${data.fat || 'N/A'}g\n`;
+          if (data.fiber) formatted += `  - Fiber: ${data.fiber}g\n`;
+          formatted += `  Source: ${data.source}\n\n`;
         }
       });
 
-      return formatted.length > 50 ? formatted : null;
+      const sources = [];
+
+      if (medicalDocs && medicalDocs.length > 0) {
+        sources.push({
+          type: 'medical',
+          count: medicalDocs.length,
+          documents: medicalDocs.slice(0, 3).map((doc) => {
+            // ✅ FIXED: Handle both property names with fallback
+            const text = doc.pageContent || doc.content || '';
+            return {
+              content: text.substring(0, 200),
+              metadata: doc.metadata || {},
+            };
+          }),
+        });
+      }
+
+      return formatted;
     } catch (error) {
       logger.error('Failed to fetch nutrition context', { error: error.message });
       return null;
@@ -241,106 +294,75 @@ Remember: You're a companion, not a medical professional. Build trust through em
   }
 
   /**
-   * Extract food items from message
+   * Extract main topic from message
    */
-  extractFoodItems(message) {
+  extractTopic(message) {
     const lowerMessage = message.toLowerCase();
 
-    // Indian foods commonly asked about
-    const indianFoods = [
-      'dal makhani',
-      'dal',
-      'rice',
-      'chapati',
-      'roti',
-      'paratha',
-      'naan',
-      'paneer',
-      'chicken',
-      'fish',
-      'egg',
-      'oats',
-      'quinoa',
-      'spinach',
-      'broccoli',
-      'rajma',
-      'chole',
-      'biryani',
-      'idli',
-      'dosa',
-      'sambar',
-      'upma',
-      'poha',
-      'khichdi',
-    ];
-
-    const foundFoods = indianFoods.filter((food) => lowerMessage.includes(food));
-
-    // Return unique foods, prioritize longer matches first
-    return [...new Set(foundFoods)].sort((a, b) => b.length - a.length);
-  }
-
-  /**
-   * Extract keyword for Reddit search
-   */
-  extractKeyword(message) {
-    const lowerMessage = message.toLowerCase();
-
-    // Multi-word keywords first (more specific)
-    const multiWordKeywords = [
+    // Enhanced keyword extraction with more PCOS topics
+    const keywords = [
+      // Symptoms
       'weight loss',
       'weight gain',
       'irregular periods',
-      'trying to conceive',
-      'insulin resistance',
-      'birth control',
-      'hair loss',
-      'mood swings',
-      'stress management',
-    ];
-
-    for (const keyword of multiWordKeywords) {
-      if (lowerMessage.includes(keyword)) {
-        return keyword;
-      }
-    }
-
-    // Single word keywords
-    const singleWordKeywords = [
+      'missing period',
       'acne',
       'hirsutism',
-      'fatigue',
+      'facial hair',
+      'hair loss',
+      'hair thinning',
+      'mood swings',
       'depression',
       'anxiety',
+      'fatigue',
+
+      // Medical
+      'insulin resistance',
       'metformin',
+      'birth control',
       'spironolactone',
       'inositol',
+      'spearmint tea',
       'supplements',
+
+      // Lifestyle
       'diet',
       'exercise',
       'workout',
       'fasting',
       'keto',
+      'low carb',
       'yoga',
+      'stress management',
+
+      // Fertility
       'fertility',
       'pregnancy',
+      'trying to conceive',
+      'ttc',
       'ovulation',
+      'getting pregnant',
+      'conceiving',
+
+      // General
       'diagnosis',
+      'doctor',
+      'treatment',
       'symptoms',
     ];
 
-    for (const keyword of singleWordKeywords) {
+    for (const keyword of keywords) {
       if (lowerMessage.includes(keyword)) {
         return keyword;
       }
     }
 
-    // Extract meaningful words if no keyword match
+    // If no keyword match, extract key nouns (simple approach)
     const words = message.split(' ');
     for (const word of words) {
       if (
         word.length > 5 &&
-        !['which', 'about', 'reddit', 'threads', 'women', 'dealing'].includes(word.toLowerCase())
+        !['which', 'about', 'reddit', 'threads'].includes(word.toLowerCase())
       ) {
         return word.toLowerCase();
       }
@@ -371,22 +393,6 @@ Remember: You're a companion, not a medical professional. Build trust through em
     ];
 
     return healthKeywords.some((keyword) => message.toLowerCase().includes(keyword));
-  }
-
-  /**
-   * ✅ FIXED: Safe extraction of content from documents
-   */
-  safeExtractContent(doc, maxLength = 200) {
-    const content = doc?.pageContent || doc?.content || '';
-    const text = typeof content === 'string' ? content : String(content);
-    return text.substring(0, maxLength);
-  }
-
-  /**
-   * ✅ FIXED: Safe metadata extraction
-   */
-  safeExtractMetadata(doc) {
-    return doc?.metadata || {};
   }
 
   /**
@@ -482,16 +488,16 @@ Assistant:`);
           '\n\n💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
       }
 
-      // ✅ FIXED Step 9: Compile sources with defensive programming
+      // Step 9: Compile sources
       const sources = [];
 
-      if (medicalDocs && Array.isArray(medicalDocs) && medicalDocs.length > 0) {
+      if (medicalDocs && medicalDocs.length > 0) {
         sources.push({
           type: 'medical',
           count: medicalDocs.length,
           documents: medicalDocs.slice(0, 3).map((doc) => ({
-            content: this.safeExtractContent(doc, 200),
-            metadata: this.safeExtractMetadata(doc),
+            content: doc.pageContent.substring(0, 200),
+            metadata: doc.metadata,
           })),
         });
       }
@@ -520,7 +526,7 @@ Assistant:`);
         },
       };
     } catch (error) {
-      logger.error('Chat processing failed', { error: error.message, stack: error.stack });
+      logger.error('Chat processing failed', { error: error.message });
       throw error;
     }
   }
