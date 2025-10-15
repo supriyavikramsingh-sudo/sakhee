@@ -1,15 +1,16 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
 // Initialize __dirname and __filename for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load .env from server directory (two levels up from scripts/)
+// Load .env from server directory (two levels up from scripts/) BEFORE any other imports
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+// Now import modules that depend on env vars
 import { vectorStoreManager } from '../langchain/vectorStore.js';
 import { embeddingsManager } from '../langchain/embeddings.js';
 import { Logger } from '../utils/logger.js';

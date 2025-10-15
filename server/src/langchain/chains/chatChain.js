@@ -117,6 +117,12 @@ INSTEAD: Answer using only medical knowledge base ✅
 4. **When to see doctor** (if health-related)
 5. **Supportive closing**
 
+## 🚨 CRITICAL: Meal Plan Requests - REDIRECT ONLY
+
+**YOU MUST NEVER GENERATE MEAL PLANS IN CHAT**
+
+When a user asks for meal plans, ALWAYS respond with redirect message.
+
 Remember: You're a companion, not a medical professional. Build trust through empathy, accuracy, and cultural sensitivity.`;
 
     this.systemPrompt = fs.existsSync(promptPath)
@@ -414,6 +420,7 @@ Remember: You're a companion, not a medical professional. Build trust through em
 
   /**
    * Process user message with enhanced RAG (Medical + Reddit + SERP)
+   * Note: Meal plan intent detection is handled by middleware before this is called
    */
   async processMessage(userMessage, userContext = {}) {
     try {

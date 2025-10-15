@@ -4,6 +4,7 @@ import { useChatStore } from '../../store';
 import apiClient from '../../services/apiClient';
 import MessageBubble from './MessageBubble';
 import SourceCitations from './SourceCitations';
+import MealPlanRedirectCard from './MealPlanRedirectCard';
 import { Send, Plus, Loader } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { firestoreService } from '../../services/firestoreService';
@@ -18,6 +19,8 @@ const ChatInterface = ({ userProfile, userId }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  console.log('Messages in ChatInterface:', messages);
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -28,17 +31,18 @@ const ChatInterface = ({ userProfile, userId }) => {
     if (!input.trim()) return;
 
     // Add user message to UI
+    const userTimestamp = Date.now();
     addMessage({
-      id: Date.now(),
+      id: userTimestamp,
       type: 'user',
       content: input,
-      timestamp: new Date(),
+      timestamp: userTimestamp,
     });
 
     await firestoreService.saveChatMessage(user.uid, {
       type: 'user',
       content: input,
-      timestamp: new Date(),
+      timestamp: userTimestamp,
     });
 
     setInput('');
@@ -46,6 +50,7 @@ const ChatInterface = ({ userProfile, userId }) => {
 
     try {
       // Send to backend
+      console.log('Sending message to backend...', { userId, userProfile });
       const response = await apiClient.chat(input, {
         userId,
         age: userProfile?.age,
@@ -54,29 +59,66 @@ const ChatInterface = ({ userProfile, userId }) => {
         goals: userProfile?.goals,
       });
 
+      console.log('Backend response structure:', response);
+      console.log('Response data:', response.data);
+
+      // Check if this is a meal plan redirect response
+      if (response.data?.type === 'MEAL_PLAN_REDIRECT') {
+        console.log('Meal plan redirect detected');
+        const redirectTimestamp = Date.now();
+        // Add a special message for meal plan redirect
+        addMessage({
+          id: redirectTimestamp,
+          type: 'meal_plan_redirect',
+          content: response.data.message,
+          redirectData: response.data,
+          timestamp: redirectTimestamp,
+        });
+
+        await firestoreService.saveChatMessage(user.uid, {
+          type: 'meal_plan_redirect',
+          content: response.data.message,
+          redirectData: response.data,
+          timestamp: redirectTimestamp,
+        });
+
+        setLoading(false);
+        return;
+      }
+
+      console.log('Message content:', response.data?.message?.response);
+
+      // Check if we have a valid response
+      if (!response.data?.message?.response) {
+        throw new Error('Invalid response structure from server');
+      }
+
+      const assistantTimestamp = Date.now();
+
       await firestoreService.saveChatMessage(user.uid, {
         type: 'assistant',
         content: response.data.message.response,
-        timestamp: new Date(),
+        timestamp: assistantTimestamp,
       });
 
       // Add assistant message
       addMessage({
-        id: Date.now() + 1,
+        id: assistantTimestamp,
         type: 'assistant',
         content: response.data.message.response,
         sources: response.data?.sources,
         requiresDoctor: response.data?.requiresDoctor,
         severity: response.data?.severity,
-        timestamp: new Date(),
+        timestamp: assistantTimestamp,
       });
     } catch (error) {
       console.error('Failed to send message:', error);
+      console.error('Error details:', error.message, error.stack);
       addMessage({
-        id: Date.now() + 1,
+        id: Date.now(),
         type: 'error',
         content: t('chat.errorMessage'),
-        timestamp: new Date(),
+        timestamp: Date.now(),
       });
     } finally {
       setLoading(false);
@@ -102,7 +144,6 @@ const ChatInterface = ({ userProfile, userId }) => {
                 <p className="font-bold text-sm mb-3">💡 {t('chat.tips')}:</p>
                 <ul className="text-sm text-muted space-y-2">
                   <li>✓ Ask about PCOS symptoms</li>
-                  <li>✓ Request meal suggestions</li>
                   <li>✓ Discuss lifestyle tips</li>
                   <li>✓ Share your health concerns</li>
                 </ul>
@@ -113,8 +154,16 @@ const ChatInterface = ({ userProfile, userId }) => {
           messages.map((msg, idx) => {
             return (
               <div key={msg.id}>
-                <MessageBubble message={msg} />
-                {msg.sources && msg.sources.length > 0 && <SourceCitations sources={msg.sources} />}
+                {msg.type === 'meal_plan_redirect' ? (
+                  <MealPlanRedirectCard data={msg.redirectData} />
+                ) : (
+                  <>
+                    <MessageBubble message={msg} />
+                    {msg.sources && msg.sources.length > 0 && (
+                      <SourceCitations sources={msg.sources} />
+                    )}
+                  </>
+                )}
               </div>
             );
           })

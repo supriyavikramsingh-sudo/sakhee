@@ -1,42 +1,46 @@
-import axios from 'axios'
-import config from '../config'
+import axios from 'axios';
+import config from '../config';
 
 const axiosInstance = axios.create({
   baseURL: config.API_BASE_URL,
   // timeout: config.API_TIMEOUT,
   headers: {
-    'Content-Type': 'application/json'
-  }
-})
+    'Content-Type': 'application/json',
+  },
+});
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (request) => {
     // Add auth token if available
-    const token = localStorage.getItem('authToken')
+    const token = localStorage.getItem('authToken');
     if (token) {
-      request.headers.Authorization = `Bearer ${token}`
+      request.headers.Authorization = `Bearer ${token}`;
     }
-    return request
+    return request;
   },
   (error) => Promise.reject(error)
-)
+);
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    console.log('Axios interceptor - raw response:', response);
+    console.log('Axios interceptor - response.data:', response.data);
+    return response.data;
+  },
   (error) => {
-    const message = error.response?.data?.error?.message || error.message
-    console.error('API Error:', message)
-    return Promise.reject(new Error(message))
+    const message = error.response?.data?.error?.message || error.message;
+    console.error('API Error:', message);
+    return Promise.reject(new Error(message));
   }
-)
+);
 
 export const apiClient = {
   // ============================================
   // CHAT ENDPOINTS
   // ============================================
-  
+
   /**
    * Send a chat message
    * @param {string} message - User message
@@ -45,17 +49,20 @@ export const apiClient = {
    */
   chat: async (message, context = {}) => {
     try {
+      console.log('Sending chat message:', { message, context });
       const response = await axiosInstance.post('/chat/message', {
         message,
         userId: context.userId,
-        userContext: context
-      })
-      return response
+        userContext: context,
+      });
+      console.log('Chat response received:', response);
+      return response;
     } catch (error) {
+      console.error('Chat API error:', error);
       if (error.response?.status === 429) {
-        throw new Error('Too many requests. Please wait a moment.')
+        throw new Error('Too many requests. Please wait a moment.');
       }
-      throw error
+      throw error;
     }
   },
 
@@ -66,11 +73,11 @@ export const apiClient = {
    */
   getChatHistory: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/chat/history/${userId}`)
-      return response
+      const response = await axiosInstance.get(`/chat/history/${userId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get chat history:', error)
-      throw error
+      console.error('Failed to get chat history:', error);
+      throw error;
     }
   },
 
@@ -81,18 +88,18 @@ export const apiClient = {
    */
   clearChatHistory: async (userId) => {
     try {
-      const response = await axiosInstance.delete(`/chat/history/${userId}`)
-      return response
+      const response = await axiosInstance.delete(`/chat/history/${userId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to clear chat history:', error)
-      throw error
+      console.error('Failed to clear chat history:', error);
+      throw error;
     }
   },
 
   // ============================================
   // MEAL PLANNING ENDPOINTS
   // ============================================
-  
+
   /**
    * Generate a personalized meal plan
    * @param {object} preferences - Meal preferences
@@ -100,11 +107,11 @@ export const apiClient = {
    */
   generateMealPlan: async (preferences) => {
     try {
-      const response = await axiosInstance.post('/meals/generate', preferences)
-      return response
+      const response = await axiosInstance.post('/meals/generate', preferences);
+      return response;
     } catch (error) {
-      console.error('Failed to generate meal plan:', error)
-      throw error
+      console.error('Failed to generate meal plan:', error);
+      throw error;
     }
   },
 
@@ -115,11 +122,11 @@ export const apiClient = {
    */
   getMealPlan: async (planId) => {
     try {
-      const response = await axiosInstance.get(`/meals/${planId}`)
-      return response
+      const response = await axiosInstance.get(`/meals/${planId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get meal plan:', error)
-      throw error
+      console.error('Failed to get meal plan:', error);
+      throw error;
     }
   },
 
@@ -130,11 +137,11 @@ export const apiClient = {
    */
   getUserMealPlans: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/meals/user/${userId}`)
-      return response
+      const response = await axiosInstance.get(`/meals/user/${userId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get user meal plans:', error)
-      throw error
+      console.error('Failed to get user meal plans:', error);
+      throw error;
     }
   },
 
@@ -146,11 +153,11 @@ export const apiClient = {
    */
   updateMealPlan: async (planId, data) => {
     try {
-      const response = await axiosInstance.put(`/meals/${planId}`, data)
-      return response
+      const response = await axiosInstance.put(`/meals/${planId}`, data);
+      return response;
     } catch (error) {
-      console.error('Failed to update meal plan:', error)
-      throw error
+      console.error('Failed to update meal plan:', error);
+      throw error;
     }
   },
 
@@ -161,18 +168,18 @@ export const apiClient = {
    */
   deleteMealPlan: async (planId) => {
     try {
-      const response = await axiosInstance.delete(`/meals/${planId}`)
-      return response
+      const response = await axiosInstance.delete(`/meals/${planId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to delete meal plan:', error)
-      throw error
+      console.error('Failed to delete meal plan:', error);
+      throw error;
     }
   },
 
   // ============================================
   // ONBOARDING ENDPOINTS
   // ============================================
-  
+
   /**
    * Start onboarding process
    * @param {object} data - Initial user data
@@ -180,11 +187,11 @@ export const apiClient = {
    */
   startOnboarding: async (data) => {
     try {
-      const response = await axiosInstance.post('/onboarding/start', data)
-      return response
+      const response = await axiosInstance.post('/onboarding/start', data);
+      return response;
     } catch (error) {
-      console.error('Failed to start onboarding:', error)
-      throw error
+      console.error('Failed to start onboarding:', error);
+      throw error;
     }
   },
 
@@ -197,14 +204,14 @@ export const apiClient = {
    */
   saveOnboardingStep: async (userId, stepNumber, data) => {
     try {
-      const response = await axiosInstance.post(
-        `/onboarding/${userId}/save-step`,
-        { stepNumber, data }
-      )
-      return response
+      const response = await axiosInstance.post(`/onboarding/${userId}/save-step`, {
+        stepNumber,
+        data,
+      });
+      return response;
     } catch (error) {
-      console.error('Failed to save onboarding step:', error)
-      throw error
+      console.error('Failed to save onboarding step:', error);
+      throw error;
     }
   },
 
@@ -216,14 +223,11 @@ export const apiClient = {
    */
   completeOnboarding: async (userId, finalData) => {
     try {
-      const response = await axiosInstance.post(
-        `/onboarding/${userId}/complete`,
-        { finalData }
-      )
-      return response
+      const response = await axiosInstance.post(`/onboarding/${userId}/complete`, { finalData });
+      return response;
     } catch (error) {
-      console.error('Failed to complete onboarding:', error)
-      throw error
+      console.error('Failed to complete onboarding:', error);
+      throw error;
     }
   },
 
@@ -234,18 +238,18 @@ export const apiClient = {
    */
   getUserProfile: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/onboarding/${userId}`)
-      return response
+      const response = await axiosInstance.get(`/onboarding/${userId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get user profile:', error)
-      throw error
+      console.error('Failed to get user profile:', error);
+      throw error;
     }
   },
 
   // ============================================
   // PROGRESS TRACKING ENDPOINTS (Placeholder)
   // ============================================
-  
+
   /**
    * Get user progress
    * @param {string} userId - User ID
@@ -253,11 +257,11 @@ export const apiClient = {
    */
   getProgress: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/progress/${userId}`)
-      return response
+      const response = await axiosInstance.get(`/progress/${userId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get progress:', error)
-      throw error
+      console.error('Failed to get progress:', error);
+      throw error;
     }
   },
 
@@ -269,18 +273,18 @@ export const apiClient = {
    */
   updateProgress: async (userId, data) => {
     try {
-      const response = await axiosInstance.put(`/progress/${userId}`, data)
-      return response
+      const response = await axiosInstance.put(`/progress/${userId}`, data);
+      return response;
     } catch (error) {
-      console.error('Failed to update progress:', error)
-      throw error
+      console.error('Failed to update progress:', error);
+      throw error;
     }
   },
 
   // ============================================
   // FILE UPLOAD ENDPOINTS (Placeholder)
   // ============================================
-  
+
   /**
    * Upload file (medical report)
    * @param {File} file - File to upload
@@ -289,24 +293,24 @@ export const apiClient = {
    */
   uploadFile: async (file, userId) => {
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('userId', userId)
-      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', userId);
+
       const response = await axiosInstance.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      return response
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response;
     } catch (error) {
-      console.error('Failed to upload file:', error)
-      throw error
+      console.error('Failed to upload file:', error);
+      throw error;
     }
   },
 
   // ============================================
   // COMMUNITY INSIGHTS ENDPOINTS (Placeholder)
   // ============================================
-  
+
   /**
    * Get Reddit insights for a topic
    * @param {string} topic - Topic to search
@@ -314,127 +318,127 @@ export const apiClient = {
    */
   getRedditInsights: async (topic) => {
     try {
-      const response = await axiosInstance.get(`/community/reddit/${topic}`)
-      return response
+      const response = await axiosInstance.get(`/community/reddit/${topic}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get Reddit insights:', error)
-      throw error
+      console.error('Failed to get Reddit insights:', error);
+      throw error;
     }
   },
 
   // ============================================
   // HEALTH CHECK
   // ============================================
-  
+
   /**
    * Check API health
    * @returns {Promise<object>} Health status
    */
   health: async () => {
     try {
-      const response = await axiosInstance.get('/health')
-      return response
+      const response = await axiosInstance.get('/health');
+      return response;
     } catch (error) {
-      console.error('Health check failed:', error)
-      throw error
+      console.error('Health check failed:', error);
+      throw error;
     }
   },
 
   uploadFile: async (file, userId) => {
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('userId', userId)
-      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', userId);
+
       const response = await axiosInstance.post('/upload/report', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      return response
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response;
     } catch (error) {
-      console.error('Failed to upload file:', error)
-      throw error
+      console.error('Failed to upload file:', error);
+      throw error;
     }
   },
 
   getReport: async (reportId) => {
     try {
-      const response = await axiosInstance.get(`/upload/report/${reportId}`)
-      return response
+      const response = await axiosInstance.get(`/upload/report/${reportId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to get report:', error)
-      throw error
+      console.error('Failed to get report:', error);
+      throw error;
     }
   },
 
   getUserReports: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/upload/user/${userId}/reports`)
-      return response
+      const response = await axiosInstance.get(`/upload/user/${userId}/reports`);
+      return response;
     } catch (error) {
-      console.error('Failed to get user reports:', error)
-      throw error
+      console.error('Failed to get user reports:', error);
+      throw error;
     }
   },
 
   deleteReport: async (reportId) => {
     try {
-      const response = await axiosInstance.delete(`/upload/report/${reportId}`)
-      return response
+      const response = await axiosInstance.delete(`/upload/report/${reportId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to delete report:', error)
-      throw error
+      console.error('Failed to delete report:', error);
+      throw error;
     }
   },
   logProgress: async (userId, data) => {
     try {
-      const response = await axiosInstance.post(`/progress/${userId}/log`, data)
-      return response
+      const response = await axiosInstance.post(`/progress/${userId}/log`, data);
+      return response;
     } catch (error) {
-      console.error('Failed to log progress:', error)
-      throw error
+      console.error('Failed to log progress:', error);
+      throw error;
     }
   },
 
   getProgress: async (userId, params = {}) => {
     try {
-      const response = await axiosInstance.get(`/progress/${userId}`, { params })
-      return response
+      const response = await axiosInstance.get(`/progress/${userId}`, { params });
+      return response;
     } catch (error) {
-      console.error('Failed to get progress:', error)
-      throw error
+      console.error('Failed to get progress:', error);
+      throw error;
     }
   },
 
   updateProgressEntry: async (userId, entryId, data) => {
     try {
-      const response = await axiosInstance.put(`/progress/${userId}/entry/${entryId}`, data)
-      return response
+      const response = await axiosInstance.put(`/progress/${userId}/entry/${entryId}`, data);
+      return response;
     } catch (error) {
-      console.error('Failed to update entry:', error)
-      throw error
+      console.error('Failed to update entry:', error);
+      throw error;
     }
   },
 
   deleteProgressEntry: async (userId, entryId) => {
     try {
-      const response = await axiosInstance.delete(`/progress/${userId}/entry/${entryId}`)
-      return response
+      const response = await axiosInstance.delete(`/progress/${userId}/entry/${entryId}`);
+      return response;
     } catch (error) {
-      console.error('Failed to delete entry:', error)
-      throw error
+      console.error('Failed to delete entry:', error);
+      throw error;
     }
   },
 
   setGoals: async (userId, goals) => {
     try {
-      const response = await axiosInstance.post(`/progress/${userId}/goals`, { goals })
-      return response
+      const response = await axiosInstance.post(`/progress/${userId}/goals`, { goals });
+      return response;
     } catch (error) {
-      console.error('Failed to set goals:', error)
-      throw error
+      console.error('Failed to set goals:', error);
+      throw error;
     }
-  }
-}
+  },
+};
 
 // Default export
-export default apiClient
+export default apiClient;
