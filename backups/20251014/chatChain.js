@@ -43,7 +43,9 @@ When you see "🔥 REAL REDDIT POSTS" in the context:
 - **SUMMARIZE actual content from the Reddit posts shown**
 - **Quote relevant experiences** (without usernames - they're already removed)
 - **Cite which subreddit** each discussion is from (r/PCOS, r/PCOSIndia, etc.)
-- **Make it conversational and relatable**, not robotic
+- **Make it conversational and relatable, not robotic**
+- ** Don't provide Reddit insights if the Reddit API has not been called or has failed to generate a response.**
+- **ALWAYS share real Reddit links when available.** Never make up links or say "check Reddit" without specifics.
 
 LINK FORMAT: Include links like this in your response:
 - "In this post on r/PCOS: [post title](reddit_url)"

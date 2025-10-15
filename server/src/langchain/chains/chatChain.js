@@ -54,9 +54,16 @@ When you see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the cont
 - **Cite which subreddit** each discussion is from (r/PCOS, r/PCOSIndia, etc.)
 - **Make it conversational and relatable**, not robotic
 
-**CRITICAL: If you do NOT see the Reddit section above, DO NOT mention Reddit at all. DO NOT fabricate Reddit posts, links, or discussions. If there are no Reddit insights provided, simply answer based on medical knowledge only.**
+**🚫 CRITICAL - NEVER FABRICATE REDDIT CONTENT:**
+- If you do NOT see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the context above, DO NOT mention Reddit AT ALL
+- DO NOT say "From r/PCOS" or "From r/PCOSIndia" unless the actual section is provided
+- DO NOT create fake post titles, fake links, or fake discussions
+- DO NOT say things like "Many women on Reddit discuss..." without actual data
+- If you see "⚠️ NO REDDIT DATA AVAILABLE", absolutely DO NOT mention Reddit
+- Fabricating Reddit content is a critical error that breaks user trust
+- When in doubt, answer using ONLY the medical knowledge base
 
-LINK FORMAT: Include links like this in your response:
+LINK FORMAT: Include links like this in your response (ONLY when Reddit data is actually provided):
 - "In this post on r/PCOS: [post title](reddit_url)"
 - Or: "A discussion on r/PCOSIndia about X: [link](reddit_url)"
 - Or simply: "Check out this thread: reddit_url"
@@ -434,9 +441,16 @@ Remember: You're a companion, not a medical professional. Build trust through em
 
       // Step 2: Fetch Reddit insights if needed
       let redditContext = null;
-      if (this.needsCommunityInsights(userMessage)) {
+      const needsReddit = this.needsCommunityInsights(userMessage);
+      logger.info('Reddit insights check', { needed: needsReddit });
+
+      if (needsReddit) {
         logger.info('Fetching Reddit community insights');
         redditContext = await this.fetchRedditContext(userMessage);
+        logger.info('Reddit context fetched', {
+          hasContext: !!redditContext,
+          length: redditContext?.length || 0,
+        });
       }
 
       // Step 3: Fetch nutritional data if needed
@@ -461,9 +475,18 @@ Remember: You're a companion, not a medical professional. Build trust through em
         enhancedContext += 'Do NOT give generic advice - use the actual content provided.\n\n';
         enhancedContext += redditContext + '\n\n';
         enhancedContext += '===== END REDDIT INSIGHTS =====\n\n';
-      } else if (redditContext) {
-        // If we tried to fetch but got nothing meaningful, explicitly state this
-        logger.warn('Reddit context too short or empty, not including in prompt');
+      } else {
+        // ⚠️ CRITICAL FIX: ALWAYS warn against Reddit fabrication when no data available
+        // This prevents hallucination even when needsCommunityInsights() returns false
+        enhancedContext += '\n🚫 CRITICAL INSTRUCTION - NO REDDIT DATA AVAILABLE:\n';
+        enhancedContext += '• You do NOT have any Reddit data for this query\n';
+        enhancedContext += '• Do NOT mention "Reddit", "r/PCOS", "r/PCOSIndia", or any subreddit\n';
+        enhancedContext +=
+          '• Do NOT say "From r/PCOS" or "community members said" or similar phrases\n';
+        enhancedContext += '• Do NOT create fake post titles, fake discussions, or fake links\n';
+        enhancedContext += '• Answer ONLY using the medical knowledge base provided above\n';
+        enhancedContext += "• If you don't have enough information, say so honestly\n\n";
+        logger.info('No Reddit data available - added explicit anti-fabrication warning');
         redditContext = null; // Clear it so we don't add disclaimer
       }
 
