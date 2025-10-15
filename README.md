@@ -967,3 +967,25 @@ For questions, issues, or suggestions:
 ---
 
 **Made with ❤️ for women managing PCOS**
+
+### New in v1.2.0
+
+Small maintenance and UX improvements landed after v1.1.0 to make the chat + meal planning flows safer, more robust and more user-friendly:
+
+- Chat -> Meal Plan redirect (server + client)
+  - Added middleware on the chat route to detect meal-plan requests and block them from invoking the LLM. Instead the server returns a structured `MEAL_PLAN_REDIRECT` response. This protects against the LLM generating free-form meal plans in chat and keeps meal plan generation scoped to the dedicated Meal Plan Generator.
+  - Frontend now displays a dedicated `MealPlanRedirectCard` when the redirect response is returned. The card includes CTA, short features list, help text and an action URL to the meal planner.
+
+- UI / content tweaks for the redirect card
+  - The phrase "Meal Plan Generator" is now rendered as bold in the redirect message (HTML-safe rendering with controlled styling).
+  - Updated feature copy shown on the card (3/5/7-day options and ingredient/substitution details).
+
+- Chat timestamp handling
+  - Messages now display reliable timestamps across environments. The chat bubble rendering code was hardened to accept Firestore Timestamp objects, objects with `seconds`, ISO strings and unix timestamps so "Invalid Date" no longer appears.
+
+- Miscellaneous bug fixes and stability improvements
+  - Fixed incorrect user id usage in the chat page (use `user.uid` instead of `user.id`) so requests and history load correctly.
+  - Fixed `dotenv` import/path issues used by ingestion scripts (ensures `.env` loads correctly when running ingestion from the project root).
+  - Added helpful debug logging in a few client modules to make API troubleshooting easier during development.
+
+These changes aim to make the experience safer (no ad-hoc meal plans from chat), clearer for users, and easier to debug for developers. If you'd like, I can also add a small note in the Contributing section about where to find the `mealPlanIntentDetector` middleware and `MealPlanRedirectCard` component.
