@@ -5,28 +5,42 @@ import apiClient from '../../services/apiClient';
 import MessageBubble from './MessageBubble';
 import SourceCitations from './SourceCitations';
 import MealPlanRedirectCard from './MealPlanRedirectCard';
-import { Send, Plus, Loader } from 'lucide-react';
+import { Send, Plus, Loader, ChevronUp } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { firestoreService } from '../../services/firestoreService';
 
 const ChatInterface = ({ userProfile, userId }) => {
   const { t } = useTranslation();
-  const { messages, addMessage, setLoading, isLoading } = useChatStore();
+  const {
+    messages,
+    addMessage,
+    setLoading,
+    isLoading,
+    loadHistory,
+    loadMoreMessages,
+    hasMoreMessages,
+  } = useChatStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const { user } = useAuthStore();
+  const hasLoadedHistory = useRef(false);
+  const isLoadingOlderMessages = useRef(false);
+
   console.log('ChatInterface rendered with messages:', messages);
+
   useEffect(() => {
     const loadChatHistory = async () => {
-      if (!user?.uid) return;
+      if (!user?.uid || hasLoadedHistory.current) return;
 
       try {
         const result = await firestoreService.getChatHistory(user.uid);
         console.log('Chat history loaded:', result);
 
         if (result.success && result.data && Array.isArray(result.data)) {
-          // Load all messages at once instead of adding one by one
-          result.data.forEach((msg) => addMessage(msg));
+          // Load all messages at once using loadHistory instead of adding one by one
+          loadHistory(result.data);
+          hasLoadedHistory.current = true;
         }
       } catch (error) {
         console.error('Failed to load chat history:', error);
@@ -34,14 +48,20 @@ const ChatInterface = ({ userProfile, userId }) => {
     };
 
     loadChatHistory();
-  }, [user.uid]);
+  }, [user?.uid, loadHistory]);
 
   useEffect(() => {
-    const scrollToBottom = () => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    // Only scroll to bottom if we're not loading older messages
+    if (!isLoadingOlderMessages.current) {
+      const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      };
 
-    scrollToBottom();
+      scrollToBottom();
+    }
+
+    // Reset the flag after scrolling logic
+    isLoadingOlderMessages.current = false;
   }, [messages]);
 
   const handleSendMessage = async (e) => {
@@ -148,10 +168,31 @@ const ChatInterface = ({ userProfile, userId }) => {
     }
   };
 
+  const handleLoadMore = () => {
+    // Set flag to prevent auto-scroll to bottom
+    isLoadingOlderMessages.current = true;
+
+    // Save current scroll position
+    const container = messagesContainerRef.current;
+    const scrollHeightBefore = container?.scrollHeight || 0;
+    const scrollTopBefore = container?.scrollTop || 0;
+
+    loadMoreMessages();
+
+    // Restore scroll position after new messages are loaded
+    setTimeout(() => {
+      if (container) {
+        const scrollHeightAfter = container.scrollHeight;
+        const heightDifference = scrollHeightAfter - scrollHeightBefore;
+        container.scrollTop = scrollTopBefore + heightDifference;
+      }
+    }, 0);
+  };
+
   return (
     <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4 py-8">
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto space-y-6 mb-8 min-h-96">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-6 mb-8 min-h-96">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
@@ -168,22 +209,37 @@ const ChatInterface = ({ userProfile, userId }) => {
             </div>
           </div>
         ) : (
-          messages.map((msg, idx) => {
-            return (
-              <div key={idx}>
-                {msg.type === 'meal_plan_redirect' ? (
-                  <MealPlanRedirectCard data={msg.redirectData} />
-                ) : (
-                  <>
-                    <MessageBubble message={msg} />
-                    {msg.sources && msg.sources.length > 0 && (
-                      <SourceCitations sources={msg.sources} />
-                    )}
-                  </>
-                )}
+          <>
+            {/* Load More Button */}
+            {hasMoreMessages && (
+              <div className="flex justify-center mb-4">
+                <button
+                  onClick={handleLoadMore}
+                  className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-primary hover:text-white text-gray-700 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <ChevronUp size={16} />
+                  <span className="text-sm font-medium">Load older messages</span>
+                </button>
               </div>
-            );
-          })
+            )}
+
+            {messages.map((msg, idx) => {
+              return (
+                <div key={msg.id || idx}>
+                  {msg.type === 'meal_plan_redirect' ? (
+                    <MealPlanRedirectCard data={msg.redirectData} />
+                  ) : (
+                    <>
+                      <MessageBubble message={msg} />
+                      {msg.sources && msg.sources.length > 0 && (
+                        <SourceCitations sources={msg.sources} />
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </>
         )}
 
         {isLoading && (
