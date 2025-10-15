@@ -989,3 +989,44 @@ Small maintenance and UX improvements landed after v1.1.0 to make the chat + mea
   - Added helpful debug logging in a few client modules to make API troubleshooting easier during development.
 
 These changes aim to make the experience safer (no ad-hoc meal plans from chat), clearer for users, and easier to debug for developers. If you'd like, I can also add a small note in the Contributing section about where to find the `mealPlanIntentDetector` middleware and `MealPlanRedirectCard` component.
+
+### New in v1.3.0
+
+Significant feature and stability improvements landed in v1.3.0 focused on nutrition accuracy, UX polishing, and robustness across the chat + meal planning flows.
+
+- Calories everywhere
+  - LLM prompt and validation updated so each generated meal now includes a calorie estimate (kcal). The prompt enforces calories using the formula: (protein × 4) + (carbs × 4) + (fats × 9).
+  - Server-side fallback and repair now calculate calories when the model omits them.
+  - Hardcoded fallback templates were updated to include calories.
+
+- Daily 2000 kcal enforcement
+  - New requirement: each day's meals are validated and adjusted to target ~2000 kcal (acceptable range 1900–2100 kcal).
+  - Implementation details: `validateAndAdjustCalories()` scales macros proportionally and performs a fine-tune pass to hit the daily target while preserving PCOS-friendly ratios.
+  - Fallback plan generation also scales templates to meet the daily calorie target when RAG is unavailable.
+
+- Frontend: Meal UI and transparency
+  - `MealCard` now displays Calories alongside Protein / Carbs / Fats in the nutrition grid. If calories are missing, the UI computes them from macros as a fallback.
+  - `MealPlanDisplay` shows a clear disclaimer about the baseline assumptions used for calorie calculations (moderately active adult woman, ~5'2"–5'4", 56 kg).
+  - PDF export (jsPDF) includes nutrition info; calorie values are now included in exported meal plans.
+
+- Chat and message UX improvements
+  - Pagination added to chat history: only the most recent 5 messages load initially with a "Load older messages" button to fetch 5 more at a time.
+  - Auto-scroll behavior refined: when user clicks "Load older messages" the UI preserves scroll position and does NOT jump to the bottom; normal auto-scroll still happens on new incoming messages.
+  - Fixed message duplication on re-renders by adding a one-time history loader and replacing (not appending) messages when loading history.
+
+- Reliability & debugging
+  - Improved logging for meal generation (RAG retrieval counts, calorie totals, adjustment logs) to make troubleshooting easier.
+  - Fixed several issues encountered during testing (dotenv fixes, correct Firebase `user.uid` usage in chat page, and more).
+
+- Files / areas touched (high level)
+  - server/src/langchain/chains/mealPlanChain.js — improved prompt, calorie enforcement, `validateAndAdjustCalories()`, fallback template tuning
+  - server/src/routes/mealPlan.js — meal plan endpoint remains the single source of truth for generation and now returns rag metadata and adjusted plans
+  - client/src/components/meal/MealCard.jsx — added calories display and fallback calculation
+  - client/src/components/meal/MealPlanDisplay.jsx — disclaimer added and PDF export now handles calories
+  - client/src/components/chat/ChatInterface.jsx — pagination, "Load older messages" button, scroll preservation, and load-history dedupe
+  - client/src/store/index.js — chat store updated to support allMessages, visibleCount and loadMoreMessages
+
+These updates prioritize nutritional accuracy and a clearer user experience while keeping the system robust when RAG is unavailable. If you'd like, I can also:
+
+- Add a short README example showing how calories are calculated and how to interpret `personalizationSources.ragMetadata`.
+- Add a small unit test for `validateAndAdjustCalories()` that checks daily totals after adjustment.

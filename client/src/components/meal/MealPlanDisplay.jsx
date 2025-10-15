@@ -266,6 +266,18 @@ const MealPlanDisplay = ({ plan }) => {
         </div>
       </div>
 
+      {/* Calorie Disclaimer */}
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+        <div className="flex items-start gap-3">
+          <Info className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+          <p className="text-sm text-gray-700">
+            <strong>Note:</strong> All meals have been generated considering the average daily
+            calorie requirements of 2000 Kcal for a moderately active adult woman who is
+            approximately 5'2" to 5'4" and weighs 56 Kgs.
+          </p>
+        </div>
+      </div>
+
       {/* REPLACE THE ENTIRE HEADER/ACTIONS SECTION WITH THIS: */}
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

@@ -127,6 +127,9 @@ class MealPlanChain {
     );
 
     // ===== STEP 6: CREATE COMPREHENSIVE PROMPT =====
+    const caloriesPerMeal = Math.round(2000 / mealsPerDay);
+    const calorieRange = Math.round(caloriesPerMeal * 0.15); // 15% flexibility
+
     const prompt = `Generate a ${duration}-day PCOS-friendly meal plan using the evidence-based knowledge below.
 
 ${enhancedContext}
@@ -136,7 +139,18 @@ ${userContext}
 CRITICAL REQUIREMENTS:
 - All meals must strictly adhere to PCOS nutrition guidelines provided above
 - Use meal templates from knowledge base as inspiration, but create NEW variations
-- All meals must include exact protein, carb, fat grams, and glycemic index (Low/Medium/High)
+- All meals must include exact protein, carb, fat grams, calories, and glycemic index (Low/Medium/High)
+- Calculate calories accurately using: (protein × 4) + (carbs × 4) + (fats × 9)
+
+⚠️ CALORIE DISTRIBUTION REQUIREMENT (MANDATORY):
+- EACH DAY must total approximately 2000 kcal across all meals
+- With ${mealsPerDay} meals per day, each meal should be approximately ${caloriesPerMeal} kcal (range: ${
+      caloriesPerMeal - calorieRange
+    }-${caloriesPerMeal + calorieRange} kcal)
+- Example distribution for ${mealsPerDay} meals: ${this.getCalorieDistributionExample(mealsPerDay)}
+- Verify that the sum of all meal calories for each day equals 1900-2100 kcal
+- Adjust portion sizes and ingredients to meet this target while maintaining PCOS-friendly guidelines
+
 - Generate DIVERSE meals - do NOT repeat dishes across any days
 - Provide a quick cooking tip for each meal
 - Format output EXACTLY as the provided JSON structure
@@ -156,6 +170,7 @@ REQUIRED JSON STRUCTURE:
           "protein": 15,
           "carbs": 20,
           "fats": 5,
+          "calories": 185,
           "gi": "Low",
           "time": "15 mins",
           "tip": "Cooking tip"
@@ -184,6 +199,9 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
       if (this.validateStructure(parsed, duration, mealsPerDay)) {
         logger.info('✅ RAG-enhanced meal plan validation passed');
 
+        // Validate and adjust calorie totals
+        this.validateAndAdjustCalories(parsed, mealsPerDay);
+
         // Attach RAG metadata for transparency
         parsed.ragMetadata = {
           mealTemplatesUsed: mealTemplates.length,
@@ -211,6 +229,83 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
       logger.error('RAG-enhanced generation failed', { error: error.message });
       return this.getFallbackPlan(preferences);
     }
+  }
+
+  /**
+   * Get calorie distribution example based on meals per day
+   */
+  getCalorieDistributionExample(mealsPerDay) {
+    const distributions = {
+      2: 'Breakfast: 900-1000 kcal, Dinner: 900-1000 kcal',
+      3: 'Breakfast: 500-600 kcal, Lunch: 700-800 kcal, Dinner: 600-700 kcal',
+      4: 'Breakfast: 450-500 kcal, Lunch: 550-600 kcal, Snack: 200-250 kcal, Dinner: 550-600 kcal',
+    };
+    return distributions[mealsPerDay] || distributions[3];
+  }
+
+  /**
+   * Validate and adjust calories to ensure daily totals meet ~2000 kcal target
+   */
+  validateAndAdjustCalories(plan, mealsPerDay) {
+    const targetCalories = 2000;
+    const minCalories = 1900;
+    const maxCalories = 2100;
+
+    plan.days.forEach((day, dayIndex) => {
+      // Calculate total calories for the day
+      let dailyTotal = day.meals.reduce((sum, meal) => {
+        const calories =
+          meal.calories || Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+        return sum + calories;
+      }, 0);
+
+      logger.info(`Day ${dayIndex + 1} total calories: ${dailyTotal} kcal`);
+
+      // If total is significantly off target, adjust proportionally
+      if (dailyTotal < minCalories || dailyTotal > maxCalories) {
+        logger.warn(
+          `Day ${
+            dayIndex + 1
+          } calories (${dailyTotal}) outside target range (${minCalories}-${maxCalories}), adjusting...`
+        );
+
+        const scaleFactor = targetCalories / dailyTotal;
+
+        // First pass: scale macros
+        day.meals.forEach((meal) => {
+          meal.protein = Math.round(meal.protein * scaleFactor);
+          meal.carbs = Math.round(meal.carbs * scaleFactor);
+          meal.fats = Math.round(meal.fats * scaleFactor);
+          meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+        });
+
+        // Recalculate total after scaling
+        dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
+
+        // Second pass: fine-tune to hit exact target by adjusting carbs in largest meal
+        const difference = targetCalories - dailyTotal;
+        if (Math.abs(difference) > 0) {
+          // Find the meal with most calories to adjust
+          const largestMeal = day.meals.reduce((max, meal) =>
+            meal.calories > max.calories ? meal : max
+          );
+
+          // Adjust carbs (4 kcal per gram) to meet target
+          const carbAdjustment = Math.round(difference / 4);
+          largestMeal.carbs = Math.max(5, largestMeal.carbs + carbAdjustment);
+          largestMeal.calories = Math.round(
+            largestMeal.protein * 4 + largestMeal.carbs * 4 + largestMeal.fats * 9
+          );
+
+          // Final total
+          dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
+        }
+
+        logger.info(`Day ${dayIndex + 1} adjusted total: ${dailyTotal} kcal`);
+      } else {
+        logger.info(`✅ Day ${dayIndex + 1} calories within target range`);
+      }
+    });
   }
 
   /**
@@ -544,6 +639,10 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
           if (typeof meal.protein !== 'number') meal.protein = 10;
           if (typeof meal.carbs !== 'number') meal.carbs = 20;
           if (typeof meal.fats !== 'number') meal.fats = 5;
+          // Calculate calories if not provided: (protein × 4) + (carbs × 4) + (fats × 9)
+          if (typeof meal.calories !== 'number') {
+            meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+          }
         });
       });
 
@@ -588,94 +687,121 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
       });
     });
 
+    // Adjust meals to meet 2000 kcal target
+    const currentTotal = meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const targetCalories = 2000;
+
+    if (currentTotal > 0 && Math.abs(currentTotal - targetCalories) > 200) {
+      const scaleFactor = targetCalories / currentTotal;
+      meals.forEach((meal) => {
+        meal.protein = Math.round(meal.protein * scaleFactor);
+        meal.carbs = Math.round(meal.carbs * scaleFactor);
+        meal.fats = Math.round(meal.fats * scaleFactor);
+        meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+      });
+      logger.info(
+        `Fallback day ${dayNumber} adjusted from ${currentTotal} to ~${targetCalories} kcal`
+      );
+    }
+
     return { dayNumber, meals };
   }
 
   /**
    * Get hardcoded regional templates (fallback)
+   * Templates designed to total ~2000 kcal per day (breakfast ~550, lunch ~750, dinner ~700)
    */
   getRegionalTemplates(region) {
     const templates = {
       'north-india': {
         breakfast: [
           {
-            name: 'Besan Chilla',
-            ingredients: ['100g besan', '1 onion', '1 tomato'],
-            protein: 15,
-            carbs: 20,
-            fats: 5,
+            name: 'Besan Chilla with Curd',
+            ingredients: ['120g besan', '1 onion', '1 tomato', '100g curd'],
+            protein: 25,
+            carbs: 45,
+            fats: 12,
+            calories: 384,
           },
           {
-            name: 'Moong Dal Chilla',
-            ingredients: ['100g moong dal', 'vegetables'],
-            protein: 18,
-            carbs: 22,
-            fats: 4,
+            name: 'Moong Dal Chilla with Vegetables',
+            ingredients: ['120g moong dal', 'vegetables', '1 tbsp oil'],
+            protein: 28,
+            carbs: 50,
+            fats: 10,
+            calories: 410,
           },
         ],
         lunch: [
           {
-            name: 'Dal Tadka',
-            ingredients: ['70g dal', '50g rice'],
-            protein: 16,
-            carbs: 45,
-            fats: 6,
+            name: 'Dal Tadka with Rice and Vegetables',
+            ingredients: ['100g dal', '80g rice', 'vegetables', '2 roti'],
+            protein: 25,
+            carbs: 95,
+            fats: 12,
+            calories: 596,
           },
         ],
         snack: [
           {
-            name: 'Roasted Chana',
-            ingredients: ['50g chana', 'spices'],
-            protein: 9,
-            carbs: 15,
-            fats: 3,
+            name: 'Roasted Chana with Nuts',
+            ingredients: ['70g chana', '15g almonds', 'spices'],
+            protein: 15,
+            carbs: 30,
+            fats: 10,
+            calories: 270,
           },
         ],
         dinner: [
           {
-            name: 'Vegetable Khichdi',
-            ingredients: ['50g rice', '50g dal', 'vegetables'],
-            protein: 12,
-            carbs: 35,
-            fats: 4,
+            name: 'Vegetable Khichdi with Paneer',
+            ingredients: ['70g rice', '70g dal', 'vegetables', '80g paneer'],
+            protein: 28,
+            carbs: 75,
+            fats: 15,
+            calories: 555,
           },
         ],
       },
       'south-india': {
         breakfast: [
           {
-            name: 'Ragi Dosa',
-            ingredients: ['80g ragi', '20g urad dal'],
-            protein: 10,
-            carbs: 28,
-            fats: 4,
+            name: 'Ragi Dosa with Sambar',
+            ingredients: ['100g ragi', '30g urad dal', 'sambar', 'chutney'],
+            protein: 18,
+            carbs: 65,
+            fats: 10,
+            calories: 422,
           },
         ],
         lunch: [
           {
-            name: 'Sambar Rice',
-            ingredients: ['50g rice', '50g dal', 'vegetables'],
-            protein: 12,
-            carbs: 40,
-            fats: 5,
+            name: 'Sambar Rice with Vegetables',
+            ingredients: ['80g rice', '70g dal', 'vegetables', 'ghee'],
+            protein: 20,
+            carbs: 95,
+            fats: 15,
+            calories: 615,
           },
         ],
         snack: [
           {
-            name: 'Sundal',
-            ingredients: ['50g chickpeas', 'coconut'],
-            protein: 10,
-            carbs: 20,
-            fats: 4,
+            name: 'Sundal with Coconut',
+            ingredients: ['80g chickpeas', 'coconut', 'curry leaves'],
+            protein: 16,
+            carbs: 35,
+            fats: 8,
+            calories: 276,
           },
         ],
         dinner: [
           {
-            name: 'Ragi Mudde',
-            ingredients: ['100g ragi', 'sambar'],
-            protein: 11,
-            carbs: 35,
-            fats: 3,
+            name: 'Ragi Mudde with Sambar',
+            ingredients: ['130g ragi', 'sambar', 'vegetables'],
+            protein: 18,
+            carbs: 80,
+            fats: 8,
+            calories: 488,
           },
         ],
       },
