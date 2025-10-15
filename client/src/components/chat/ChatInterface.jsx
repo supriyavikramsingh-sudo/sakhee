@@ -15,13 +15,32 @@ const ChatInterface = ({ userProfile, userId }) => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const { user } = useAuthStore();
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  console.log('ChatInterface rendered with messages:', messages);
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      if (!user?.uid) return;
 
-  console.log('Messages in ChatInterface:', messages);
+      try {
+        const result = await firestoreService.getChatHistory(user.uid);
+        console.log('Chat history loaded:', result);
+
+        if (result.success && result.data && Array.isArray(result.data)) {
+          // Load all messages at once instead of adding one by one
+          result.data.forEach((msg) => addMessage(msg));
+        }
+      } catch (error) {
+        console.error('Failed to load chat history:', error);
+      }
+    };
+
+    loadChatHistory();
+  }, [user.uid]);
 
   useEffect(() => {
+    const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     scrollToBottom();
   }, [messages]);
 
@@ -85,8 +104,6 @@ const ChatInterface = ({ userProfile, userId }) => {
         setLoading(false);
         return;
       }
-
-      console.log('Message content:', response.data?.message?.response);
 
       // Check if we have a valid response
       if (!response.data?.message?.response) {
@@ -153,7 +170,7 @@ const ChatInterface = ({ userProfile, userId }) => {
         ) : (
           messages.map((msg, idx) => {
             return (
-              <div key={msg.id}>
+              <div key={idx}>
                 {msg.type === 'meal_plan_redirect' ? (
                   <MealPlanRedirectCard data={msg.redirectData} />
                 ) : (

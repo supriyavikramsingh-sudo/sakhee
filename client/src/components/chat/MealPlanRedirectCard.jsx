@@ -1,6 +1,6 @@
-// client/src/components/chat/MealPlanRedirectCard.jsx
 import { useNavigate } from 'react-router-dom';
 import { ChefHat, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { boldify } from '../../utils/helper';
 
 /**
  * Component to display when user requests meal plans in chat
@@ -12,12 +12,6 @@ const MealPlanRedirectCard = ({ data }) => {
   const handleRedirect = () => {
     navigate('/meals');
   };
-
-  // Process the message to ensure bold text renders correctly
-  const processedMessage = data.redirectMessage?.replace(
-    /<strong>/g,
-    '<strong style="font-weight: 700;">'
-  );
 
   return (
     <>
@@ -39,7 +33,7 @@ const MealPlanRedirectCard = ({ data }) => {
             </h3>
             <p
               className="meal-redirect-message text-gray-700 dark:text-gray-300 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: processedMessage }}
+              dangerouslySetInnerHTML={{ __html: boldify(data.redirectMessage) }}
             />
           </div>
         </div>

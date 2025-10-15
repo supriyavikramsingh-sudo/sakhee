@@ -3,7 +3,7 @@ import { boldify } from '../../utils/helper';
 const MessageBubble = ({ message }) => {
   const isUser = message.type === 'user';
   const isError = message.type === 'error';
-  console.log('Rendering message:', message);
+
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
