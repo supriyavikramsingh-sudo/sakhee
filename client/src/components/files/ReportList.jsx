@@ -1,17 +1,16 @@
-import { FileText, Calendar, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { FileText, Calendar, Trash2 } from 'lucide-react';
 
-const ReportList = ({ reports, selectedReport, onSelectReport }) => {
-  const [deleting, setDeleting] = useState(null)
-
+const ReportList = ({ reports, setReports, selectedReport, onSelectReport }) => {
   const handleDelete = async (reportId, e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (confirm('Are you sure you want to delete this report?')) {
-      setDeleting(reportId)
-      // TODO: Call API to delete
-      setTimeout(() => setDeleting(null), 1000)
+      const updatedReports = reports.filter((r) => r.reportId !== reportId);
+      setReports(updatedReports);
+      if (selectedReport?.reportId === reportId) {
+        onSelectReport(null);
+      }
     }
-  }
+  };
 
   if (reports.length === 0) {
     return (
@@ -19,7 +18,7 @@ const ReportList = ({ reports, selectedReport, onSelectReport }) => {
         <FileText className="mx-auto mb-3 text-muted" size={48} />
         <p className="text-muted text-sm">No reports uploaded yet</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -31,10 +30,10 @@ const ReportList = ({ reports, selectedReport, onSelectReport }) => {
       <div className="divide-y divide-surface max-h-96 overflow-y-auto">
         {reports.map((report) => (
           <div
-            key={report.id}
+            key={report.reportId}
             onClick={() => onSelectReport(report)}
             className={`p-4 cursor-pointer hover:bg-surface transition ${
-              selectedReport?.id === report.id ? 'bg-primary bg-opacity-10' : ''
+              selectedReport?.reportId === report.reportId ? 'bg-primary bg-opacity-10' : ''
             }`}
           >
             <div className="flex items-start gap-3">
@@ -46,11 +45,13 @@ const ReportList = ({ reports, selectedReport, onSelectReport }) => {
                   {new Date(report.uploadedAt).toLocaleDateString()}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
-                  {Object.keys(report.labValues || {}).slice(0, 3).map((key) => (
-                    <span key={key} className="badge-primary text-xs">
-                      {key.replace('_', ' ')}
-                    </span>
-                  ))}
+                  {Object.keys(report.labValues || {})
+                    .slice(0, 3)
+                    .map((key) => (
+                      <span key={key} className="badge-primary text-xs">
+                        {key.replace('_', ' ')}
+                      </span>
+                    ))}
                   {Object.keys(report.labValues || {}).length > 3 && (
                     <span className="text-xs text-muted">
                       +{Object.keys(report.labValues).length - 3} more
@@ -59,8 +60,7 @@ const ReportList = ({ reports, selectedReport, onSelectReport }) => {
                 </div>
               </div>
               <button
-                onClick={(e) => handleDelete(report.id, e)}
-                disabled={deleting === report.id}
+                onClick={(e) => handleDelete(report.reportId, e)}
                 className="p-2 hover:bg-danger hover:bg-opacity-10 rounded transition"
               >
                 <Trash2 className="text-danger" size={16} />
@@ -70,7 +70,7 @@ const ReportList = ({ reports, selectedReport, onSelectReport }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ReportList
+export default ReportList;

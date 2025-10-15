@@ -70,6 +70,7 @@ const ReportsPage = () => {
             {/* Report List */}
             <ReportList
               reports={reports}
+              setReports={setReports}
               selectedReport={selectedReport}
               onSelectReport={setSelectedReport}
             />
