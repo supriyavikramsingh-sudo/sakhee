@@ -12,7 +12,6 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // Now import modules that depend on env vars
 import { vectorStoreManager } from '../langchain/vectorStore.js';
-import { embeddingsManager } from '../langchain/embeddings.js';
 import { Logger } from '../utils/logger.js';
 
 const logger = new Logger('MealTemplateIngestion');
