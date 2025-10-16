@@ -7,7 +7,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  @apply scroll-smooth;
 }
 
 body {
@@ -24,31 +24,25 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
+  @apply bg-primary rounded-full hover:bg-secondary;
 }
 
 /* Animations */
 @keyframes slideIn {
   from {
-    opacity: 0;
-    transform: translateY(0.5rem);
+    @apply opacity-0 translate-y-2;
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    @apply opacity-100 translate-y-0;
   }
 }
 
 @keyframes fadeIn {
   from {
-    opacity: 0;
+    @apply opacity-0;
   }
   to {
-    opacity: 1;
+    @apply opacity-100;
   }
 }
 
