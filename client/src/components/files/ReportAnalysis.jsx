@@ -21,36 +21,68 @@ const ReportAnalysis = ({ report }) => {
     return JSON.stringify(text, null, 2);
   };
 
+  // FIXED: Added deficient severity and proper color coding
   const getSeverityIcon = (severity) => {
     switch (severity) {
       case 'critical':
+      case 'deficient':
         return <AlertTriangle className="text-danger" size={20} />;
       case 'high':
       case 'elevated':
         return <AlertTriangle className="text-warning" size={20} />;
       case 'low':
-        return <Info className="text-info" size={20} />;
+        return <AlertTriangle className="text-warning" size={20} />;
       case 'normal':
         return <CheckCircle className="text-success" size={20} />;
+      case 'cycle-dependent':
+        return <Info className="text-info" size={20} />;
       default:
         return <Info className="text-muted" size={20} />;
     }
   };
 
+  // FIXED: Added deficient and low to danger/warning
   const getSeverityColor = (severity) => {
     switch (severity) {
       case 'critical':
+      case 'deficient':
         return 'border-danger bg-danger';
       case 'high':
       case 'elevated':
-        return 'border-warning bg-warning';
       case 'low':
-        return 'border-info bg-info';
+        return 'border-warning bg-warning';
       case 'normal':
         return 'border-success bg-success';
+      case 'cycle-dependent':
+        return 'border-[#9d4edd] bg-[#9d4edd]';
       default:
         return 'border-muted bg-muted';
     }
+  };
+
+  // FIXED: Added severity label formatter
+  const getSeverityLabel = (severity) => {
+    const labels = {
+      critical: 'Critical',
+      deficient: 'Deficient',
+      high: 'High',
+      elevated: 'Elevated',
+      low: 'Low',
+      normal: 'Normal',
+      abnormal: 'Abnormal',
+      unknown: 'Unknown',
+      'cycle-dependent': 'Varies by Cycle Phase',
+    };
+    return labels[severity] || severity;
+  };
+
+  // Helper to get reference ranges for cycle-dependent hormones
+  const getCycleDependentRanges = (key) => {
+    const ranges = {
+      estradiol: 'Follicular: 19.5-144.2 | Mid-cycle: 63.9-356.7 | Luteal: 55.8-214.2 pg/mL',
+      progesterone: 'Follicular: 0.1-0.3 | Luteal: 1.2-25.0 ng/mL',
+    };
+    return ranges[key] || null;
   };
 
   // Check if labValues is empty or not an object
@@ -90,6 +122,8 @@ const ReportAnalysis = ({ report }) => {
                     const displayValue = typeof value === 'number' ? value : value;
                     const displayUnit = unit || '';
                     const displaySeverity = severity || 'normal';
+                    const isCycleDependent = displaySeverity === 'cycle-dependent';
+                    const cycleRanges = isCycleDependent ? getCycleDependentRanges(key) : null;
 
                     return (
                       <div
@@ -112,10 +146,29 @@ const ReportAnalysis = ({ report }) => {
                                 </span>
                               )}
                             </p>
-                            {displaySeverity !== 'normal' && (
-                              <p className="text-xs text-gray-600 mt-1 capitalize">
-                                {displaySeverity} level
-                              </p>
+                            {/* FIXED: Show severity label with proper color coding */}
+                            <p
+                              className={`text-xs mt-1 font-medium ${
+                                displaySeverity === 'normal'
+                                  ? 'text-success'
+                                  : displaySeverity === 'deficient' ||
+                                    displaySeverity === 'critical'
+                                  ? 'text-danger'
+                                  : displaySeverity === 'cycle-dependent'
+                                  ? 'text-[#9d4edd]'
+                                  : 'text-warning'
+                              }`}
+                            >
+                              {getSeverityLabel(displaySeverity)}
+                            </p>
+                            {/* Show reference ranges for cycle-dependent hormones */}
+                            {isCycleDependent && cycleRanges && (
+                              <div className="mt-2 p-2 bg-white bg-opacity-50 rounded text-xs">
+                                <p className="font-semibold text-gray-700 mb-1">
+                                  Reference Ranges:
+                                </p>
+                                <p className="text-gray-600">{cycleRanges}</p>
+                              </div>
                             )}
                           </div>
                         </div>

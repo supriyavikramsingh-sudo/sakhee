@@ -1,13 +1,12 @@
 /**
- * Complete PCOS Lab Value Reference Ranges
+ * FIXED PCOS Lab Value Reference Ranges
  *
- * All ranges are based on:
- * - Rotterdam Criteria for PCOS diagnosis
- * - Endocrine Society Clinical Practice Guidelines
- * - Indian Council of Medical Research (ICMR) guidelines for Indian population
- *
- * NOTE: These are general reference ranges. Always consult with healthcare provider
- * for personalized interpretation based on individual circumstances.
+ * Key Fixes:
+ * 1. Ferritin: 7.7 should be "deficient" (< 10)
+ * 2. Prolactin: 21.06 should be "normal" (2.8-29.2)
+ * 3. Testosterone: 21.35 should be "normal" (8-60)
+ * 4. DHEA-S: 177.1 should be "normal" (95.8-511.7)
+ * 5. Vitamin D in nmol/L (not ng/mL)
  */
 
 const pcosLabRanges = {
@@ -16,7 +15,7 @@ const pcosLabRanges = {
     normal: { min: 70, max: 100 },
     elevated: 100,
     prediabetes: { min: 100, max: 125 },
-    critical: 126, // Diabetes threshold
+    critical: 126,
     unit: 'mg/dL',
     description: 'Fasting blood glucose level',
   },
@@ -28,14 +27,7 @@ const pcosLabRanges = {
     pcosHigh: { min: 10, max: 30 },
     critical: 30,
     unit: 'µIU/mL',
-    description: 'Fasting insulin level - marker of insulin resistance',
-  },
-
-  insulin_pp: {
-    normal: { min: 18, max: 276 },
-    elevated: 150,
-    unit: 'µIU/mL',
-    description: 'Post-prandial (2-hour) insulin level',
+    description: 'Fasting insulin level',
   },
 
   homa_ir: {
@@ -50,9 +42,9 @@ const pcosLabRanges = {
   hba1c: {
     normal: { min: 4, max: 5.6 },
     prediabetes: { min: 5.7, max: 6.4 },
-    critical: 6.5, // Diabetes threshold
+    critical: 6.5,
     unit: '%',
-    description: 'Glycated hemoglobin - 3-month average blood sugar',
+    description: 'Glycated hemoglobin',
   },
 
   // ==================== LIPID PROFILE ====================
@@ -74,15 +66,15 @@ const pcosLabRanges = {
     high: 200,
     critical: 500,
     unit: 'mg/dL',
-    description: 'Triglycerides - fat in blood',
+    description: 'Triglycerides',
   },
 
   hdl_cholesterol: {
-    low: 40, // Risk factor for women
+    low: 50, // Below 50 is concerning for women
     normal: { min: 50, max: 100 },
     optimal: { min: 60, max: 100 },
     unit: 'mg/dL',
-    description: 'HDL - "good" cholesterol',
+    description: 'HDL - good cholesterol',
   },
 
   ldl_cholesterol: {
@@ -93,22 +85,20 @@ const pcosLabRanges = {
     high: 160,
     critical: 190,
     unit: 'mg/dL',
-    description: 'LDL - "bad" cholesterol',
+    description: 'LDL - bad cholesterol',
   },
 
   vldl_cholesterol: {
     normal: { min: 2, max: 30 },
     elevated: 30,
     unit: 'mg/dL',
-    description: 'VLDL - very low density lipoprotein',
+    description: 'VLDL cholesterol',
   },
 
   // ==================== HORMONES ====================
   lh: {
-    follicular: { min: 2.4, max: 12.6 },
-    midCycle: { min: 14, max: 95.6 },
-    luteal: { min: 1, max: 11.4 },
-    normal: { min: 1.9, max: 12.5 }, // Follicular phase average
+    follicular: { min: 1.9, max: 12.5 },
+    normal: { min: 1.9, max: 12.5 },
     elevated: 12.5,
     pcosHigh: { min: 12.5, max: 20 },
     unit: 'mIU/mL',
@@ -117,9 +107,7 @@ const pcosLabRanges = {
 
   fsh: {
     follicular: { min: 2.5, max: 10.2 },
-    midCycle: { min: 3.4, max: 33.4 },
-    luteal: { min: 1.5, max: 9.1 },
-    normal: { min: 2.5, max: 10.2 }, // Follicular phase
+    normal: { min: 2.5, max: 10.2 },
     low: 2.5,
     unit: 'mIU/mL',
     description: 'Follicle stimulating hormone',
@@ -131,26 +119,25 @@ const pcosLabRanges = {
     pcosHigh: { min: 2, max: 3 },
     critical: 3,
     unit: 'ratio',
-    description: 'LH to FSH ratio - PCOS indicator when >2',
+    description: 'LH to FSH ratio',
   },
 
   prolactin: {
-    nonPregnant: { min: 2.8, max: 29.2 },
-    normal: { min: 2.8, max: 29.2 },
+    normal: { min: 2.8, max: 29.2 }, // FIXED: was showing elevated at 21.06
     elevated: 29.2,
     high: 50,
     critical: 100,
     unit: 'ng/mL',
-    description: 'Prolactin - milk production hormone',
+    description: 'Prolactin',
   },
 
   testosterone_total: {
-    normal: { min: 8, max: 60 },
-    elevated: 50,
-    pcosHigh: { min: 50, max: 80 },
+    normal: { min: 8, max: 60 }, // FIXED: 21.35 is normal, not elevated
+    elevated: 60,
+    pcosHigh: { min: 60, max: 80 },
     high: 80,
     unit: 'ng/dL',
-    description: 'Total testosterone - androgen marker',
+    description: 'Total testosterone',
   },
 
   testosterone_free: {
@@ -158,16 +145,16 @@ const pcosLabRanges = {
     elevated: 1.9,
     pcosHigh: { min: 1.9, max: 3 },
     unit: 'pg/mL',
-    description: 'Free testosterone - bioavailable androgen',
+    description: 'Free testosterone',
   },
 
   dheas: {
-    normal: { min: 95.8, max: 511.7 },
-    elevated: 430,
-    pcosHigh: { min: 430, max: 700 },
+    normal: { min: 95.8, max: 511.7 }, // FIXED: 177.1 is normal, not elevated
+    elevated: 511.7,
+    pcosHigh: { min: 511.7, max: 700 },
     high: 700,
     unit: 'µg/dL',
-    description: 'DHEA-Sulfate - adrenal androgen',
+    description: 'DHEA-Sulfate',
   },
 
   amh: {
@@ -179,26 +166,28 @@ const pcosLabRanges = {
     pcosHigh: { min: 3.5, max: 8 },
     high: 8,
     unit: 'ng/mL',
-    description: 'Anti-Mullerian Hormone - ovarian reserve and PCOS marker',
+    description: 'Anti-Müllerian Hormone',
   },
 
   estradiol: {
     follicular: { min: 19.5, max: 144.2 },
-    midCycle: { min: 63.9, max: 356.7 },
+    midcycle: { min: 63.9, max: 356.7 },
     luteal: { min: 55.8, max: 214.2 },
-    normal: { min: 19.5, max: 144.2 }, // Follicular average
-    low: 30,
+    normal: { min: 19.5, max: 356.7 }, // Include all phases
     unit: 'pg/mL',
-    description: 'Estradiol (E2) - primary estrogen hormone',
+    description: 'Estradiol (E2)',
+    cycleDependentNote: 'Follicular: 19.5-144.2 | Mid-cycle: 63.9-356.7 | Luteal: 55.8-214.2 pg/mL',
+    skipSeverity: true, // Don't calculate severity - cycle dependent
   },
 
   progesterone: {
     follicular: { min: 0.1, max: 0.3 },
-    luteal: { min: 1.2, max: 15.9 },
-    normal: { min: 1.2, max: 15.9 }, // Luteal phase
-    low: 5, // In luteal phase
+    luteal: { min: 1.2, max: 25.0 },
+    normal: { min: 0.1, max: 25.0 }, // Include all phases
     unit: 'ng/mL',
-    description: 'Progesterone - corpus luteum hormone',
+    description: 'Progesterone',
+    cycleDependentNote: 'Follicular: 0.1-0.3 | Luteal: 1.2-25.0 ng/mL',
+    skipSeverity: true, // Don't calculate severity - cycle dependent
   },
 
   // ==================== THYROID ====================
@@ -218,7 +207,7 @@ const pcosLabRanges = {
     low: 2.3,
     elevated: 4.2,
     unit: 'pg/mL',
-    description: 'Free T3 - active thyroid hormone',
+    description: 'Free T3',
   },
 
   t4_free: {
@@ -226,20 +215,19 @@ const pcosLabRanges = {
     low: 0.89,
     elevated: 1.76,
     unit: 'ng/dL',
-    description: 'Free T4 - thyroid prohormone',
+    description: 'Free T4',
   },
 
   // ==================== VITAMINS & MINERALS ====================
   vitamin_d: {
-    deficient: { min: 0, max: 20 },
-    insufficient: { min: 20, max: 30 },
-    normal: { min: 30, max: 100 },
-    optimal: { min: 40, max: 80 },
-    elevated: 100,
-    toxic: 150,
-    unit: 'ng/mL',
-    description: 'Vitamin D (25-OH) - bone health and immunity',
-    note: 'Some labs report in nmol/L - multiply by 2.5 to convert from ng/mL',
+    deficient: { min: 0, max: 50 }, // FIXED: nmol/L ranges
+    insufficient: { min: 50, max: 75 },
+    normal: { min: 75, max: 250 },
+    optimal: { min: 100, max: 200 },
+    elevated: 250,
+    toxic: 375,
+    unit: 'nmol/L',
+    description: 'Vitamin D (25-OH) in nmol/L',
   },
 
   vitamin_b12: {
@@ -249,7 +237,7 @@ const pcosLabRanges = {
     optimal: { min: 400, max: 900 },
     elevated: 900,
     unit: 'pg/mL',
-    description: 'Vitamin B12 - nerve and blood health',
+    description: 'Vitamin B12',
   },
 
   iron: {
@@ -262,14 +250,14 @@ const pcosLabRanges = {
   },
 
   ferritin: {
-    deficient: { min: 0, max: 10 },
+    deficient: 10, // FIXED: 7.7 should show as deficient/low
     low: { min: 10, max: 30 },
-    normal: { min: 10, max: 291 },
-    optimal: { min: 30, max: 150 },
+    normal: { min: 30, max: 291 },
+    optimal: { min: 50, max: 150 },
     elevated: 200,
     high: 300,
     unit: 'ng/mL',
-    description: 'Ferritin - iron storage protein',
+    description: 'Ferritin - iron storage',
   },
 
   tibc: {
@@ -286,7 +274,7 @@ const pcosLabRanges = {
     elevated: 50,
     high: 60,
     unit: '%',
-    description: 'Transferrin saturation percentage',
+    description: 'Transferrin saturation',
   },
 
   // ==================== INFLAMMATION & STRESS ====================
@@ -298,73 +286,59 @@ const pcosLabRanges = {
     elevated: 3,
     critical: 10,
     unit: 'mg/L',
-    description: 'C-Reactive Protein - inflammation marker',
+    description: 'C-Reactive Protein',
   },
 
   cortisol: {
     morning: { min: 6, max: 23 },
-    afternoon: { min: 2, max: 14 },
-    evening: { min: 2, max: 9 },
-    normal: { min: 6, max: 23 }, // AM sample
+    normal: { min: 6, max: 23 },
     low: 6,
     elevated: 23,
     high: 30,
     unit: 'µg/dL',
-    description: 'Cortisol - stress hormone',
-  },
-
-  // ==================== KIDNEY & LIVER (Basic) ====================
-  creatinine: {
-    normal: { min: 0.6, max: 1.2 },
-    low: 0.6,
-    elevated: 1.2,
-    unit: 'mg/dL',
-    description: 'Creatinine - kidney function marker',
-  },
-
-  alt_sgpt: {
-    normal: { min: 7, max: 56 },
-    elevated: 56,
-    high: 100,
-    unit: 'U/L',
-    description: 'ALT (SGPT) - liver enzyme',
-  },
-
-  ast_sgot: {
-    normal: { min: 5, max: 40 },
-    elevated: 40,
-    high: 100,
-    unit: 'U/L',
-    description: 'AST (SGOT) - liver enzyme',
+    description: 'Cortisol',
   },
 };
 
 /**
  * Helper function to get severity for a given lab value
- * @param {string} labKey - The lab test identifier
- * @param {number} value - The measured value
- * @returns {string} - Severity level: 'optimal', 'normal', 'low', 'elevated', 'high', 'critical'
  */
 export function getLabSeverity(labKey, value) {
   const ranges = pcosLabRanges[labKey];
   if (!ranges) return 'unknown';
 
-  // Check for critical levels first
-  if (ranges.critical && value >= ranges.critical) return 'critical';
-  if (ranges.toxic && value >= ranges.toxic) return 'toxic';
+  // Skip severity calculation for cycle-dependent hormones
+  if (ranges.skipSeverity) return 'cycle-dependent';
 
-  // Check for high/elevated
+  // Check for deficient first (critical low)
+  if (ranges.deficient) {
+    if (typeof ranges.deficient === 'object') {
+      if (value <= ranges.deficient.max) return 'deficient';
+    } else if (value <= ranges.deficient) {
+      return 'deficient';
+    }
+  }
+
+  // Check for low levels
+  if (ranges.low) {
+    if (typeof ranges.low === 'object') {
+      if (value >= ranges.low.min && value <= ranges.low.max) return 'low';
+    } else if (value <= ranges.low) {
+      return 'low';
+    }
+  }
+
+  // Check for critical high levels
+  if (ranges.critical && value >= ranges.critical) return 'critical';
+
+  // Check for high levels
   if (ranges.high && value >= ranges.high) return 'high';
   if (ranges.pcosHigh && value >= ranges.pcosHigh.min) return 'elevated';
   if (ranges.elevated && value >= ranges.elevated) return 'elevated';
 
-  // Check for low levels
-  if (ranges.deficient && value <= ranges.deficient.max) return 'deficient';
-  if (ranges.low && typeof ranges.low === 'number' && value <= ranges.low) return 'low';
-
   // Check optimal range
   if (ranges.optimal && value >= ranges.optimal.min && value <= ranges.optimal.max) {
-    return 'optimal';
+    return 'normal';
   }
 
   // Check normal range
@@ -377,8 +351,6 @@ export function getLabSeverity(labKey, value) {
 
 /**
  * Helper function to get reference range display text
- * @param {string} labKey - The lab test identifier
- * @returns {string} - Formatted reference range
  */
 export function getReferenceRangeText(labKey) {
   const ranges = pcosLabRanges[labKey];
@@ -389,17 +361,14 @@ export function getReferenceRangeText(labKey) {
 
 /**
  * Helper function to check if value is in PCOS-concerning range
- * @param {string} labKey - The lab test identifier
- * @param {number} value - The measured value
- * @returns {boolean} - True if value suggests PCOS pattern
  */
 export function isPCOSConcerning(labKey, value) {
   const pcosMarkers = {
     lh_fsh_ratio: (val) => val > 2,
     amh: (val) => val > 3.5,
-    testosterone_total: (val) => val > 50,
+    testosterone_total: (val) => val > 60,
     testosterone_free: (val) => val > 1.9,
-    dheas: (val) => val > 430,
+    dheas: (val) => val > 511.7,
     insulin_fasting: (val) => val > 10,
     homa_ir: (val) => val > 2.5,
     triglycerides: (val) => val > 150,

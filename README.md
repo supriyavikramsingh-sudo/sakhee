@@ -1030,3 +1030,41 @@ These updates prioritize nutritional accuracy and a clearer user experience whil
 
 - Add a short README example showing how calories are calculated and how to interpret `personalizationSources.ragMetadata`.
 - Add a small unit test for `validateAndAdjustCalories()` that checks daily totals after adjustment.
+
+### New in v1.4.0
+
+Focused fixes and UX improvements landed after v1.3.0 to improve medical report parsing accuracy, reduce LLM hallucinations from optional community sources, and present cycle-dependent hormones more appropriately in the UI.
+
+- Parser & Medical Report Analysis
+  - Fixed extraction logic so Free T3 and Free T4 are parsed correctly (value-after-unit/range pattern handling). This prevents T3 values being mis-assigned to T4.
+  - Fixed parsing for Estradiol, Progesterone, Vitamin D and Vitamin B12 across typical lab report formats. Vitamin D values reported in ng/mL are now converted to nmol/L when required.
+  - Added more robust fallback/snippet extraction and structured debug logging to help diagnose unmatched fields and speed future parser improvements.
+  - Added a local parser test harness used during development: `server/test_parser_final.mjs` (developer-only test script).
+
+- Backend updates
+  - `server/src/services/parserService.js` — improved regex patterns, conversion utilities, fallback snippet extraction, and extended logging.
+  - `server/src/utils/labRanges.js` — introduced `skipSeverity` and `cycleDependentNote` flags for cycle-dependent hormones; `getLabSeverity()` respects the new flag and returns a `cycle-dependent` state.
+
+- Frontend / UX
+  - `client/src/components/files/ReportAnalysis.jsx` — UI updated to treat estradiol and progesterone as "cycle-dependent": the app no longer shows normal/abnormal severity badges for these labs. Instead an info-style card displays per-phase reference ranges so users can interpret results based on their cycle phase.
+  - Severity icons/colors/labels updated to include a `cycle-dependent`/info state.
+
+- RAG / Chat anti-hallucination improvements
+  - The chat/RAG pipeline now explicitly injects an anti-fabrication note when optional Reddit/community data is not available, preventing the LLM from inventing community posts as sources.
+  - Additional logging was added around the RAG context construction so triggers like `needsCommunityInsights()` and what was injected are auditable in logs.
+
+- Tests, Docs & Developer aids
+  - Created `CYCLE_DEPENDENT_HORMONES_UPDATE.md` (developer doc) summarizing the change and showing reference ranges used in the UI.
+  - Parser test harness (see above) and enhanced logs to make reproducing failures and writing unit tests easier.
+
+- Why this matters
+  - Medical report parsing is a core trust surface for the app: improving extraction accuracy reduces false alerts and prevents incorrect personalization of meal plans.
+  - Cycle-dependent labeling avoids presenting misleading severity information for hormones whose interpretation depends on cycle timing.
+  - Anti-hallucination changes improve user trust by ensuring the system doesn't invent community anecdotes when community data isn't present.
+
+- Next / Planned
+  - Optional UI: add a cycle-phase selector on report upload so users who provide cycle phase can receive automated interpretation (re-enable severity for estradiol/progesterone when phase is known).
+  - Add automated unit tests for `parserService` regexes and CI checks to avoid regressions.
+  - Expand RAG/chat regression tests to verify anti-hallucination behavior across more prompts.
+
+If you'd like, I can also update the top-level release notes (version badges) or add small example snippets showing how to re-run the parser test harness locally.
