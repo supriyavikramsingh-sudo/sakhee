@@ -1,98 +1,215 @@
-import { PromptTemplate } from '@langchain/core/prompts'
-import { llmClient } from '../llmClient.js'
-import { Logger } from '../../utils/logger.js'
+import { PromptTemplate } from '@langchain/core/prompts';
+import { llmClient } from '../llmClient.js';
+import { Logger } from '../../utils/logger.js';
+import pcosLabRanges from '../../utils/labRanges.js';
 
-const logger = new Logger('ReportChain')
+const logger = new Logger('ReportChain');
 
 class ReportChain {
   async analyzeReport(reportData) {
     try {
-      logger.info('Analyzing medical report')
+      logger.info('Analyzing medical report');
 
       const prompt = PromptTemplate.fromTemplate(`
-You are a medical assistant analyzing PCOS lab reports.
+You are a compassionate PCOS healthcare assistant analyzing lab reports for women with PCOS.
 
-Extracted Lab Values:
+PATIENT PROFILE:
+- Age: {age}
+- Gender: Female
+- Diagnosed PCOS: {diagnosedPCOS}
+
+LAB VALUES DETECTED:
 {labValues}
 
-Patient Profile:
-Age: {age}
-Gender: Female
-Diagnosed PCOS: {diagnosedPCOS}
+REFERENCE RANGES FOR INTERPRETATION:
+{referenceRanges}
 
-TASK:
-Provide a clear, structured analysis in plain text format.
+YOUR TASK:
+Provide a warm, clear, structured analysis that helps the patient understand their results without causing panic.
 
-FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
+ANALYSIS STRUCTURE:
 
-## Lab Analysis
+**Summary**
+Write 2-3 sentences giving an overall picture. Start with something positive if possible. Be honest but hopeful.
 
-[For each lab value, write one line with the format:]
-- [Value Name]: [Value] [Unit] [Status: Normal/Elevated/Low] - [Brief explanation]
+**Key Observations**
+Group related findings together:
+- Blood Sugar & Insulin: [If relevant, discuss glucose, insulin, HOMA-IR together]
+- Hormones: [Discuss LH, FSH, testosterone, DHEAS together]
+- Thyroid: [If relevant]
+- Vitamins & Minerals: [If relevant]
+- Lipids: [If relevant]
 
-## Key Findings
+For each group, write 2-4 clear sentences explaining what the values mean and why they matter for PCOS.
 
-- [Finding 1]
-- [Finding 2]
-- [Finding 3]
+**What This Means for You**
+3-5 actionable, encouraging insights about how these results connect to PCOS management.
 
-## Recommended Actions
+**Next Steps**
+2-3 specific, achievable recommendations. Be practical and supportive.
 
-- [Actionable recommendation 1]
-- [Actionable recommendation 2]
-- [Actionable recommendation 3]
+**When to Reach Out to Your Doctor**
+List any red flags that warrant medical attention (if any).
 
-## When to Consult Doctor
+CRITICAL RULES:
+1. **Be Accurate**: Use the reference ranges provided. Don't guess or hallucinate values.
+2. **Be Kind**: Use phrases like "slightly elevated" instead of "abnormal", "working on" instead of "struggling with"
+3. **Avoid Panic**: Never use alarming language. Frame elevated values as "something we can work on" not "dangerous"
+4. **Be Specific**: Don't just say "abnormal" - explain what the value means practically
+5. **Context Matters**: 
+   - Estradiol and Progesterone VARY BY CYCLE PHASE - never call them abnormal, just note the value
+   - PCOS ranges differ from general population - use PCOS-specific context
+6. **No Medical Diagnosis**: Always remind this is educational, not a diagnosis
+7. **Empowering Tone**: Use "you can", "your body", "we can work on" - make the patient feel in control
 
-- [Red flag 1 if any]
-- [Red flag 2 if any]
+EXAMPLE GOOD PHRASES:
+✅ "Your insulin levels are a bit higher than optimal, which is common with PCOS"
+✅ "The good news is your thyroid function looks great"
+✅ "Your testosterone is mildly elevated, which we can address through lifestyle changes"
+✅ "These values give us helpful information about where to focus"
 
-IMPORTANT:
-- Use simple language
-- Be encouraging and supportive
-- Highlight what's normal too
-- Mark abnormal values with ⚠️
-- This is EDUCATIONAL only, not medical diagnosis
-`)
+EXAMPLE BAD PHRASES:
+❌ "Your results are abnormal"
+❌ "This is critical/dangerous"
+❌ "You need to fix this immediately"
+❌ "Your levels are terrible"
 
-      // LLMChain is deprecated — format the prompt and call the LLM client directly.
+Remember: You're talking to a real person who may feel anxious. Be the supportive, knowledgeable friend they need.
+`);
+
+      // Format the prompt with enhanced lab value formatting
       const formattedPrompt = await prompt.format({
-        labValues: this.formatLabValues(reportData.labValues),
-        age: reportData.age,
-        diagnosedPCOS: reportData.diagnosedPCOS ? 'Yes' : 'No'
-      })
+        labValues: this.formatLabValuesWithSeverity(reportData.labValues),
+        referenceRanges: this.formatReferenceRanges(reportData.labValues),
+        age: reportData.age || 'Not provided',
+        diagnosedPCOS: reportData.diagnosedPCOS ? 'Yes' : 'Not yet diagnosed',
+      });
 
-      const raw = await llmClient.invoke(formattedPrompt)
-      const analysisText = typeof raw === 'string' ? raw : raw?.text ?? raw?.output_text ?? JSON.stringify(raw)
+      const raw = await llmClient.invoke(formattedPrompt);
+      const analysisText =
+        typeof raw === 'string' ? raw : raw?.text ?? raw?.output_text ?? JSON.stringify(raw);
 
-      logger.info('Report analysis completed')
+      logger.info('Report analysis completed');
 
       return {
         analysis: analysisText,
         timestamp: new Date().toISOString(),
-        reportDate: reportData.reportDate
-      }
+        reportDate: reportData.reportDate,
+      };
     } catch (error) {
-      logger.error('Report analysis failed', { error: error.message })
-      throw error
+      logger.error('Report analysis failed', { error: error.message });
+      throw error;
     }
   }
 
+  /**
+   * Format lab values with severity and clinical context
+   */
+  formatLabValuesWithSeverity(labValues) {
+    if (!labValues || Object.keys(labValues).length === 0) {
+      return 'No lab values detected in report';
+    }
+
+    return Object.entries(labValues)
+      .map(([key, data]) => {
+        const value = typeof data === 'object' ? data.value : data;
+        const unit = typeof data === 'object' ? data.unit : '';
+        const severity = typeof data === 'object' ? data.severity : 'unknown';
+
+        // Get the lab range info
+        const ranges = pcosLabRanges[key];
+        const description = ranges?.description || key;
+
+        return `- ${description}: ${value} ${unit} [Status: ${severity}]`;
+      })
+      .join('\n');
+  }
+
+  /**
+   * Format reference ranges for AI to understand normal/abnormal
+   */
+  formatReferenceRanges(labValues) {
+    if (!labValues || Object.keys(labValues).length === 0) {
+      return 'No reference ranges available';
+    }
+
+    const rangeDescriptions = [];
+
+    Object.keys(labValues).forEach((key) => {
+      const ranges = pcosLabRanges[key];
+      if (!ranges) return;
+
+      let rangeText = `${ranges.description || key} (${ranges.unit}):\n`;
+
+      // Handle cycle-dependent hormones specially
+      if (ranges.skipSeverity && ranges.cycleDependentNote) {
+        rangeText += `  NOTE: This hormone varies by menstrual cycle phase. Do not label as abnormal.\n`;
+        rangeText += `  ${ranges.cycleDependentNote}\n`;
+      } else {
+        // Normal range
+        if (ranges.normal) {
+          rangeText += `  Normal: ${ranges.normal.min}-${ranges.normal.max}\n`;
+        }
+
+        // Optimal range (if different)
+        if (
+          ranges.optimal &&
+          (ranges.optimal.min !== ranges.normal?.min || ranges.optimal.max !== ranges.normal?.max)
+        ) {
+          rangeText += `  Optimal: ${ranges.optimal.min}-${ranges.optimal.max}\n`;
+        }
+
+        // PCOS-specific thresholds
+        if (ranges.elevated) {
+          rangeText += `  Elevated if >${ranges.elevated}\n`;
+        }
+        if (ranges.pcosHigh) {
+          rangeText += `  PCOS-concerning: ${ranges.pcosHigh.min}-${ranges.pcosHigh.max}\n`;
+        }
+        if (ranges.high) {
+          rangeText += `  High: >${ranges.high}\n`;
+        }
+        if (ranges.critical) {
+          rangeText += `  Critical if >${ranges.critical}\n`;
+        }
+
+        // Low thresholds
+        if (ranges.low) {
+          rangeText += `  Low if <${
+            typeof ranges.low === 'number' ? ranges.low : ranges.low.max
+          }\n`;
+        }
+        if (ranges.deficient) {
+          rangeText += `  Deficient if <${
+            typeof ranges.deficient === 'number' ? ranges.deficient : ranges.deficient.max
+          }\n`;
+        }
+      }
+
+      rangeDescriptions.push(rangeText);
+    });
+
+    return rangeDescriptions.join('\n');
+  }
+
+  /**
+   * Legacy method for simple formatting (kept for compatibility)
+   */
   formatLabValues(labValues) {
     if (!labValues || Object.keys(labValues).length === 0) {
-      return 'No lab values detected in report'
+      return 'No lab values detected in report';
     }
 
     return Object.entries(labValues)
       .map(([key, value]) => {
         if (typeof value === 'object') {
-          return `${key}: ${value.value} ${value.unit || ''}`
+          return `${key}: ${value.value} ${value.unit || ''}`;
         }
-        return `${key}: ${value}`
+        return `${key}: ${value}`;
       })
-      .join('\n')
+      .join('\n');
   }
 }
 
-export const reportChain = new ReportChain()
-export default reportChain
+export const reportChain = new ReportChain();
+export default reportChain;

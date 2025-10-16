@@ -1,4 +1,14 @@
-import { AlertTriangle, CheckCircle, Info, TrendingUp, Activity, AlertCircle } from 'lucide-react';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  TrendingUp,
+  Activity,
+  AlertCircle,
+  Heart,
+  Lightbulb,
+  Calendar,
+} from 'lucide-react';
 import { formatLabName, groupLabValuesByCategory, CATEGORY_NAMES } from '../../utils/labFormatter';
 
 const ReportAnalysis = ({ report }) => {
@@ -6,7 +16,65 @@ const ReportAnalysis = ({ report }) => {
 
   const { labValues, analysis } = report;
 
-  // Helper to safely parse analysis text
+  /**
+   * Parse AI analysis into structured sections
+   * Expected format:
+   * **Summary**
+   * text...
+   *
+   * **Key Observations**
+   * text...
+   *
+   * **What This Means for You**
+   * text...
+   *
+   * **Next Steps**
+   * text...
+   *
+   * **When to Reach Out to Your Doctor**
+   * text...
+   */
+  const parseAnalysisIntoSections = (text) => {
+    if (!text) return null;
+
+    // Handle if text is an object
+    if (typeof text === 'object' && text.analysis) {
+      text = text.analysis;
+    }
+
+    if (typeof text !== 'string') {
+      text = JSON.stringify(text, null, 2);
+    }
+
+    // Split by markdown headers
+    const sections = {};
+    const headerPattern = /\*\*([^*]+)\*\*/g;
+
+    let matches = [...text.matchAll(headerPattern)];
+
+    if (matches.length === 0) {
+      // No structured format, return as single section
+      return {
+        unstructured: text,
+      };
+    }
+
+    for (let i = 0; i < matches.length; i++) {
+      const header = matches[i][1].trim();
+      const startIndex = matches[i].index + matches[i][0].length;
+      const endIndex = i < matches.length - 1 ? matches[i + 1].index : text.length;
+      const content = text.substring(startIndex, endIndex).trim().replace('-', '');
+
+      sections[header] = content.replace('\n\n-', '\n').trim();
+    }
+    console.log('Parsed analysis sections:', sections);
+    return sections;
+  };
+
+  // Parse analysis into sections
+  const analysisSections = analysis ? parseAnalysisIntoSections(analysis) : null;
+
+  // Helper to safely parse analysis text (fallback)
   const parseAnalysisText = (text) => {
     if (!text) return null;
 
@@ -21,7 +89,18 @@ const ReportAnalysis = ({ report }) => {
     return JSON.stringify(text, null, 2);
   };
 
-  // FIXED: Added deficient severity and proper color coding
+  // Get icon for section
+  const getSectionIcon = (sectionName) => {
+    const iconMap = {
+      Summary: <Heart className="text-primary" size={20} />,
+      'Key Observations': <Activity className="text-primary" size={20} />,
+      'What This Means for You': <Lightbulb className="text-warning" size={20} />,
+      'Next Steps': <TrendingUp className="text-success" size={20} />,
+      'When to Reach Out to Your Doctor': <AlertCircle className="text-danger" size={20} />,
+    };
+    return iconMap[sectionName] || <Info className="text-primary" size={20} />;
+  };
+
   const getSeverityIcon = (severity) => {
     switch (severity) {
       case 'critical':
@@ -41,7 +120,6 @@ const ReportAnalysis = ({ report }) => {
     }
   };
 
-  // FIXED: Added deficient and low to danger/warning
   const getSeverityColor = (severity) => {
     switch (severity) {
       case 'critical':
@@ -60,7 +138,6 @@ const ReportAnalysis = ({ report }) => {
     }
   };
 
-  // FIXED: Added severity label formatter
   const getSeverityLabel = (severity) => {
     const labels = {
       critical: 'Critical',
@@ -76,7 +153,6 @@ const ReportAnalysis = ({ report }) => {
     return labels[severity] || severity;
   };
 
-  // Helper to get reference ranges for cycle-dependent hormones
   const getCycleDependentRanges = (key) => {
     const ranges = {
       estradiol: 'Follicular: 19.5-144.2 | Mid-cycle: 63.9-356.7 | Luteal: 55.8-214.2 pg/mL',
@@ -85,11 +161,9 @@ const ReportAnalysis = ({ report }) => {
     return ranges[key] || null;
   };
 
-  // Check if labValues is empty or not an object
   const hasLabValues =
     labValues && typeof labValues === 'object' && Object.keys(labValues).length > 0;
 
-  // Group lab values by category
   const groupedLabValues = hasLabValues ? groupLabValuesByCategory(labValues) : {};
 
   return (
@@ -97,10 +171,96 @@ const ReportAnalysis = ({ report }) => {
       {/* Report Header */}
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-2xl font-bold text-primary mb-2">{report.filename}</h2>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted flex items-center gap-2">
+          <Calendar size={16} />
           Uploaded on {new Date(report.uploadedAt).toLocaleString()}
         </p>
       </div>
+
+      {/* AI Analysis - Now structured and scannable */}
+      {analysis && (
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-gradient-to-r from-primary to-secondary p-4">
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Heart className="text-white" />
+              Your Report Analysis
+            </h3>
+            <p className="text-white text-sm opacity-90 mt-1">
+              Understanding your results with care and context
+            </p>
+          </div>
+
+          <div className="p-6">
+            {analysisSections && !analysisSections.unstructured ? (
+              <div className="space-y-6">
+                {Object.entries(analysisSections).map(([sectionName, content]) => (
+                  <div key={sectionName} className="border-l-4 border-primary pl-4 py-2">
+                    <div className="flex items-center gap-2 mb-3">
+                      {getSectionIcon(sectionName)}
+                      <h4 className="text-lg font-bold text-gray-800">{sectionName}</h4>
+                    </div>
+                    <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                      {content.split('\n').map((paragraph, idx) => {
+                        if (!paragraph.trim()) return null;
+
+                        // Handle bullet points
+                        if (paragraph.trim().startsWith('-')) {
+                          return (
+                            <div key={idx} className="flex gap-2 mb-2">
+                              <span className="text-primary mt-1">•</span>
+                              <p className="flex-1 mb-0">{paragraph.trim().substring(1).trim()}</p>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <p key={idx} className="mb-3">
+                            {paragraph}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // Fallback for unstructured text
+              <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                {parseAnalysisText(analysis)
+                  ?.split('\n')
+                  .map((paragraph, idx) => {
+                    if (!paragraph.trim()) return null;
+
+                    // Handle markdown headers
+                    if (paragraph.startsWith('##')) {
+                      return (
+                        <h4 key={idx} className="text-lg font-bold text-gray-800 mt-6 mb-3">
+                          {paragraph.replace(/^##\s*/, '')}
+                        </h4>
+                      );
+                    }
+
+                    // Handle bullet points
+                    if (paragraph.trim().startsWith('-')) {
+                      return (
+                        <div key={idx} className="flex gap-2 mb-2">
+                          <span className="text-primary mt-1">•</span>
+                          <p className="flex-1 mb-0">{paragraph.trim().substring(1).trim()}</p>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <p key={idx} className="mb-3">
+                        {paragraph}
+                      </p>
+                    );
+                  })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Lab Values Summary */}
       <div className="bg-white rounded-lg shadow p-6">
@@ -146,13 +306,12 @@ const ReportAnalysis = ({ report }) => {
                                 </span>
                               )}
                             </p>
-                            {/* FIXED: Show severity label with proper color coding */}
                             <p
                               className={`text-xs mt-1 font-medium ${
                                 displaySeverity === 'normal'
                                   ? 'text-success'
-                                  : displaySeverity === 'deficient' ||
-                                    displaySeverity === 'critical'
+                                  : displaySeverity === 'critical' ||
+                                    displaySeverity === 'deficient'
                                   ? 'text-danger'
                                   : displaySeverity === 'cycle-dependent'
                                   ? 'text-[#9d4edd]'
@@ -161,7 +320,6 @@ const ReportAnalysis = ({ report }) => {
                             >
                               {getSeverityLabel(displaySeverity)}
                             </p>
-                            {/* Show reference ranges for cycle-dependent hormones */}
                             {isCycleDependent && cycleRanges && (
                               <div className="mt-2 p-2 bg-white bg-opacity-50 rounded text-xs">
                                 <p className="font-semibold text-gray-700 mb-1">
@@ -187,7 +345,6 @@ const ReportAnalysis = ({ report }) => {
               Make sure the report contains clear lab results with values and units
             </p>
 
-            {/* Debug info in development */}
             {process.env.NODE_ENV === 'development' && (
               <details className="mt-4 text-left">
                 <summary className="cursor-pointer text-xs text-primary">
@@ -206,29 +363,17 @@ const ReportAnalysis = ({ report }) => {
         )}
       </div>
 
-      {/* AI Analysis */}
-      {analysis && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <TrendingUp className="text-primary" />
-            AI Analysis
-          </h3>
-
-          <div className="prose prose-sm max-w-none">
-            <div className="whitespace-pre-wrap text-gray-700">{parseAnalysisText(analysis)}</div>
-          </div>
-        </div>
-      )}
-
       {/* Medical Disclaimer */}
       <div className="p-6 bg-warning bg-opacity-10 border-l-4 border-warning rounded-lg">
         <div className="flex items-start gap-3">
           <AlertCircle className="text-warning flex-shrink-0 mt-1" size={20} />
           <div>
             <p className="text-sm text-gray-700">
-              <strong>⚠️ Medical Disclaimer:</strong> This analysis is for educational purposes
-              only. Always discuss your lab results with a qualified healthcare professional. Do not
-              make medical decisions based solely on this analysis.
+              <strong>⚠️ Medical Disclaimer:</strong> This analysis is for educational purposes only
+              and does not replace professional medical advice. Always consult your healthcare
+              provider for personalized recommendations and treatment decisions. Lab values should
+              be interpreted by a qualified medical professional in the context of your complete
+              health history.
             </p>
           </div>
         </div>
