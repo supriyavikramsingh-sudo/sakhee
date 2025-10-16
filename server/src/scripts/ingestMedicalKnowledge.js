@@ -1,15 +1,17 @@
+// CRITICAL: Load environment variables BEFORE any other imports
+// This must happen before env.js is loaded by any dependency
 import dotenv from 'dotenv';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Initialize __dirname and __filename for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load .env from server directory
+// Load .env from server directory FIRST
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+// Now import other modules that depend on environment variables
+import fs from 'fs';
 import { vectorStoreManager } from '../langchain/vectorStore.js';
 import { Logger } from '../utils/logger.js';
 

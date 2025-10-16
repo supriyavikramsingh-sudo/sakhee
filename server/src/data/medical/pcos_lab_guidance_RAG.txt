@@ -1,0 +1,391 @@
+PCOS LAB VALUES → DIET GUIDANCE (INDIA) — RAG TXT
+Version: 2025-10-16
+Source of ranges: labRanges.js (exact, do not deviate)
+Purpose: For embedding (HNSWLib). Keep chunks atomic and retrievable by LAB + SEVERITY.
+Note: Food guidance is food-first, non-prescriptive. Not medical advice.
+
+CHUNK FORMAT
+=== LAB: <Name as below> ===
+UNITS: <unit>
+RANGE: <exact from labRanges.js>
+PCOS IMPACT: <1–3 lines on physiology/risks in PCOS>
+SEVERITY: <Category label>
+DIETARY FOCUS: <bullets>
+INDIAN INGREDIENTS (North | South | East | West): <comma-separated examples per region>
+SUBSTITUTES (Continental): <comma-separated>
+— (repeat SEVERITY blocks as needed) —
+---
+
+============================================================
+=== LAB: GLUCOSE FASTING (glucose_fasting) ===
+UNITS: mg/dL
+RANGE: normal 70–100; prediabetes 100–125; critical ≥126
+PCOS IMPACT: Insulin resistance (IR) is common; higher fasting glucose increases risk of anovulation, androgen excess, and cardiometabolic disease.
+
+SEVERITY: LOW (<70)  [rare; consider clinician review]
+DIETARY FOCUS:
+- Avoid long fasts; pair carbohydrate with protein/fat; regular meal timing.
+- Moderate caffeine on empty stomach; include fiber at first meal.
+INDIAN INGREDIENTS (North | South | East | West):
+- North: dahi (unsweetened), roasted chana, almonds
+- South: peanut sundal (dry-roasted), curd, coconut pieces (small)
+- East: chana/ghugni (portion), boiled egg, muri (puffed rice) + peanuts (small)
+- West: roasted groundnuts, buttermilk (unsweetened), poha-chivda (roasted, small)
+SUBSTITUTES (Continental): Greek yogurt, mixed nuts, oatcakes, whole-grain crackers + cheese
+
+SEVERITY: NORMAL (70–100)
+DIETARY FOCUS:
+- Maintain low-GI, high-fiber pattern; protein 20–30 g/meal; non-starchy veg half-plate.
+- Evenly distribute carbohydrates; limit added sugars.
+INDIAN INGREDIENTS (North | South | East | West):
+- North: whole-wheat atta, kala chana, lauki, methi, rajma (portion)
+- South: ragi, idli/dosa with higher dal ratio, sambar, drumstick, avial veg
+- East: red/brown rice (small), moong dal, poi saag, rohu/ilish (non-veg)
+- West: jowar/bajra flour, cluster beans, peanuts (portioned), kadhi (unsweetened)
+SUBSTITUTES (Continental): Quinoa (for rice), barley, steel-cut oats
+
+SEVERITY: PREDIABETES (100–125)
+DIETARY FOCUS:
+- Lower refined carbs; 30–40 g/day fiber; vinegar/lemon with meals; 10–15 min post-meal walk.
+- Reduce fruit juices/sugary tea; prefer whole fruit (1–2/day).
+INDIAN INGREDIENTS (North | South | East | West):
+- North: besan/soya-mix rotis, sprouts, kheera/tomato salads
+- South: millets (ragi/jowar) for dosa, sambar-loaded veg, kootu
+- East: red rice (smaller), masoor/moong, leafy saag, fish (grilled)
+- West: bajra/jowar bhakri, varan (dal), vegetable sabzi, roasted chana
+SUBSTITUTES (Continental): Whole-grain wraps, chickpea pasta (portion), apple cider vinegar (with meals)
+
+SEVERITY: HIGH/DIABETES (≥126)
+DIETARY FOCUS:
+- Tighten GI load; remove sugar-sweetened beverages; smaller carb portions; add protein at breakfast.
+- Prioritize legumes, millets; avoid ultra-processed foods.
+INDIAN INGREDIENTS (North | South | East | West):
+- North: paneer (lean), rajma (small), saag, mixed veg
+- South: ragi, horsegram (kulthi), rasam, cabbage/beans poriyal
+- East: fish/egg, moong dal, saag, lau/torai
+- West: jowar/bajra, guvar/gavar, peanuts (small), leafy veg
+SUBSTITUTES (Continental): Greek yogurt, quinoa, lentil soups, hummus + veg
+
+---
+=== LAB: INSULIN FASTING (insulin_fasting) ===
+UNITS: µIU/mL
+RANGE: optimal 2–7; normal 2–25; elevated ≥10; PCOS-high 10–30; critical ≥30
+PCOS IMPACT: Hyperinsulinemia drives ovarian androgen excess; lowering insulin improves ovulation and lipids.
+
+SEVERITY: LOW (<2)
+DIETARY FOCUS:
+- Regular meals; include slow carbs paired with protein; avoid excess caffeine fasting.
+INGREDIENTS N|S|E|W: almonds, paneer/curd; ragi/idli with sambar; moong; jowar/bajra + dal
+SUBSTITUTES: Greek yogurt, whole-grain toast + egg
+
+SEVERITY: OPTIMAL/NORMAL (2–9 / 2–25)
+DIETARY FOCUS:
+- Maintain protein-forward plates; non-starchy veg; minimize refined flour.
+INGREDIENTS N|S|E|W: atta roti + dal; ragi/rasam veg; red rice (small) + dal; jowar + sabzi
+SUBSTITUTES: Quinoa, barley
+
+SEVERITY: ELEVATED (10–14) / HIGH (≥15)
+DIETARY FOCUS:
+- Aggressive GI control; higher fiber; add vinegar/lemon; post-meal walk; time sugar to after meals if needed.
+INGREDIENTS N|S|E|W: sprouts/kala chana; horsegram (kulthi); saag + fish; bajra + leafy veg
+SUBSTITUTES: Chickpea pasta (portion), Greek yogurt, lentil bowls
+
+---
+=== LAB: HOMA-IR (homa_ir) ===
+UNITS: unitless
+RANGE: normal 0–2.5; elevated ≥2.5; PCOS-high 2.5–5; critical ≥5
+PCOS IMPACT: Proxy for insulin resistance; higher values correlate with anovulation and dyslipidemia.
+
+SEVERITY: NORMAL (0–2.5)
+FOCUS: Maintain low-GI pattern; keep activity daily.
+INGREDIENTS N|S|E|W: whole wheat/kala chana; ragi/sambar; red rice + dal; jowar + dal
+SUBSTITUTES: Quinoa, oats
+
+SEVERITY: ELEVATED/PCOS-HIGH (≥2.5)
+FOCUS: Reduce added sugars/refined flour; 30–40 g fiber/day; protein 1.2–1.6 g/kg* (if kidney-healthy).
+INGREDIENTS N|S|E|W: besan/soya rotis; millets (ragi/jowar); moong/masoor; bajra + veg
+SUBSTITUTES: Barley, Greek yogurt, legume mixes
+*Protein individualized; clinician if renal issues.
+
+---
+=== LAB: HbA1c (hba1c) ===
+UNITS: %
+RANGE: normal 4–5.6; prediabetes 5.7–6.4; critical ≥6.5
+PCOS IMPACT: 3‑month glycemia; higher A1c tracks with IR and CVD risk.
+
+SEVERITY: NORMAL (4–5.6)
+FOCUS: Sustain low-GI diet; avoid liquid calories; consistent meal timing.
+INGREDIENTS N|S|E|W: atta + dal; ragi/sambar; red rice small + veg; jowar + veg
+SUBSTITUTES: Steel-cut oats, quinoa
+
+SEVERITY: PREDIABETES (5.7–6.4) / HIGH (≥6.5)
+FOCUS: Lower carb density; increase legumes/veg; remove sweets/juice; consider earlier, lighter dinners.
+INGREDIENTS N|S|E|W: sprouts/saag; horsegram; leafy saag + fish/egg; bajra + gavar
+SUBSTITUTES: Greek yogurt, lentil pasta (portion), barley
+
+---
+=== LAB: TOTAL CHOLESTEROL (cholesterol_total) ===
+UNITS: mg/dL
+RANGE: optimal/normal <200; borderline 200–239; high ≥240
+PCOS IMPACT: Dyslipidemia common in IR; focus on TG↓, HDL↑ patterns too.
+
+SEVERITY: NORMAL (<200)
+FOCUS: Keep fiber and MUFA/PUFA fats; limit trans fats.
+INGREDIENTS N|S|E|W: atta + dal; coconut (small)/curd; mustard oil veg; groundnut oil (moderate)
+SUBSTITUTES: Olive oil, nuts
+
+SEVERITY: BORDERLINE/HIGH (≥200)
+FOCUS: Soluble fiber (oats, barley, psyllium), nuts/seeds; fish 2×/week (non-veg); reduce saturated fats.
+INGREDIENTS N|S|E|W: oats, methi; barley + sambar; mustard oil veg + saag; groundnuts + veg
+SUBSTITUTES: Olive oil, flax/chia, salmon/mackerel
+
+---
+=== LAB: TRIGLYCERIDES (triglycerides) ===
+UNITS: mg/dL
+RANGE: normal <150; borderline 150–199; high ≥200; critical ≥500
+PCOS IMPACT: Strongly linked to IR; high TG increases CVD risk.
+
+SEVERITY: NORMAL (<150)
+FOCUS: Maintain low sugar; limit alcohol.
+INGREDIENTS N|S|E|W: dals/legumes; ragi; fish (lean); peanuts (small)
+SUBSTITUTES: Oats, nuts
+
+SEVERITY: BORDERLINE/HIGH/CRITICAL (≥150 / ≥200 / ≥500)
+FOCUS: Remove sugary drinks/sweets; cut refined carbs; omega-3 sources; increase fiber.
+INGREDIENTS N|S|E|W: flax/til (sesame), walnuts; fish (sardine/mackerel); mustard oil fish; groundnuts (portion)
+SUBSTITUTES: Salmon, chia/flax, avocado
+
+---
+=== LAB: HDL CHOLESTEROL (hdl_cholesterol) ===
+UNITS: mg/dL
+RANGE: low <50 (women); normal 50–100; optimal ≥60
+PCOS IMPACT: Low HDL common; exercise and fats quality help.
+
+SEVERITY: LOW (<50)
+FOCUS: Increase activity; add nuts/seeds; emphasize MUFA/omega‑3.
+INGREDIENTS N|S|E|W: almonds/walnuts; groundnut oil (moderate); mustard oil; peanuts (portion)
+SUBSTITUTES: Olive oil, fatty fish, flax
+
+SEVERITY: NORMAL/OPTIMAL (≥50)
+FOCUS: Maintain fat quality; avoid trans fats.
+
+---
+=== LAB: LDL CHOLESTEROL (ldl_cholesterol) ===
+UNITS: mg/dL
+RANGE: optimal <100; normal <129; borderline 130–159; high 160–189; critical ≥190
+PCOS IMPACT: Elevated LDL raises CVD risk.
+
+SEVERITY: NORMAL/OPTIMAL (<129 / <100)
+FOCUS: Maintain soluble fiber; weight management.
+INGREDIENTS: oats/barley/psyllium; legumes; veg
+SUBSTITUTES: Olive oil, nuts
+
+SEVERITY: BORDERLINE/HIGH/CRITICAL (≥130 / ≥160 / ≥190)
+FOCUS: Soluble fiber 10–25 g/day; replace saturated fat; more pulses/veg.
+INGREDIENTS N|S|E|W: oats/methi; barley; mustard oil veg; groundnuts + sprouts
+SUBSTITUTES: Olive oil, flax/chia, fish
+
+---
+=== LAB: VLDL (vldl_cholesterol) ===
+UNITS: mg/dL
+RANGE: normal 2–30; elevated >30
+PCOS IMPACT: Tracks with TG; high suggests IR.
+SEVERITY: NORMAL vs ELEVATED → follow TG guidance.
+
+---
+=== LAB: LH (lh) ===
+UNITS: mIU/mL
+RANGE: follicular/normal 1.9–12.5; elevated >12.5; PCOS-high 12.5–20
+PCOS IMPACT: Elevated LH with normal/low FSH → anovulation.
+
+SEVERITY: NORMAL (1.9–12.5)
+FOCUS: Maintain IR‑friendly diet.
+SEVERITY: ELEVATED/PCOS-HIGH (>12.5)
+FOCUS: Reduce IR drivers (sugar/refined flour); higher fiber; protein at breakfast.
+
+---
+=== LAB: FSH (fsh) ===
+UNITS: mIU/mL
+RANGE: follicular/normal 2.5–10.2; low <2.5
+PCOS IMPACT: Often normal; interpret with LH/AMH.
+
+SEVERITY: LOW (<2.5)
+FOCUS: Overall nutrient density; adequate protein; iodine/selenium/zinc from foods.
+SUBSTITUTES: Sea salt iodized, nuts
+SEVERITY: NORMAL (2.5–10.2) → maintain IR-friendly pattern.
+
+---
+=== LAB: LH:FSH RATIO (lh_fsh_ratio) ===
+UNITS: ratio
+RANGE: normal 0–2; elevated >2; PCOS-high 2–3; critical >3
+PCOS IMPACT: >2 common in PCOS (not diagnostic).
+GUIDANCE: Reduce IR; same as insulin/HOMA strategies.
+
+---
+=== LAB: PROLACTIN (prolactin) ===
+UNITS: ng/mL
+RANGE: normal 2.8–29.2; elevated >29.2; high >50; critical >100
+PCOS IMPACT: Mild elevation can mimic PCOS; diet limited effect.
+
+SEVERITY: ELEVATED/HIGH
+FOCUS: Sleep/stress hygiene; reduce ultra-processed foods; check meds with clinician.
+INGREDIENTS: veg, omega‑3 fish/nuts; turmeric/ginger
+
+---
+=== LAB: TOTAL TESTOSTERONE (testosterone_total) ===
+UNITS: ng/dL
+RANGE: normal 8–60; elevated >60; PCOS-high 60–80; high >80
+PCOS IMPACT: Hyperandrogenism hallmark; manage via IR control and weight.
+
+SEVERITY: ELEVATED/HIGH
+FOCUS: IR control; weight reduction if indicated; anti-inflammatory pattern; avoid ultra‑processed food.
+INGREDIENTS N|S|E|W: legumes, leafy veg, flax; ragi + veg; mustard oil fish; jowar + veg
+SUBSTITUTES: walnuts/flax, olive oil, fatty fish
+
+---
+=== LAB: FREE TESTOSTERONE (testosterone_free) ===
+UNITS: pg/mL
+RANGE: normal 0.3–1.9; elevated >1.9; PCOS-high 1.9–3
+PCOS IMPACT: Correlates with symptoms; reduce via IR management.
+
+---
+=== LAB: DHEA‑S (dheas) ===
+UNITS: µg/dL
+RANGE: normal 95.8–511.7; elevated ≥511.7; PCOS‑high 511.7–700; high >700
+PCOS IMPACT: Adrenal androgen; very high → evaluate adrenal causes.
+GUIDANCE: Anti‑inflammatory diet; stress/sleep support; IR control.
+
+---
+=== LAB: AMH (amh) ===
+UNITS: ng/mL
+RANGE: very low 0–0.5; low 0.5–1; normal 1–3.5; optimal 1.5–3; elevated >3.5; PCOS‑high 3.5–8; high >8
+PCOS IMPACT: Often high in PCOS; reflects follicle count (not egg quality).
+GUIDANCE: IR‑centric diet; weight management; nutrient density.
+
+---
+=== LAB: ESTRADIOL (estradiol) — cycle‑dependent ===
+UNITS: pg/mL
+RANGE: follicular 19.5–144.2; mid‑cycle 63.9–356.7; luteal 55.8–214.2
+PCOS IMPACT: Continuous follicular‑range E2 common in anovulation.
+GUIDANCE: Support ovulation via IR management; high‑fiber veg aids estrogen metabolism.
+
+---
+=== LAB: PROGESTERONE (progesterone) — cycle‑dependent ===
+UNITS: ng/mL
+RANGE: follicular 0.1–0.3; luteal 1.2–25.0
+PCOS IMPACT: Low luteal P4 indicates anovulation.
+GUIDANCE: No food raises P4 directly; focus on ovulation support via IR and stress/sleep management.
+
+---
+=== LAB: TSH (tsh) ===
+UNITS: µIU/mL
+RANGE: normal 0.5–4.5; optimal 1–2.5; subclinical high 4.5–10; high >10; low <0.5
+PCOS IMPACT: Hypothyroid mimics/worsens cycles, weight, lipids.
+GUIDANCE: Iodine (iodized salt), selenium (lentils/eggs), zinc (chana/seeds).
+
+---
+=== LAB: FREE T3 (t3_free) ===
+UNITS: pg/mL
+RANGE: normal 2.3–4.2; low <2.3; elevated >4.2
+GUIDANCE: Thyroid-managed clinically; diet supportive (protein, selenium, iodine).
+
+---
+=== LAB: FREE T4 (t4_free) ===
+UNITS: ng/dL
+RANGE: normal 0.89–1.76; low <0.89; elevated >1.76
+GUIDANCE: as above.
+
+---
+=== LAB: VITAMIN D (vitamin_d) ===
+UNITS: nmol/L
+RANGE: deficient 0–50; insufficient 50–75; normal 75–250; optimal 100–200; elevated >250; toxic >375
+PCOS IMPACT: Deficiency common; repletion improves IR and ovulatory metrics (with clinician).
+
+SEVERITY: DEFICIENT/INSUFFICIENT (<75)
+FOCUS: Safe sun, fortified dairy, eggs, fatty fish; discuss supplements with clinician.
+SUBSTITUTES: fortified milk/yogurt, salmon/tuna
+
+SEVERITY: NORMAL/OPTIMAL (≥75)
+FOCUS: maintain
+
+---
+=== LAB: VITAMIN B12 (vitamin_b12) ===
+UNITS: pg/mL
+RANGE: deficient <200; low 200–300; normal 300–900; optimal 400–900; elevated >900
+PCOS IMPACT: Low with metformin or vegetarian diets → fatigue/neuropathy risk.
+
+SEVERITY: DEFICIENT/LOW (<300)
+FOCUS: Eggs/dairy/fish/chicken (if non‑veg), fortified foods; discuss supplements if needed.
+SUBSTITUTES: Greek yogurt, fortified cereals
+
+SEVERITY: NORMAL/OPTIMAL
+FOCUS: maintain
+
+---
+=== LAB: SERUM IRON (iron) ===
+UNITS: µg/dL
+RANGE: low <50; normal 50–170; elevated >170; high >180
+PCOS IMPACT: Low → fatigue; high may indicate overload or inflammation context.
+
+SEVERITY: LOW
+FOCUS: Heme + plant iron with vitamin C; avoid tea/coffee with meals.
+SUBSTITUTES: lean red meat (where used), fortified cereals
+
+SEVERITY: ELEVATED/HIGH
+FOCUS: Check inflammation; limit iron supplements; balance with veg/fiber.
+
+---
+=== LAB: FERRITIN (ferritin) ===
+UNITS: ng/mL
+RANGE: deficient <10; low 10–30; normal 30–291; optimal 50–150; elevated ≥200; high ≥300
+PCOS IMPACT: Low stores common; high can reflect inflammation.
+
+SEVERITY: DEFICIENT/LOW (<30)
+FOCUS: As iron low; pair with vitamin C; avoid tea/coffee at meals.
+
+SEVERITY: NORMAL/OPTIMAL
+FOCUS: maintain
+
+SEVERITY: ELEVATED/HIGH (≥200 / ≥300)
+FOCUS: Anti‑inflammatory diet; weight/IR management; evaluate causes.
+
+---
+=== LAB: TIBC (tibc) ===
+UNITS: µg/dL
+RANGE: low <250; normal 250–425; elevated >425
+GUIDANCE: Address underlying iron status as per iron/ferritin.
+
+---
+=== LAB: TRANSFERRIN SATURATION (transferrin_saturation) ===
+UNITS: %
+RANGE: low <15; normal 15–50; elevated >50; high >60
+GUIDANCE: Align with iron/ferritin findings.
+
+---
+=== LAB: CRP / hs‑CRP (crp) ===
+UNITS: mg/L
+RANGE: low risk 0–1; average 1–3; high 3–10; critical >10
+PCOS IMPACT: Chronic low‑grade inflammation common.
+
+SEVERITY: AVERAGE/HIGH (≥1)
+FOCUS: Anti‑inflammatory pattern: spices (turmeric/ginger), omega‑3s, nuts; reduce refined carbs/UPFs; sleep/stress care.
+SUBSTITUTES: olive oil, walnuts
+
+---
+=== LAB: CORTISOL (cortisol) ===
+UNITS: µg/dL (morning)
+RANGE: normal 6–23; elevated >23; high >30; low <6
+PCOS IMPACT: Dysregulated stress axis may worsen cravings, sleep, IR.
+
+SEVERITY: LOW/HIGH
+FOCUS: Regular meals; protein at breakfast; moderate caffeine; magnesium-rich foods (dal, seeds, cooked spinach); stress management.
+
+---
+
+EVIDENCE NOTES (brief; for app linking)
+- South Asian PCOS: earlier onset, higher IR even at normal BMI; lifestyle/low‑GI improves insulin and cycles.
+- Omega‑3 (fish or ALA seeds) improves lipids; possible androgen benefit.
+- Vitamin D deficiency common in PCOS; repletion improves metabolic/ovulatory markers in deficient women.
+- 5–10% weight loss often restores ovulation and improves metabolic profile.
+
+DISCLAIMER: Educational use only; not medical advice. Interpret labs with a clinician.

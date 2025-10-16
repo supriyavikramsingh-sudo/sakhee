@@ -8,13 +8,17 @@ import {
   Heart,
   Lightbulb,
   Calendar,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
+import { useState } from 'react';
 import { formatLabName, groupLabValuesByCategory, CATEGORY_NAMES } from '../../utils/labFormatter';
 
 const ReportAnalysis = ({ report }) => {
   if (!report) return null;
 
   const { labValues, analysis } = report;
+  const [isAnalysisExpanded, setIsAnalysisExpanded] = useState(false);
 
   /**
    * Parse AI analysis into structured sections
@@ -177,91 +181,6 @@ const ReportAnalysis = ({ report }) => {
         </p>
       </div>
 
-      {/* AI Analysis - Now structured and scannable */}
-      {analysis && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="bg-gradient-to-r from-primary to-secondary p-4">
-            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-              <Heart className="text-white" />
-              Your Report Analysis
-            </h3>
-            <p className="text-white text-sm opacity-90 mt-1">
-              Understanding your results with care and context
-            </p>
-          </div>
-
-          <div className="p-6">
-            {analysisSections && !analysisSections.unstructured ? (
-              <div className="space-y-6">
-                {Object.entries(analysisSections).map(([sectionName, content]) => (
-                  <div key={sectionName} className="border-l-4 border-primary pl-4 py-2">
-                    <div className="flex items-center gap-2 mb-3">
-                      {getSectionIcon(sectionName)}
-                      <h4 className="text-lg font-bold text-gray-800">{sectionName}</h4>
-                    </div>
-                    <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
-                      {content.split('\n').map((paragraph, idx) => {
-                        if (!paragraph.trim()) return null;
-
-                        // Handle bullet points
-                        if (paragraph.trim().startsWith('-')) {
-                          return (
-                            <div key={idx} className="flex gap-2 mb-2">
-                              <span className="text-primary mt-1">•</span>
-                              <p className="flex-1 mb-0">{paragraph.trim().substring(1).trim()}</p>
-                            </div>
-                          );
-                        }
-
-                        return (
-                          <p key={idx} className="mb-3">
-                            {paragraph}
-                          </p>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              // Fallback for unstructured text
-              <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
-                {parseAnalysisText(analysis)
-                  ?.split('\n')
-                  .map((paragraph, idx) => {
-                    if (!paragraph.trim()) return null;
-
-                    // Handle markdown headers
-                    if (paragraph.startsWith('##')) {
-                      return (
-                        <h4 key={idx} className="text-lg font-bold text-gray-800 mt-6 mb-3">
-                          {paragraph.replace(/^##\s*/, '')}
-                        </h4>
-                      );
-                    }
-
-                    // Handle bullet points
-                    if (paragraph.trim().startsWith('-')) {
-                      return (
-                        <div key={idx} className="flex gap-2 mb-2">
-                          <span className="text-primary mt-1">•</span>
-                          <p className="flex-1 mb-0">{paragraph.trim().substring(1).trim()}</p>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <p key={idx} className="mb-3">
-                        {paragraph}
-                      </p>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Lab Values Summary */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -362,6 +281,176 @@ const ReportAnalysis = ({ report }) => {
           </div>
         )}
       </div>
+
+      {/* AI Analysis - Now structured and scannable with preview */}
+      {analysis && (
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-gradient-to-r from-primary to-secondary p-4">
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Heart className="text-white" />
+              Your Report Analysis
+            </h3>
+            <p className="text-white text-sm opacity-90 mt-1">
+              Understanding your results with care and context
+            </p>
+          </div>
+
+          <div className="p-6">
+            {analysisSections && !analysisSections.unstructured ? (
+              <div className="space-y-6">
+                {/* Preview: Show first section or summary */}
+                {!isAnalysisExpanded && (
+                  <div>
+                    {(() => {
+                      const firstSection = Object.entries(analysisSections)[0];
+                      if (!firstSection) return null;
+                      const [sectionName, content] = firstSection;
+                      const preview = content.substring(0, 200);
+
+                      return (
+                        <div className="border-l-4 border-primary pl-4 py-2">
+                          <div className="flex items-center gap-2 mb-3">
+                            {getSectionIcon(sectionName)}
+                            <h4 className="text-lg font-bold text-gray-800">{sectionName}</h4>
+                          </div>
+                          <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                            <p className="mb-3">
+                              {preview}
+                              {content.length > 200 && '...'}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    <button
+                      onClick={() => setIsAnalysisExpanded(true)}
+                      className="flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors mt-4"
+                    >
+                      <ChevronDown size={20} />
+                      Expand to read more
+                    </button>
+                  </div>
+                )}
+
+                {/* Full content when expanded */}
+                {isAnalysisExpanded && (
+                  <>
+                    {Object.entries(analysisSections).map(([sectionName, content]) => (
+                      <div key={sectionName} className="border-l-4 border-primary pl-4 py-2">
+                        <div className="flex items-center gap-2 mb-3">
+                          {getSectionIcon(sectionName)}
+                          <h4 className="text-lg font-bold text-gray-800">{sectionName}</h4>
+                        </div>
+                        <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                          {content.split('\n').map((paragraph, idx) => {
+                            if (!paragraph.trim()) return null;
+
+                            // Handle bullet points
+                            if (paragraph.trim().startsWith('-')) {
+                              return (
+                                <div key={idx} className="flex gap-2 mb-2">
+                                  <span className="text-primary mt-1">•</span>
+                                  <p className="flex-1 mb-0">
+                                    {paragraph.trim().substring(1).trim()}
+                                  </p>
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <p key={idx} className="mb-3">
+                                {paragraph}
+                              </p>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+
+                    <button
+                      onClick={() => setIsAnalysisExpanded(false)}
+                      className="flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors mt-4"
+                    >
+                      <ChevronUp size={20} />
+                      Show less
+                    </button>
+                  </>
+                )}
+              </div>
+            ) : (
+              // Fallback for unstructured text
+              <div>
+                {!isAnalysisExpanded && (
+                  <div>
+                    <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                      <p className="mb-3">
+                        {parseAnalysisText(analysis)?.substring(0, 200)}
+                        {parseAnalysisText(analysis)?.length > 200 && '...'}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setIsAnalysisExpanded(true)}
+                      className="flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors mt-4"
+                    >
+                      <ChevronDown size={20} />
+                      Expand to read more
+                    </button>
+                  </div>
+                )}
+
+                {isAnalysisExpanded && (
+                  <>
+                    <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                      {parseAnalysisText(analysis)
+                        ?.split('\n')
+                        .map((paragraph, idx) => {
+                          if (!paragraph.trim()) return null;
+
+                          // Handle markdown headers
+                          if (paragraph.startsWith('##')) {
+                            return (
+                              <h4 key={idx} className="text-lg font-bold text-gray-800 mt-6 mb-3">
+                                {paragraph.replace(/^##\s*/, '')}
+                              </h4>
+                            );
+                          }
+
+                          // Handle bullet points
+                          if (paragraph.trim().startsWith('-')) {
+                            return (
+                              <div key={idx} className="flex gap-2 mb-2">
+                                <span className="text-primary mt-1">•</span>
+                                <p className="flex-1 mb-0">
+                                  {paragraph.trim().substring(1).trim()}
+                                </p>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <p key={idx} className="mb-3">
+                              {paragraph}
+                            </p>
+                          );
+                        })}
+                    </div>
+
+                    <button
+                      onClick={() => setIsAnalysisExpanded(false)}
+                      className="flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors mt-4"
+                    >
+                      <ChevronUp size={20} />
+                      Show less
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Medical Disclaimer */}
       <div className="p-6 bg-warning bg-opacity-10 border-l-4 border-warning rounded-lg">

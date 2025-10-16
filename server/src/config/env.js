@@ -1,13 +1,25 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Initialize __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from server directory (handles both running from root and server dir)
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const requiredEnvs = ['OPENAI_API_KEY', 'SERP_API_KEY', 'REDDIT_CLIENT_ID', 'REDDIT_CLIENT_SECRET'];
 
 // Validate required environment variables
-const missing = requiredEnvs.filter((env) => !process.env[env]);
-if (missing.length > 0) {
-  console.error(`❌ Missing environment variables: ${missing.join(', ')}`);
-  console.error('Please check your .env file');
-  process.exit(1);
+// Skip validation if SKIP_ENV_VALIDATION is set (useful for scripts that don't need all vars)
+if (!process.env.SKIP_ENV_VALIDATION) {
+  const missing = requiredEnvs.filter((env) => !process.env[env]);
+  if (missing.length > 0) {
+    console.error(`❌ Missing environment variables: ${missing.join(', ')}`);
+    console.error('Please check your .env file');
+    process.exit(1);
+  }
 }
 
 export const env = {
