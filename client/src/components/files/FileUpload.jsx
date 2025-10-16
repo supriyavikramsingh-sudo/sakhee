@@ -3,88 +3,90 @@
  * Upload medical reports
  */
 
-import { useState, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useUserProfileStore } from '../../store'
-import apiClient from '../../services/apiClient'
-import { Upload, File, X, Loader, CheckCircle, AlertCircle } from 'lucide-react'
+import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useUserProfileStore } from '../../store';
+import apiClient from '../../services/apiClient';
+import { Upload, File, X, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 
 const FileUpload = ({ userId, onUploadComplete }) => {
-  const { t } = useTranslation()
-  const { profile } = useUserProfileStore()
-  const [file, setFile] = useState(null)
-  const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState(null)
-  const [progress, setProgress] = useState(0)
-  const fileInputRef = useRef(null)
+  const { t } = useTranslation();
+  const { profile } = useUserProfileStore();
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef(null);
 
   const handleFileSelect = (e) => {
-    const selectedFile = e.target.files[0]
+    const selectedFile = e.target.files[0];
     if (selectedFile) {
       // Validate file type
-      const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/jpg', 'image/png']
-      
+      const allowedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+      ];
+
       if (!allowedTypes.includes(selectedFile.type)) {
-        setError('Invalid file type. Please upload PDF, DOCX, or image files.')
-        return
+        setError('Invalid file type. Please upload PDF, DOCX, or image files.');
+        return;
       }
 
       // Validate file size (10MB)
       if (selectedFile.size > 10 * 1024 * 1024) {
-        setError('File too large. Maximum size is 10MB.')
-        return
+        setError('File too large. Maximum size is 10MB.');
+        return;
       }
 
-      setFile(selectedFile)
-      setError(null)
+      setFile(selectedFile);
+      setError(null);
     }
-  }
+  };
 
   const handleUpload = async () => {
-    if (!file) return
+    if (!file) return;
 
-    setUploading(true)
-    setError(null)
-    setProgress(0)
+    setUploading(true);
+    setError(null);
+    setProgress(0);
 
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('userId', userId)
-      formData.append('age', profile?.age || '25-30')
-      formData.append('diagnosedPCOS', profile?.diagnosisTime ? 'true' : 'false')
-
       // Simulate progress (since we don't have real progress tracking)
       const progressInterval = setInterval(() => {
-        setProgress(prev => Math.min(prev + 10, 90))
-      }, 500)
+        setProgress((prev) => Math.min(prev + 10, 90));
+      }, 500);
 
-      const response = await apiClient.uploadFile(file, userId)
+      const response = await apiClient.uploadFile(file, userId);
 
-      clearInterval(progressInterval)
-      setProgress(100)
+      clearInterval(progressInterval);
+      setProgress(100);
 
       setTimeout(() => {
-        onUploadComplete(response.data)
-        setFile(null)
-        setProgress(0)
-      }, 500)
+        if (response.success && response.data) {
+          onUploadComplete(response.data);
+        }
+        setFile(null);
+        setProgress(0);
+      }, 500);
     } catch (err) {
-      setError(err.message || 'Failed to upload file')
-      setProgress(0)
+      setError(err.message || 'Failed to upload file');
+      setProgress(0);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   const handleRemove = () => {
-    setFile(null)
-    setError(null)
-    setProgress(0)
+    setFile(null);
+    setError(null);
+    setProgress(0);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = '';
     }
-  }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
@@ -95,12 +97,8 @@ const FileUpload = ({ userId, onUploadComplete }) => {
         <label className="block cursor-pointer">
           <div className="border-2 border-dashed border-surface rounded-lg p-8 text-center hover:border-primary transition">
             <Upload className="mx-auto mb-3 text-muted" size={48} />
-            <p className="text-sm font-medium text-gray-700 mb-1">
-              {t('reports.dropFile')}
-            </p>
-            <p className="text-xs text-muted">
-              PDF, DOCX, JPEG, JPG, PNG (Max 10MB)
-            </p>
+            <p className="text-sm font-medium text-gray-700 mb-1">{t('reports.dropFile')}</p>
+            <p className="text-xs text-muted">PDF, DOCX, JPEG, JPG, PNG (Max 10MB)</p>
           </div>
           <input
             ref={fileInputRef}
@@ -119,14 +117,9 @@ const FileUpload = ({ userId, onUploadComplete }) => {
             <File className="text-primary flex-shrink-0" size={32} />
             <div className="flex-1 min-w-0">
               <p className="font-medium text-sm truncate">{file.name}</p>
-              <p className="text-xs text-muted">
-                {(file.size / 1024).toFixed(0)} KB
-              </p>
+              <p className="text-xs text-muted">{(file.size / 1024).toFixed(0)} KB</p>
             </div>
-            <button
-              onClick={handleRemove}
-              className="p-2 hover:bg-surface rounded transition"
-            >
+            <button onClick={handleRemove} className="p-2 hover:bg-surface rounded transition">
               <X size={20} />
             </button>
           </div>
@@ -175,13 +168,11 @@ const FileUpload = ({ userId, onUploadComplete }) => {
       {progress === 100 && !uploading && (
         <div className="mt-4 p-4 bg-success bg-opacity-10 border-l-4 border-success rounded flex items-center gap-3">
           <CheckCircle className="text-success" size={20} />
-          <p className="text-sm text-success font-medium">
-            {t('reports.uploadSuccess')}
-          </p>
+          <p className="text-sm text-success font-medium">{t('reports.uploadSuccess')}</p>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default FileUpload
+export default FileUpload;

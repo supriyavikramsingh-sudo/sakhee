@@ -988,7 +988,7 @@ Small maintenance and UX improvements landed after v1.1.0 to make the chat + mea
   - Fixed `dotenv` import/path issues used by ingestion scripts (ensures `.env` loads correctly when running ingestion from the project root).
   - Added helpful debug logging in a few client modules to make API troubleshooting easier during development.
 
-These changes aim to make the experience safer (no ad-hoc meal plans from chat), clearer for users, and easier to debug for developers. If you'd like, I can also add a small note in the Contributing section about where to find the `mealPlanIntentDetector` middleware and `MealPlanRedirectCard` component.
+These changes aim to make the experience safer (no ad-hoc meal plans from chat), clearer for users, and easier to debug for developers.
 
 ### New in v1.3.0
 
@@ -1026,10 +1026,6 @@ Significant feature and stability improvements landed in v1.3.0 focused on nutri
   - client/src/components/chat/ChatInterface.jsx — pagination, "Load older messages" button, scroll preservation, and load-history dedupe
   - client/src/store/index.js — chat store updated to support allMessages, visibleCount and loadMoreMessages
 
-These updates prioritize nutritional accuracy and a clearer user experience while keeping the system robust when RAG is unavailable. If you'd like, I can also:
-
-- Add a short README example showing how calories are calculated and how to interpret `personalizationSources.ragMetadata`.
-- Add a small unit test for `validateAndAdjustCalories()` that checks daily totals after adjustment.
 
 ### New in v1.4.0
 
@@ -1067,4 +1063,51 @@ Focused fixes and UX improvements landed after v1.3.0 to improve medical report 
   - Add automated unit tests for `parserService` regexes and CI checks to avoid regressions.
   - Expand RAG/chat regression tests to verify anti-hallucination behavior across more prompts.
 
-If you'd like, I can also update the top-level release notes (version badges) or add small example snippets showing how to re-run the parser test harness locally.
+ 
+### New in v1.5.0
+
+Focused delivery and bug fixes to the medical report analysis feature, developer tooling, and several robustness/UX issues landed in v1.5.0.
+
+- Medical Report: single-file workflow
+  - Users can now upload exactly one medical report at a time. Each upload replaces the previous report (the previous document is deleted server-side) so the UI always shows the user's current report.
+  - Server persistence: reports are stored in Firestore under a single document per user (convention: `users/{userId}/medicalReport/current`). The server performs sanitization of fields before saving to avoid Firestore INVALID_ARGUMENT errors.
+  - Non-blocking saves: file processing and AI analysis return success to the client quickly; Firestore saves are performed in a resilient, non-blocking way so transient DB issues don't block the user flow.
+
+- New/changed server files
+  - `server/src/services/medicalReportService.js` — CRUD for single-report-per-user, sanitization helpers (`sanitizeData`, `sanitizeFieldName`) and document size validation.
+  - `server/src/routes/upload.js` — Upload endpoints and orchestration (file extraction → parser → AI analysis → enqueue DB save). New endpoints include the upload and user-report CRUD routes (POST /api/upload/report, GET /api/upload/user/:userId/report, DELETE /api/upload/user/:userId/report).
+  - `server/src/storage/tmpUploads/` — temporary storage for incoming files during processing.
+
+- New/changed client files
+  - `client/src/pages/ReportsPage.jsx` — main Reports page UI: shows current report card, replace/delete UX, and loads the report on mount. Fixed previous auth store import issues and hardened loading states.
+  - `client/src/components/files/FileUpload.jsx` — simplified single-file upload component that returns the new report payload and closes the upload flow.
+  - `client/src/components/files/ReportAnalysis.jsx` — improved header and timestamp handling; treats cycle-dependent hormones appropriately (see v1.4.0 notes) and shows formatted uploaded timestamp.
+  - `client/src/services/apiClient.js` & `client/src/services/firestoreService.js` — new helper methods for the single-report endpoints (uploadFile, getUserReport, deleteUserReport, hasUserReport).
+  - `client/src/store/authStore.js` — ensured correct auth store import and usage across reports/chat pages.
+
+- Timestamp handling fix
+  - The client now robustly handles multiple uploadedAt formats: Firestore-style serialized objects with `seconds`/`nanoseconds`, Firestore Timestamp instances, ISO strings, and JS Date objects. This prevents "Invalid Date" from appearing in the UI after uploads/refreshes.
+
+- Data sanitization and Firestore reliability
+  - To avoid INVALID_ARGUMENT errors the server sanitizes report payloads: removes undefined/NaN values, strips illegal Firestore field name characters, and limits very large text fields.
+  - Note: during development the Web (client) Firestore SDK is used on the server in some helper code; for production we recommend migrating server code that writes to Firestore to the Firebase Admin SDK to avoid client-offline/credential limitations.
+
+- Developer docs & helper scripts added
+  - `MEDICAL_REPORT_FEATURE.md` — feature doc & quick reference for the new single-file report flow.
+  - `IMPLEMENTATION_SUMMARY.md` / `IMPLEMENTATION_CHECKLIST.md` / `QUICK_REFERENCE.md` — implementation notes and checklist for reviewers.
+  - `start-medical-report-test.sh` — helper for local test runs (developer convenience).
+
+- Testing & verification notes
+  - After pulling changes that modify server-side code, restart the server (Ctrl+C in the server terminal, then `npm run dev`) so new routes and services are loaded.
+  - Use the Report page to upload a report and check browser console logs if you see "Invalid Date" — the client prints the raw `uploadedAt` object when loading the report to aid debugging.
+
+- Known issues & recommendations
+  - Firestore persistence can appear intermittent in local development due to using the Firebase Web SDK in some server paths. Recommendation: migrate `server/src/config/firebase.js` to use the Firebase Admin SDK (server-side) for reliable server writes in production.
+  - The app performs non-blocking saves; if you expect deterministic, synchronous persistence (for example for critical audit trails) review `medicalReportService.saveReport()` and consider awaiting the Firestore write or adding retry/backoff logic.
+
+- Files/areas touched (quick list)
+  - Server: `server/src/services/medicalReportService.js`, `server/src/routes/upload.js`, `server/src/config/firebase.js` (notes), `server/src/storage/tmpUploads/`
+  - Client: `client/src/pages/ReportsPage.jsx`, `client/src/components/files/FileUpload.jsx`, `client/src/components/files/ReportAnalysis.jsx`, `client/src/services/apiClient.js`, `client/src/services/firestoreService.js`, `client/src/store/authStore.js`
+  - Docs: `MEDICAL_REPORT_FEATURE.md`, `IMPLEMENTATION_SUMMARY.md`, `IMPLEMENTATION_CHECKLIST.md`, `QUICK_REFERENCE.md`, `FIRESTORE_FIXES.md`
+
+

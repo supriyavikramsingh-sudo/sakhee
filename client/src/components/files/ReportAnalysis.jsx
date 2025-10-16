@@ -177,7 +177,37 @@ const ReportAnalysis = ({ report }) => {
         <h2 className="text-2xl font-bold text-primary mb-2">{report.filename}</h2>
         <p className="text-sm text-muted flex items-center gap-2">
           <Calendar size={16} />
-          Uploaded on {new Date(report.uploadedAt).toLocaleString()}
+          Uploaded on{' '}
+          {(() => {
+            if (!report.uploadedAt) return 'Recently';
+
+            // Handle Firestore Timestamp object format (with seconds property)
+            if (report.uploadedAt.seconds !== undefined) {
+              const date = new Date(report.uploadedAt.seconds * 1000);
+              return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+            }
+
+            // Handle JavaScript Date or ISO string
+            try {
+              const date = new Date(report.uploadedAt);
+              if (isNaN(date.getTime())) return 'Recently';
+              return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+            } catch (e) {
+              return 'Recently';
+            }
+          })()}
         </p>
       </div>
 

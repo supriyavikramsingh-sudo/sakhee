@@ -344,6 +344,16 @@ export const apiClient = {
     }
   },
 
+  // ============================================
+  // MEDICAL REPORT ENDPOINTS
+  // ============================================
+
+  /**
+   * Upload medical report (replaces previous report)
+   * @param {File} file - File to upload
+   * @param {string} userId - User ID
+   * @returns {Promise<object>} Upload response with analysis
+   */
   uploadFile: async (file, userId) => {
     try {
       const formData = new FormData();
@@ -360,29 +370,44 @@ export const apiClient = {
     }
   },
 
-  getReport: async (reportId) => {
+  /**
+   * Get user's current medical report
+   * @param {string} userId - User ID
+   * @returns {Promise<object>} Report data
+   */
+  getUserReport: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/upload/report/${reportId}`);
+      const response = await axiosInstance.get(`/upload/user/${userId}/report`);
       return response;
     } catch (error) {
-      console.error('Failed to get report:', error);
+      console.error('Failed to get user report:', error);
       throw error;
     }
   },
 
-  getUserReports: async (userId) => {
+  /**
+   * Check if user has a medical report
+   * @param {string} userId - User ID
+   * @returns {Promise<object>} Has report status
+   */
+  hasUserReport: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/upload/user/${userId}/reports`);
+      const response = await axiosInstance.get(`/upload/user/${userId}/has-report`);
       return response;
     } catch (error) {
-      console.error('Failed to get user reports:', error);
+      console.error('Failed to check if user has report:', error);
       throw error;
     }
   },
 
-  deleteReport: async (reportId) => {
+  /**
+   * Delete user's medical report
+   * @param {string} userId - User ID
+   * @returns {Promise<object>} Success response
+   */
+  deleteUserReport: async (userId) => {
     try {
-      const response = await axiosInstance.delete(`/upload/report/${reportId}`);
+      const response = await axiosInstance.delete(`/upload/user/${userId}/report`);
       return response;
     } catch (error) {
       console.error('Failed to delete report:', error);

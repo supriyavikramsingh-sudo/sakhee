@@ -5,6 +5,7 @@ import fs from 'fs';
 import { ocrService } from '../services/ocrService.js';
 import { parserService } from '../services/parserService.js';
 import { reportChain } from '../langchain/chains/reportChain.js';
+import { medicalReportService } from '../services/medicalReportService.js';
 import { Logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
 
@@ -50,12 +51,9 @@ const upload = multer({
   },
 });
 
-// In-memory storage for parsed reports
-const parsedReports = new Map();
-
 /**
  * POST /api/upload/report
- * Upload and parse medical report
+ * Upload and parse medical report (single file per user - replaces previous)
  */
 router.post('/report', upload.single('file'), async (req, res) => {
   try {
@@ -100,35 +98,56 @@ router.post('/report', upload.single('file'), async (req, res) => {
       reportDate: req.body.reportDate || new Date().toISOString(),
     });
 
-    // Store parsed report
-    const reportId = 'report_' + Date.now();
-    const reportData = {
-      id: reportId,
-      userId,
+    // Prepare response data
+    const responseData = {
+      reportId: 'current',
       filename: req.file.originalname,
-      reportType,
-      extractedText,
       labValues,
       analysis,
+      extractedText,
       uploadedAt: new Date(),
-      filePath,
     };
-    console.log('Storing report data:', reportData);
-    parsedReports.set(reportId, reportData);
-    logger.info('Report parsed and analyzed', { reportId });
 
-    // Clean up file after processing (optional - keep for debugging)
-    // fs.unlinkSync(filePath)
-
-    res.json({
-      success: true,
-      data: {
-        reportId,
+    // Try to save to Firestore (non-blocking - won't fail the request)
+    logger.info('Saving report to Firestore...', { userId });
+    try {
+      const saveResult = await medicalReportService.saveReport(userId, {
         filename: req.file.originalname,
+        reportType,
+        extractedText,
         labValues,
         analysis,
-        uploadedAt: new Date(),
-      },
+        fileSize: req.file.size,
+        mimeType: req.file.mimetype,
+      });
+
+      if (saveResult.success) {
+        logger.info('Report saved to Firestore successfully', { userId });
+      } else {
+        logger.warn('Failed to save to Firestore (non-critical)', {
+          error: saveResult.error,
+          userId,
+        });
+      }
+    } catch (firestoreError) {
+      // Log the error but don't fail the request
+      logger.warn('Firestore save error (non-critical)', {
+        error: firestoreError.message,
+        userId,
+      });
+    }
+
+    logger.info('Report parsed and analyzed', { userId });
+
+    // Clean up temporary file
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // Return success even if Firestore save failed
+    res.json({
+      success: true,
+      data: responseData,
     });
   } catch (error) {
     logger.error('Report upload failed', { error: error.message });
@@ -146,87 +165,90 @@ router.post('/report', upload.single('file'), async (req, res) => {
 });
 
 /**
- * GET /api/upload/report/:reportId
- * Get parsed report details
+ * GET /api/upload/user/:userId/report
+ * Get user's current medical report
  */
-router.get('/report/:reportId', (req, res) => {
-  try {
-    const { reportId } = req.params;
-    const report = parsedReports.get(reportId);
-
-    if (!report) {
-      return res.status(404).json({
-        success: false,
-        error: { message: 'Report not found' },
-      });
-    }
-
-    // Don't send file path in response
-    const { filePath, ...reportData } = report;
-
-    res.json({
-      success: true,
-      data: reportData,
-    });
-  } catch (error) {
-    logger.error('Get report failed', { error: error.message });
-    res.status(500).json({
-      success: false,
-      error: { message: 'Failed to retrieve report' },
-    });
-  }
-});
-
-/**
- * GET /api/upload/user/:userId/reports
- * Get all reports for a user
- */
-router.get('/user/:userId/reports', (req, res) => {
+router.get('/user/:userId/report', async (req, res) => {
   try {
     const { userId } = req.params;
-    const userReports = Array.from(parsedReports.values())
-      .filter((report) => report.userId === userId)
-      .map(({ filePath, ...report }) => report);
 
+    logger.info('Fetching report for user', { userId });
+
+    const result = await medicalReportService.getUserReport(userId);
+
+    // If Firestore fails, return 404 (no report) instead of error
+    if (!result.success) {
+      logger.warn('Failed to get report from Firestore', {
+        userId,
+        error: result.error,
+      });
+      return res.status(404).json({
+        success: false,
+        error: { message: 'No report found for this user' },
+      });
+    }
+
+    if (!result.data) {
+      logger.info('No report found for user', { userId });
+      return res.status(404).json({
+        success: false,
+        error: { message: 'No report found for this user' },
+      });
+    }
+
+    logger.info('Report retrieved successfully', { userId });
     res.json({
       success: true,
-      data: {
-        reports: userReports,
-        count: userReports.length,
-      },
+      data: result.data,
     });
   } catch (error) {
-    logger.error('Get user reports failed', { error: error.message });
-    res.status(500).json({
+    logger.error('Get report failed', { error: error.message, stack: error.stack });
+    res.status(404).json({
       success: false,
-      error: { message: 'Failed to retrieve reports' },
+      error: { message: 'No report found for this user' },
     });
   }
 });
 
 /**
- * DELETE /api/upload/report/:reportId
- * Delete a report
+ * GET /api/upload/user/:userId/has-report
+ * Check if user has a medical report
  */
-router.delete('/report/:reportId', (req, res) => {
+router.get('/user/:userId/has-report', async (req, res) => {
   try {
-    const { reportId } = req.params;
-    const report = parsedReports.get(reportId);
+    const { userId } = req.params;
+    const result = await medicalReportService.hasReport(userId);
 
-    if (!report) {
-      return res.status(404).json({
+    res.json({
+      success: true,
+      hasReport: result.hasReport || false,
+    });
+  } catch (error) {
+    logger.error('Check report existence failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to check report existence' },
+    });
+  }
+});
+
+/**
+ * DELETE /api/upload/user/:userId/report
+ * Delete user's medical report
+ */
+router.delete('/user/:userId/report', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const result = await medicalReportService.deleteReport(userId);
+
+    if (!result.success) {
+      return res.status(500).json({
         success: false,
-        error: { message: 'Report not found' },
+        error: { message: result.error || 'Failed to delete report' },
       });
     }
 
-    // Delete file from disk
-    if (fs.existsSync(report.filePath)) {
-      fs.unlinkSync(report.filePath);
-    }
-
-    parsedReports.delete(reportId);
-    logger.info('Report deleted', { reportId });
+    logger.info('Report deleted', { userId });
 
     res.json({
       success: true,

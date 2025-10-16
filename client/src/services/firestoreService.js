@@ -290,7 +290,83 @@ class FirestoreService {
   }
 
   // ==========================================
-  // MEDICAL REPORTS
+  // MEDICAL REPORTS (Single Report Per User)
+  // ==========================================
+
+  /**
+   * Get user's current medical report
+   */
+  async getUserMedicalReport(userId) {
+    try {
+      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
+      const reportDoc = await getDoc(reportRef);
+
+      if (reportDoc.exists()) {
+        return {
+          success: true,
+          data: {
+            id: reportDoc.id,
+            ...reportDoc.data(),
+          },
+        };
+      }
+
+      return { success: true, data: null };
+    } catch (error) {
+      console.error('Get user medical report error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Save medical report (replaces existing)
+   */
+  async saveMedicalReport(userId, reportData) {
+    try {
+      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
+      await setDoc(reportRef, {
+        ...reportData,
+        createdAt: serverTimestamp(),
+      });
+      return { success: true, id: 'current' };
+    } catch (error) {
+      console.error('Save medical report error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Delete user's medical report
+   */
+  async deleteMedicalReport(userId) {
+    try {
+      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
+      await deleteDoc(reportRef);
+      return { success: true };
+    } catch (error) {
+      console.error('Delete medical report error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Check if user has a medical report
+   */
+  async hasMedicalReport(userId) {
+    try {
+      const result = await this.getUserMedicalReport(userId);
+      return {
+        success: true,
+        hasReport: result.success && result.data !== null,
+      };
+    } catch (error) {
+      console.error('Check medical report error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // ==========================================
+  // LEGACY REPORTS (Multi-Report System - Deprecated)
   // ==========================================
 
   async saveReport(userId, reportData) {
