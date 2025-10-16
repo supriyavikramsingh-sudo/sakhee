@@ -19,6 +19,7 @@ const ReportAnalysis = ({ report }) => {
 
   const { labValues, analysis } = report;
   const [isAnalysisExpanded, setIsAnalysisExpanded] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState({});
 
   /**
    * Parse AI analysis into structured sections
@@ -170,6 +171,21 @@ const ReportAnalysis = ({ report }) => {
 
   const groupedLabValues = hasLabValues ? groupLabValuesByCategory(labValues) : {};
 
+  // Initialize expanded categories - first one expanded by default
+  useState(() => {
+    if (hasLabValues && Object.keys(groupedLabValues).length > 0) {
+      const firstCategory = Object.keys(groupedLabValues)[0];
+      setExpandedCategories({ [firstCategory]: true });
+    }
+  }, []);
+
+  const toggleCategory = (category) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
+
   return (
     <div className="space-y-6">
       {/* Report Header */}
@@ -219,72 +235,98 @@ const ReportAnalysis = ({ report }) => {
         </h3>
 
         {hasLabValues ? (
-          <div className="space-y-6">
-            {Object.entries(groupedLabValues).map(([category, values]) => (
-              <div key={category} className="space-y-3">
-                <h4 className="text-lg font-semibold text-gray-700 border-b pb-2">
-                  {CATEGORY_NAMES[category] || category}
-                </h4>
+          <div className="space-y-4">
+            {Object.entries(groupedLabValues).map(([category, values]) => {
+              const isExpanded = expandedCategories[category];
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  {values.map(({ key, value, unit, severity }) => {
-                    const displayValue = typeof value === 'number' ? value : value;
-                    const displayUnit = unit || '';
-                    const displaySeverity = severity || 'normal';
-                    const isCycleDependent = displaySeverity === 'cycle-dependent';
-                    const cycleRanges = isCycleDependent ? getCycleDependentRanges(key) : null;
+              return (
+                <div key={category} className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory(category)}
+                    className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+                  >
+                    <h4 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                      <Activity className="text-primary" size={18} />
+                      {CATEGORY_NAMES[category] || category}
+                      <span className="text-sm font-normal text-muted ml-2">
+                        ({values.length} {values.length === 1 ? 'test' : 'tests'})
+                      </span>
+                    </h4>
+                    {isExpanded ? (
+                      <ChevronUp className="text-gray-600" size={20} />
+                    ) : (
+                      <ChevronDown className="text-gray-600" size={20} />
+                    )}
+                  </button>
 
-                    return (
-                      <div
-                        key={key}
-                        className={`border-l-4 ${getSeverityColor(
-                          displaySeverity
-                        )} bg-opacity-10 p-4 rounded transition-all hover:shadow-md`}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              {getSeverityIcon(displaySeverity)}
-                              <h4 className="font-bold text-gray-800">{formatLabName(key)}</h4>
-                            </div>
-                            <p className="text-2xl font-bold text-gray-900">
-                              {displayValue}{' '}
-                              {displayUnit && (
-                                <span className="text-sm font-normal text-muted">
-                                  {displayUnit}
-                                </span>
-                              )}
-                            </p>
-                            <p
-                              className={`text-xs mt-1 font-medium ${
-                                displaySeverity === 'normal'
-                                  ? 'text-success'
-                                  : displaySeverity === 'critical' ||
-                                    displaySeverity === 'deficient'
-                                  ? 'text-danger'
-                                  : displaySeverity === 'cycle-dependent'
-                                  ? 'text-[#9d4edd]'
-                                  : 'text-warning'
-                              }`}
+                  {isExpanded && (
+                    <div className="p-4 bg-white">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {values.map(({ key, value, unit, severity }) => {
+                          const displayValue = typeof value === 'number' ? value : value;
+                          const displayUnit = unit || '';
+                          const displaySeverity = severity || 'normal';
+                          const isCycleDependent = displaySeverity === 'cycle-dependent';
+                          const cycleRanges = isCycleDependent
+                            ? getCycleDependentRanges(key)
+                            : null;
+
+                          return (
+                            <div
+                              key={key}
+                              className={`border-l-4 ${getSeverityColor(
+                                displaySeverity
+                              )} bg-opacity-10 p-4 rounded transition-all hover:shadow-md`}
                             >
-                              {getSeverityLabel(displaySeverity)}
-                            </p>
-                            {isCycleDependent && cycleRanges && (
-                              <div className="mt-2 p-2 bg-white bg-opacity-50 rounded text-xs">
-                                <p className="font-semibold text-gray-700 mb-1">
-                                  Reference Ranges:
-                                </p>
-                                <p className="text-gray-600">{cycleRanges}</p>
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    {getSeverityIcon(displaySeverity)}
+                                    <h4 className="font-bold text-gray-800">
+                                      {formatLabName(key)}
+                                    </h4>
+                                  </div>
+                                  <p className="text-2xl font-bold text-gray-900">
+                                    {displayValue}{' '}
+                                    {displayUnit && (
+                                      <span className="text-sm font-normal text-muted">
+                                        {displayUnit}
+                                      </span>
+                                    )}
+                                  </p>
+                                  <p
+                                    className={`text-xs mt-1 font-medium ${
+                                      displaySeverity === 'normal'
+                                        ? 'text-success'
+                                        : displaySeverity === 'critical' ||
+                                          displaySeverity === 'deficient'
+                                        ? 'text-danger'
+                                        : displaySeverity === 'cycle-dependent'
+                                        ? 'text-[#9d4edd]'
+                                        : 'text-warning'
+                                    }`}
+                                  >
+                                    {getSeverityLabel(displaySeverity)}
+                                  </p>
+                                  {isCycleDependent && cycleRanges && (
+                                    <div className="mt-2 p-2 bg-white bg-opacity-50 rounded text-xs">
+                                      <p className="font-semibold text-gray-700 mb-1">
+                                        Reference Ranges:
+                                      </p>
+                                      <p className="text-gray-600">{cycleRanges}</p>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                            )}
-                          </div>
-                        </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-8">
@@ -388,9 +430,16 @@ const ReportAnalysis = ({ report }) => {
                               );
                             }
 
+                            // Remove standalone numbers (like "2.", "3.") except in Next Steps section
+                            let cleanedParagraph = paragraph;
+                            if (sectionName !== 'Next Steps') {
+                              cleanedParagraph = paragraph.replace(/^\s*\d+\.\s*$/, '').trim();
+                              if (!cleanedParagraph) return null;
+                            }
+
                             return (
                               <p key={idx} className="mb-3">
-                                {paragraph}
+                                {cleanedParagraph}
                               </p>
                             );
                           })}
@@ -459,9 +508,26 @@ const ReportAnalysis = ({ report }) => {
                             );
                           }
 
+                          // Remove standalone numbers (like "2.", "3.") UNLESS it's part of Next Steps
+                          let cleanedParagraph = paragraph;
+                          // Check if this is likely a Next Steps section by looking at context
+                          const isNextStepsContext =
+                            parseAnalysisText(analysis)?.includes('Next Steps') &&
+                            parseAnalysisText(analysis)
+                              ?.substring(
+                                Math.max(0, parseAnalysisText(analysis).indexOf(paragraph) - 100),
+                                parseAnalysisText(analysis).indexOf(paragraph)
+                              )
+                              .includes('Next Steps');
+
+                          if (!isNextStepsContext) {
+                            cleanedParagraph = paragraph.replace(/^\s*\d+\.\s*$/, '').trim();
+                            if (!cleanedParagraph) return null;
+                          }
+
                           return (
                             <p key={idx} className="mb-3">
-                              {paragraph}
+                              {cleanedParagraph}
                             </p>
                           );
                         })}

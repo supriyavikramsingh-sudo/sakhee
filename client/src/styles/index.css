@@ -63,6 +63,10 @@ body {
   @apply btn bg-primary text-white hover:bg-secondary;
 }
 
+.btn-outline {
+  @apply btn bg-white border border-primary text-primary hover:bg-accent hover:text-white;
+}
+
 .btn-secondary {
   @apply btn bg-surface text-primary hover:bg-accent hover:text-white;
 }

@@ -251,9 +251,6 @@ const ReportsPage = () => {
                 <p className="text-muted mb-6">
                   Upload your medical report to get AI-powered insights and analysis
                 </p>
-                <button onClick={() => setShowUpload(true)} className="btn-primary">
-                  Upload Your First Report
-                </button>
               </div>
             )}
           </div>
