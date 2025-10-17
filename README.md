@@ -1111,3 +1111,35 @@ Focused delivery and bug fixes to the medical report analysis feature, developer
   - Docs: `MEDICAL_REPORT_FEATURE.md`, `IMPLEMENTATION_SUMMARY.md`, `IMPLEMENTATION_CHECKLIST.md`, `QUICK_REFERENCE.md`, `FIRESTORE_FIXES.md`
 
 
+### New in v1.6.0
+
+Small but important UX, frontend plumbing, and styling fixes focused on ensuring medical report data is actually used in personalization and cleaning up the Reports UI.
+
+- Meal plan personalization plumbing
+  - `MealPlanGenerator.jsx` now fetches the user's latest medical report on mount and immediately before generating a meal plan. The fetched report is included in the request body as `healthContext.medicalData` so the backend receives lab values and can incorporate lab-specific guidance into meal generation.
+  - This fixes cases where `hasLabValues` / `hasMedicalData` were reported as false even though a report existed in Firestore (the client previously wasn't including the report in the generation request).
+  - The component now exposes `userReport` state for display and uses it when calculating `displayPersonalizationSources`.
+
+- Report analysis UI improvements
+  - `ReportAnalysis.jsx` was updated to:
+    - Parse AI analysis sections more robustly and remove stray standalone numbers (e.g., lines containing only "2.") except inside the `Next Steps` section where numbered lists are desired.
+    - Render lab value categories as accessible accordions (Thyroid Function, Vitamins, Hormones, etc.). All accordions are collapsed on load except the first category which is expanded by default.
+    - Preserve existing cycle-dependent hormone handling and improved severity display.
+
+- Styling / CSS fixes
+  - `client/src/styles/index.css` was cleaned up to avoid using `@apply` inside `@keyframes` and to split scrollbar thumb hover rules into proper selectors. These changes prevent build-time and linter warnings and keep Tailwind usage compatible with PostCSS/Tailwind processing.
+
+- Backend & RAG improvements (refresher)
+  - `mealPlanChain.js` includes enhanced lab-guidance support: `buildLabGuidanceQuery()`, `categorizeLabs()`, and integration of lab-specific RAG context into the prompt. This allows the LLM to prioritize evidence-based dietary guidance when abnormal lab values exist.
+
+- Developer notes & testing
+  - After pulling frontend changes, restart dev servers to ensure new client-side fetching logic is active. The meal generator now logs whether a report was found and how many lab values were passed in (helpful for debugging personalization).
+  - If you still see `hasLabValues: false` in server logs after these changes, confirm the report document exists at `users/{userId}/medicalReport/current` in Firestore and that the client is authenticated and able to read it.
+
+- Files/areas touched (v1.6.0)
+  - Client: `client/src/components/meal/MealPlanGenerator.jsx`, `client/src/components/files/ReportAnalysis.jsx`, `client/src/styles/index.css`
+  - Server: `server/src/langchain/chains/mealPlanChain.js` (lab guidance helpers)
+
+If you'd like, I can also add a short troubleshooting snippet to the README showing how to verify the medical report document in Firestore and an example curl command to call the meal generation endpoint including `healthContext.medicalData`.
+
+

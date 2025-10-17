@@ -39,6 +39,10 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
   const [personalizationSources, setPersonalizationSources] = useState(null);
   // ================================================
 
+  // ========== NEW STATE FOR MEDICAL REPORT ==========
+  const [userReport, setUserReport] = useState(null);
+  // ==================================================
+
   const [formData, setFormData] = useState({
     region: '', // Optional - defaults to onboarding
     dietType: '', // Optional - defaults to onboarding
@@ -83,6 +87,31 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
     checkLimits();
   }, []);
 
+  // 🆕 NEW EFFECT: Fetch user's medical report on mount
+  useEffect(() => {
+    const fetchMedicalReport = async () => {
+      if (!userId) return;
+
+      try {
+        const reportResponse = await apiClient.getUserReport(userId);
+        if (reportResponse.success && reportResponse.data) {
+          setUserReport(reportResponse.data);
+          console.log('✅ Medical report loaded for personalization display:', {
+            hasLabValues: !!reportResponse.data.labValues,
+            labCount: reportResponse.data.labValues
+              ? Object.keys(reportResponse.data.labValues).length
+              : 0,
+          });
+        }
+      } catch (error) {
+        console.log('ℹ️ No medical report available (optional)');
+        // Report is optional, don't show error
+      }
+    };
+
+    fetchMedicalReport();
+  }, [userId]);
+
   const regions = [
     { value: '', label: 'Use my onboarding preference' },
     { value: 'north-india', label: 'North Indian' },
@@ -124,10 +153,23 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
 
     try {
       const profileData = userProfile?.profileData || userProfile || {};
-      const latestReport = useMealStore.getState().latestReport;
 
-      setLoading(true);
-      setError(null);
+      // ========== FETCH LATEST MEDICAL REPORT ==========
+      let latestReport = null;
+      try {
+        const reportResponse = await apiClient.getUserReport(userId);
+        if (reportResponse.success && reportResponse.data) {
+          latestReport = reportResponse.data;
+          console.log('✅ Medical report fetched successfully:', {
+            hasLabValues: !!latestReport.labValues,
+            labCount: latestReport.labValues ? Object.keys(latestReport.labValues).length : 0,
+          });
+        }
+      } catch (reportError) {
+        console.warn('⚠️ No medical report found or error fetching report:', reportError.message);
+        // Continue without medical report - it's optional
+      }
+      // =================================================
 
       // ========== RESET RAG METADATA ON NEW GENERATION ==========
       setRagMetadata(null);
@@ -225,14 +267,13 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
   };
 
   // Count personalization sources for display
-  const latestReport = useMealStore.getState().latestReport;
   const displayPersonalizationSources = personalizationSources || {
     onboarding: !!(
       userProfile?.allergies?.length ||
       userProfile?.symptoms?.length ||
       userProfile?.goals?.length
     ),
-    medicalReport: !!latestReport,
+    medicalReport: !!userReport,
     userOverrides: !!(formData.region || formData.dietType),
     rag: false,
   };

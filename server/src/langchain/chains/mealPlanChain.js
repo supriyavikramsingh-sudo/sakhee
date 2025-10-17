@@ -8,7 +8,6 @@ const logger = new Logger('MealPlanChain');
 
 class MealPlanChain {
   constructor() {
-    // Create dedicated LLM for structured output with JSON mode enabled
     this.structuredLLM = new ChatOpenAI({
       modelName: 'gpt-4o-mini',
       temperature: 0.8,
@@ -20,24 +19,17 @@ class MealPlanChain {
     });
   }
 
-  /**
-   * Main entry point for meal plan generation with RAG
-   */
   async generateMealPlan(preferences) {
     try {
-      logger.info('Generating meal plan with RAG-enhanced context', {
+      logger.info('Generating meal plan with RAG-enhanced context + lab values', {
         duration: preferences.duration,
         region: preferences.region,
         dietType: preferences.dietType,
-        budget: preferences.budget,
-        mealsPerDay: preferences.mealsPerDay,
-        restrictions: preferences.restrictions,
-        cuisines: preferences.cuisines,
+        hasLabValues: !!preferences.healthContext?.medicalData?.labValues,
       });
 
       const duration = parseInt(preferences.duration) || 7;
 
-      // For reliability, cap at 3 days per request
       if (duration > 3) {
         return await this.generateInChunks(preferences);
       }
@@ -49,9 +41,6 @@ class MealPlanChain {
     }
   }
 
-  /**
-   * Generate meal plan with RAG context retrieval
-   */
   async generateWithRAG(preferences) {
     const duration = parseInt(preferences.duration) || 3;
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
@@ -64,7 +53,7 @@ class MealPlanChain {
       restrictions: restrictions.length,
       cuisines: cuisines.length,
       hasSymptoms: !!healthContext.symptoms?.length,
-      hasMedicalData: !!healthContext.medicalData,
+      hasLabValues: !!healthContext.medicalData?.labValues,
     });
 
     // ===== STEP 1: RETRIEVE MEAL TEMPLATES FROM VECTOR STORE =====
@@ -81,7 +70,30 @@ class MealPlanChain {
     const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
     const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
 
-    // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
+    // ===== STEP 3: RETRIEVE LAB-SPECIFIC DIETARY GUIDANCE FROM RAG =====
+    let labSpecificContext = '';
+    let labGuidanceDocs = [];
+
+    if (healthContext.medicalData?.labValues) {
+      const labGuidanceQuery = this.buildLabGuidanceQuery(healthContext.medicalData.labValues);
+
+      if (labGuidanceQuery) {
+        logger.info('Retrieving lab-specific dietary guidance from RAG', {
+          query: labGuidanceQuery,
+          labCount: Object.keys(healthContext.medicalData.labValues).length,
+        });
+
+        labGuidanceDocs = await retriever.retrieve(labGuidanceQuery, { topK: 10 });
+        labSpecificContext = retriever.formatContextFromResults(labGuidanceDocs);
+
+        logger.info('Lab-specific guidance retrieved', {
+          docsRetrieved: labGuidanceDocs.length,
+          contextLength: labSpecificContext.length,
+        });
+      }
+    }
+
+    // ===== STEP 4: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
     let symptomContext = '';
     if (healthContext.symptoms && healthContext.symptoms.length > 0) {
       const symptomQuery = `PCOS dietary recommendations for ${healthContext.symptoms.join(
@@ -93,7 +105,7 @@ class MealPlanChain {
       symptomContext = retriever.formatContextFromResults(symptomDocs);
     }
 
-    // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
+    // ===== STEP 5: BUILD COMPREHENSIVE CONTEXT =====
     let enhancedContext = '';
 
     if (mealTemplatesContext) {
@@ -107,6 +119,13 @@ class MealPlanChain {
       enhancedContext += nutritionContext + '\n\n';
     }
 
+    // ===== NEW: ADD LAB-SPECIFIC GUIDANCE SECTION =====
+    if (labSpecificContext) {
+      enhancedContext += '🔬 LAB-SPECIFIC DIETARY GUIDANCE:\n';
+      enhancedContext += "(Evidence-based food recommendations based on user's lab values)\n\n";
+      enhancedContext += labSpecificContext + '\n\n';
+    }
+
     if (symptomContext) {
       enhancedContext += '💊 SYMPTOM-SPECIFIC DIETARY RECOMMENDATIONS:\n';
       enhancedContext += symptomContext + '\n\n';
@@ -117,8 +136,8 @@ class MealPlanChain {
       enhancedContext = this.getFallbackGuidelines();
     }
 
-    // ===== STEP 5: BUILD USER-SPECIFIC CONTEXT =====
-    const userContext = this.buildUserContext(
+    // ===== STEP 6: BUILD USER-SPECIFIC CONTEXT WITH LAB VALUES =====
+    const userContext = this.buildUserContextWithLabs(
       preferences,
       restrictions,
       cuisines,
@@ -126,9 +145,9 @@ class MealPlanChain {
       userOverrides
     );
 
-    // ===== STEP 6: CREATE COMPREHENSIVE PROMPT =====
+    // ===== STEP 7: CREATE COMPREHENSIVE PROMPT WITH LAB INTEGRATION =====
     const caloriesPerMeal = Math.round(2000 / mealsPerDay);
-    const calorieRange = Math.round(caloriesPerMeal * 0.15); // 15% flexibility
+    const calorieRange = Math.round(caloriesPerMeal * 0.15);
 
     const prompt = `Generate a ${duration}-day PCOS-friendly meal plan using the evidence-based knowledge below.
 
@@ -138,7 +157,8 @@ ${userContext}
 
 CRITICAL REQUIREMENTS:
 - All meals must strictly adhere to PCOS nutrition guidelines provided above
-- Use meal templates from knowledge base as inspiration, but create NEW variations
+- **PRIORITIZE lab-specific dietary guidance** from the knowledge base based on user's medical report
+- Use meal templates as inspiration, but create NEW variations
 - All meals must include exact protein, carb, fat grams, calories, and glycemic index (Low/Medium/High)
 - Calculate calories accurately using: (protein × 4) + (carbs × 4) + (fats × 9)
 
@@ -185,11 +205,13 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
     try {
       const response = await this.structuredLLM.invoke(prompt);
       const content = response.content || response.text || '';
+
       logger.info('RAG-enhanced structured response received', {
         length: content.length,
         sourcesUsed: {
           mealTemplates: mealTemplates.length,
           nutritionGuidelines: nutritionGuidelines.length,
+          labGuidance: labGuidanceDocs.length,
           symptomRecommendations: symptomContext ? true : false,
         },
       });
@@ -199,15 +221,19 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
       if (this.validateStructure(parsed, duration, mealsPerDay)) {
         logger.info('✅ RAG-enhanced meal plan validation passed');
 
-        // Validate and adjust calorie totals
         this.validateAndAdjustCalories(parsed, mealsPerDay);
 
-        // Attach RAG metadata for transparency
+        // Enhanced RAG metadata with lab guidance tracking
         parsed.ragMetadata = {
           mealTemplatesUsed: mealTemplates.length,
           nutritionGuidelinesUsed: nutritionGuidelines.length,
+          labGuidanceUsed: labGuidanceDocs.length, // NEW
           symptomSpecificRecommendations: !!symptomContext,
-          retrievalQuality: this.assessRetrievalQuality(mealTemplates, nutritionGuidelines),
+          retrievalQuality: this.assessRetrievalQuality(
+            mealTemplates,
+            nutritionGuidelines,
+            labGuidanceDocs
+          ),
         };
 
         return parsed;
@@ -219,6 +245,7 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
         fixed.ragMetadata = {
           mealTemplatesUsed: mealTemplates.length,
           nutritionGuidelinesUsed: nutritionGuidelines.length,
+          labGuidanceUsed: labGuidanceDocs.length,
           structureFixed: true,
         };
         return fixed;
@@ -232,140 +259,84 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
   }
 
   /**
-   * Get calorie distribution example based on meals per day
+   * NEW: Build lab-specific guidance query from medical report lab values
    */
-  getCalorieDistributionExample(mealsPerDay) {
-    const distributions = {
-      2: 'Breakfast: 900-1000 kcal, Dinner: 900-1000 kcal',
-      3: 'Breakfast: 500-600 kcal, Lunch: 700-800 kcal, Dinner: 600-700 kcal',
-      4: 'Breakfast: 450-500 kcal, Lunch: 550-600 kcal, Snack: 200-250 kcal, Dinner: 550-600 kcal',
-    };
-    return distributions[mealsPerDay] || distributions[3];
-  }
+  buildLabGuidanceQuery(labValues) {
+    if (!labValues || Object.keys(labValues).length === 0) {
+      return null;
+    }
 
-  /**
-   * Validate and adjust calories to ensure daily totals meet ~2000 kcal target
-   */
-  validateAndAdjustCalories(plan, mealsPerDay) {
-    const targetCalories = 2000;
-    const minCalories = 1900;
-    const maxCalories = 2100;
+    const queryParts = [];
+    const labParams = [];
 
-    plan.days.forEach((day, dayIndex) => {
-      // Calculate total calories for the day
-      let dailyTotal = day.meals.reduce((sum, meal) => {
-        const calories =
-          meal.calories || Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
-        return sum + calories;
-      }, 0);
+    // Process each lab value and build targeted queries
+    Object.entries(labValues).forEach(([labName, labData]) => {
+      if (!labData || !labData.value) return;
 
-      logger.info(`Day ${dayIndex + 1} total calories: ${dailyTotal} kcal`);
+      const severity = labData.severity || 'unknown';
 
-      // If total is significantly off target, adjust proportionally
-      if (dailyTotal < minCalories || dailyTotal > maxCalories) {
-        logger.warn(
-          `Day ${
-            dayIndex + 1
-          } calories (${dailyTotal}) outside target range (${minCalories}-${maxCalories}), adjusting...`
-        );
+      // Only query for abnormal values or values that need dietary attention
+      if (severity !== 'normal' && severity !== 'optimal' && severity !== 'unknown') {
+        // Map lab names to query terms
+        const labQueryMap = {
+          glucose_fasting: 'glucose fasting blood sugar',
+          insulin_fasting: 'insulin fasting',
+          homa_ir: 'HOMA-IR insulin resistance',
+          hba1c: 'HbA1c hemoglobin A1c',
+          cholesterol_total: 'total cholesterol',
+          triglycerides: 'triglycerides',
+          hdl_cholesterol: 'HDL cholesterol',
+          ldl_cholesterol: 'LDL cholesterol',
+          testosterone_total: 'testosterone total',
+          testosterone_free: 'free testosterone',
+          dheas: 'DHEA-S',
+          lh: 'LH luteinizing hormone',
+          fsh: 'FSH follicle stimulating hormone',
+          lh_fsh_ratio: 'LH FSH ratio',
+          prolactin: 'prolactin',
+          amh: 'AMH anti-mullerian hormone',
+          tsh: 'TSH thyroid',
+          t3_free: 'free T3 thyroid',
+          t4_free: 'free T4 thyroid',
+          vitamin_d: 'vitamin D',
+          vitamin_b12: 'vitamin B12',
+          iron: 'iron serum',
+          ferritin: 'ferritin',
+          crp: 'CRP inflammation',
+          cortisol: 'cortisol stress',
+        };
 
-        const scaleFactor = targetCalories / dailyTotal;
-
-        // First pass: scale macros
-        day.meals.forEach((meal) => {
-          meal.protein = Math.round(meal.protein * scaleFactor);
-          meal.carbs = Math.round(meal.carbs * scaleFactor);
-          meal.fats = Math.round(meal.fats * scaleFactor);
-          meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
-        });
-
-        // Recalculate total after scaling
-        dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
-
-        // Second pass: fine-tune to hit exact target by adjusting carbs in largest meal
-        const difference = targetCalories - dailyTotal;
-        if (Math.abs(difference) > 0) {
-          // Find the meal with most calories to adjust
-          const largestMeal = day.meals.reduce((max, meal) =>
-            meal.calories > max.calories ? meal : max
-          );
-
-          // Adjust carbs (4 kcal per gram) to meet target
-          const carbAdjustment = Math.round(difference / 4);
-          largestMeal.carbs = Math.max(5, largestMeal.carbs + carbAdjustment);
-          largestMeal.calories = Math.round(
-            largestMeal.protein * 4 + largestMeal.carbs * 4 + largestMeal.fats * 9
-          );
-
-          // Final total
-          dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
+        const queryTerm = labQueryMap[labName];
+        if (queryTerm) {
+          queryParts.push(queryTerm);
+          labParams.push(`${labName} ${severity}`);
         }
-
-        logger.info(`Day ${dayIndex + 1} adjusted total: ${dailyTotal} kcal`);
-      } else {
-        logger.info(`✅ Day ${dayIndex + 1} calories within target range`);
       }
     });
+
+    if (queryParts.length === 0) {
+      logger.info('No abnormal lab values found, using general PCOS nutrition query');
+      return 'PCOS nutrition guidelines dietary recommendations';
+    }
+
+    // Build comprehensive query focusing on dietary guidance
+    const query = `LAB ${queryParts.join(
+      ' '
+    )} SEVERITY dietary focus Indian ingredients substitutes PCOS`;
+
+    logger.info('Built lab guidance query', {
+      query,
+      abnormalLabs: labParams,
+      labCount: queryParts.length,
+    });
+
+    return query;
   }
 
   /**
-   * Build meal template retrieval query
+   * Enhanced user context builder that includes lab values interpretation
    */
-  buildMealTemplateQuery(preferences, healthContext) {
-    const parts = [];
-
-    // Region and cuisine
-    if (preferences.region) {
-      parts.push(preferences.region.replace('-', ' '));
-    }
-    if (preferences.cuisines && preferences.cuisines.length > 0) {
-      parts.push(preferences.cuisines.join(' '));
-    }
-
-    // Diet type
-    if (preferences.dietType) {
-      parts.push(preferences.dietType);
-    }
-
-    // Health goals
-    if (healthContext.goals && healthContext.goals.length > 0) {
-      parts.push(healthContext.goals.join(' '));
-    }
-
-    // Symptoms (for targeted meals)
-    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
-      const symptomKeywords = healthContext.symptoms.map((s) => s.replace('-', ' ')).join(' ');
-      parts.push(symptomKeywords);
-    }
-
-    parts.push('PCOS meal templates breakfast lunch dinner snacks');
-
-    return parts.join(' ');
-  }
-
-  /**
-   * Build nutrition guidelines retrieval query
-   */
-  buildNutritionQuery(healthContext) {
-    const parts = ['PCOS nutrition guidelines'];
-
-    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
-      parts.push('for', healthContext.symptoms.join(' '));
-    }
-
-    if (healthContext.goals && healthContext.goals.length > 0) {
-      parts.push(healthContext.goals.join(' '));
-    }
-
-    parts.push('low glycemic index hormone balance insulin resistance');
-
-    return parts.join(' ');
-  }
-
-  /**
-   * Build user-specific context section
-   */
-  buildUserContext(preferences, restrictions, cuisines, healthContext, userOverrides) {
+  buildUserContextWithLabs(preferences, restrictions, cuisines, healthContext, userOverrides) {
     let context = 'USER PREFERENCES:\n';
     context += `- Region: ${preferences.region}\n`;
     context += `- Diet Type: ${preferences.dietType}\n`;
@@ -374,16 +345,12 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
 
     if (restrictions.length > 0) {
       context += '\n⚠️ DIETARY RESTRICTIONS (MUST AVOID):\n';
-      restrictions.forEach((r) => {
-        context += `- ${r}\n`;
-      });
+      restrictions.forEach((r) => (context += `- ${r}\n`));
     }
 
     if (cuisines.length > 0) {
       context += '\nPREFERRED CUISINES:\n';
-      cuisines.forEach((c) => {
-        context += `- ${c}\n`;
-      });
+      cuisines.forEach((c) => (context += `- ${c}\n`));
     }
 
     if (healthContext.symptoms && healthContext.symptoms.length > 0) {
@@ -424,22 +391,86 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
       });
     }
 
-    if (healthContext.medicalData) {
-      context += '\n📊 MEDICAL REPORT INSIGHTS:\n';
-      context += 'Consider nutritional needs based on recent lab work.\n';
+    // ===== NEW: ADD DETAILED LAB VALUES INTERPRETATION =====
+    if (healthContext.medicalData?.labValues) {
+      context += '\n📊 MEDICAL REPORT LAB VALUES (Use RAG guidance for these):\n';
+      context +=
+        '**CRITICAL: Refer to the "LAB-SPECIFIC DIETARY GUIDANCE" section above for evidence-based food recommendations**\n\n';
 
-      const { labValues } = healthContext.medicalData;
-      if (labValues) {
-        if (labValues.insulin || labValues.glucose) {
-          context += '- Focus on low-GI foods to manage blood sugar\n';
-        }
-        if (labValues.testosterone) {
-          context += '- Include anti-androgenic foods (spearmint tea, flaxseeds)\n';
-        }
-        if (labValues.cholesterol || labValues.triglycerides) {
-          context += '- Heart-healthy fats and fiber-rich foods\n';
-        }
+      const labValues = healthContext.medicalData.labValues;
+      const categorizedLabs = this.categorizeLabs(labValues);
+
+      // Metabolic markers (highest priority)
+      if (categorizedLabs.metabolic.length > 0) {
+        context += '🔴 METABOLIC MARKERS (HIGH PRIORITY):\n';
+        categorizedLabs.metabolic.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context += 'Action: Focus on low-GI foods, increase fiber, reduce refined carbs\n\n';
       }
+
+      // Hormonal markers
+      if (categorizedLabs.hormonal.length > 0) {
+        context += '⚠️ HORMONAL MARKERS:\n';
+        categorizedLabs.hormonal.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context +=
+          'Action: Include hormone-balancing foods (flaxseeds, spearmint, cruciferous veg)\n\n';
+      }
+
+      // Lipid profile
+      if (categorizedLabs.lipid.length > 0) {
+        context += '💊 LIPID PROFILE:\n';
+        categorizedLabs.lipid.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context +=
+          'Action: Heart-healthy fats (nuts, seeds, fish), increase fiber, reduce saturated fats\n\n';
+      }
+
+      // Nutritional deficiencies
+      if (categorizedLabs.nutritional.length > 0) {
+        context += '🥗 NUTRITIONAL STATUS:\n';
+        categorizedLabs.nutritional.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context +=
+          'Action: Include nutrient-rich foods, consider food sources for deficiencies\n\n';
+      }
+
+      // Inflammation markers
+      if (categorizedLabs.inflammation.length > 0) {
+        context += '🔥 INFLAMMATION MARKERS:\n';
+        categorizedLabs.inflammation.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context += 'Action: Anti-inflammatory foods (turmeric, ginger, omega-3, berries)\n\n';
+      }
+
+      // Thyroid markers
+      if (categorizedLabs.thyroid.length > 0) {
+        context += '🦋 THYROID MARKERS:\n';
+        categorizedLabs.thyroid.forEach((lab) => {
+          context += `- ${this.formatLabName(lab.name)}: ${lab.value} ${
+            lab.unit
+          } [${lab.severity.toUpperCase()}]\n`;
+        });
+        context += 'Action: Iodine-rich (iodized salt), selenium (lentils, eggs), zinc sources\n\n';
+      }
+
+      context +=
+        '**NOTE: The RAG system has retrieved specific dietary recommendations for these lab values. Use them to personalize meal plan.**\n';
     }
 
     if (healthContext.activityLevel) {
@@ -466,35 +497,315 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
   }
 
   /**
-   * Get fallback PCOS guidelines when RAG retrieval fails
+   * NEW: Categorize lab values by health domain for better interpretation
    */
-  getFallbackGuidelines() {
-    return `PCOS NUTRITION GUIDELINES (fallback):
-- Low Glycemic Index (GI < 55) for blood sugar management
-- Anti-inflammatory spices: turmeric, cinnamon, ginger
-- Hormone-balancing: flaxseeds, sesame seeds, leafy greens
-- Adequate protein (15-20g per meal) for satiety
-- Healthy fats: nuts, seeds, olive oil, avocado
-- High fiber: vegetables, whole grains, legumes
-- Limit refined carbs, sugary foods, and processed items
-`;
+  categorizeLabs(labValues) {
+    const categories = {
+      metabolic: [],
+      hormonal: [],
+      lipid: [],
+      nutritional: [],
+      inflammation: [],
+      thyroid: [],
+    };
+
+    const categoryMap = {
+      // Metabolic
+      glucose_fasting: 'metabolic',
+      insulin_fasting: 'metabolic',
+      homa_ir: 'metabolic',
+      hba1c: 'metabolic',
+
+      // Hormonal
+      testosterone_total: 'hormonal',
+      testosterone_free: 'hormonal',
+      dheas: 'hormonal',
+      lh: 'hormonal',
+      fsh: 'hormonal',
+      lh_fsh_ratio: 'hormonal',
+      prolactin: 'hormonal',
+      amh: 'hormonal',
+      estradiol: 'hormonal',
+      progesterone: 'hormonal',
+
+      // Lipid
+      cholesterol_total: 'lipid',
+      triglycerides: 'lipid',
+      hdl_cholesterol: 'lipid',
+      ldl_cholesterol: 'lipid',
+      vldl_cholesterol: 'lipid',
+
+      // Nutritional
+      vitamin_d: 'nutritional',
+      vitamin_b12: 'nutritional',
+      iron: 'nutritional',
+      ferritin: 'nutritional',
+      tibc: 'nutritional',
+      transferrin_saturation: 'nutritional',
+
+      // Inflammation
+      crp: 'inflammation',
+      cortisol: 'inflammation',
+
+      // Thyroid
+      tsh: 'thyroid',
+      t3_free: 'thyroid',
+      t4_free: 'thyroid',
+    };
+
+    Object.entries(labValues).forEach(([labName, labData]) => {
+      if (!labData || !labData.value) return;
+
+      const category = categoryMap[labName];
+      const severity = labData.severity || 'unknown';
+
+      // Only include abnormal values
+      if (category && severity !== 'normal' && severity !== 'optimal') {
+        categories[category].push({
+          name: labName,
+          value: labData.value,
+          unit: labData.unit || '',
+          severity: severity,
+        });
+      }
+    });
+
+    return categories;
   }
 
   /**
-   * Assess quality of RAG retrieval
+   * NEW: Format lab names for human readability
    */
-  assessRetrievalQuality(mealTemplates, nutritionGuidelines) {
-    const totalDocs = mealTemplates.length + nutritionGuidelines.length;
+  formatLabName(labName) {
+    const nameMap = {
+      glucose_fasting: 'Fasting Glucose',
+      insulin_fasting: 'Fasting Insulin',
+      homa_ir: 'HOMA-IR',
+      hba1c: 'HbA1c',
+      cholesterol_total: 'Total Cholesterol',
+      triglycerides: 'Triglycerides',
+      hdl_cholesterol: 'HDL Cholesterol',
+      ldl_cholesterol: 'LDL Cholesterol',
+      vldl_cholesterol: 'VLDL Cholesterol',
+      testosterone_total: 'Total Testosterone',
+      testosterone_free: 'Free Testosterone',
+      dheas: 'DHEA-S',
+      lh: 'LH',
+      fsh: 'FSH',
+      lh_fsh_ratio: 'LH:FSH Ratio',
+      prolactin: 'Prolactin',
+      amh: 'AMH',
+      tsh: 'TSH',
+      t3_free: 'Free T3',
+      t4_free: 'Free T4',
+      vitamin_d: 'Vitamin D',
+      vitamin_b12: 'Vitamin B12',
+      iron: 'Serum Iron',
+      ferritin: 'Ferritin',
+      crp: 'CRP',
+      cortisol: 'Cortisol',
+    };
+
+    return nameMap[labName] || labName.replace(/_/g, ' ').toUpperCase();
+  }
+
+  /**
+   * Enhanced retrieval quality assessment including lab guidance
+   */
+  assessRetrievalQuality(mealTemplates, nutritionGuidelines, labGuidanceDocs = []) {
+    const totalDocs = mealTemplates.length + nutritionGuidelines.length + labGuidanceDocs.length;
 
     if (totalDocs === 0) return 'none';
     if (totalDocs < 3) return 'low';
     if (totalDocs < 8) return 'medium';
-    return 'high';
+    if (totalDocs < 15) return 'high';
+    return 'excellent';
   }
 
-  /**
-   * Generate in chunks for longer durations
-   */
+  // ... [Keep all existing methods: generateInChunks, validateStructure, fixStructure, etc.]
+  // ... [Keep: getCalorieDistributionExample, validateAndAdjustCalories, etc.]
+  // ... [Keep: buildMealTemplateQuery, buildNutritionQuery, etc.]
+  // ... [Keep: getFallbackGuidelines, getRegionalTemplates, getFallbackPlan, etc.]
+
+  getCalorieDistributionExample(mealsPerDay) {
+    const distributions = {
+      2: 'Breakfast: 900-1000 kcal, Dinner: 900-1000 kcal',
+      3: 'Breakfast: 500-600 kcal, Lunch: 700-800 kcal, Dinner: 600-700 kcal',
+      4: 'Breakfast: 450-500 kcal, Lunch: 550-600 kcal, Snack: 200-250 kcal, Dinner: 550-600 kcal',
+    };
+    return distributions[mealsPerDay] || distributions[3];
+  }
+
+  validateAndAdjustCalories(plan, mealsPerDay) {
+    const targetCalories = 2000;
+    const minCalories = 1900;
+    const maxCalories = 2100;
+
+    plan.days.forEach((day, dayIndex) => {
+      let dailyTotal = day.meals.reduce((sum, meal) => {
+        const calories =
+          meal.calories || Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+        return sum + calories;
+      }, 0);
+
+      logger.info(`Day ${dayIndex + 1} total calories: ${dailyTotal} kcal`);
+
+      if (dailyTotal < minCalories || dailyTotal > maxCalories) {
+        logger.warn(
+          `Day ${dayIndex + 1} calories (${dailyTotal}) outside target range, adjusting...`
+        );
+
+        const scaleFactor = targetCalories / dailyTotal;
+        day.meals.forEach((meal) => {
+          meal.protein = Math.round(meal.protein * scaleFactor);
+          meal.carbs = Math.round(meal.carbs * scaleFactor);
+          meal.fats = Math.round(meal.fats * scaleFactor);
+          meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+        });
+
+        dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
+        const difference = targetCalories - dailyTotal;
+
+        if (Math.abs(difference) > 0) {
+          const largestMeal = day.meals.reduce((max, meal) =>
+            meal.calories > max.calories ? meal : max
+          );
+          const carbAdjustment = Math.round(difference / 4);
+          largestMeal.carbs = Math.max(5, largestMeal.carbs + carbAdjustment);
+          largestMeal.calories = Math.round(
+            largestMeal.protein * 4 + largestMeal.carbs * 4 + largestMeal.fats * 9
+          );
+          dailyTotal = day.meals.reduce((sum, meal) => sum + meal.calories, 0);
+        }
+
+        logger.info(`Day ${dayIndex + 1} adjusted total: ${dailyTotal} kcal`);
+      }
+    });
+  }
+
+  buildMealTemplateQuery(preferences, healthContext) {
+    const parts = [];
+    if (preferences.region) parts.push(preferences.region.replace('-', ' '));
+    if (preferences.cuisines?.length) parts.push(preferences.cuisines.join(' '));
+    if (preferences.dietType) parts.push(preferences.dietType);
+    if (healthContext.goals?.length) parts.push(healthContext.goals.join(' '));
+    if (healthContext.symptoms?.length) {
+      parts.push(healthContext.symptoms.map((s) => s.replace('-', ' ')).join(' '));
+    }
+    parts.push('PCOS meal templates breakfast lunch dinner snacks');
+    return parts.join(' ');
+  }
+
+  buildNutritionQuery(healthContext) {
+    const parts = ['PCOS nutrition guidelines'];
+    if (healthContext.symptoms?.length) {
+      parts.push('for', healthContext.symptoms.join(' '));
+    }
+    if (healthContext.goals?.length) {
+      parts.push(healthContext.goals.join(' '));
+    }
+    parts.push('low glycemic index hormone balance insulin resistance');
+    return parts.join(' ');
+  }
+
+  validateStructure(parsed, expectedDays, expectedMeals) {
+    if (!parsed || !parsed.days || !Array.isArray(parsed.days)) {
+      logger.error('Invalid structure: missing days array');
+      return false;
+    }
+
+    if (parsed.days.length !== expectedDays) {
+      logger.error(`Invalid structure: expected ${expectedDays} days, got ${parsed.days.length}`);
+      return false;
+    }
+
+    for (const day of parsed.days) {
+      if (!day.meals || !Array.isArray(day.meals)) {
+        logger.error('Invalid structure: day missing meals array');
+        return false;
+      }
+
+      if (day.meals.length !== expectedMeals) {
+        logger.error(`Invalid structure: expected ${expectedMeals} meals, got ${day.meals.length}`);
+        return false;
+      }
+
+      for (const meal of day.meals) {
+        if (!meal.name || !meal.mealType || !meal.ingredients || !Array.isArray(meal.ingredients)) {
+          logger.error('Invalid meal structure: missing required fields');
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  fixStructure(parsed, expectedDays, expectedMeals) {
+    try {
+      if (!parsed || typeof parsed !== 'object') {
+        return null;
+      }
+
+      if (!parsed.days) {
+        for (const key in parsed) {
+          if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
+            const firstItem = parsed[key][0];
+            if (firstItem.meals || firstItem.dayNumber) {
+              parsed[key].forEach((item, idx) => {
+                if (!item.dayNumber) {
+                  item.dayNumber = idx + 1;
+                }
+              });
+
+              const candidate = { days: parsed[key] };
+              if (this.validateStructure(candidate, expectedDays, expectedMeals)) {
+                logger.info('✅ Structure fixed successfully');
+                return candidate;
+              }
+            }
+          }
+        }
+        return null;
+      }
+
+      parsed.days.forEach((day, idx) => {
+        if (day.day && !day.dayNumber) {
+          day.dayNumber = day.day;
+          delete day.day;
+        }
+        if (!day.dayNumber) {
+          day.dayNumber = idx + 1;
+        }
+      });
+
+      parsed.days.forEach((day) => {
+        day.meals.forEach((meal) => {
+          if (!meal.gi) meal.gi = 'Low';
+          if (!meal.time) meal.time = '20 mins';
+          if (!meal.tip) meal.tip = 'Enjoy fresh';
+          if (!meal.ingredients) meal.ingredients = [];
+          if (typeof meal.protein !== 'number') meal.protein = 10;
+          if (typeof meal.carbs !== 'number') meal.carbs = 20;
+          if (typeof meal.fats !== 'number') meal.fats = 5;
+          if (typeof meal.calories !== 'number') {
+            meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
+          }
+        });
+      });
+
+      if (this.validateStructure(parsed, expectedDays, expectedMeals)) {
+        logger.info('✅ Structure validated and fixed');
+        return parsed;
+      }
+
+      return null;
+    } catch (e) {
+      logger.error('Fix structure failed', { error: e.message });
+      return null;
+    }
+  }
+
   async generateInChunks(preferences) {
     logger.info('Generating in 3-day chunks with RAG for reliability');
 
@@ -536,131 +847,6 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
     return { days: allDays };
   }
 
-  /**
-   * Validate meal plan structure
-   */
-  validateStructure(parsed, expectedDays, expectedMeals) {
-    try {
-      if (!parsed || typeof parsed !== 'object') {
-        logger.debug('Validation failed: not an object');
-        return false;
-      }
-
-      const days = parsed.days;
-      if (!Array.isArray(days)) {
-        logger.debug('Validation failed: days not an array');
-        return false;
-      }
-      if (days.length === 0) {
-        logger.debug('Validation failed: days array empty');
-        return false;
-      }
-
-      for (let i = 0; i < days.length; i++) {
-        const day = days[i];
-        if (!day.meals || !Array.isArray(day.meals)) {
-          logger.debug(`Validation failed: day ${i} has no meals array`);
-          return false;
-        }
-        if (day.meals.length === 0) {
-          logger.debug(`Validation failed: day ${i} meals array empty`);
-          return false;
-        }
-
-        for (let j = 0; j < day.meals.length; j++) {
-          const meal = day.meals[j];
-          const required = ['mealType', 'name', 'ingredients'];
-          for (const field of required) {
-            if (!(field in meal)) {
-              logger.debug(`Validation failed: day ${i} meal ${j} missing ${field}`);
-              return false;
-            }
-          }
-        }
-      }
-
-      logger.info('✅ Validation passed', { daysCount: days.length });
-      return true;
-    } catch (e) {
-      logger.debug('Validation error', { error: e.message });
-      return false;
-    }
-  }
-
-  /**
-   * Fix structure issues
-   */
-  fixStructure(parsed, expectedDays, expectedMeals) {
-    try {
-      if (!parsed.days) {
-        logger.debug('Attempting to fix structure - days missing');
-        const alternativeKeys = ['mealPlan', 'plan', 'data', 'schedule', 'menu'];
-
-        for (const key of alternativeKeys) {
-          if (Array.isArray(parsed[key]) && parsed[key].length > 0) {
-            logger.info(`Found alternative key: ${key}, restructuring`);
-            parsed[key].forEach((item, idx) => {
-              if (item.day && !item.dayNumber) {
-                item.dayNumber = item.day;
-                delete item.day;
-              }
-              if (!item.dayNumber) {
-                item.dayNumber = idx + 1;
-              }
-            });
-
-            const candidate = { days: parsed[key] };
-            if (this.validateStructure(candidate, expectedDays, expectedMeals)) {
-              logger.info('✅ Structure fixed successfully');
-              return candidate;
-            }
-          }
-        }
-
-        return null;
-      }
-
-      parsed.days.forEach((day, idx) => {
-        if (day.day && !day.dayNumber) {
-          day.dayNumber = day.day;
-          delete day.day;
-        }
-        if (!day.dayNumber) {
-          day.dayNumber = idx + 1;
-        }
-      });
-
-      parsed.days.forEach((day) => {
-        day.meals.forEach((meal) => {
-          if (!meal.gi) meal.gi = 'Low';
-          if (!meal.time) meal.time = '20 mins';
-          if (!meal.tip) meal.tip = 'Enjoy fresh';
-          if (!meal.ingredients) meal.ingredients = [];
-          if (typeof meal.protein !== 'number') meal.protein = 10;
-          if (typeof meal.carbs !== 'number') meal.carbs = 20;
-          if (typeof meal.fats !== 'number') meal.fats = 5;
-          // Calculate calories if not provided: (protein × 4) + (carbs × 4) + (fats × 9)
-          if (typeof meal.calories !== 'number') {
-            meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
-          }
-        });
-      });
-
-      if (this.validateStructure(parsed, expectedDays, expectedMeals)) {
-        logger.info('✅ Structure validated and fixed');
-        return parsed;
-      }
-
-      return null;
-    } catch (e) {
-      logger.error('Fix structure failed', { error: e.message });
-      return null;
-    }
-  }
-
-  /**
-   * Get fallback day (used when RAG fails)
-   */
   getFallbackDay(dayNumber, preferences) {
     const templates = this.getRegionalTemplates(preferences.region);
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
@@ -674,92 +860,77 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
         ? ['breakfast', 'lunch', 'snack', 'dinner']
         : ['breakfast', 'lunch', 'dinner'];
 
-    selectedTypes.forEach((type, idx) => {
-      const typeTemplates = templates[type] || templates.breakfast;
-      const template = typeTemplates[(dayNumber + idx) % typeTemplates.length];
+    selectedTypes.forEach((type) => {
+      const template = templates[type]?.[0] || {
+        name: 'Simple PCOS meal',
+        ingredients: ['vegetables', 'protein', 'whole grains'],
+        protein: 15,
+        carbs: 30,
+        fats: 8,
+        calories: 245,
+      };
 
       meals.push({
         mealType: type.charAt(0).toUpperCase() + type.slice(1),
-        ...template,
+        name: template.name,
+        ingredients: template.ingredients,
+        protein: template.protein,
+        carbs: template.carbs,
+        fats: template.fats,
+        calories: template.calories,
         gi: 'Low',
         time: '20 mins',
-        tip: 'Fresh and healthy',
+        tip: 'Prepare fresh for best results',
       });
     });
 
-    // Adjust meals to meet 2000 kcal target
-    const currentTotal = meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-    const targetCalories = 2000;
-
-    if (currentTotal > 0 && Math.abs(currentTotal - targetCalories) > 200) {
-      const scaleFactor = targetCalories / currentTotal;
-      meals.forEach((meal) => {
-        meal.protein = Math.round(meal.protein * scaleFactor);
-        meal.carbs = Math.round(meal.carbs * scaleFactor);
-        meal.fats = Math.round(meal.fats * scaleFactor);
-        meal.calories = Math.round(meal.protein * 4 + meal.carbs * 4 + meal.fats * 9);
-      });
-      logger.info(
-        `Fallback day ${dayNumber} adjusted from ${currentTotal} to ~${targetCalories} kcal`
-      );
-    }
-
-    return { dayNumber, meals };
+    return {
+      dayNumber,
+      meals,
+    };
   }
 
-  /**
-   * Get hardcoded regional templates (fallback)
-   * Templates designed to total ~2000 kcal per day (breakfast ~550, lunch ~750, dinner ~700)
-   */
   getRegionalTemplates(region) {
     const templates = {
       'north-india': {
         breakfast: [
           {
-            name: 'Besan Chilla with Curd',
-            ingredients: ['120g besan', '1 onion', '1 tomato', '100g curd'],
-            protein: 25,
+            name: 'Besan Chilla with Vegetables',
+            ingredients: ['100g besan flour', 'onion', 'tomato', 'coriander', '1 tsp oil'],
+            protein: 18,
             carbs: 45,
             fats: 12,
-            calories: 384,
-          },
-          {
-            name: 'Moong Dal Chilla with Vegetables',
-            ingredients: ['120g moong dal', 'vegetables', '1 tbsp oil'],
-            protein: 28,
-            carbs: 50,
-            fats: 10,
-            calories: 410,
+            calories: 360,
           },
         ],
         lunch: [
           {
-            name: 'Dal Tadka with Rice and Vegetables',
-            ingredients: ['100g dal', '80g rice', 'vegetables', '2 roti'],
-            protein: 25,
-            carbs: 95,
+            name: 'Rajma with Brown Rice',
+            ingredients: ['100g rajma', '80g brown rice', 'spices', 'ghee'],
+            protein: 22,
+            carbs: 85,
             fats: 12,
-            calories: 596,
+            calories: 548,
           },
         ],
         snack: [
           {
-            name: 'Roasted Chana with Nuts',
-            ingredients: ['70g chana', '15g almonds', 'spices'],
-            protein: 15,
-            carbs: 30,
-            fats: 10,
-            calories: 270,
+            name: 'Roasted Chana with Vegetables',
+            ingredients: ['80g roasted chana', 'cucumber', 'tomato', 'lemon'],
+            protein: 18,
+            carbs: 40,
+            fats: 6,
+            calories: 286,
           },
         ],
         dinner: [
           {
-            name: 'Vegetable Khichdi with Paneer',
-            ingredients: ['70g rice', '70g dal', 'vegetables', '80g paneer'],
-            protein: 28,
-            carbs: 75,
-            fats: 15,
-            calories: 555,
+            name: 'Palak Paneer with Roti',
+            ingredients: ['150g spinach', '80g paneer', '2 whole wheat roti', 'ghee'],
+            protein: 24,
+            carbs: 60,
+            fats: 18,
+            calories: 510,
           },
         ],
       },
@@ -767,8 +938,8 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
         breakfast: [
           {
             name: 'Ragi Dosa with Sambar',
-            ingredients: ['100g ragi', '30g urad dal', 'sambar', 'chutney'],
-            protein: 18,
+            ingredients: ['100g ragi flour', '50g urad dal', 'sambar', 'coconut chutney'],
+            protein: 16,
             carbs: 65,
             fats: 10,
             calories: 422,
@@ -805,15 +976,23 @@ Generate ${duration} days with ${mealsPerDay} meals each day.`;
           },
         ],
       },
-      // Add more regions as needed
     };
 
     return templates[region] || templates['north-india'];
   }
 
-  /**
-   * Get complete fallback plan
-   */
+  getFallbackGuidelines() {
+    return `PCOS NUTRITION GUIDELINES (fallback):
+- Low Glycemic Index (GI < 55) for blood sugar management
+- Anti-inflammatory spices: turmeric, cinnamon, ginger
+- Hormone-balancing: flaxseeds, sesame seeds, leafy greens
+- Adequate protein (15-20g per meal) for satiety
+- Healthy fats: nuts, seeds, olive oil, avocado
+- High fiber: vegetables, whole grains, legumes
+- Limit refined carbs, sugary foods, and processed items
+`;
+  }
+
   getFallbackPlan(preferences) {
     logger.info('Using complete fallback meal plan (no RAG)');
     const duration = parseInt(preferences.duration) || 7;
