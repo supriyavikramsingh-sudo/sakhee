@@ -9,11 +9,13 @@ The Medical Report Analyzer feature allows users to upload **one medical report 
 ### Backend Components
 
 1. **Medical Report Service** (`server/src/services/medicalReportService.js`)
+
    - Handles CRUD operations for medical reports in Firestore
    - Enforces single-report-per-user policy
    - Manages file cleanup when reports are replaced
 
 2. **Upload Routes** (`server/src/routes/upload.js`)
+
    - `POST /api/upload/report` - Upload new report (replaces existing)
    - `GET /api/upload/user/:userId/report` - Get current report
    - `GET /api/upload/user/:userId/has-report` - Check if user has a report
@@ -25,11 +27,13 @@ The Medical Report Analyzer feature allows users to upload **one medical report 
 ### Frontend Components
 
 1. **ReportsPage** (`client/src/pages/ReportsPage.jsx`)
+
    - Main page for report management
    - Loads existing report on mount
    - Shows current report info with replace/delete options
 
 2. **FileUpload** (`client/src/components/files/FileUpload.jsx`)
+
    - File upload component with progress tracking
    - Supports PDF, DOCX, JPEG, JPG, PNG (max 10MB)
 
@@ -40,6 +44,7 @@ The Medical Report Analyzer feature allows users to upload **one medical report 
 ### Database Structure
 
 Firestore collection structure:
+
 ```
 users/
   {userId}/
@@ -58,22 +63,26 @@ users/
 ## Features
 
 ### 1. Single File Policy
+
 - Users can only have one medical report at a time
 - Uploading a new report automatically deletes the previous one
 - Prevents data clutter and confusion
 
 ### 2. Data Persistence
+
 - All extracted data stored in Firestore
 - Lab values and analysis accessible across sessions
 - No data loss between app visits
 
 ### 3. AI Analysis
+
 - Automatic text extraction (OCR for images)
 - Lab value parsing with reference ranges
 - AI-powered health insights and recommendations
 - PCOS-specific analysis
 
 ### 4. File Management
+
 - Automatic cleanup of old files
 - Temporary file storage during processing
 - Secure file handling
@@ -83,12 +92,14 @@ users/
 ### For Users
 
 1. **Upload Report**
+
    - Click "Upload New" button
    - Select file (PDF, DOCX, or image)
    - Wait for processing and analysis
    - View results immediately
 
 2. **Replace Report**
+
    - Click "Replace Report" button
    - Upload new file
    - Previous report is automatically deleted
@@ -104,12 +115,14 @@ users/
 #### Testing the Feature
 
 1. Start the server:
+
 ```bash
 cd server
 npm run dev
 ```
 
 2. Start the client:
+
 ```bash
 cd client
 npm run dev
@@ -126,6 +139,7 @@ npm run dev
 #### Environment Variables
 
 Server `.env` requires:
+
 ```env
 # Firebase Configuration
 FIREBASE_API_KEY="your_api_key"
@@ -142,6 +156,7 @@ OPENAI_API_KEY="your_openai_key"
 ## API Reference
 
 ### Upload Report
+
 ```javascript
 POST /api/upload/report
 
@@ -165,6 +180,7 @@ Response:
 ```
 
 ### Get Current Report
+
 ```javascript
 GET /api/upload/user/:userId/report
 
@@ -184,6 +200,7 @@ Response:
 ```
 
 ### Delete Report
+
 ```javascript
 DELETE /api/upload/user/:userId/report
 
@@ -197,11 +214,13 @@ Response:
 ## Security Considerations
 
 1. **File Validation**
+
    - Only allowed file types accepted
    - File size limited to 10MB
    - MIME type verification
 
 2. **User Authentication**
+
    - All endpoints require valid userId
    - Firebase authentication integration ready
 
@@ -213,16 +232,19 @@ Response:
 ## Future Enhancements
 
 1. **Multi-Report History**
+
    - Option to enable report history
    - View previous reports with timestamps
    - Compare reports over time
 
 2. **Enhanced Analysis**
+
    - Trend analysis across reports
    - Personalized recommendations
    - Integration with meal planning
 
 3. **File Storage**
+
    - Move to Firebase Storage for scalability
    - Generate download links for original files
    - Thumbnail generation for image reports
@@ -235,17 +257,20 @@ Response:
 ## Troubleshooting
 
 ### Report Not Loading
+
 - Check browser console for errors
 - Verify Firebase configuration
 - Ensure user is authenticated
 
 ### Upload Fails
+
 - Check file size (max 10MB)
 - Verify file type is supported
 - Check server logs for errors
 - Ensure OpenAI API key is valid
 
 ### Analysis Missing
+
 - Verify report chain is initialized
 - Check OpenAI API quota
 - Review server logs for errors
@@ -253,6 +278,7 @@ Response:
 ## Support
 
 For issues or questions:
+
 1. Check server logs: `server/src/utils/logger.js`
 2. Review Firestore console for data
 3. Test API endpoints with Postman

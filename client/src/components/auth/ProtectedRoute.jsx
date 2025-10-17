@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, userProfile, isLoading } = useAuthStore();
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading..." />;
+    return <LoadingSpinner />;
   }
 
   // Not authenticated - redirect to login

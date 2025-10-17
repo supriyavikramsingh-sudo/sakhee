@@ -4,6 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import { Heart, Brain, Leaf, Zap } from 'lucide-react';
+import { Alert } from 'antd';
+
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="card-hover">
+    <div className="text-primary mb-3">{icon}</div>
+    <h3 className="font-bold text-lg mb-2">{title}</h3>
+    <p className="text-sm text-muted">{description}</p>
+  </div>
+);
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -97,22 +106,17 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Medical Disclaimer */}
-        <div className="mt-8 bg-warning bg-opacity-10 border-l-4 border-warning p-6 rounded">
-          <h3 className="font-bold text-warning mb-2">⚠️ {t('common.disclaimer')}</h3>
-          <p className="text-sm text-gray-700">{t('common.disclaimerText')}</p>
-        </div>
+        <Alert
+          message={t('common.disclaimer')}
+          description={t('common.disclaimerText')}
+          type="warning"
+          showIcon
+          closable
+          className="mt-4"
+        />
       </div>
     </div>
   );
 };
-
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="card-hover">
-    <div className="text-primary mb-3">{icon}</div>
-    <h3 className="font-bold text-lg mb-2">{title}</h3>
-    <p className="text-sm text-muted">{description}</p>
-  </div>
-);
 
 export default HomePage;

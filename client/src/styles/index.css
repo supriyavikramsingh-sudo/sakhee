@@ -87,7 +87,7 @@ body {
 }
 
 .card-hover {
-  @apply card hover:shadow-lg transition duration-200 cursor-pointer;
+  @apply card;
 }
 
 /* Badge styles */
