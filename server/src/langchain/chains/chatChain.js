@@ -1,6 +1,6 @@
 // server/src/langchain/chains/chatChain.js
-// ✅ COMPLETE FIXED VERSION - All method calls corrected
-// Fixed: substring error, Reddit integration, SERP nutrition API
+// ✅ ENHANCED VERSION - Integrates Lab Values from Medical Reports
+// Adds Scenario 1, 2, 3 support with medical report data
 
 import { ConversationChain } from 'langchain/chains';
 import { BufferMemory } from 'langchain/memory';
@@ -9,6 +9,7 @@ import { llmClient } from '../llmClient.js';
 import { retriever } from '../retriever.js';
 import { redditService } from '../../services/redditService.js';
 import { serpService } from '../../services/serpService.js';
+import { medicalReportService } from '../../services/medicalReportService.js';
 import { Logger } from '../../utils/logger.js';
 import fs from 'fs';
 import path from 'path';
@@ -28,361 +29,550 @@ class ChatChain {
 
     // Load system prompt with comprehensive instructions
     const promptPath = path.join(__dirname, '../prompts/systemPrompt.md');
-    const defaultPrompt = `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women
-
-## Your Core Role
-- Provide evidence-based, educational guidance on PCOS symptoms and lifestyle management
-- Offer culturally adapted, region-specific meal suggestions
-- Support emotional well-being through compassionate communication
-- Connect women to community experiences while maintaining medical safety
-- Use real-time nutritional data and community insights when relevant
-
-## Integration Powers
-You have access to:
-1. **Medical Knowledge Base**: Evidence-based PCOS research and guidelines
-2. **Reddit Community Insights**: Anonymized experiences from r/PCOS, r/PCOSIndia, etc.
-3. **Nutritional Database**: Real-time nutrition facts via SERP API for Indian foods
-
-## CRITICAL: When Reddit Insights Are Provided
-
-When you see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the context:
-- **YOU MUST reference specific post titles provided**
-- **YOU MUST include the direct Reddit links (🔗) in your response**
-- **DO NOT give generic advice about "searching Reddit" or "communities exist"**
-- **SUMMARIZE actual content from the Reddit posts shown**
-- **Quote relevant experiences** (without usernames - they're already removed)
-- **Cite which subreddit** each discussion is from (r/PCOS, r/PCOSIndia, etc.)
-- **Make it conversational and relatable**, not robotic
-
-**🚫 CRITICAL - NEVER FABRICATE REDDIT CONTENT:**
-- If you do NOT see "===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====" in the context above, DO NOT mention Reddit AT ALL
-- DO NOT say "From r/PCOS" or "From r/PCOSIndia" unless the actual section is provided
-- DO NOT create fake post titles, fake links, or fake discussions
-- DO NOT say things like "Many women on Reddit discuss..." without actual data
-- If you see "⚠️ NO REDDIT DATA AVAILABLE", absolutely DO NOT mention Reddit
-- Fabricating Reddit content is a critical error that breaks user trust
-- When in doubt, answer using ONLY the medical knowledge base
-
-LINK FORMAT: Include links like this in your response (ONLY when Reddit data is actually provided):
-- "In this post on r/PCOS: [post title](reddit_url)"
-- Or: "A discussion on r/PCOSIndia about X: [link](reddit_url)"
-- Or simply: "Check out this thread: reddit_url"
-
-Example of EXCELLENT response when Reddit data is provided:
-"I found some recent discussions from the PCOS community on Reddit:
-
-**From r/PCOS:**
-One highly upvoted post titled "Florence Pugh froze her eggs at 27" discusses how the actress found out about PCOS and endometriosis: https://reddit.com/r/PCOS/comments/1gv2i69...
-
-**From r/PCOS:**
-This thread "Why is almost all the focus in treating PCOS on fertility?" has 743 upvotes and addresses frustration about PCOS being reduced to just a fertility issue: https://reddit.com/r/PCOS/comments/11aysg4...
-
-Many commenters shared that they want treatment for insulin resistance, acne, and other symptoms—not just fertility support..."
-
-Example of BAD response (NEVER do this):
-"You can find discussions on Reddit communities like r/PCOS where women share experiences..."
-^^ This is too generic! Use the ACTUAL content and LINKS provided!
-
-**Example when NO Reddit data provided:**
-DO NOT SAY: "From r/PCOS, users have discussed..." ❌
-DO NOT SAY: "Check out discussions on Reddit..." ❌
-INSTEAD: Answer using only medical knowledge base ✅
-
-## Response Guidelines
-
-### When to Use Reddit Insights:
-- User explicitly asks about Reddit, threads, or community discussions
-- Questions about "has anyone else experienced X"
-- Seeking validation or real-world experiences
-- Always include disclaimer: "Based on community discussions (Reddit), not medical advice"
-
-### When to Use Nutritional Data:
-- User asks about calories, macros, or nutrition facts
-- Meal planning or recipe recommendations
-- Food comparisons or substitutions
-- Always cite source (e.g., "According to nutritional databases...")
-
-### Medical Safety:
-- NEVER diagnose or prescribe
-- Always recommend doctor consultation for:
-  * Severe symptoms (pain, bleeding, sudden changes)
-  * Lab value interpretation
-  * Fertility/pregnancy concerns
-  * Medication decisions
-  * No improvement after 3 months
-
-## Tone: Warm, Supportive, Friend-like
-- Use simple language, avoid medical jargon
-- Validate emotions: "It's completely understandable to feel..."
-- Encourage small steps: "Even small changes can make a difference"
-- End with support: "You're not alone in this journey"
-
-## Output Structure:
-1. **Empathetic acknowledgment**
-2. **Clear answer with context** (USE REDDIT DATA IF PROVIDED!)
-3. **3-5 actionable recommendations**
-4. **When to see doctor** (if health-related)
-5. **Supportive closing**
-
-## 🚨 CRITICAL: Meal Plan Requests - REDIRECT ONLY
-
-**YOU MUST NEVER GENERATE MEAL PLANS IN CHAT**
-
-When a user asks for meal plans, ALWAYS respond with redirect message.
-
-Remember: You're a companion, not a medical professional. Build trust through empathy, accuracy, and cultural sensitivity.`;
+    const defaultPrompt = this.buildEnhancedSystemPrompt();
 
     this.systemPrompt = fs.existsSync(promptPath)
       ? fs.readFileSync(promptPath, 'utf-8')
       : defaultPrompt;
   }
 
+  buildEnhancedSystemPrompt() {
+    return `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women.
+
+## Your Core Role
+- Provide evidence-based, educational guidance on PCOS symptoms and lifestyle management
+- Analyze user's specific lab values to identify root causes of symptoms
+- Offer culturally adapted, region-specific recommendations based on medical data
+- Support emotional well-being through compassionate communication
+- Connect women to community experiences while maintaining medical safety
+- Use real-time nutritional data and community insights when relevant
+
+## Integration Powers
+You have access to:
+1. **Medical Knowledge Base**: Evidence-based PCOS research and lab-specific dietary guidance
+2. **User's Medical Report**: Actual lab values with severity classifications
+3. **Reddit Community Insights**: Anonymized experiences from r/PCOS, r/PCOSIndia, etc.
+4. **Nutritional Database**: Real-time nutrition facts via SERP API for Indian foods
+
+## CRITICAL: Using User's Lab Values
+
+When user's lab values are provided in context:
+- **ALWAYS reference their specific values** when explaining symptoms
+- **Connect symptoms to lab abnormalities** (e.g., "Your high insulin may be causing...")
+- **Use RAG guidance** to provide evidence-based food recommendations for their specific labs
+- **Be specific and personalized** - avoid generic advice
+- **Prioritize metabolic markers** (glucose, insulin, HOMA-IR) as they drive most PCOS symptoms
+- **Explain the WHY** - help user understand the physiology behind their symptoms
+
+### Example Response Structure (Scenario 1: Symptom Query):
+User: "Why am I experiencing hair loss and acne?"
+
+Your response should:
+1. **Check their lab values** for testosterone, insulin, DHEA-S
+2. **Identify root causes**: "Looking at your lab results, your elevated insulin (15 µIU/mL) and high testosterone (65 ng/dL) are likely driving these symptoms. Here's why..."
+3. **Explain physiology**: Brief, simple explanation of how these hormones cause symptoms
+4. **RAG-based recommendations**: Use retrieved dietary guidance specific to their lab abnormalities
+5. **Community validation**: If Reddit data available, share similar experiences
+6. **Action plan**: 3-5 specific, actionable steps prioritized by impact
+
+### Example Response Structure (Scenario 2: Lab Value Query):
+User: "How can I improve my insulin levels?"
+
+Your response should:
+1. **Current status**: "Your fasting insulin is 18 µIU/mL, which falls in the 'elevated' range..."
+2. **Target range**: "The optimal range is 2-7 µIU/mL, normal is up to 25 µIU/mL"
+3. **RAG dietary guidance**: Specific foods from knowledge base for insulin management
+4. **Regional adaptation**: Tailor recommendations to their location/cuisine preference
+5. **Lifestyle factors**: Sleep, stress, exercise impact on insulin
+6. **Timeline**: "With consistent dietary changes, you may see improvement in 4-8 weeks"
+
+### Example Response Structure (Scenario 3: Community Insights):
+User: "I feel so alone dealing with low iron and fatigue"
+
+Your response should:
+1. **Validation with data**: "Your ferritin at 22 ng/mL is indeed low, and this explains your fatigue"
+2. **Community connection**: Share specific Reddit posts about low iron struggles in PCOS
+3. **Shared experiences**: "Many women with PCOS face this - it's not just you"
+4. **Action + support**: Combine iron-rich food recommendations with emotional support
+
+## Lab Value Interpretation Guidelines
+
+### Priority Order (address in this sequence):
+1. **Metabolic** (glucose, insulin, HOMA-IR, HbA1c) - Root cause driver
+2. **Hormonal** (testosterone, LH/FSH ratio, AMH) - Symptom manifestation
+3. **Nutritional** (Vitamin D, B12, iron/ferritin) - Energy and wellbeing
+4. **Lipid** (cholesterol, triglycerides) - Long-term health
+5. **Inflammation** (CRP) - Overall disease activity
+6. **Thyroid** (TSH, T3, T4) - Metabolic function
+
+### Severity Language:
+- **Optimal/Normal**: "Your [lab] is in the healthy range"
+- **Elevated/Borderline**: "Your [lab] is slightly elevated, which may be contributing to..."
+- **High/Critical**: "Your [lab] is significantly elevated and likely a key driver of your symptoms"
+- **Low/Deficient**: "Your [lab] is below optimal, which can cause..."
+
+## Medical Safety (ALWAYS INCLUDE):
+- NEVER diagnose or prescribe
+- Always recommend doctor consultation for:
+  * Severe symptoms (pain, bleeding, sudden changes)
+  * Lab value interpretation requiring medical decision
+  * Fertility/pregnancy concerns
+  * Medication decisions or adjustments
+  * No improvement after 3 months of lifestyle changes
+  * Values in "critical" range
+
+## Disclaimer Rules:
+- **Every health-related response** must end with: "⚠️ *This is educational guidance based on your lab values. Please consult your healthcare provider for personalized medical advice and treatment decisions.*"
+- **Reddit insights** must include: "💬 *Community insights are personal experiences shared on Reddit, not medical advice.*"
+- **Lab interpretation** must include: "📊 *Lab value interpretation is educational. Always discuss results with your doctor.*"
+
+## Tone: Warm, Knowledgeable, Empowering
+- Use simple language, avoid excessive medical jargon
+- Validate emotions: "It's completely understandable to feel frustrated when..."
+- Empower with knowledge: "Understanding your lab values helps you make informed choices"
+- Encourage gradual progress: "Small, consistent changes add up over time"
+- End with hope: "Many women have improved these values with dietary and lifestyle changes"
+
+Remember: You're a knowledgeable companion who helps women understand their PCOS using their actual medical data, not just generic advice.`;
+  }
+
   /**
-   * Check if message needs Reddit community insights
-   * ✅ ENHANCED: Better trigger detection
+   * NEW: Fetch user's medical report and extract lab values
+   */
+  async getUserLabValues(userId) {
+    if (!userId) {
+      logger.warn('No userId provided for lab value retrieval');
+      return null;
+    }
+
+    try {
+      logger.info('Fetching user medical report for lab values', { userId });
+
+      const reportResult = await medicalReportService.getUserReport(userId);
+
+      if (!reportResult.success || !reportResult.data) {
+        logger.info('No medical report found for user', { userId });
+        return null;
+      }
+
+      const labValues = reportResult.data.labValues;
+
+      if (!labValues || Object.keys(labValues).length === 0) {
+        logger.info('Medical report exists but no lab values found', { userId });
+        return null;
+      }
+
+      logger.info('Lab values retrieved successfully', {
+        userId,
+        labCount: Object.keys(labValues).length,
+      });
+
+      return {
+        labValues,
+        uploadedAt: reportResult.data.uploadedAt,
+        analysis: reportResult.data.analysis,
+      };
+    } catch (error) {
+      logger.error('Failed to fetch user lab values', {
+        userId,
+        error: error.message,
+      });
+      return null;
+    }
+  }
+
+  /**
+   * NEW: Build lab-specific context for chat
+   */
+  buildLabContext(medicalData) {
+    if (!medicalData || !medicalData.labValues) {
+      return '';
+    }
+
+    const labValues = medicalData.labValues;
+    let context = "\n📊 USER'S MEDICAL REPORT LAB VALUES:\n";
+    context +=
+      '(Use these specific values to personalize your response and explain symptom root causes)\n\n';
+
+    // Categorize labs by priority
+    const categorized = this.categorizeLabs(labValues);
+
+    // Metabolic markers (highest priority)
+    if (categorized.metabolic.length > 0) {
+      context += '🔴 METABOLIC MARKERS (HIGH PRIORITY - Address First):\n';
+      categorized.metabolic.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+        if (lab.severity !== 'normal' && lab.severity !== 'optimal') {
+          context += `    ⚠️ This ${lab.severity} level may be contributing to insulin resistance and related symptoms\n`;
+        }
+      });
+      context += '\n';
+    }
+
+    // Hormonal markers
+    if (categorized.hormonal.length > 0) {
+      context += '⚠️ HORMONAL MARKERS:\n';
+      categorized.hormonal.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+        if (lab.severity !== 'normal' && lab.severity !== 'optimal') {
+          context += `    ⚠️ This may be causing symptoms like acne, hair loss, irregular periods\n`;
+        }
+      });
+      context += '\n';
+    }
+
+    // Nutritional status
+    if (categorized.nutritional.length > 0) {
+      context += '🥗 NUTRITIONAL STATUS:\n';
+      categorized.nutritional.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+        if (lab.severity === 'deficient' || lab.severity === 'low') {
+          context += `    ⚠️ Deficiency may cause fatigue, mood issues, weakened immunity\n`;
+        }
+      });
+      context += '\n';
+    }
+
+    // Lipid profile
+    if (categorized.lipid.length > 0) {
+      context += '💊 LIPID PROFILE:\n';
+      categorized.lipid.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+      });
+      context += '\n';
+    }
+
+    // Inflammation
+    if (categorized.inflammation.length > 0) {
+      context += '🔥 INFLAMMATION MARKERS:\n';
+      categorized.inflammation.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+      });
+      context += '\n';
+    }
+
+    // Thyroid
+    if (categorized.thyroid.length > 0) {
+      context += '🦋 THYROID MARKERS:\n';
+      categorized.thyroid.forEach((lab) => {
+        context += `  - ${this.formatLabName(lab.name)}: ${lab.value} ${
+          lab.unit || ''
+        } [${lab.severity.toUpperCase()}]\n`;
+      });
+      context += '\n';
+    }
+
+    context += '**CRITICAL INSTRUCTIONS:**\n';
+    context += '1. Reference these SPECIFIC lab values when answering symptom-related questions\n';
+    context += "2. Explain HOW these values contribute to user's symptoms (the physiology)\n";
+    context +=
+      '3. Use RAG-retrieved dietary guidance to recommend foods for their specific abnormalities\n';
+    context += '4. Be specific and personalized - avoid generic PCOS advice\n';
+    context += '5. Always include disclaimer about consulting healthcare provider\n\n';
+
+    return context;
+  }
+
+  /**
+   * Categorize labs by system/priority
+   */
+  categorizeLabs(labValues) {
+    const categories = {
+      metabolic: [],
+      hormonal: [],
+      nutritional: [],
+      lipid: [],
+      inflammation: [],
+      thyroid: [],
+      other: [],
+    };
+
+    const metabolicLabs = ['glucose_fasting', 'insulin_fasting', 'homa_ir', 'hba1c'];
+    const hormonalLabs = [
+      'testosterone_total',
+      'testosterone_free',
+      'dheas',
+      'lh',
+      'fsh',
+      'lh_fsh_ratio',
+      'amh',
+      'prolactin',
+      'estradiol',
+      'progesterone',
+    ];
+    const nutritionalLabs = [
+      'vitamin_d',
+      'vitamin_b12',
+      'iron',
+      'ferritin',
+      'tibc',
+      'transferrin_saturation',
+    ];
+    const lipidLabs = [
+      'cholesterol_total',
+      'triglycerides',
+      'hdl_cholesterol',
+      'ldl_cholesterol',
+      'vldl_cholesterol',
+    ];
+    const inflammationLabs = ['crp'];
+    const thyroidLabs = ['tsh', 't3_free', 't4_free'];
+
+    Object.entries(labValues).forEach(([name, data]) => {
+      const labInfo = { name, ...data };
+
+      if (metabolicLabs.includes(name)) {
+        categories.metabolic.push(labInfo);
+      } else if (hormonalLabs.includes(name)) {
+        categories.hormonal.push(labInfo);
+      } else if (nutritionalLabs.includes(name)) {
+        categories.nutritional.push(labInfo);
+      } else if (lipidLabs.includes(name)) {
+        categories.lipid.push(labInfo);
+      } else if (inflammationLabs.includes(name)) {
+        categories.inflammation.push(labInfo);
+      } else if (thyroidLabs.includes(name)) {
+        categories.thyroid.push(labInfo);
+      } else {
+        categories.other.push(labInfo);
+      }
+    });
+
+    return categories;
+  }
+
+  /**
+   * Format lab name for display
+   */
+  formatLabName(name) {
+    const nameMap = {
+      glucose_fasting: 'Fasting Glucose',
+      insulin_fasting: 'Fasting Insulin',
+      homa_ir: 'HOMA-IR',
+      hba1c: 'HbA1c',
+      cholesterol_total: 'Total Cholesterol',
+      triglycerides: 'Triglycerides',
+      hdl_cholesterol: 'HDL Cholesterol',
+      ldl_cholesterol: 'LDL Cholesterol',
+      vldl_cholesterol: 'VLDL Cholesterol',
+      testosterone_total: 'Total Testosterone',
+      testosterone_free: 'Free Testosterone',
+      dheas: 'DHEA-S',
+      lh: 'LH',
+      fsh: 'FSH',
+      lh_fsh_ratio: 'LH:FSH Ratio',
+      amh: 'AMH',
+      prolactin: 'Prolactin',
+      estradiol: 'Estradiol',
+      progesterone: 'Progesterone',
+      tsh: 'TSH',
+      t3_free: 'Free T3',
+      t4_free: 'Free T4',
+      vitamin_d: 'Vitamin D',
+      vitamin_b12: 'Vitamin B12',
+      iron: 'Serum Iron',
+      ferritin: 'Ferritin',
+      tibc: 'TIBC',
+      transferrin_saturation: 'Transferrin Saturation',
+      crp: 'CRP',
+    };
+
+    return nameMap[name] || name.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+  }
+
+  /**
+   * NEW: Build lab-specific RAG query for dietary guidance
+   */
+  buildLabGuidanceQuery(labValues, userMessage) {
+    if (!labValues || Object.keys(labValues).length === 0) {
+      return null;
+    }
+
+    const queryParts = [];
+    const abnormalLabs = [];
+
+    // Identify abnormal values
+    Object.entries(labValues).forEach(([labName, labData]) => {
+      if (!labData || !labData.severity) return;
+
+      const severity = labData.severity.toLowerCase();
+
+      // Focus on non-optimal values
+      if (severity !== 'normal' && severity !== 'optimal' && severity !== 'unknown') {
+        abnormalLabs.push({
+          name: labName,
+          severity,
+          value: labData.value,
+        });
+      }
+    });
+
+    // Build targeted query based on abnormal labs
+    if (abnormalLabs.length > 0) {
+      // Prioritize metabolic markers
+      const metabolicAbnormal = abnormalLabs.filter((lab) =>
+        ['glucose_fasting', 'insulin_fasting', 'homa_ir', 'hba1c'].includes(lab.name)
+      );
+
+      if (metabolicAbnormal.length > 0) {
+        queryParts.push('insulin resistance glucose management');
+      }
+
+      // Add specific lab terms
+      abnormalLabs.slice(0, 3).forEach((lab) => {
+        const termMap = {
+          glucose_fasting: 'fasting glucose',
+          insulin_fasting: 'insulin',
+          homa_ir: 'insulin resistance',
+          testosterone_total: 'testosterone',
+          vitamin_d: 'vitamin D',
+          ferritin: 'iron ferritin',
+        };
+
+        const term = termMap[lab.name];
+        if (term) queryParts.push(term);
+      });
+    }
+
+    // Add query context from user message
+    const symptomKeywords = [
+      'acne',
+      'hair loss',
+      'weight',
+      'fatigue',
+      'period',
+      'cycle',
+      'fertility',
+      'mood',
+      'energy',
+    ];
+
+    symptomKeywords.forEach((keyword) => {
+      if (userMessage.toLowerCase().includes(keyword)) {
+        queryParts.push(keyword);
+      }
+    });
+
+    if (queryParts.length === 0) {
+      return 'PCOS dietary management';
+    }
+
+    return queryParts.join(' ') + ' diet food recommendations';
+  }
+
+  /**
+   * Check if message needs community insights
    */
   needsCommunityInsights(message) {
     const lowerMessage = message.toLowerCase();
     const triggers = [
-      // Explicit community requests
-      'how are women',
-      'how do women',
-      'what do women',
-      'women dealing',
-      'women managing',
-      'women coping',
+      'reddit',
       'community',
-      'others',
-      'real experiences',
-      'personal stories',
-      'success stories',
-      'tips from',
-      'advice from',
-      'hear from',
+      'other women',
       'anyone else',
-      'what are people',
-      'what are others',
-
-      // Diet/experience questions that benefit from community insights
-      'should i eat',
-      'should i try',
-      'does anyone',
       'has anyone',
-      'anyone tried',
-      'anyone experienced',
-      'what works',
-      'what helped',
-      'success with',
-      'experience with',
+      'do other',
+      'feel alone',
+      'just me',
+      'struggling',
+      'dealing with',
+      'experiences',
+      'stories',
     ];
-    return triggers.some((trigger) => lowerMessage.includes(trigger));
-  }
 
-  /**
-   * Check if message needs nutritional data
-   */
-  needsNutritionData(message) {
-    const lowerMessage = message.toLowerCase();
-    const triggers = [
-      'nutrition',
-      'nutritional',
-      'calories',
-      'protein',
-      'carbs',
-      'carbohydrate',
-      'fat',
-      'macro',
-      'macros',
-      'vitamin',
-      'mineral',
-      'nutrient',
-      'food',
-      'diet',
-      'breakdown',
-    ];
-    return triggers.some((trigger) => lowerMessage.includes(trigger));
-  }
-
-  /**
-   * ✅ FIXED: Fetch Reddit context using correct method names
-   */
-  async fetchRedditContext(message) {
-    try {
-      const keyword = this.extractKeyword(message);
-      if (!keyword) {
-        logger.warn('No keyword extracted for Reddit search');
+    for (const trigger of triggers) {
+      if (lowerMessage.includes(trigger)) {
+        const words = message.split(' ');
+        for (const word of words) {
+          if (
+            word.length > 4 &&
+            !['which', 'about', 'reddit', 'threads', 'women', 'dealing'].includes(
+              word.toLowerCase()
+            )
+          ) {
+            return word.toLowerCase();
+          }
+        }
         return null;
       }
+    }
 
-      logger.info('Searching Reddit with keyword', { keyword });
+    return null;
+  }
 
-      // ✅ FIX: Use searchPosts (correct method name)
-      const insights = await redditService.searchPosts(keyword, 5);
+  /**
+   * Fetch Reddit context
+   */
+  async fetchRedditContext(userMessage) {
+    try {
+      const keyword = this.needsCommunityInsights(userMessage);
+      if (!keyword) return null;
+
+      const insights = await redditService.searchPosts(keyword);
 
       if (!insights || insights.length === 0) {
         logger.info('No Reddit insights found');
         return null;
       }
 
-      logger.info(`Found ${insights.length} Reddit insights`);
-
-      // ✅ FIX: Use formatInsightsForChat (correct method name)
-      return redditService.formatInsightsForChat(insights, 5);
-    } catch (error) {
-      logger.error('Failed to fetch Reddit context', { error: error.message });
-      return null;
-    }
-  }
-
-  /**
-   * ✅ FIXED: Fetch nutrition context using correct method name
-   */
-  async fetchNutritionContext(message) {
-    try {
-      const foodItems = this.extractFoodItems(message);
-      if (foodItems.length === 0) {
-        return null;
-      }
-
-      logger.info('Fetching nutrition data for foods', { foodItems });
-
-      // ✅ FIX: Use searchNutrition (correct method name)
-      const nutritionPromises = foodItems
-        .slice(0, 3)
-        .map((item) => serpService.searchNutrition(item));
-
-      const nutritionData = await Promise.all(nutritionPromises);
-
-      // Format for context
-      let formatted = '🥗 NUTRITIONAL INFORMATION:\n\n';
-
-      nutritionData.forEach((data) => {
-        if (data.found) {
-          formatted += `**${data.foodItem}** (per ${data.servingSize}):\n`;
-          formatted += `  • Calories: ${data.calories || 'N/A'} kcal\n`;
-          formatted += `  • Protein: ${data.protein || 'N/A'}g\n`;
-          formatted += `  • Carbs: ${data.carbs || 'N/A'}g\n`;
-          formatted += `  • Fat: ${data.fat || 'N/A'}g\n`;
-          if (data.fiber) formatted += `  • Fiber: ${data.fiber}g\n`;
-          if (data.sugar) formatted += `  • Sugar: ${data.sugar}g\n`;
-          formatted += `  • Source: ${data.source}\n\n`;
-        }
+      let context = '🔥 REAL REDDIT COMMUNITY INSIGHTS:\n\n';
+      insights.slice(0, 5).forEach((post, index) => {
+        context += `**Post ${index + 1}** (r/${post.subreddit}, ${post.score} upvotes):\n`;
+        context += `Title: "${post.title}"\n`;
+        context += `Content: ${post.content.substring(0, 300)}...\n`;
+        context += `Link: ${post.url}\n\n`;
       });
 
-      return formatted.length > 50 ? formatted : null;
+      return context;
     } catch (error) {
-      logger.error('Failed to fetch nutrition context', { error: error.message });
+      logger.error('Reddit fetch failed', { error: error.message });
       return null;
     }
   }
 
   /**
-   * Extract food items from message
+   * Check if message needs nutrition data
    */
-  extractFoodItems(message) {
-    const lowerMessage = message.toLowerCase();
-
-    // Indian foods commonly asked about
-    const indianFoods = [
-      'dal makhani',
-      'dal',
-      'rice',
-      'chapati',
-      'roti',
-      'paratha',
-      'naan',
-      'paneer',
-      'chicken',
-      'fish',
-      'egg',
-      'oats',
-      'quinoa',
-      'spinach',
-      'broccoli',
-      'rajma',
-      'chole',
-      'biryani',
-      'idli',
-      'dosa',
-      'sambar',
-      'upma',
-      'poha',
-      'khichdi',
+  needsNutritionData(message) {
+    const nutritionKeywords = [
+      'calories',
+      'nutrition',
+      'protein',
+      'carbs',
+      'fat',
+      'macros',
+      'nutrients',
+      'vitamin',
+      'mineral',
     ];
 
-    const foundFoods = indianFoods.filter((food) => lowerMessage.includes(food));
-
-    // Return unique foods, prioritize longer matches first
-    return [...new Set(foundFoods)].sort((a, b) => b.length - a.length);
+    return nutritionKeywords.some((keyword) => message.toLowerCase().includes(keyword));
   }
 
   /**
-   * Extract keyword for Reddit search
+   * Fetch nutrition context
    */
-  extractKeyword(message) {
-    const lowerMessage = message.toLowerCase();
+  async fetchNutritionContext(userMessage) {
+    try {
+      const data = await serpService.getNutritionData(userMessage);
 
-    // Multi-word keywords first (more specific)
-    const multiWordKeywords = [
-      'weight loss',
-      'weight gain',
-      'irregular periods',
-      'trying to conceive',
-      'insulin resistance',
-      'birth control',
-      'hair loss',
-      'mood swings',
-      'stress management',
-    ];
+      if (!data) return null;
 
-    for (const keyword of multiWordKeywords) {
-      if (lowerMessage.includes(keyword)) {
-        return keyword;
-      }
+      return `🥗 NUTRITIONAL DATA:\n${JSON.stringify(data, null, 2)}\n`;
+    } catch (error) {
+      logger.error('Nutrition fetch failed', { error: error.message });
+      return null;
     }
-
-    // Single word keywords
-    const singleWordKeywords = [
-      'acne',
-      'hirsutism',
-      'fatigue',
-      'depression',
-      'anxiety',
-      'metformin',
-      'spironolactone',
-      'inositol',
-      'supplements',
-      'diet',
-      'exercise',
-      'workout',
-      'fasting',
-      'keto',
-      'yoga',
-      'fertility',
-      'pregnancy',
-      'ovulation',
-      'diagnosis',
-      'symptoms',
-    ];
-
-    for (const keyword of singleWordKeywords) {
-      if (lowerMessage.includes(keyword)) {
-        return keyword;
-      }
-    }
-
-    // Extract meaningful words if no keyword match
-    const words = message.split(' ');
-    for (const word of words) {
-      if (
-        word.length > 5 &&
-        !['which', 'about', 'reddit', 'threads', 'women', 'dealing'].includes(word.toLowerCase())
-      ) {
-        return word.toLowerCase();
-      }
-    }
-
-    return null;
   }
 
   /**
@@ -404,13 +594,19 @@ Remember: You're a companion, not a medical professional. Build trust through em
       'diagnosis',
       'treatment',
       'health',
+      'lab',
+      'value',
+      'insulin',
+      'glucose',
+      'testosterone',
+      'vitamin',
     ];
 
     return healthKeywords.some((keyword) => message.toLowerCase().includes(keyword));
   }
 
   /**
-   * ✅ FIXED: Safe extraction of content from documents
+   * Safe extraction of content from documents
    */
   safeExtractContent(doc, maxLength = 200) {
     const content = doc?.pageContent || doc?.content || '';
@@ -419,77 +615,109 @@ Remember: You're a companion, not a medical professional. Build trust through em
   }
 
   /**
-   * ✅ FIXED: Safe metadata extraction
+   * Safe metadata extraction
    */
   safeExtractMetadata(doc) {
     return doc?.metadata || {};
   }
 
   /**
-   * Process user message with enhanced RAG (Medical + Reddit + SERP)
-   * Note: Meal plan intent detection is handled by middleware before this is called
+   * Process user message with enhanced RAG + Lab Values
    */
   async processMessage(userMessage, userContext = {}) {
     try {
-      logger.info('Processing chat message with enhanced RAG', {
+      logger.info('Processing chat message with enhanced RAG + lab values', {
         messageLength: userMessage.length,
+        userId: userContext.userId,
       });
 
-      // Step 1: Retrieve from medical knowledge base
+      // Step 1: Fetch user's lab values from medical report
+      let medicalData = null;
+      let labContext = '';
+
+      if (userContext.userId) {
+        medicalData = await this.getUserLabValues(userContext.userId);
+
+        if (medicalData) {
+          labContext = this.buildLabContext(medicalData);
+          logger.info('Lab context built for personalized response', {
+            labCount: Object.keys(medicalData.labValues).length,
+          });
+        }
+      }
+
+      // Step 2: Retrieve from medical knowledge base
       const medicalDocs = await retriever.retrieve(userMessage);
       const medicalContext = retriever.formatContextFromResults(medicalDocs);
 
-      // Step 2: Fetch Reddit insights if needed
+      // Step 3: Retrieve lab-specific dietary guidance from RAG
+      let labGuidanceDocs = [];
+      let labGuidanceContext = '';
+
+      if (medicalData && medicalData.labValues) {
+        const labQuery = this.buildLabGuidanceQuery(medicalData.labValues, userMessage);
+
+        if (labQuery) {
+          logger.info('Retrieving lab-specific dietary guidance', { query: labQuery });
+
+          labGuidanceDocs = await retriever.retrieve(labQuery, { topK: 10 });
+          labGuidanceContext = retriever.formatContextFromResults(labGuidanceDocs);
+
+          logger.info('Lab-specific guidance retrieved', {
+            docsRetrieved: labGuidanceDocs.length,
+          });
+        }
+      }
+
+      // Step 4: Fetch Reddit insights if needed
       let redditContext = null;
       const needsReddit = this.needsCommunityInsights(userMessage);
-      logger.info('Reddit insights check', { needed: needsReddit });
 
       if (needsReddit) {
         logger.info('Fetching Reddit community insights');
         redditContext = await this.fetchRedditContext(userMessage);
-        logger.info('Reddit context fetched', {
-          hasContext: !!redditContext,
-          length: redditContext?.length || 0,
-        });
       }
 
-      // Step 3: Fetch nutritional data if needed
+      // Step 5: Fetch nutritional data if needed
       let nutritionContext = null;
       if (this.needsNutritionData(userMessage)) {
         logger.info('Fetching nutritional data');
         nutritionContext = await this.fetchNutritionContext(userMessage);
       }
 
-      // Step 4: Build comprehensive context
+      // Step 6: Build comprehensive context
       let enhancedContext = '';
 
-      if (medicalContext) {
-        enhancedContext += '📚 MEDICAL KNOWLEDGE BASE:\n' + medicalContext + '\n\n';
+      // Prioritize lab values at the top
+      if (labContext) {
+        enhancedContext += labContext;
       }
 
-      // ✅ CRITICAL: Only add Reddit section if we actually have data
-      if (redditContext && redditContext.length > 100) {
+      // Add lab-specific dietary guidance from RAG
+      if (labGuidanceContext) {
+        enhancedContext += '📚 LAB-SPECIFIC DIETARY GUIDANCE FROM KNOWLEDGE BASE:\n';
+        enhancedContext +=
+          "(Use these evidence-based recommendations for user's specific lab abnormalities)\n\n";
+        enhancedContext += labGuidanceContext + '\n\n';
+      }
+
+      // Add general medical context
+      if (medicalContext) {
+        enhancedContext += '📖 GENERAL PCOS KNOWLEDGE BASE:\n';
+        enhancedContext += medicalContext + '\n\n';
+      }
+
+      // Add Reddit insights
+      if (redditContext) {
         enhancedContext += '===== IMPORTANT: REAL REDDIT COMMUNITY INSIGHTS =====\n';
         enhancedContext += 'These are ACTUAL posts and discussions from Reddit communities.\n';
         enhancedContext += 'Your response MUST reference and summarize specific insights below.\n';
         enhancedContext += 'Do NOT give generic advice - use the actual content provided.\n\n';
         enhancedContext += redditContext + '\n\n';
         enhancedContext += '===== END REDDIT INSIGHTS =====\n\n';
-      } else {
-        // ⚠️ CRITICAL FIX: ALWAYS warn against Reddit fabrication when no data available
-        // This prevents hallucination even when needsCommunityInsights() returns false
-        enhancedContext += '\n🚫 CRITICAL INSTRUCTION - NO REDDIT DATA AVAILABLE:\n';
-        enhancedContext += '• You do NOT have any Reddit data for this query\n';
-        enhancedContext += '• Do NOT mention "Reddit", "r/PCOS", "r/PCOSIndia", or any subreddit\n';
-        enhancedContext +=
-          '• Do NOT say "From r/PCOS" or "community members said" or similar phrases\n';
-        enhancedContext += '• Do NOT create fake post titles, fake discussions, or fake links\n';
-        enhancedContext += '• Answer ONLY using the medical knowledge base provided above\n';
-        enhancedContext += "• If you don't have enough information, say so honestly\n\n";
-        logger.info('No Reddit data available - added explicit anti-fabrication warning');
-        redditContext = null; // Clear it so we don't add disclaimer
       }
 
+      // Add nutrition data
       if (nutritionContext) {
         enhancedContext += nutritionContext + '\n\n';
       }
@@ -498,7 +726,7 @@ Remember: You're a companion, not a medical professional. Build trust through em
         enhancedContext = 'No specific context found. Rely on general PCOS knowledge.';
       }
 
-      // Step 5: Build prompt with all context
+      // Step 7: Build prompt with all context
       const promptTemplate = PromptTemplate.fromTemplate(`
 ${this.systemPrompt}
 
@@ -517,31 +745,75 @@ Current Conversation:
 User: {input}
 Assistant:`);
 
-      // Step 6: Create conversation chain
+      // Step 8: Create conversation chain
       const chain = new ConversationChain({
         llm: llmClient.getModel(),
         memory: this.memory,
         prompt: promptTemplate,
       });
 
-      // Step 7: Invoke chain
+      // Step 9: Invoke chain
       const response = await chain.invoke({ input: userMessage });
 
-      // Step 8: Add appropriate disclaimers
-      let finalResponse = response.response;
+      // Step 10: Add appropriate disclaimers (only if not already present)
+      let finalResponse = response.response || '';
 
-      if (this.isHealthRelated(userMessage)) {
-        finalResponse +=
-          '\n\n⚠️ *This is educational guidance only. Please consult a healthcare professional for personalized medical advice.*';
+      // Helper to safely check for an existing substring (case-insensitive)
+      const contains = (needle) => {
+        try {
+          return finalResponse.toLowerCase().includes(needle.toLowerCase());
+        } catch (e) {
+          return false;
+        }
+      };
+
+      const generalDisclaimer =
+        '⚠️ *This is educational guidance based on your lab values. Please consult your healthcare provider for personalized medical advice and treatment decisions.*';
+      const labDisclaimer =
+        '📊 *Lab value interpretation is educational. Always discuss results with your doctor.*';
+      const redditDisclaimer =
+        '💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
+
+      if (this.isHealthRelated(userMessage) || medicalData) {
+        // Only append if similar guidance isn't already present in the model output
+        if (!contains('this is educational guidance based on your lab values')) {
+          finalResponse += '\n\n' + generalDisclaimer;
+        }
+      }
+
+      if (medicalData) {
+        if (!contains('lab value interpretation is educational')) {
+          finalResponse += '\n\n' + labDisclaimer;
+        }
       }
 
       if (redditContext) {
-        finalResponse +=
-          '\n\n💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
+        if (!contains('community insights are personal experiences')) {
+          finalResponse += '\n\n' + redditDisclaimer;
+        }
       }
 
-      // ✅ FIXED Step 9: Compile sources with defensive programming
+      // Step 11: Compile sources
       const sources = [];
+
+      if (medicalData) {
+        sources.push({
+          type: 'medical_report',
+          labCount: Object.keys(medicalData.labValues).length,
+          uploadedAt: medicalData.uploadedAt,
+        });
+      }
+
+      if (labGuidanceDocs && labGuidanceDocs.length > 0) {
+        sources.push({
+          type: 'lab_guidance',
+          count: labGuidanceDocs.length,
+          documents: labGuidanceDocs.slice(0, 3).map((doc) => ({
+            content: this.safeExtractContent(doc, 200),
+            metadata: this.safeExtractMetadata(doc),
+          })),
+        });
+      }
 
       if (medicalDocs && Array.isArray(medicalDocs) && medicalDocs.length > 0) {
         sources.push({
@@ -572,6 +844,8 @@ Assistant:`);
         message: { response: finalResponse },
         sources,
         contextUsed: {
+          labValues: !!medicalData,
+          labGuidance: labGuidanceDocs.length > 0,
           medical: !!medicalContext,
           reddit: !!redditContext,
           nutrition: !!nutritionContext,

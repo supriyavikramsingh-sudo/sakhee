@@ -1143,3 +1143,38 @@ Small but important UX, frontend plumbing, and styling fixes focused on ensuring
 If you'd like, I can also add a short troubleshooting snippet to the README showing how to verify the medical report document in Firestore and an example curl command to call the meal generation endpoint including `healthContext.medicalData`.
 
 
+### New in v1.7.0
+
+Major improvements to the chat experience, especially around integrating users' medical reports (lab values) into conversational responses, safer output disclaimers, and route plumbing to ensure the chat pipeline can fetch and use lab data.
+
+- Lab-aware Chat (server-side)
+  - `server/src/langchain/chains/chatChain.js` was expanded into a full lab-aware chat pipeline:
+    - `buildEnhancedSystemPrompt()` — stronger system-level instructions to prioritize lab data, RAG context, safety rules, and response structure for three common scenarios (symptom query, lab interpretation, community insights).
+    - `getUserLabValues(userId)` — server helper that fetches the user's medical report and extracts lab values, uploadedAt and analysis for use in chat.
+    - `buildLabContext(medicalData)` / `categorizeLabs()` — create prioritized, human-readable lab context that is injected into prompts so the LLM references exact lab values when answering.
+    - `buildLabGuidanceQuery()` — generates targeted RAG queries (dietary guidance) based on abnormal labs and the user's message to retrieve lab-specific recommendations from the vector store.
+    - `processMessage()` — orchestrates retrievals (medical knowledge, lab-guidance, Reddit community insights, SERP nutrition data), builds the final prompt, invokes the conversation chain, and returns structured sources and a `contextUsed` summary.
+
+- Safer disclaimers (no duplication)
+  - The chat chain previously appended static disclaimers unconditionally which sometimes resulted in duplicate disclaimers when the LLM already included one. The chain now checks the model output (case-insensitive substring matching) and only appends the general, lab-specific, or community disclaimers if they are not already present. This reduces noisy/duplicated safety text while ensuring required statements are present.
+
+- Chat route plumbing & middleware
+  - `server/src/routes/chat.js` updated to always pass `userId` (via `userContext`) into `chatChain.processMessage()` so the chain can fetch lab values server-side.
+  - `mealPlanIntentDetector` middleware remains integrated to redirect meal-plan requests safely and consistently.
+
+- Client-side: lab context UI
+  - `client/src/components/chat/LabContextBadge.jsx` (new) — small UI component (badge/display) to show whether lab context was used for a chat response and quick stats (lab count, last uploaded date). This helps users see when their medical data influenced the reply.
+
+- Developer & debugging notes
+  - The chat pipeline returns `contextUsed` and `sources` with each response. `contextUsed.labValues` and `contextUsed.labGuidance` are useful indicators when testing whether lab-based personalization worked.
+  - If you run integration tests and `labValues` are not detected, confirm the medical report exists at `users/{userId}/medicalReport/current` and the server can read it (authentication/permissions).
+  - There is a local test harness for lab-chat integration (dev-only). If it fails, check `server` logs for Retriever and Reddit/SERP fetch failures.
+
+- Files/areas touched (v1.7.0)
+  - Server: `server/src/langchain/chains/chatChain.js`, `server/src/routes/chat.js`, (uses `medicalReportService` + retriever + redditService + serpService)
+  - Client: `client/src/components/chat/LabContextBadge.jsx`
+  - Middleware: `server/src/middleware/mealPlanIntentDetector.js` (usage continued)
+
+If you'd like, I can add an example cURL payload that demonstrates how `userId` and `userContext` are passed to `/api/chat/message` and what the server returns (including `contextUsed`).
+
+

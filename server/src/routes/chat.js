@@ -1,3 +1,6 @@
+// server/src/routes/chat.js
+// ✅ UPDATED - Passes userId to chatChain for lab value retrieval
+
 import express from 'express';
 import { chatChain } from '../langchain/chains/chatChain.js';
 import { Logger } from '../utils/logger.js';
@@ -11,7 +14,7 @@ const chatHistories = new Map();
 
 /**
  * POST /api/chat/message
- * Send a message and get AI response
+ * Send a message and get AI response with lab value integration
  */
 router.post('/message', mealPlanIntentDetector, async (req, res) => {
   try {
@@ -24,15 +27,32 @@ router.post('/message', mealPlanIntentDetector, async (req, res) => {
       });
     }
 
-    logger.info('Processing chat message', { userId, messageLength: message.length });
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'User ID is required' },
+      });
+    }
+
+    logger.info('Processing chat message with lab value integration', {
+      userId,
+      messageLength: message.length,
+      hasUserContext: !!userContext,
+    });
 
     // Get or create chat history
     if (!chatHistories.has(userId)) {
       chatHistories.set(userId, []);
     }
 
-    // Process message with RAG
-    const response = await chatChain.processMessage(message, userContext);
+    // CRITICAL: Pass userId in userContext for lab value retrieval
+    const enrichedContext = {
+      ...userContext,
+      userId, // Ensure userId is always available
+    };
+
+    // Process message with RAG + Lab Values + Reddit + SERP
+    const response = await chatChain.processMessage(message, enrichedContext);
 
     // Add to history
     const history = chatHistories.get(userId);
@@ -45,6 +65,7 @@ router.post('/message', mealPlanIntentDetector, async (req, res) => {
       type: 'assistant',
       message: response.message,
       sources: response.sources,
+      contextUsed: response.contextUsed,
       timestamp: new Date(),
     });
 
@@ -62,16 +83,17 @@ router.post('/message', mealPlanIntentDetector, async (req, res) => {
       data: {
         message: response.message,
         sources: response.sources,
+        contextUsed: response.contextUsed,
         requiresDoctor,
         severity,
         timestamp: new Date(),
       },
     });
   } catch (error) {
-    logger.error('Chat message processing failed', { error: error.message });
+    logger.error('Chat message processing failed', { error: error.message, stack: error.stack });
     res.status(500).json({
       success: false,
-      error: { message: 'Failed to process message' },
+      error: { message: 'Failed to process message', details: error.message },
     });
   }
 });
@@ -96,14 +118,14 @@ router.get('/history/:userId', (req, res) => {
     logger.error('Get chat history failed', { error: error.message });
     res.status(500).json({
       success: false,
-      error: { message: 'Failed to retrieve history' },
+      error: { message: 'Failed to retrieve chat history' },
     });
   }
 });
 
 /**
  * DELETE /api/chat/history/:userId
- * Clear chat history
+ * Clear chat history for a user
  */
 router.delete('/history/:userId', (req, res) => {
   try {
@@ -114,36 +136,13 @@ router.delete('/history/:userId', (req, res) => {
 
     res.json({
       success: true,
-      message: 'Chat history cleared',
+      data: { message: 'Chat history cleared successfully' },
     });
   } catch (error) {
-    logger.error('Clear history failed', { error: error.message });
+    logger.error('Clear chat history failed', { error: error.message });
     res.status(500).json({
       success: false,
-      error: { message: 'Failed to clear history' },
-    });
-  }
-});
-
-/**
- * POST /api/chat/disclaimer-acknowledged
- * Track disclaimer acknowledgment
- */
-router.post('/disclaimer-acknowledged', (req, res) => {
-  try {
-    const { userId } = req.body;
-
-    logger.info('Disclaimer acknowledged', { userId });
-
-    res.json({
-      success: true,
-      message: 'Disclaimer acknowledged',
-    });
-  } catch (error) {
-    logger.error('Disclaimer acknowledgment failed', { error: error.message });
-    res.status(500).json({
-      success: false,
-      error: { message: 'Failed to acknowledge disclaimer' },
+      error: { message: 'Failed to clear chat history' },
     });
   }
 });
