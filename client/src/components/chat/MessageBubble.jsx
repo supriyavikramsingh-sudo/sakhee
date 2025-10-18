@@ -1,4 +1,8 @@
 import { boldify } from '../../utils/helper';
+import { useAuthStore } from '../../store/authStore';
+import SakheeAvatar from '../../../public/icons/sakheeai.svg';
+import Typewriter from './Typewriter';
+import { useState } from 'react';
 
 const formatTimestamp = (timestamp) => {
   if (!timestamp) return '';
@@ -27,12 +31,17 @@ const formatTimestamp = (timestamp) => {
   }
 };
 
-const MessageBubble = ({ message }) => {
+const MessageBubble = ({ message, isLatestMessageFromLLM, setIsLatestMessageFromLLM }) => {
   const isUser = message.type === 'user';
   const isError = message.type === 'error';
+  const { user } = useAuthStore();
+  const [isGeneratedCompletly, setIsGeneratedCompletly] = useState(
+    !isLatestMessageFromLLM || isUser ? true : false
+  );
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex gap-1 ${isUser ? 'justify-end' : 'justify-start'}`}>
+      {!isUser && <img src={SakheeAvatar} className="w-8 h-8 rounded-full self-end -mb-4" />}
       <div
         className={`px-4 py-3 rounded-lg ${
           isError
@@ -42,13 +51,16 @@ const MessageBubble = ({ message }) => {
             : 'bg-surface text-gray-900 rounded-bl-none'
         }`}
       >
-        <p
-          className="text-sm leading-relaxed whitespace-pre-wrap"
-          dangerouslySetInnerHTML={{
-            __html: boldify(message.content),
-          }}
-        />
-
+        {!isGeneratedCompletly ? (
+          <Typewriter text={message.content} setIsGeneratedCompletly={setIsGeneratedCompletly} />
+        ) : (
+          <p
+            className="text-sm leading-relaxed whitespace-pre-wrap"
+            dangerouslySetInnerHTML={{
+              __html: boldify(message.content),
+            }}
+          />
+        )}
         {message.requiresDoctor && (
           <div className="mt-2 pt-2 border-t border-opacity-30 border-current text-xs">
             🚨{' '}
@@ -60,6 +72,13 @@ const MessageBubble = ({ message }) => {
 
         <span className="text-xs opacity-70 mt-1 block">{formatTimestamp(message.timestamp)}</span>
       </div>
+      {isUser && (
+        <img
+          src={user.photoURL}
+          alt={user.displayName}
+          className="w-8 h-8 rounded-full self-end -mb-4"
+        />
+      )}
     </div>
   );
 };

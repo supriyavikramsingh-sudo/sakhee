@@ -26,8 +26,7 @@ const ChatInterface = ({ userProfile, userId }) => {
   const { user } = useAuthStore();
   const hasLoadedHistory = useRef(false);
   const isLoadingOlderMessages = useRef(false);
-
-  console.log('ChatInterface rendered with messages:', messages);
+  const [isLatestMessageFromLLM, setIsLatestMessageFromLLM] = useState(false);
 
   useEffect(() => {
     const loadChatHistory = async () => {
@@ -88,8 +87,6 @@ const ChatInterface = ({ userProfile, userId }) => {
     setLoading(true);
 
     try {
-      // Send to backend
-      console.log('Sending message to backend...', { userId, userProfile });
       const response = await apiClient.chat(input, {
         userId,
         age: userProfile?.age,
@@ -98,14 +95,8 @@ const ChatInterface = ({ userProfile, userId }) => {
         goals: userProfile?.goals,
       });
 
-      console.log('Backend response structure:', response);
-      console.log('Response data:', response.data);
-
-      // Check if this is a meal plan redirect response
       if (response.data?.type === 'MEAL_PLAN_REDIRECT') {
-        console.log('Meal plan redirect detected');
         const redirectTimestamp = Date.now();
-        // Add a special message for meal plan redirect
         addMessage({
           id: redirectTimestamp,
           type: 'meal_plan_redirect',
@@ -148,6 +139,7 @@ const ChatInterface = ({ userProfile, userId }) => {
         severity: response.data?.severity,
         timestamp: assistantTimestamp,
       });
+      setIsLatestMessageFromLLM(true);
     } catch (error) {
       console.error('Failed to send message:', error);
       console.error('Error details:', error.message, error.stack);
@@ -192,7 +184,7 @@ const ChatInterface = ({ userProfile, userId }) => {
   return (
     <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4 py-8">
       {/* Messages Container */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-6 mb-8 min-h-96">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-8 mb-8 min-h-96">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
@@ -230,7 +222,11 @@ const ChatInterface = ({ userProfile, userId }) => {
                     <MealPlanRedirectCard data={msg.redirectData} />
                   ) : (
                     <>
-                      <MessageBubble message={msg} />
+                      <MessageBubble
+                        message={msg}
+                        isLatestMessageFromLLM={isLatestMessageFromLLM}
+                        setIsLatestMessageFromLLM={setIsLatestMessageFromLLM}
+                      />
                       {msg.sources && msg.sources.length > 0 && (
                         <SourceCitations sources={msg.sources} />
                       )}

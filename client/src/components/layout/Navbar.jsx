@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Menu, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
+import Logo from '../../../public/icons/logo.svg';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -21,8 +22,7 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🌸</span>
-            <span className="font-bold text-primary text-lg">Sakhee</span>
+            <img className="h-12" src={Logo} />
           </Link>
 
           {/* Desktop Menu */}
