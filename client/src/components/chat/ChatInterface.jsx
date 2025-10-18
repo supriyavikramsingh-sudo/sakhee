@@ -100,6 +100,8 @@ const ChatInterface = ({ userProfile, userId }) => {
 
       console.log('Backend response structure:', response);
       console.log('Response data:', response.data);
+      console.log('Sources in response:', response.data?.sources);
+      console.log('Context used:', response.data?.contextUsed);
 
       // Check if this is a meal plan redirect response
       if (response.data?.type === 'MEAL_PLAN_REDIRECT') {
@@ -132,21 +134,23 @@ const ChatInterface = ({ userProfile, userId }) => {
 
       const assistantTimestamp = Date.now();
 
-      await firestoreService.saveChatMessage(user.uid, {
+      // Prepare full message data with sources
+      const assistantMessageData = {
         type: 'assistant',
         content: response.data.message.response,
-        timestamp: assistantTimestamp,
-      });
-
-      // Add assistant message
-      addMessage({
-        id: assistantTimestamp,
-        type: 'assistant',
-        content: response.data.message.response,
-        sources: response.data?.sources,
+        sources: response.data?.sources || [],
         requiresDoctor: response.data?.requiresDoctor,
         severity: response.data?.severity,
         timestamp: assistantTimestamp,
+      };
+
+      // Save to Firestore with sources
+      await firestoreService.saveChatMessage(user.uid, assistantMessageData);
+
+      // Add assistant message to UI
+      addMessage({
+        id: assistantTimestamp,
+        ...assistantMessageData,
       });
     } catch (error) {
       console.error('Failed to send message:', error);
