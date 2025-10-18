@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
@@ -18,14 +17,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { user, userProfile } = useAuthStore();
   const { t } = useTranslation();
-
-  // This check is now redundant because ProtectedRoute handles it,
-  // but keeping for safety
-  useEffect(() => {
-    if (user && userProfile?.onboarded === false) {
-      navigate('/onboarding');
-    }
-  }, [user, userProfile, navigate]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,7 +103,7 @@ const HomePage = () => {
           type="warning"
           showIcon
           closable
-          className="mt-4"
+          className="mt-12"
         />
       </div>
     </div>

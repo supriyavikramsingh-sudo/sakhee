@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import MealPlanGenerator from '../components/meal/MealPlanGenerator';
 import MealPlanDisplay from '../components/meal/MealPlanDisplay';
+import { Alert } from 'antd';
 
 const MealPlanPage = () => {
   const { t } = useTranslation();
@@ -42,13 +43,14 @@ const MealPlanPage = () => {
           </div>
         )}
 
-        {/* Medical Note */}
-        <div className="mt-12 p-6 bg-info bg-opacity-10 rounded-lg border-l-4 border-info">
-          <p className="text-sm text-gray-700">
-            💡 These meal plans are personalized suggestions based on PCOS management guidelines.
-            Always consult a nutritionist for medical conditions or allergies.
-          </p>
-        </div>
+        <Alert
+          message="These meal plans are personalized suggestions based on PCOS management guidelines.
+            Always consult a nutritionist for medical conditions or allergies."
+          type="warning"
+          showIcon
+          closable
+          className="mt-12"
+        />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { useAuthStore } from '../../store/authStore';
 
 export const Navbar = () => {
   const { t } = useTranslation();
+  const pathName = window.location.pathname;
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signOut } = useAuthStore();
 
@@ -28,16 +29,36 @@ export const Navbar = () => {
           <div className="hidden md:flex space-x-6">
             {user && (
               <>
-                <Link to="/chat" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/chat"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/chat' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.chat')}
                 </Link>
-                <Link to="/meals" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/meals"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/meals' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.meals')}
                 </Link>
-                <Link to="/progress" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/progress"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/progress' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.progress')}
                 </Link>
-                <Link to="/reports" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/reports"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/reports' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.reports')}
                 </Link>
               </>
