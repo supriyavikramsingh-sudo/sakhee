@@ -85,7 +85,7 @@ const ReportsPage = () => {
   // Show loading only while auth is loading (not while fetching report)
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen main-bg">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-8 flex items-center justify-center">
           <div className="text-center">
@@ -100,7 +100,7 @@ const ReportsPage = () => {
   // If not authenticated after auth is loaded
   if (!authLoading && !user) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen main-bg">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-8 text-center">
           <FileText className="mx-auto mb-4 text-muted" size={64} />
@@ -114,7 +114,7 @@ const ReportsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen main-bg">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-8">

@@ -12,7 +12,8 @@ export default {
         // background: '#f5f1f9', // Light Lavender
         background: '#FFFDEC', // Light Cream
         // surface: '#ede7f6', // Softer Lavender
-        surface: '#fff0f0', // Very Light Pink
+        // surface: '#fff0f0', // Very Light Pink
+        surface: '#fff', // White
         success: '#06d6a0', // Teal
         warning: '#ff8b2e', // Orange
         danger: '#ff006e', // Red

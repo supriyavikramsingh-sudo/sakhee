@@ -32,7 +32,7 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen main-bg flex flex-col">
       <Navbar />
 
       {!disclaimerAcknowledged ? (

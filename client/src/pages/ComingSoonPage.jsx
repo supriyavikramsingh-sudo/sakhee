@@ -4,7 +4,7 @@ import Navbar from '../components/layout/Navbar';
 
 const ComingSoonPage = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen main-bgd">
       <Navbar />
 
       <div className="max-w-4xl mx-auto px-4 py-16">
