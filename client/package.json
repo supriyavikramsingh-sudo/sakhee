@@ -11,32 +11,29 @@
     "lint": "eslint src/**/*.{jsx,js}",
     "lint:fix": "eslint --fix src/**/*.{jsx,js}",
     "format": "prettier --write \"src/**/*.{js,jsx,css,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,css,json,md}\"",
-    "ingest:meals": "node server/src/scripts/ingestMealTemplates.js",
-    "ingest:meals:watch": "node --watch server/src/scripts/ingestMealTemplates.js",
-    "ingest:medical": "node server/src/scripts/ingestMedicalKnowledge.js",
-    "ingest:nutritional": "node server/src/scripts/ingestNutritionalData.js",
-    "ingest:all": "node server/src/scripts/ingestAll.js"
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css,json,md}\""
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "antd": "^5.27.5",
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
     "firebase": "^12.4.0",
     "i18next": "^23.7.6",
+    "jspdf": "^2.5.1",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.5.0",
     "react-router-dom": "^6.20.0",
     "recharts": "^2.10.3",
-    "zustand": "^4.4.1",
-    "jspdf": "^2.5.1"
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
     "@testing-library/react": "^14.1.2",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -44,7 +41,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.32",
     "prettier": "^2.8.8",
-    "tailwindcss": "^3.3.6",
+    "tailwindcss": "^3.4.18",
     "vite": "^5.0.8",
     "vitest": "^0.34.6"
   }

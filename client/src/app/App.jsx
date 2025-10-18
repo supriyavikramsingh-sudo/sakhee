@@ -26,7 +26,7 @@ function App() {
   }, [initAuth]);
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading..." />;
+    return <LoadingSpinner />;
   }
 
   return (

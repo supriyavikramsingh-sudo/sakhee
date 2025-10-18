@@ -1,25 +1,25 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import Navbar from '../components/layout/Navbar';
 import { Heart, Brain, Leaf, Zap } from 'lucide-react';
+import { Alert } from 'antd';
+
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="card-hover">
+    <div className="text-primary mb-3">{icon}</div>
+    <h3 className="font-bold text-lg mb-2">{title}</h3>
+    <p className="text-sm text-muted">{description}</p>
+  </div>
+);
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { user, userProfile } = useAuthStore();
   const { t } = useTranslation();
 
-  // This check is now redundant because ProtectedRoute handles it,
-  // but keeping for safety
-  useEffect(() => {
-    if (user && userProfile?.onboarded === false) {
-      navigate('/onboarding');
-    }
-  }, [user, userProfile, navigate]);
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen main-bg">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -97,22 +97,17 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Medical Disclaimer */}
-        <div className="mt-8 bg-warning bg-opacity-10 border-l-4 border-warning p-6 rounded">
-          <h3 className="font-bold text-warning mb-2">⚠️ {t('common.disclaimer')}</h3>
-          <p className="text-sm text-gray-700">{t('common.disclaimerText')}</p>
-        </div>
+        <Alert
+          message={t('common.disclaimer')}
+          description={t('common.disclaimerText')}
+          type="warning"
+          showIcon
+          closable
+          className="mt-12"
+        />
       </div>
     </div>
   );
 };
-
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="card-hover">
-    <div className="text-primary mb-3">{icon}</div>
-    <h3 className="font-bold text-lg mb-2">{title}</h3>
-    <p className="text-sm text-muted">{description}</p>
-  </div>
-);
 
 export default HomePage;

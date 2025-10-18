@@ -5,6 +5,7 @@
 ### 1. Backend Implementation
 
 #### New Service Layer
+
 - **Created**: `server/src/services/medicalReportService.js`
   - Handles single-report-per-user policy
   - CRUD operations for medical reports
@@ -12,6 +13,7 @@
   - File management integration
 
 #### Updated Routes
+
 - **Modified**: `server/src/routes/upload.js`
   - `POST /api/upload/report` - Upload new report (replaces existing)
   - `GET /api/upload/user/:userId/report` - Get current report
@@ -19,11 +21,13 @@
   - `DELETE /api/upload/user/:userId/report` - Delete current report
 
 #### Firebase Configuration
+
 - **Created**: `server/src/config/firebase.js`
   - Server-side Firebase initialization
   - Firestore connection for backend operations
 
 #### Environment Configuration
+
 - **Updated**: `server/.env`
   - Added Firebase configuration variables
   - All credentials configured and ready
@@ -31,6 +35,7 @@
 ### 2. Frontend Implementation
 
 #### Updated Pages
+
 - **Modified**: `client/src/pages/ReportsPage.jsx`
   - Loads existing report on mount
   - Shows current report information
@@ -39,6 +44,7 @@
   - Empty state for no report
 
 #### Updated Components
+
 - **Modified**: `client/src/components/files/FileUpload.jsx`
   - Simplified upload flow
   - Progress tracking
@@ -46,6 +52,7 @@
   - Success notifications
 
 #### API Client Updates
+
 - **Modified**: `client/src/services/apiClient.js`
   - New methods for single-report system:
     - `uploadFile()` - Upload/replace report
@@ -54,6 +61,7 @@
     - `deleteUserReport()` - Delete report
 
 #### Firestore Service Updates
+
 - **Modified**: `client/src/services/firestoreService.js`
   - New methods for single-report operations
   - Legacy multi-report methods preserved
@@ -92,20 +100,22 @@ Firestore Collection: users/{userId}/medicalReport/current
 ### Upload Flow
 
 1. **User Uploads File**
+
    ```
    User selects file → FileUpload component → API call
    ```
 
 2. **Backend Processing**
+
    ```
-   Receive file → Extract text (PDF/OCR) → Parse lab values → 
-   AI analysis → Save to Firestore → Delete old report → 
+   Receive file → Extract text (PDF/OCR) → Parse lab values →
+   AI analysis → Save to Firestore → Delete old report →
    Clean up temp files → Return results
    ```
 
 3. **Frontend Display**
    ```
-   Receive data → Update UI → Show analysis → 
+   Receive data → Update UI → Show analysis →
    Enable replace/delete options
    ```
 
@@ -134,27 +144,32 @@ Firestore Collection: users/{userId}/medicalReport/current
 ## 🎯 Key Features
 
 ### ✅ Single File Policy
+
 - Only one report per user at any time
 - Automatic replacement on new upload
 - No data clutter
 
 ### ✅ Data Persistence
+
 - All data stored in Firestore
 - Survives page refreshes
 - Cross-device access ready
 
 ### ✅ AI Analysis
+
 - Automatic text extraction
 - Lab value parsing
 - Health insights generation
 - PCOS-specific recommendations
 
 ### ✅ File Management
+
 - Temporary file storage
 - Automatic cleanup
 - Multiple format support (PDF, DOCX, images)
 
 ### ✅ User Experience
+
 - Loading states
 - Progress indicators
 - Error handling
@@ -165,17 +180,19 @@ Firestore Collection: users/{userId}/medicalReport/current
 ### Manual Testing Steps
 
 1. **Start Services**
+
    ```bash
    # Terminal 1 - Server
    cd server
    npm run dev
-   
+
    # Terminal 2 - Client
    cd client
    npm run dev
    ```
 
 2. **Test Upload**
+
    - Navigate to `/reports`
    - Click "Upload New"
    - Select a medical report file
@@ -185,6 +202,7 @@ Firestore Collection: users/{userId}/medicalReport/current
      - Data persists on refresh
 
 3. **Test Replacement**
+
    - Click "Replace Report"
    - Upload different file
    - Verify:
@@ -203,6 +221,7 @@ Firestore Collection: users/{userId}/medicalReport/current
 ### Automated Testing
 
 Run the test script:
+
 ```bash
 cd server
 node src/scripts/testMedicalReportService.js
@@ -213,6 +232,7 @@ This tests all service layer methods.
 ## 📊 Database Verification
 
 Check Firestore Console:
+
 1. Go to Firebase Console
 2. Navigate to Firestore Database
 3. Check: `users/{userId}/medicalReport/current`
@@ -224,12 +244,14 @@ Check Firestore Console:
 ## 🔐 Security Notes
 
 ### Implemented
+
 - File type validation
 - File size limits (10MB)
 - User-specific data isolation
 - MIME type verification
 
 ### Ready for Enhancement
+
 - Authentication middleware integration
 - Role-based access control
 - Data encryption at rest
@@ -252,22 +274,24 @@ Before deploying to production:
 
 ## 📝 API Endpoints Summary
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/upload/report` | Upload/replace medical report |
-| GET | `/api/upload/user/:userId/report` | Get current report |
-| GET | `/api/upload/user/:userId/has-report` | Check if report exists |
-| DELETE | `/api/upload/user/:userId/report` | Delete current report |
+| Method | Endpoint                              | Description                   |
+| ------ | ------------------------------------- | ----------------------------- |
+| POST   | `/api/upload/report`                  | Upload/replace medical report |
+| GET    | `/api/upload/user/:userId/report`     | Get current report            |
+| GET    | `/api/upload/user/:userId/has-report` | Check if report exists        |
+| DELETE | `/api/upload/user/:userId/report`     | Delete current report         |
 
 ## 🐛 Known Issues & Limitations
 
 ### Current Limitations
+
 1. File storage is temporary (not persisted)
 2. No file download feature yet
 3. Single report only (by design)
 4. No report comparison feature
 
 ### Planned Enhancements
+
 1. Move to Firebase Storage
 2. Add download original file
 3. Optional report history
@@ -276,18 +300,21 @@ Before deploying to production:
 ## 💡 Usage Examples
 
 ### Upload Report
+
 ```javascript
 const response = await apiClient.uploadFile(file, userId);
 // Returns: { success: true, data: { reportId, filename, labValues, analysis } }
 ```
 
 ### Get Current Report
+
 ```javascript
 const report = await apiClient.getUserReport(userId);
 // Returns: { success: true, data: { id, filename, labValues, analysis, ... } }
 ```
 
 ### Delete Report
+
 ```javascript
 await apiClient.deleteUserReport(userId);
 // Returns: { success: true, message: 'Report deleted successfully' }

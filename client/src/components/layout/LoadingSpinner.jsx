@@ -1,18 +1,30 @@
-export const LoadingSpinner = ({ size = 'md', message = 'Loading...' }) => {
-  const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12'
-  }
+import './loading.css';
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div
-        className={`${sizeClasses[size]} border-4 border-surface border-t-primary rounded-full animate-spin`}
-      />
-      <p className="mt-4 text-muted">{message}</p>
+export const LoadingSpinner = () => (
+  <div className="flex justify-center items-center h-screen main-bg">
+    <div
+      aria-label="Orange and tan hamster running in a metal wheel"
+      role="img"
+      class="wheel-and-hamster"
+    >
+      <div class="wheel" />
+      <div class="hamster">
+        <div class="hamster__body">
+          <div class="hamster__head">
+            <div class="hamster__ear" />
+            <div class="hamster__eye" />
+            <div class="hamster__nose" />
+          </div>
+          <div class="hamster__limb hamster__limb--fr" />
+          <div class="hamster__limb hamster__limb--fl" />
+          <div class="hamster__limb hamster__limb--br" />
+          <div class="hamster__limb hamster__limb--bl" />
+          <div class="hamster__tail" />
+        </div>
+      </div>
+      <div class="spoke" />
     </div>
-  )
-}
+  </div>
+);
 
-export default LoadingSpinner
+export default LoadingSpinner;

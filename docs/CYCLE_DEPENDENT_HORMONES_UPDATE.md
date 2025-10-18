@@ -1,6 +1,7 @@
 # Cycle-Dependent Hormones Update
 
 ## Summary
+
 Updated the system to properly handle **Estradiol** and **Progesterone** as cycle-dependent hormones. These hormones vary significantly based on the menstrual cycle phase, so severity warnings (normal/abnormal) have been removed. Instead, reference ranges for each cycle phase are displayed for the user to interpret.
 
 ---
@@ -8,6 +9,7 @@ Updated the system to properly handle **Estradiol** and **Progesterone** as cycl
 ## Changes Made
 
 ### 1. **Backend - parserService.js**
+
 **File**: `server/src/services/parserService.js`
 
 - **Estradiol extraction**: Changed severity from calculated value to `'cycle-dependent'`
@@ -15,6 +17,7 @@ Updated the system to properly handle **Estradiol** and **Progesterone** as cycl
 - **getSeverity() method**: Added check for `ranges.skipSeverity` flag to return `'cycle-dependent'` instead of calculating severity
 
 **Example**:
+
 ```javascript
 // Before
 const severity = this.getSeverity('estradiol', value);
@@ -27,6 +30,7 @@ labValues.estradiol = { value, unit: 'pg/mL', severity: 'cycle-dependent' };
 ---
 
 ### 2. **Backend - labRanges.js**
+
 **File**: `server/src/utils/labRanges.js`
 
 - **Added `skipSeverity: true`** flag for estradiol and progesterone
@@ -34,6 +38,7 @@ labValues.estradiol = { value, unit: 'pg/mL', severity: 'cycle-dependent' };
 - **Updated `getLabSeverity()` function** to check for `skipSeverity` flag and return `'cycle-dependent'`
 
 **Example**:
+
 ```javascript
 estradiol: {
   follicular: { min: 19.5, max: 144.2 },
@@ -50,6 +55,7 @@ estradiol: {
 ---
 
 ### 3. **Frontend - ReportAnalysis.jsx**
+
 **File**: `client/src/components/files/ReportAnalysis.jsx`
 
 - **Added `'cycle-dependent'` case** to `getSeverityIcon()` - shows info icon
@@ -59,6 +65,7 @@ estradiol: {
 - **Updated lab value display** - shows reference ranges below cycle-dependent hormones
 
 **UI Changes**:
+
 ```jsx
 // Cycle-dependent hormones now display:
 // 1. Info icon (instead of checkmark/warning)
@@ -73,6 +80,7 @@ estradiol: {
 ## Visual Result
 
 ### Before:
+
 ```
 Estradiol
 147.78 pg/mL
@@ -80,6 +88,7 @@ Estradiol
 ```
 
 ### After:
+
 ```
 Estradiol
 147.78 pg/mL
@@ -94,6 +103,7 @@ Follicular: 19.5-144.2 | Mid-cycle: 63.9-356.7 | Luteal: 55.8-214.2 pg/mL
 ## Affected Hormones
 
 1. **Estradiol (E2)**
+
    - Follicular phase: 19.5-144.2 pg/mL
    - Mid-cycle (ovulation): 63.9-356.7 pg/mL
    - Luteal phase: 55.8-214.2 pg/mL
@@ -107,6 +117,7 @@ Follicular: 19.5-144.2 | Mid-cycle: 63.9-356.7 | Luteal: 55.8-214.2 pg/mL
 ## Testing
 
 Verified with PDF containing:
+
 - Estradiol: 147.78 pg/mL → Now shows "cycle-dependent" instead of "normal"
 - Progesterone: 22.25 ng/mL → Now shows "cycle-dependent" instead of "abnormal"
 
@@ -123,6 +134,7 @@ Both values now display with:
 Without knowing the cycle phase (follicular, ovulation, luteal), it's impossible to determine if estradiol or progesterone levels are normal. For example:
 
 - **Estradiol 147.78 pg/mL** could be:
+
   - High for follicular phase (normal max: 144.2)
   - Normal for mid-cycle (normal range: 63.9-356.7)
   - High for luteal phase (normal max: 214.2)
@@ -138,6 +150,7 @@ By providing reference ranges, users can interpret their values based on where t
 ## Future Enhancements
 
 Consider adding:
+
 1. **Cycle phase selector** during report upload
 2. **Automatic severity calculation** if cycle phase is known
 3. **Educational tooltips** explaining menstrual cycle phases
@@ -156,12 +169,14 @@ Consider adding:
 ## Verification Commands
 
 Test the parser:
+
 ```bash
 cd server
 node test_parser_final.mjs
 ```
 
 Expected output:
+
 ```
 ✅ estradiol: 147.78 pg/mL [cycle-dependent]
 ✅ progesterone: 22.25 ng/mL [cycle-dependent]

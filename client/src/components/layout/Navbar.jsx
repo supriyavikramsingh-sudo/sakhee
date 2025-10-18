@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Menu, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
+import Logo from '../../../public/icons/logo.svg';
 
 export const Navbar = () => {
   const { t } = useTranslation();
+  const pathName = window.location.pathname;
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signOut } = useAuthStore();
 
@@ -16,28 +18,47 @@ export const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto max-sm:px-4 sm:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🌸</span>
-            <span className="font-bold text-primary text-lg">Sakhee</span>
+            <img className="h-12" src={Logo} />
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
             {user && (
               <>
-                <Link to="/chat" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/chat"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/chat' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.chat')}
                 </Link>
-                <Link to="/meals" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/meals"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/meals' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.meals')}
                 </Link>
-                <Link to="/progress" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/progress"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/progress' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.progress')}
                 </Link>
-                <Link to="/reports" className="text-gray-700 hover:text-primary transition">
+                <Link
+                  to="/reports"
+                  className={`text-gray-700 hover:text-primary transition ${
+                    pathName === '/reports' ? 'text-primary' : ''
+                  }`}
+                >
                   {t('nav.reports')}
                 </Link>
               </>
@@ -57,6 +78,7 @@ export const Navbar = () => {
                 {t('nav.getStarted')}
               </Link>
             )}
+
             {/* User Section */}
             {user && (
               <div className="flex items-center gap-3">
