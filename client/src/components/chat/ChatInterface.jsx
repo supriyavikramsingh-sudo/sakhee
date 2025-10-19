@@ -161,9 +161,24 @@ const ChatInterface = ({ userProfile, userId }) => {
     }
   };
 
-  const handleClearChat = () => {
+  const handleClearChat = async () => {
     if (confirm(t('chat.confirmClear'))) {
-      // Clear chat
+      try {
+        // Clear chat history in Firestore
+        await firestoreService.clearChatHistory(user.uid);
+
+        // Clear messages in the store
+        const { clearMessages } = useChatStore.getState();
+        clearMessages();
+
+        // Reset the history loaded flag to allow reloading
+        hasLoadedHistory.current = false;
+
+        console.log('Chat history cleared successfully');
+      } catch (error) {
+        console.error('Failed to clear chat history:', error);
+        alert('Failed to clear chat history. Please try again.');
+      }
     }
   };
 

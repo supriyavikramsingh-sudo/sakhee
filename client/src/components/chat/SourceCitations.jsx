@@ -1,10 +1,48 @@
-import { ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { useAuthStore } from '../../store/authStore';
 
 const SourceCitations = ({ sources }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
+  const { userProfile } = useAuthStore();
 
-  if (!sources || sources.length === 0) return null
+  if (!sources || sources.length === 0) return null;
+
+  // Function to get formatted source title
+  const getSourceTitle = (source) => {
+    switch (source.type) {
+      case 'reddit':
+        return 'Reddit Community Insights';
+      case 'nutrition':
+        return 'Google Web Search (Nutrition Data)';
+      case 'medical':
+      case 'lab_guidance':
+        return 'Sakhee Database';
+      case 'medical_report':
+        const userName = userProfile?.name || userProfile?.profileData?.name || 'Your';
+        return `${userName} Report Data`;
+      default:
+        return 'Medical Literature';
+    }
+  };
+
+  // Function to get source tag label
+  const getSourceTag = (source) => {
+    switch (source.type) {
+      case 'reddit':
+        return 'Reddit';
+      case 'nutrition':
+        return 'Web Search';
+      case 'medical':
+        return 'Medical KB';
+      case 'lab_guidance':
+        return 'Lab Guidance';
+      case 'medical_report':
+        return 'Your Report';
+      default:
+        return source.type || 'Reference';
+    }
+  };
 
   return (
     <div className="ml-12 mt-3 p-3 bg-surface rounded-lg">
@@ -24,19 +62,26 @@ const SourceCitations = ({ sources }) => {
         <div className="mt-3 space-y-2 text-xs">
           {sources.map((source, idx) => (
             <div key={idx} className="p-2 bg-white rounded border-l-2 border-primary">
-              <p className="font-medium text-gray-900 mb-1">
-                {source.source || 'Medical Literature'}
-              </p>
-              <p className="text-muted line-clamp-2">{source.content}</p>
+              <p className="font-medium text-gray-900 mb-1">{getSourceTitle(source)}</p>
+              {source.content && <p className="text-muted line-clamp-2">{source.content}</p>}
+              {source.disclaimer && (
+                <p className="text-muted italic text-xs mt-1">{source.disclaimer}</p>
+              )}
+              {source.labCount && (
+                <p className="text-muted text-xs mt-1">{source.labCount} lab values analyzed</p>
+              )}
+              {source.count && source.type !== 'medical_report' && (
+                <p className="text-muted text-xs mt-1">{source.count} documents retrieved</p>
+              )}
               <span className="inline-block mt-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs">
-                {source.type || 'Reference'}
+                {getSourceTag(source)}
               </span>
             </div>
           ))}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SourceCitations
+export default SourceCitations;
