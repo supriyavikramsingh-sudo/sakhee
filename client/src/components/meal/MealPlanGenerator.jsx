@@ -267,16 +267,29 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
   };
 
   // Count personalization sources for display
+  // Handle nested structure: userProfile might be profileData directly or contain profileData
+  const profileData = userProfile?.profileData || userProfile || {};
+
   const displayPersonalizationSources = personalizationSources || {
     onboarding: !!(
-      userProfile?.allergies?.length ||
-      userProfile?.symptoms?.length ||
-      userProfile?.goals?.length
+      profileData?.allergies?.length ||
+      profileData?.symptoms?.length ||
+      profileData?.goals?.length
     ),
     medicalReport: !!userReport,
     userOverrides: !!(formData.region || formData.dietType),
     rag: false,
   };
+
+  // Debug logging
+  console.log('🔍 MealPlanGenerator - Personalization Debug:', {
+    userReport,
+    hasUserReport: !!userReport,
+    profileData,
+    displayPersonalizationSources,
+    medicalReportValue: displayPersonalizationSources.medicalReport,
+    onboardingValue: displayPersonalizationSources.onboarding,
+  });
 
   if (!canGenerate && !isRegenerating && !isTestAccount) {
     return (
@@ -338,6 +351,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {/* Onboarding Profile */}
           <div
+            key={`onboarding-${displayPersonalizationSources.onboarding}`}
             className={`p-3 rounded-lg ${
               displayPersonalizationSources.onboarding
                 ? 'bg-white border-2 border-primary'
@@ -361,17 +375,17 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
             </div>
             {displayPersonalizationSources.onboarding ? (
               <ul className="text-xs text-gray-700 space-y-1">
-                {userProfile?.allergies?.length > 0 && (
-                  <li>• Allergies: {userProfile.allergies.join(', ')}</li>
+                {profileData?.allergies?.length > 0 && (
+                  <li>• Allergies: {profileData.allergies.join(', ')}</li>
                 )}
-                {userProfile?.symptoms?.length > 0 && (
-                  <li>• Symptoms: {userProfile.symptoms.slice(0, 2).join(', ')}</li>
+                {profileData?.symptoms?.length > 0 && (
+                  <li>• Symptoms: {profileData.symptoms.slice(0, 2).join(', ')}</li>
                 )}
-                {userProfile?.goals?.length > 0 && (
-                  <li>• Goals: {userProfile.goals.slice(0, 2).join(', ')}</li>
+                {profileData?.goals?.length > 0 && (
+                  <li>• Goals: {profileData.goals.slice(0, 2).join(', ')}</li>
                 )}
-                {userProfile?.activityLevel && <li>• Activity: {userProfile.activityLevel}</li>}
-                {userProfile?.cuisine && <li>• Cuisine: {userProfile.cuisine}</li>}
+                {profileData?.activityLevel && <li>• Activity: {profileData.activityLevel}</li>}
+                {profileData?.cuisine && <li>• Cuisine: {profileData.cuisine}</li>}
               </ul>
             ) : (
               <p className="text-xs text-gray-500">Complete onboarding to enable</p>
@@ -380,22 +394,23 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
 
           {/* Medical Reports */}
           <div
+            key={`medical-${!!userReport}`}
             className={`p-3 rounded-lg ${
               displayPersonalizationSources.medicalReport
-                ? 'bg-white border-2 border-secondary'
+                ? 'bg-white border-2 border-primary'
                 : 'bg-gray-100 border-2 border-gray-300'
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
               <FileText
                 className={
-                  displayPersonalizationSources.medicalReport ? 'text-secondary' : 'text-gray-400'
+                  displayPersonalizationSources.medicalReport ? 'text-primary' : 'text-gray-400'
                 }
                 size={16}
               />
               <span
                 className={`text-xs font-semibold ${
-                  displayPersonalizationSources.medicalReport ? 'text-secondary' : 'text-gray-500'
+                  displayPersonalizationSources.medicalReport ? 'text-primary' : 'text-gray-500'
                 }`}
               >
                 MEDICAL REPORTS
@@ -459,7 +474,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
               {regions.map((region) => (
                 <option key={region.value} value={region.value}>
                   {region.label}
-                  {!region.value && userProfile?.location ? ` (${userProfile.location})` : ''}
+                  {!region.value && profileData?.location ? ` (${profileData.location})` : ''}
                 </option>
               ))}
             </select>
@@ -478,7 +493,7 @@ const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = 
               {dietTypes.map((diet) => (
                 <option key={diet.value} value={diet.value}>
                   {diet.label}
-                  {!diet.value && userProfile?.dietType ? ` (${userProfile.dietType})` : ''}
+                  {!diet.value && profileData?.dietType ? ` (${profileData.dietType})` : ''}
                 </option>
               ))}
             </select>
