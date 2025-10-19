@@ -35,11 +35,19 @@ const ChatInterface = ({ userProfile, userId }) => {
       try {
         const result = await firestoreService.getChatHistory(user.uid);
         console.log('Chat history loaded:', result);
+        console.log('Number of messages:', result.data?.length);
+        console.log(
+          'Message types:',
+          result.data?.map((m) => ({ type: m.type, hasContent: !!m.content, id: m.id }))
+        );
+        console.log('Full messages data:', result.data);
 
         if (result.success && result.data && Array.isArray(result.data)) {
           // Load all messages at once using loadHistory instead of adding one by one
+          console.log('Calling loadHistory with', result.data.length, 'messages');
           loadHistory(result.data);
           hasLoadedHistory.current = true;
+          console.log('Messages loaded into store');
         }
       } catch (error) {
         console.error('Failed to load chat history:', error);
@@ -134,13 +142,26 @@ const ChatInterface = ({ userProfile, userId }) => {
         type: 'assistant',
         content: response.data.message.response,
         sources: response.data?.sources || [],
-        requiresDoctor: response.data?.requiresDoctor,
-        severity: response.data?.severity,
         timestamp: assistantTimestamp,
       };
 
+      // Only add optional fields if they exist (Firestore doesn't accept undefined)
+      if (response.data?.requiresDoctor !== undefined) {
+        assistantMessageData.requiresDoctor = response.data.requiresDoctor;
+      }
+      if (response.data?.severity !== undefined) {
+        assistantMessageData.severity = response.data.severity;
+      }
+
+      console.log('Attempting to save assistant message:', assistantMessageData);
+
       // Save to Firestore with sources
-      await firestoreService.saveChatMessage(user.uid, assistantMessageData);
+      const saveResult = await firestoreService.saveChatMessage(user.uid, assistantMessageData);
+      console.log('Save result:', saveResult);
+
+      if (!saveResult.success) {
+        console.error('Failed to save assistant message to Firestore:', saveResult.error);
+      }
 
       // Add assistant message to UI
       addMessage({

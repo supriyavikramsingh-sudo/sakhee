@@ -436,12 +436,19 @@ class FirestoreService {
       const q = query(chatRef, orderBy('createdAt', 'desc'), limit(limitCount));
       const snapshot = await getDocs(q);
 
+      console.log('Firestore raw snapshot:', snapshot.docs.length, 'docs');
+      snapshot.docs.forEach((doc, idx) => {
+        console.log(`Doc ${idx}:`, doc.id, doc.data());
+      });
+
       const messages = snapshot.docs
         .map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }))
         .reverse(); // Reverse to get chronological order
+
+      console.log('Processed messages:', messages);
 
       return { success: true, data: messages };
     } catch (error) {
