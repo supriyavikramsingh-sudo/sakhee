@@ -564,7 +564,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   async fetchNutritionContext(userMessage) {
     try {
-      const data = await serpService.getNutritionData(userMessage);
+      const data = await serpService.searchNutrition(userMessage);
 
       if (!data) return null;
 
@@ -726,37 +726,45 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         enhancedContext = 'No specific context found. Rely on general PCOS knowledge.';
       }
 
-      // Step 7: Build prompt with all context
-      const promptTemplate = PromptTemplate.fromTemplate(`
-${this.systemPrompt}
-
-USER PROFILE:
+      // Step 7: Build complete prompt manually (avoid LangChain template issues with curly braces)
+      const userProfileSection = `USER PROFILE:
 Age: ${userContext.age || 'Not provided'}
 Location: ${userContext.location || 'Not provided'}
 Dietary Preference: ${userContext.dietaryPreference || 'Not provided'}
-Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}
+Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
 
-RETRIEVED CONTEXT:
-${enhancedContext}
+      const fullContext =
+        this.systemPrompt +
+        '\n\n' +
+        userProfileSection +
+        '\n\nRETRIEVED CONTEXT:\n' +
+        enhancedContext;
 
-Current Conversation:
-{history}
+      // Step 8: Get chat history from memory
+      const memoryVariables = await this.memory.loadMemoryVariables({});
+      const history = memoryVariables.history || '';
 
-User: {input}
-Assistant:`);
+      // Step 9: Build final prompt with history
+      const finalPrompt =
+        fullContext +
+        '\n\nCurrent Conversation:\n' +
+        history +
+        '\n\nUser: ' +
+        userMessage +
+        '\nAssistant:';
 
-      // Step 8: Create conversation chain
-      const chain = new ConversationChain({
-        llm: llmClient.getModel(),
-        memory: this.memory,
-        prompt: promptTemplate,
-      });
+      // Step 10: Call LLM directly (bypass PromptTemplate to avoid curly brace issues)
+      const llm = llmClient.getModel();
+      const response = await llm.invoke(finalPrompt);
 
-      // Step 9: Invoke chain
-      const response = await chain.invoke({ input: userMessage });
+      // Step 11: Save to memory
+      await this.memory.saveContext(
+        { input: userMessage },
+        { output: response.content || response }
+      );
 
-      // Step 10: Add appropriate disclaimers (only if not already present)
-      let finalResponse = response.response || '';
+      // Step 12: Add appropriate disclaimers (only if not already present)
+      let finalResponse = response.content || response;
 
       // Helper to safely check for an existing substring (case-insensitive)
       const contains = (needle) => {
