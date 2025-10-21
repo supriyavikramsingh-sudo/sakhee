@@ -27,7 +27,8 @@ async function runScript(scriptName, description) {
 
   try {
     const scriptPath = path.join(__dirname, scriptName);
-    const { stdout, stderr } = await execPromise(`node ${scriptPath}`);
+    // Properly quote the path to handle spaces
+    const { stdout, stderr } = await execPromise(`node "${scriptPath}"`);
 
     if (stdout) console.log(stdout);
     if (stderr) console.error(stderr);

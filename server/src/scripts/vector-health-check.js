@@ -17,17 +17,9 @@ import 'dotenv/config';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Vector store is in the root /src/storage/localCache/vectordb
-const VECTOR_STORE_PATH = path.join(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'src',
-  'storage',
-  'localCache',
-  'vectordb'
-);
+// Vector store is in server/src/storage/localCache/vectordb
+// __dirname is server/src/scripts, so go up 1 level to server/src
+const VECTOR_STORE_PATH = path.join(__dirname, '..', 'storage', 'localCache', 'vectordb');
 
 const colors = {
   reset: '\x1b[0m',

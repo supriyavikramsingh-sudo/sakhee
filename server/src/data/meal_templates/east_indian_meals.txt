@@ -1,297 +1,4278 @@
-# East Indian PCOS-Friendly Meals
+# East Indian PCOS-Friendly Meal Templates
 
-## Breakfast Options
+## WEST BENGAL REGIONAL CUISINE
+*West Bengal’s cuisine balances rice, fish, and mustard-based gravies with light vegetable preparations. For PCOS-friendly adaptation, mustard oil is used sparingly, with more steaming, grilling, and brown rice substitutions to lower glycemic load.*
 
-### Moong Dal Cheela (Bengal Style)
-- Ingredients: Moong dal 100g, ginger, green chili, onion, nigella seeds
-- Macros: Protein 16g, Carbs 22g, Fats 5g
+### BREAKFAST OPTIONS
+
+#### 1. Chirer Pulao (Flattened Rice Pilaf)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Flattened rice 60g, peas 20g, carrots 30g, peanuts 10g, mustard seeds
+- Macros: Protein 8g, Carbs 42g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
-- Tip: Soak dal overnight for better digestion
+- GI: Low ⭐⭐⭐
+- Tip: Use thick poha and light mustard oil for tempering
 
-### Muri (Puffed Rice) with Vegetables
-- Ingredients: Puffed rice 40g, potato 50g, peanuts 20g, mustard oil, green chili
-- Macros: Protein 7g, Carbs 32g, Fats 8g
-- Budget: ₹15-20
-- Prep: 10 mins
-- Tip: Light breakfast, use minimal potato
-
-### Chirer Pulao (Flattened Rice)
-- Ingredients: Chire 50g, peas 30g, potato 30g, peanuts, ghee 1 tsp
-- Macros: Protein 8g, Carbs 30g, Fats 7g
-- Budget: ₹20-25
-- Prep: 15 mins
-- Tip: Rinse chire well to reduce carbs
-
-### Daliya (Broken Wheat Porridge)
-- Ingredients: Broken wheat 50g, milk 100ml, jaggery 10g, nuts 10g
-- Macros: Protein 10g, Carbs 35g, Fats 8g
-- Budget: ₹25-30
-- Prep: 20 mins
-- Tip: Use minimal jaggery or stevia
-
-### Litti (Baked Version) - Bihar
-- Ingredients: Whole wheat flour 80g, sattu 40g, minimal ghee
-- Macros: Protein 12g, Carbs 45g, Fats 8g
-- Budget: ₹20-25
-- Prep: 35 mins
-- Tip: Bake instead of roasting in ghee
-
-### Jolpan (Assamese Breakfast)
-- Ingredients: Bora saul (sticky rice) 40g, curd 100g, jaggery 10g
-- Macros: Protein 6g, Carbs 35g, Fats 4g
-- Budget: ₹25-30
-- Prep: 15 mins
-- Tip: Use small portion of rice
-
-## Lunch Options
-
-### Machher Jhol with Brown Rice (Bengal)
-- Ingredients: Rohu fish 150g, brown rice 50g, potato 50g, tomato, spices
-- Macros: Protein 25g, Carbs 40g, Fats 10g
-- Budget: ₹80-100
-- Prep: 35 mins
-- Tip: Fish is rich in omega-3
-
-### Shukto (Mixed Vegetable Curry) with Roti
-- Ingredients: Bitter gourd 50g, drumstick 50g, brinjal 50g, radish 50g, milk 50ml
-- Macros: Protein 8g, Carbs 25g, Fats 12g
-- Budget: ₹40-50
+#### 2. Luchi with Cholar Dal (Bengal Gram Curry)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Whole wheat flour 100g, chana dal 80g, coconut slivers, ginger
+- Macros: Protein 15g, Carbs 50g, Fats 12g
+- Budget: ₹40-45
 - Prep: 30 mins
-- Tip: Bitter gourd aids insulin sensitivity
+- GI: Medium ⭐⭐
+- Tip: Bake luchi instead of deep frying for a lighter option
 
-### Dalma (Odisha Style Dal)
-- Ingredients: Toor dal 70g, pumpkin 100g, raw banana 50g, papaya 50g
-- Macros: Protein 16g, Carbs 38g, Fats 5g
-- Budget: ₹30-40
-- Prep: 35 mins
-- Tip: One-pot nutritious meal
-
-### Litti Chokha - Bihar
-- Ingredients: Whole wheat 80g, sattu 40g, brinjal 150g, tomato 100g
-- Macros: Protein 14g, Carbs 45g, Fats 8g
-- Budget: ₹30-40
-- Prep: 40 mins
-- Tip: High fiber from sattu
-
-### Khar (Assamese Alkaline Dish)
-- Ingredients: Raw papaya 150g, pulses 50g, kolakhar (banana ash), mustard oil
-- Macros: Protein 10g, Carbs 20g, Fats 8g
-- Budget: ₹35-45
-- Prep: 30 mins
-- Tip: Aids digestion, unique to Assam
-
-### Eromba (Manipuri Stew)
-- Ingredients: Seasonal vegetables 200g, fermented fish 20g, chili, potato 50g
-- Macros: Protein 12g, Carbs 28g, Fats 6g
-- Budget: ₹40-50
-- Prep: 25 mins
-- Tip: Fermented foods aid gut health
-
-### Bamboo Shoot Curry with Rice (Nagaland)
-- Ingredients: Bamboo shoots 150g, pork/chicken 100g, brown rice 50g, raja mirchi
-- Macros: Protein 20g, Carbs 35g, Fats 12g
-- Budget: ₹70-90
-- Prep: 40 mins
-- Tip: Bamboo shoots are low-calorie, high-fiber
-
-## Dinner Options
-
-### Doi Maach (Fish in Yogurt Gravy)
-- Ingredients: Hilsa/Rohu 150g, yogurt 100g, mustard paste, minimal oil
-- Macros: Protein 26g, Carbs 8g, Fats 14g
-- Budget: ₹100-120
-- Prep: 30 mins
-- Tip: Probiotic-rich, omega-3 from fish
-
-### Chanar Dalna with Roti (Bengal)
-- Ingredients: Paneer 100g, potato 50g, tomato, spices, whole wheat roti 2
-- Macros: Protein 18g, Carbs 40g, Fats 15g
-- Budget: ₹50-60
-- Prep: 30 mins
-- Tip: High protein from paneer
-
-### Santula (Odisha Mixed Vegetables)
-- Ingredients: Mixed vegetables 300g, minimal spices, mustard oil 1 tsp
-- Macros: Protein 6g, Carbs 25g, Fats 6g
-- Budget: ₹30-40
-- Prep: 20 mins
-- Tip: Light, low-calorie dinner
-
-### Ghugni with Roti
-- Ingredients: Dried peas 100g, onion, tomato, spices, roti 2
-- Macros: Protein 18g, Carbs 42g, Fats 7g
-- Budget: ₹25-35
-- Prep: 40 mins (after soaking)
-- Tip: High protein and fiber
-
-### Khichuri (Bengali Style)
-- Ingredients: Moong dal 50g, rice 30g, vegetables 100g, ghee 1 tsp
-- Macros: Protein 12g, Carbs 35g, Fats 7g
-- Budget: ₹30-40
-- Prep: 25 mins
-- Tip: Easy to digest, comforting meal
-
-### Kochu Saag Bhaja (Taro Leaves Stir-fry)
-- Ingredients: Taro leaves 200g, mustard oil 1 tsp, garlic, spices
-- Macros: Protein 5g, Carbs 12g, Fats 6g
-- Budget: ₹20-30
-- Prep: 20 mins
-- Tip: Rich in iron and fiber
-
-### Jadoh (Meghalaya Red Rice Dish)
-- Ingredients: Red rice 60g, pork/chicken 80g, turmeric, ginger, black sesame
-- Macros: Protein 18g, Carbs 40g, Fats 10g
-- Budget: ₹60-80
-- Prep: 35 mins
-- Tip: Red rice has lower GI than white
-
-## Snacks
-
-### Telebhaja (Baked Version)
-- Ingredients: Brinjal/potato/cauliflower 100g, besan 30g, spices (baked)
-- Macros: Protein 8g, Carbs 20g, Fats 5g
-- Budget: ₹20-25
-- Prep: 25 mins
-- Tip: Bake instead of deep-frying
-
-### Muri Mixture
-- Ingredients: Puffed rice 30g, peanuts 20g, dal 10g, curry leaves
-- Macros: Protein 8g, Carbs 25g, Fats 8g
-- Budget: ₹15-20
-- Prep: 10 mins
-- Tip: Make at home to control oil
-
-### Ghughra (Baked) - Odisha
-- Ingredients: Whole wheat flour 50g, moong dal 30g, jaggery 10g (baked)
-- Macros: Protein 10g, Carbs 35g, Fats 6g
-- Budget: ₹20-25
-- Prep: 35 mins
-- Tip: Bake to reduce oil content
-
-### Lai (Puffed Rice Ladoo)
-- Ingredients: Puffed rice 40g, jaggery 15g, ghee 1 tsp
-- Macros: Protein 3g, Carbs 30g, Fats 5g
-- Budget: ₹15-20
-- Prep: 15 mins
-- Tip: Portion control is key
-
-### Tilkut/Tilwa (Sesame Sweet)
-- Ingredients: Sesame seeds 30g, jaggery 15g
-- Macros: Protein 6g, Carbs 18g, Fats 12g
-- Budget: ₹20-25
-- Prep: 20 mins
-- Tip: Rich in calcium and healthy fats
-
-### Aloo Chop (Modified)
-- Ingredients: Potato 100g, onion, besan 20g, minimal oil for pan-frying
-- Macros: Protein 6g, Carbs 28g, Fats 6g
-- Budget: ₹15-20
-- Prep: 20 mins
-- Tip: Shallow fry instead of deep frying
-
-### Chana Ghugni
-- Ingredients: Black chickpeas 60g, onion, tomato, spices
-- Macros: Protein 12g, Carbs 25g, Fats 4g
-- Budget: ₹20-25
-- Prep: 30 mins (after soaking)
-- Tip: High protein, filling snack
-
-## Regional Specialties
-
-### Masoora (Assamese Lentil Balls)
-- Ingredients: Mixed dal 80g, onion, ginger, minimal oil for frying
-- Macros: Protein 16g, Carbs 22g, Fats 8g
-- Budget: ₹25-30
-- Prep: 30 mins
-- Tip: Shallow fry or bake
-
-### Paknam (Arunachal Pradesh)
-- Ingredients: Rice powder 50g, fermented soybean 20g, vegetables
-- Macros: Protein 10g, Carbs 30g, Fats 5g
-- Budget: ₹30-40
-- Prep: 25 mins
-- Tip: Fermented foods support gut health
-
-### Ngari (Manipuri Fermented Fish)
-- Ingredients: Fermented fish 30g, vegetables 150g, minimal oil
-- Macros: Protein 12g, Carbs 15g, Fats 6g
-- Budget: ₹40-50
-- Prep: 20 mins
-- Tip: Strong flavor, probiotic-rich
-
-### Hanshi (Mizoram Stew)
-- Ingredients: Mixed vegetables 200g, bekang (fermented soybean) 20g
-- Macros: Protein 10g, Carbs 20g, Fats 5g
-- Budget: ₹35-45
-- Prep: 25 mins
-- Tip: Simple, wholesome comfort food
-
-### Patra (Colocasia Leaves Roll) - Odisha Style
-- Ingredients: Colocasia leaves 100g, rice flour 30g, besan 30g, tamarind
-- Macros: Protein 10g, Carbs 28g, Fats 7g
-- Budget: ₹30-40
+#### 3. Mochar Ghonto (Banana Flower Curry)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Banana flower 100g, potatoes 50g, coconut 10g, mustard seeds
+- Macros: Protein 9g, Carbs 36g, Fats 8g
+- Budget: ₹30-35
 - Prep: 45 mins
-- Tip: Steamed, then lightly fried
+- GI: Low ⭐⭐⭐
+- Tip: Rich in iron; excellent for hormonal balance
 
-### Dhuska - Jharkhand
-- Ingredients: Rice 40g, chana dal 40g, minimal oil
-- Macros: Protein 12g, Carbs 35g, Fats 8g
-- Budget: ₹20-30
-- Prep: 30 mins (after soaking)
-- Tip: Fermented batter aids digestion
+#### 4. Egg Roll (Healthy Street Style)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, whole wheat paratha 1, onion, cucumber, lemon
+- Macros: Protein 20g, Carbs 30g, Fats 10g
+- Budget: ₹45-50
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use whole wheat base and avoid mayo
 
-## Beverages and Accompaniments
+#### 5. Dim Shahi Toast
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, brown bread 2 slices, milk 50ml, cinnamon
+- Macros: Protein 16g, Carbs 25g, Fats 9g
+- Budget: ₹25-30
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pan-grill without butter
 
-### Aam Panna (Sugar-free)
-- Ingredients: Raw mango 100g, cumin, black salt, stevia
-- Macros: Protein 0g, Carbs 8g, Fats 0g
-- Budget: ₹15-20
-- Tip: Cooling summer drink
+#### 6. Ghugni (Yellow Peas Curry)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Yellow peas 100g, onion, tomato, tamarind
+- Macros: Protein 14g, Carbs 38g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Add cucumber and boiled egg for protein boost
 
-### Gondhoraj Lebu Sherbet
-- Ingredients: Gondhoraj lime 1, stevia, black salt, water
-- Macros: Protein 0g, Carbs 4g, Fats 0g
-- Budget: ₹20-25
-- Tip: Rich in vitamin C
+#### 7. Muri Ghonto (Fish Head Rice Mix)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Fish head 80g, rice 50g, spices
+- Macros: Protein 20g, Carbs 35g, Fats 9g
+- Budget: ₹60-70
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Use minimal oil; high in calcium
 
-### Doi (Yogurt) - Plain
-- Ingredients: Fresh curd 150g
-- Macros: Protein 6g, Carbs 9g, Fats 6g
-- Budget: ₹15-20
-- Tip: Probiotic-rich, aids digestion
+#### 8. Aloo Posto with Brown Rice
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Poppy seeds 30g, potato 100g, mustard oil
+- Macros: Protein 9g, Carbs 38g, Fats 11g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Use sweet potato instead for lower GI
 
-### Nolen Gurer Chai (Modified)
-- Ingredients: Tea, milk 50ml, date palm jaggery 5g, ginger
-- Macros: Protein 2g, Carbs 8g, Fats 2g
-- Budget: ₹10-15
-- Tip: Use minimal jaggery
+#### 9. Chingri Malai Scramble
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Prawns 100g, coconut milk 50ml, egg 1
+- Macros: Protein 25g, Carbs 10g, Fats 11g
+- Budget: ₹75-85
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light sauté with coconut oil for PCOS-friendly fat
 
-### Kolakhar Water
-- Ingredients: Banana peel/skin ash extract
-- Macros: Protein 0g, Carbs 0g, Fats 0g
-- Budget: ₹5-10
-- Tip: Alkaline, digestive benefits
-
-## Fish and Seafood Preparations
-
-### Chingri Malai Curry (Modified) - Bengal
-- Ingredients: Prawns 150g, coconut milk 100ml, minimal oil, spices
-- Macros: Protein 22g, Carbs 8g, Fats 15g
-- Budget: ₹120-150
+#### 10. Patishapta (Healthy Oat Crepe)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Oats 60g, milk 100ml, jaggery 10g, grated coconut
+- Macros: Protein 9g, Carbs 35g, Fats 6g
+- Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Replace maida with oats for fiber boost
+
+### LUNCH OPTIONS
+
+#### 11. Shorshe Ilish (Mustard Hilsa Curry)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Hilsa fish 150g, mustard paste 20g, green chili, turmeric
+- Macros: Protein 28g, Carbs 8g, Fats 18g
+- Budget: ₹160-180
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of deep fry; rich in omega-3 for hormonal balance
+
+#### 12. Cholar Dal with Brown Rice
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Chana dal 100g, brown rice 70g, coconut bits
+- Macros: Protein 17g, Carbs 48g, Fats 9g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Use coconut oil sparingly; good plant protein
+
+#### 13. Kosha Mangsho (Spiced Mutton Curry)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, onion 100g, tomato 80g, mustard oil
+- Macros: Protein 32g, Carbs 14g, Fats 20g
+- Budget: ₹130-150
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Slow-cook with minimal oil for authentic flavor
+
+#### 14. Chingri Malai Curry (Prawn Coconut Curry)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Prawns 150g, coconut milk 100ml, brown rice 70g
+- Macros: Protein 30g, Carbs 45g, Fats 16g
+- Budget: ₹120-140
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Use light coconut milk and avoid cream
+
+#### 15. Bhaja Moong Dal with Lau Ghonto
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Moong dal 100g, bottle gourd 200g, spices
+- Macros: Protein 18g, Carbs 44g, Fats 8g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Rich in fiber and easy to digest
+
+#### 16. Rui Macher Jhol (Light Rohu Curry)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Rohu fish 150g, tomato, potato 50g, mustard oil
+- Macros: Protein 29g, Carbs 38g, Fats 12g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Grill fish before simmering to cut oil
+
+#### 17. Pui Shaak Chingri
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Malabar spinach 200g, prawns 100g
+- Macros: Protein 26g, Carbs 20g, Fats 10g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Great calcium + protein combo
+
+#### 18. Dhokar Dalna (Lentil Cake Curry)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Chana dal 100g, ginger paste, tomato, spices
+- Macros: Protein 18g, Carbs 40g, Fats 9g
+- Budget: ₹40-45
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Bake lentil cakes instead of frying
+
+#### 19. Begun Bhaja with Steamed Rice
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Brinjal 200g, brown rice 70g, mustard oil
+- Macros: Protein 9g, Carbs 45g, Fats 10g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Air-fry brinjal for crisp texture
+
+#### 20. Chicken Rezala (Light Yogurt Curry)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, yogurt 100ml, onion, spices
+- Macros: Protein 30g, Carbs 15g, Fats 14g
+- Budget: ₹95-110
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use lean breast pieces and no cream
+
+### DINNER OPTIONS
+
+#### 21. Bhapa Pitha (Steamed Rice Cake)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Rice flour 60g, jaggery 15g, coconut 10g
+- Macros: Protein 6g, Carbs 36g, Fats 5g
+- Budget: ₹20-25
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of pan-fry; healthy dessert dinner
+
+#### 22. Fish Tikka with Salad
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt 50g, salad 100g
+- Macros: Protein 32g, Carbs 10g, Fats 11g
+- Budget: ₹80-90
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill with mustard marinade for authentic flavor
+
+#### 23. Paneer Posto
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Paneer 120g, poppy seeds 20g, tomato, mustard oil
+- Macros: Protein 22g, Carbs 25g, Fats 13g
+- Budget: ₹65-75
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Replace part of paneer with tofu for low fat
+
+#### 24. Bhetki Paturi (Fish in Banana Leaf)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Bhetki fillet 150g, mustard paste 20g, banana leaf wrap
+- Macros: Protein 30g, Carbs 10g, Fats 12g
+- Budget: ₹100-120
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam in banana leaf; no oil needed
+
+#### 25. Moong Dal Khichuri
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Moong dal 80g, rice 50g, vegetables 100g
+- Macros: Protein 16g, Carbs 40g, Fats 6g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Ideal detox meal; gentle on gut
+
+#### 26. Chicken Stew with Vegetables
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120g, potato 50g, carrot, beans
+- Macros: Protein 28g, Carbs 32g, Fats 9g
+- Budget: ₹70-80
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Avoid maida thickener; use oats slurry
+
+#### 27. Enchor Dalna (Raw Jackfruit Curry)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Raw jackfruit 200g, potato, tomato
+- Macros: Protein 9g, Carbs 40g, Fats 8g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Substitute potato with soya chunks for protein
+
+#### 28. Egg Curry with Brown Rice
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, onion, tomato, brown rice 70g
+- Macros: Protein 24g, Carbs 45g, Fats 14g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Go easy on mustard oil; add spinach
+
+#### 29. Lau Moong Dal
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Bottle gourd 200g, moong dal 70g
+- Macros: Protein 15g, Carbs 42g, Fats 6g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Perfect low-calorie dinner
+
+#### 30. Mutton Keema with Millet Roti
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Mutton mince 150g, jowar roti 2
+- Macros: Protein 32g, Carbs 38g, Fats 16g
+- Budget: ₹95-110
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use minced lean meat for balance
+
+### SNACK OPTIONS
+
+#### 31. Matar Chop (Baked Pea Fritter)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Green peas 80g, potato 50g, besan 20g, spices
+- Macros: Protein 9g, Carbs 38g, Fats 6g
+- Budget: ₹25–30
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of deep-frying for lower fat intake
+
+#### 32. Egg Devil (Air-Fried)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, chicken mince 50g, oats crumb coating
+- Macros: Protein 20g, Carbs 25g, Fats 9g
+- Budget: ₹45–50
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Air-fry with minimal oil; a classic Kolkata street snack made healthy
+
+#### 33. Jhal Muri (Spicy Puffed Rice Mix)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Puffed rice 50g, peanuts 10g, mustard oil few drops, onion, cucumber
+- Macros: Protein 6g, Carbs 35g, Fats 5g
+- Budget: ₹20–25
+- Prep: 10 mins
+- GI: Medium ⭐⭐
+- Tip: Add boiled chickpeas for extra protein
+
+#### 34. Fish Cutlet (Baked)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Fish 100g, oats crumb coating, onion, ginger
+- Macros: Protein 22g, Carbs 20g, Fats 8g
+- Budget: ₹65–75
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of deep-frying; rich in omega-3
+
+#### 35. Chanar Sandesh (Low-Sugar Paneer Dessert)
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Paneer 100g, stevia 1 tsp, cardamom, saffron
+- Macros: Protein 18g, Carbs 12g, Fats 9g
+- Budget: ₹35–40
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich sweet for guilt-free indulgence
+
+#### 36. Chicken Pakora (Air-Fried)
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, gram flour 20g, onion, chili
+- Macros: Protein 25g, Carbs 15g, Fats 10g
+- Budget: ₹55–65
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Marinate in curd for tenderness
+
+#### 37. Prawn Skewers
+- State: West Bengal
+- Type: Non-Vegetarian
+- Ingredients: Prawns 100g, garlic, lemon, mustard paste
+- Macros: Protein 26g, Carbs 6g, Fats 8g
+- Budget: ₹70–80
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill on tawa; avoid butter for leaner option
+
+#### 38. Dahi Puri Lite
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Baked puris 6, sprouts 50g, yogurt 100ml, chutney
+- Macros: Protein 9g, Carbs 32g, Fats 6g
+- Budget: ₹25–30
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Use curd instead of tamarind water to lower acidity
+
+#### 39. Soya Cutlet
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Soya granules 80g, carrot 40g, oats 20g
+- Macros: Protein 18g, Carbs 30g, Fats 7g
+- Budget: ₹35–40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Air-fry; high-protein, PCOS-friendly snack
+
+#### 40. Date-Nut Ladoo
+- State: West Bengal
+- Type: Vegetarian
+- Ingredients: Dates 40g, peanuts 20g, coconut 10g
+- Macros: Protein 6g, Carbs 30g, Fats 9g
+- Budget: ₹25–30
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Natural sweetener; no added sugar
+
+---
+
+## ODISHA REGIONAL CUISINE
+*Odia cuisine is gentle on spices, rich in lentils, vegetables, and coastal fish preparations. For PCOS support, this cuisine adapts beautifully with its emphasis on steamed, lightly sautéed dishes, fermented rice, and lean seafood protein.*
+
+### BREAKFAST OPTIONS
+
+#### 41. Pakhala Bhata (Fermented Rice with Curd and Vegetables)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Cooked rice 80g (fermented overnight), curd 150ml, curry leaves, salt
+- Macros: Protein 10g, Carbs 40g, Fats 6g
+- Budget: ₹25-30
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Excellent probiotic breakfast aiding gut health
+
+#### 42. Dalma Upma
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Moong dal 50g, suji 50g, vegetables 100g
+- Macros: Protein 14g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Odia twist on upma, with lentil base for protein
+
+#### 43. Manda Pitha (Steamed Rice Dumpling)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Rice flour 60g, grated coconut, jaggery 15g
+- Macros: Protein 8g, Carbs 40g, Fats 6g
+- Budget: ₹25-30
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of frying; healthy traditional option
+
+#### 44. Santula with Millet Roti
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 150g, jowar roti 2
+- Macros: Protein 10g, Carbs 40g, Fats 5g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light sauté; excellent for hormonal balance
+
+#### 45. Chuda Kadali (Flattened Rice with Banana)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Poha 50g, banana 1, curd 50ml, jaggery 10g
+- Macros: Protein 7g, Carbs 38g, Fats 5g
+- Budget: ₹20-25
+- Prep: 10 mins
+- GI: Medium ⭐⭐
+- Tip: Quick meal; choose small banana for lower GI
+
+#### 46. Ghuguni (Pea Curry)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: White peas 100g, onion, tomato, tamarind
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Add cucumber and lemon for freshness
+
+#### 47. Anda Tarkari with Roti
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, onion, tomato gravy
+- Macros: Protein 24g, Carbs 38g, Fats 14g
+- Budget: ₹45-50
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Use minimal oil; rich in choline
+
+#### 48. Chingudi Bhaja (Prawn Fry)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, rice flour 15g, mustard oil
+- Macros: Protein 25g, Carbs 8g, Fats 10g
+- Budget: ₹80-90
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pan-fry on low heat; omega-3 rich
+
+#### 49. Besara Tarkari (Vegetable Mustard Curry)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Mustard paste 20g, vegetables 200g, turmeric
+- Macros: Protein 9g, Carbs 40g, Fats 7g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Mustard aids metabolism; limit oil
+
+#### 50. Chicken Chuna Tarkari
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, onion, tomato, mustard seeds
+- Macros: Protein 30g, Carbs 12g, Fats 14g
+- Budget: ₹70-80
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein and flavorful
+
+### LUNCH OPTIONS
+
+#### 51. Dalma (Lentil-Vegetable Curry)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Arhar dal 100g, pumpkin 50g, raw banana 50g
+- Macros: Protein 17g, Carbs 45g, Fats 8g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Use minimal oil; high fiber
+
+#### 52. Maccha Besara (Fish in Mustard Gravy)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, mustard paste 20g, turmeric, garlic
+- Macros: Protein 32g, Carbs 10g, Fats 12g
+- Budget: ₹85-100
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of fry for lighter version
+
+#### 53. Saga Bhaja with Dal
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Spinach 200g, moong dal 70g, garlic
+- Macros: Protein 15g, Carbs 38g, Fats 6g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron-rich meal
+
+#### 54. Chingudi Malai Tarkari (Prawn Coconut Curry)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Prawns 150g, coconut milk 80ml
+- Macros: Protein 30g, Carbs 15g, Fats 16g
+- Budget: ₹100-120
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
 - Tip: Use light coconut milk
 
-### Maacher Paturi
-- Ingredients: Fish 150g, mustard paste, coconut, banana leaf
-- Macros: Protein 26g, Carbs 5g, Fats 12g
-- Budget: ₹80-100
-- Prep: 30 mins
-- Tip: Steamed in banana leaf, minimal oil
+#### 55. Pakhala Bhata with Bhendi Bhaja
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Fermented rice 80g, okra 100g, curd
+- Macros: Protein 10g, Carbs 38g, Fats 6g
+- Budget: ₹25-30
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Cooling probiotic combo
 
-### Chingudi Besara - Odisha
-- Ingredients: Prawns 150g, mustard paste, minimal oil, curry leaves
-- Macros: Protein 24g, Carbs 4g, Fats 10g
-- Budget: ₹120-140
+#### 56. Mutton Kassa
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, onion, garlic, spices
+- Macros: Protein 32g, Carbs 10g, Fats 18g
+- Budget: ₹130-150
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Choose lean cuts; avoid cream
+
+#### 57. Baigana Bharta
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Brinjal 200g, onion, garlic, tomato
+- Macros: Protein 8g, Carbs 35g, Fats 7g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Roast with little mustard oil
+
+#### 58. Fish Ambula (Sour Fish Curry)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, dried mango, tomato
+- Macros: Protein 29g, Carbs 12g, Fats 10g
+- Budget: ₹85-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Natural souring aids digestion
+
+#### 59. Chana Tarkari
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Chickpeas 120g, tomato, curry leaves
+- Macros: Protein 19g, Carbs 48g, Fats 8g
+- Budget: ₹40-45
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Add spinach for added iron
+
+#### 60. Anda Bhurji with Brown Rice
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, tomato, onion, brown rice 70g
+- Macros: Protein 25g, Carbs 42g, Fats 14g
+- Budget: ₹40-50
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Quick and protein-dense
+
+### DINNER OPTIONS
+
+#### 61. Odia Khichdi (Moong Dal & Rice)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Moong dal 60g, rice 50g, ginger, cumin, ghee 1 tsp
+- Macros: Protein 15g, Carbs 40g, Fats 7g
+- Budget: ₹25–30
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light, comforting; add vegetables for extra fiber
+
+#### 62. Dahi Baigana (Curd & Brinjal Curry)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Brinjal 200g, curd 150ml, mustard seeds, curry leaves
+- Macros: Protein 10g, Carbs 28g, Fats 9g
+- Budget: ₹30–35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use air-fried brinjal to reduce oil
+
+#### 63. Kankada Jhola (Crab Curry)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Crab meat 150g, onion-tomato gravy, spices
+- Macros: Protein 28g, Carbs 14g, Fats 12g
+- Budget: ₹140–160
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: Simmer gently; high in zinc and protein
+
+#### 64. Dalma (Dinner Portion)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Arhar dal 70g, pumpkin 50g, raw banana 50g, cumin
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹30–35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair with small portion of red rice if needed
+
+#### 65. Fish Tikka (Mustard-Yogurt Marinade)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, curd 60ml, mustard paste 10g, lemon
+- Macros: Protein 30g, Carbs 8g, Fats 11g
+- Budget: ₹80–90
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill or air-fry; minimal oil
+
+#### 66. Sarsapa Paneer (Paneer in Mustard Gravy)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Paneer 120g, mustard paste 15g, tomato 80g
+- Macros: Protein 22g, Carbs 20g, Fats 12g
+- Budget: ₹60–70
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Substitute half paneer with tofu for lighter fats
+
+#### 67. Mutton Curry (Light Odia Style)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Lean mutton 150g, onion, tomato, garlic, spices
+- Macros: Protein 32g, Carbs 16g, Fats 18g
+- Budget: ₹130–150
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pressure cook; avoid cream or cashew paste
+
+#### 68. Saga Dal (Spinach Dal)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Spinach 200g, moong dal 60g, garlic, cumin
+- Macros: Protein 16g, Carbs 36g, Fats 6g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron-rich; great as a light dinner
+
+#### 69. Chicken Tarkari (Lean)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, ginger-garlic paste, onion, tomato
+- Macros: Protein 30g, Carbs 18g, Fats 12g
+- Budget: ₹80–90
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use lean breast; simmer slowly to reduce oil
+
+#### 70. Pumpkin Curry (Khatta Kaddu)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Pumpkin 200g, cumin, mustard seeds, chili
+- Macros: Protein 7g, Carbs 34g, Fats 6g
+- Budget: ₹20–25
 - Prep: 20 mins
-- Tip: Mustard is anti-inflammatory
+- GI: Low ⭐⭐⭐
+- Tip: Natural sweetness; add chickpeas for protein
+
+### SNACK OPTIONS
+
+#### 71. Chuda Bhaja (Roasted Poha Snack)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Flattened rice 60g, peanuts 20g, curry leaves, mustard seeds
+- Macros: Protein 8g, Carbs 36g, Fats 7g
+- Budget: ₹20–25
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Dry-roast for a crisp, light evening snack
+
+#### 72. Mudhi Mix (Puffed Rice Salad)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Puffed rice 50g, onion, cucumber, tomato, lemon
+- Macros: Protein 5g, Carbs 32g, Fats 4g
+- Budget: ₹15–20
+- Prep: 10 mins
+- GI: Medium ⭐⭐
+- Tip: Add roasted chana for protein boost
+
+#### 73. Fish Cutlet (Baked)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Fish 100g, oats crumb 20g, onion, garlic
+- Macros: Protein 22g, Carbs 20g, Fats 8g
+- Budget: ₹60–70
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of frying; perfect coastal protein snack
+
+#### 74. Aloo Chop (Air-Fried Potato Patty)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Potato 100g, besan 25g, onion, chili
+- Macros: Protein 6g, Carbs 42g, Fats 8g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Use sweet potato instead for lower GI
+
+#### 75. Dahi Bara Aloo Dum (Low-Oil Version)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Lentil vada 2 pcs, curd 100ml, boiled potato 50g
+- Macros: Protein 10g, Carbs 35g, Fats 7g
+- Budget: ₹30–35
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Air-fry vadas; probiotic and filling
+
+#### 76. Prawn Skewer
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Prawns 100g, mustard paste, lemon, chili
+- Macros: Protein 26g, Carbs 6g, Fats 9g
+- Budget: ₹70–80
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill with mustard marinade; coastal favorite
+
+#### 77. Chhena Balls (Low-Sugar)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Fresh paneer 80g, stevia 1 tsp, cardamom
+- Macros: Protein 14g, Carbs 10g, Fats 7g
+- Budget: ₹30–35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of syrup soak for PCOS-friendly dessert
+
+#### 78. Soya Nuggets (Roasted)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Soya chunks 100g, pepper, garlic powder
+- Macros: Protein 25g, Carbs 12g, Fats 5g
+- Budget: ₹35–40
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: High-protein, low-GI; best evening bite
+
+#### 79. Chicken Pop (Grilled)
+- State: Odisha
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, curd, herbs
+- Macros: Protein 26g, Carbs 8g, Fats 10g
+- Budget: ₹55–65
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill instead of fry; light and juicy
+
+#### 80. Sweet Pitha Bites (Steamed)
+- State: Odisha
+- Type: Vegetarian
+- Ingredients: Rice flour 60g, coconut 20g, jaggery 10g
+- Macros: Protein 7g, Carbs 35g, Fats 6g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam for soft texture; natural sweetness
+
+---
+
+## JHARKHAND REGIONAL CUISINE
+*Jharkhand cuisine is simple yet earthy — rooted in tribal traditions, forest produce, and millet-based meals. For PCOS health, this cuisine adapts beautifully through its natural use of legumes, leafy greens, and low-oil cooking techniques like steaming and roasting.*
+
+### BREAKFAST OPTIONS
+
+#### 81. Dhuska (Rice-Lentil Pancake)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rice 80 g, chana dal 50 g, cumin, coriander
+- Macros: Protein 14 g, Carbs 42 g, Fats 8 g
+- Budget: ₹30–35
+- Prep: 30 mins (after soaking)
+- GI: Low ⭐⭐⭐
+- Tip: Shallow-fry on tawa using minimal oil
+
+#### 82. Thekua (Whole-Wheat Jaggery Cookie)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Whole-wheat flour 80 g, jaggery 20 g, ghee 5 g
+- Macros: Protein 7 g, Carbs 40 g, Fats 6 g
+- Budget: ₹20–25
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of deep-fry for fibre-rich sweetness
+
+#### 83. Chana Sattu Drink
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Roasted gram flour 30 g, lemon juice, water 200 ml
+- Macros: Protein 12 g, Carbs 18 g, Fats 4 g
+- Budget: ₹10–15
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Excellent protein breakfast; balances sugar levels
+
+#### 84. Rugra Bhurji (Mushroom Stir-Fry)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rugra mushrooms 100 g, onion, tomato, mustard oil 1 tsp
+- Macros: Protein 10 g, Carbs 20 g, Fats 6 g
+- Budget: ₹45–55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Rugra is rich in selenium, aids hormone balance
+
+#### 85. Anda Dhuska
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Rice-dal batter 80 g, egg 1, spices
+- Macros: Protein 18 g, Carbs 40 g, Fats 10 g
+- Budget: ₹35–40
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Add boiled egg topping instead of mixing
+
+#### 86. Tilkut (Sesame-Jaggery Bar)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Sesame 40 g, jaggery 15 g
+- Macros: Protein 6 g, Carbs 28 g, Fats 8 g
+- Budget: ₹20–25
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Good source of calcium and healthy fats
+
+#### 87. Pitha (Rice Cake)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rice flour 60 g, grated coconut 20 g, jaggery 10 g
+- Macros: Protein 8 g, Carbs 38 g, Fats 5 g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam instead of fry; light and filling
+
+#### 88. Egg Bhurji with Roti
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, onion, tomato, whole-wheat roti 2
+- Macros: Protein 24 g, Carbs 38 g, Fats 15 g
+- Budget: ₹45–55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Add spinach for extra iron
+
+#### 89. Millet Porridge (Kodo Daliya)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Kodo millet 60 g, milk 100 ml, nuts 10 g
+- Macros: Protein 9 g, Carbs 35 g, Fats 6 g
+- Budget: ₹25–30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Millet stabilises insulin response
+
+#### 90. Chicken Sattu Wrap
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100 g, roti 1, sattu 15 g
+- Macros: Protein 26 g, Carbs 35 g, Fats 11 g
+- Budget: ₹60–70
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Use curd-based dressing; high in protein
+
+### LUNCH OPTIONS
+
+#### 91. Dal Bhat with Lauki Curry
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Moong dal 100 g, brown rice 70 g, bottle gourd 200 g
+- Macros: Protein 18 g, Carbs 50 g, Fats 8 g
+- Budget: ₹35–40
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Classic combination; fibre-rich
+
+#### 92. Rugra Curry with Rice
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rugra mushrooms 120 g, tomato, onion
+- Macros: Protein 12 g, Carbs 38 g, Fats 9 g
+- Budget: ₹45–50
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein from mushrooms; earthy flavour
+
+#### 93. Handia-Steamed Vegetables
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Fermented rice water 200 ml, vegetables 150 g
+- Macros: Protein 7 g, Carbs 30 g, Fats 4 g
+- Budget: ₹25–30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fermented liquid promotes gut health
+
+#### 94. Fish Curry with Red Rice
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Fish 150 g, tomato, mustard seeds
+- Macros: Protein 30 g, Carbs 45 g, Fats 12 g
+- Budget: ₹85–95
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard paste; rich in omega-3
+
+#### 95. Dhuska with Ghugni
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Dhuska 2, peas 80 g, tomato gravy
+- Macros: Protein 15 g, Carbs 42 g, Fats 10 g
+- Budget: ₹35–40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Steam Dhuska first, then shallow-fry
+
+#### 96. Mutton Curry with Millet Roti
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150 g, jowar roti 2
+- Macros: Protein 32 g, Carbs 40 g, Fats 16 g
+- Budget: ₹110–130
+- Prep: 60 mins
+- GI: Low ⭐⭐⭐
+- Tip: Choose lean cuts; avoid ghee
+
+#### 97. Kodo Khichdi
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Kodo millet 70 g, moong dal 60 g, vegetables
+- Macros: Protein 15 g, Carbs 42 g, Fats 7 g
+- Budget: ₹30–35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Great for lunch; improves insulin sensitivity
+
+#### 98. Chicken Curry with Rice
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150 g, onion, tomato, rice 70 g
+- Macros: Protein 30 g, Carbs 45 g, Fats 13 g
+- Budget: ₹80–90
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard oil sparingly
+
+#### 99. Aloo Baigan Curry
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Potato 100 g, brinjal 100 g, cumin
+- Macros: Protein 8 g, Carbs 40 g, Fats 7 g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Add tofu cubes for extra protein
+
+#### 100. Egg Curry with Brown Rice
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, onion, tomato, rice 70 g
+- Macros: Protein 25 g, Carbs 45 g, Fats 14 g
+- Budget: ₹45–55
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Simple, wholesome high-protein meal
+
+### DINNER OPTIONS
+
+#### 101. Rice-Dal Soup (Jharkhand Comfort Bowl)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Moong dal 60 g, red rice 50 g, cumin, turmeric
+- Macros: Protein 15 g, Carbs 42 g, Fats 6 g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Add spinach for extra iron; excellent for light dinners
+
+#### 102. Rugra Stir-Fry
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rugra mushrooms 120 g, onion, garlic, tomato
+- Macros: Protein 11 g, Carbs 28 g, Fats 8 g
+- Budget: ₹45–50
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Low-oil sauté; pairs well with millet roti
+
+#### 103. Mutton Stew
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150 g (lean), potato 50 g, carrot 50 g, pepper
+- Macros: Protein 30 g, Carbs 35 g, Fats 14 g
+- Budget: ₹110–120
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Slow-cook to retain flavor without excess oil
+
+#### 104. Spinach-Lentil Curry
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Spinach 200 g, moong dal 70 g, garlic, cumin
+- Macros: Protein 18 g, Carbs 40 g, Fats 7 g
+- Budget: ₹30–35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron-rich dinner option; improves metabolism
+
+#### 105. Chicken Roast (Grilled)
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150 g, curd 50 g, garlic, chili
+- Macros: Protein 32 g, Carbs 10 g, Fats 12 g
+- Budget: ₹80–90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Yogurt-based marinade helps tenderize naturally
+
+#### 106. Sattu Soup
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Sattu 40 g, cumin, lemon, water 250 ml
+- Macros: Protein 12 g, Carbs 20 g, Fats 4 g
+- Budget: ₹15–20
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Warm or cold; balances insulin sensitivity
+
+#### 107. Fish Tikka
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Fish 150 g, mustard-yogurt marinade, lemon
+- Macros: Protein 30 g, Carbs 8 g, Fats 11 g
+- Budget: ₹80–90
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill or air-fry; no oil needed
+
+#### 108. Vegetable Khichdi
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rice 50 g, moong dal 60 g, carrot, beans
+- Macros: Protein 16 g, Carbs 40 g, Fats 6 g
+- Budget: ₹25–30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Gentle on gut; ideal for late dinners
+
+#### 109. Paneer Bhurji with Roti
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Paneer 120 g, tomato, onion, spices, roti 1
+- Macros: Protein 24 g, Carbs 35 g, Fats 13 g
+- Budget: ₹60–70
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Use low-fat paneer or tofu for PCOS-friendly protein
+
+#### 110. Pork Curry (Tribal Style)
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Pork 150 g, bamboo shoot, ginger-garlic, tomato
+- Macros: Protein 28 g, Carbs 15 g, Fats 16 g
+- Budget: ₹100–120
+- Prep: 60 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional tribal recipe; slow-cooked, low-oil
+
+### SNACK OPTIONS
+
+#### 111. Sattu Ladoo
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Roasted gram flour 40 g, jaggery 10 g, ghee 5 g
+- Macros: Protein 9 g, Carbs 30 g, Fats 6 g
+- Budget: ₹20–25
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Natural energy bite; stabilises blood sugar
+
+#### 112. Roasted Makhanas
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Fox nuts 30 g, ghee 2 g, spices
+- Macros: Protein 5 g, Carbs 18 g, Fats 4 g
+- Budget: ₹15–20
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Crunchy evening snack rich in magnesium
+
+#### 113. Chicken Skewers
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100 g, yogurt, lemon
+- Macros: Protein 26 g, Carbs 8 g, Fats 10 g
+- Budget: ₹60–70
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill with curd-based marinade
+
+#### 114. Steamed Pitha Bites
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Rice flour 40 g, jaggery 10 g, coconut 10 g
+- Macros: Protein 7 g, Carbs 32 g, Fats 5 g
+- Budget: ₹25–30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam to retain nutrients
+
+#### 115. Fish Popcorn
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Fish 100 g, oat crumb coating
+- Macros: Protein 22 g, Carbs 20 g, Fats 9 g
+- Budget: ₹70–80
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of deep-fry
+
+#### 116. Millet Crackers
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Foxtail millet flour 50 g, olive oil 5 g
+- Macros: Protein 6 g, Carbs 28 g, Fats 6 g
+- Budget: ₹20–25
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Oven-baked; gluten-free
+
+#### 117. Pork Momos
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Minced pork 100 g, wheat wrapper 3 pcs
+- Macros: Protein 25 g, Carbs 30 g, Fats 11 g
+- Budget: ₹70–80
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Steam, don’t fry; authentic tribal snack
+
+#### 118. Sprout Salad
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Mixed sprouts 100 g, lemon, tomato
+- Macros: Protein 14 g, Carbs 28 g, Fats 4 g
+- Budget: ₹25–30
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Add black salt and raw mango
+
+#### 119. Egg Cutlets (Baked)
+- State: Jharkhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, potato 50 g, bread crumb (oats)
+- Macros: Protein 20 g, Carbs 25 g, Fats 9 g
+- Budget: ₹40–45
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Air-fry for crispness
+
+#### 120. Banana Chips (Baked)
+- State: Jharkhand
+- Type: Vegetarian
+- Ingredients: Raw banana 100 g, olive oil 5 g
+- Macros: Protein 4 g, Carbs 30 g, Fats 5 g
+- Budget: ₹20–25
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Bake thin slices; potassium-rich
+
+# East Indian PCOS-Friendly Meal Templates (Remaining States – V2, Non‑Repetitive)
+
+## ASSAM REGIONAL CUISINE
+*Known for river fish, red rice, and fermented notes; steaming and mild spice make PCOS‑friendly tweaks natural.*
+
+### BREAKFAST OPTIONS
+
+#### 121. Jolpan Samhita (Assamese Breakfast Set)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Chira 60g, curd 120ml, banana small, jaggery 10g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹33
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 122. Komal Saul Doi (Soft Rice with Yogurt)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Komal saul 70g, curd 120ml, jaggery 10g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹45
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 123. Til Pitha (Sesame Rice Roll)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Rice flour 60g, sesame 20g, jaggery 10g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹32
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 124. Bora Saul Poha Bhaji
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Thick poha 60g, peanuts 10g, onion, mustard seeds
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹41
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 125. Xaak Bhaji Ruti Set (Greens + Roti)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Greens 150g, whole‑wheat roti 2
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹32
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 126. Masor Tenga Omelette Wrap
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, tomato, lemon, whole‑wheat roti 1
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹83
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 127. Chakhao Lite Bowl (Black Rice Porridge)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Black rice 50g, milk 120ml, stevia
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹32
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 128. Poita Bhaat Herb Cup
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Soaked rice 70g, onion, green chili, mustard oil drops
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹22
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 129. Roasted Gram & Dim Jolpan
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Roasted chana 30g, boiled egg 1, cucumber
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹78
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 130. Chicken Bhujia Roti
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, spices, jowar roti 1
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹55
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+
+### LUNCH OPTIONS
+
+#### 131. Masor Tenga (Sour Fish Curry)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: River fish 150g, tomato, lemon, mustard
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹91
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 132. Ou Tenga Dal (Elephant Apple Lentils)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Toor dal 100g, ou tenga 50g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹25
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 133. Khar Lau (Alkaline Gourd Broth)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Bottle gourd 150g, khar filtrate
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹42
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 134. Haah Jool (Duck Broth – Light)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Duck 150g, ginger, pepper
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹56
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 135. Xoru Maas Pora (Small Fish Grill)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Small river fish 150g, lemon
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹86
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 136. Lai Xaak with Red Rice
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Mustard greens 150g, red rice 60g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹36
+- Prep: 38 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 137. Aloo Pitika & Moong Dal
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Mashed potato 120g, moong dal 80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹40
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 138. Chicken Tenga (Tangy Chicken)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, tomato, lemon
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹82
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 139. Red Rice Khichdi (Assamese)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Red rice 60g, moong dal 60g, vegetables
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹23
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 140. Chingri Bhaji with Brown Rice
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, onion, garlic, brown rice 60g
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹104
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+
+### DINNER OPTIONS
+
+#### 141. Fish Pora Mash (Charred Fish)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, mustard oil drops, onion
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹115
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 142. Xaak‑Jool (Greens Broth)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Mixed greens 180g, ginger, cumin
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹23
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 143. Patot Dia Chicken (Banana‑Leaf Wrap)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, herbs, lemon
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹101
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 144. Black Rice + Moong Dal Bowl
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Black rice 60g, moong dal 70g, veggies
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹22
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 145. Haah Roast (Pepper Duck – Lite)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Duck 150g, pepper, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹98
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 146. Vegetable Khar Curry
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Seasonal veg 200g, khar filtrate
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹29
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 147. Prawn Jool (Assamese Stew)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, tomato, ginger
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹58
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 148. Mixed Veg Tenga
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Tomato 120g, ash gourd 100g, lemon
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹42
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 149. Dim Tenga (Tangy Egg Curry)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, tomato, lemon
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹108
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 150. Paneer‑Xaak Stir Fry
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Paneer 120g, greens 150g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹41
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+
+### SNACKS OPTIONS
+
+#### 151. Muri‑Masala Mix
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Puffed rice 50g, roasted chana 20g, onion, lemon
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹33
+- Prep: 12 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 152. Tilor Ladoo
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Sesame 40g, jaggery 12g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹39
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 153. Baked Fish Cutlet (Assamese)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Fish 100g, oat crumb
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹100
+- Prep: 27 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 154. Haah Skewers (Duck Sticks)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Duck 100g, lemon, pepper
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹71
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 155. Aloo Pitika Cups
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Mashed potato 100g, spring onion
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹35
+- Prep: 11 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 156. Chicken Pora Bites
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Shredded chicken 100g, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹119
+- Prep: 24 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 157. Chira‑Moong Crunch
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Flattened rice 40g, roasted moong 20g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹39
+- Prep: 16 mins
+- GI: Medium ⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 158. Air‑fried Prawn Bhujia
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Prawns 100g, gram batter 20g
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹112
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Squeeze lemon at the end to preserve vitamin C.
+#### 159. Black Rice Pops (Chakhao)
+- State: Assam
+- Type: Vegetarian
+- Ingredients: Black rice 40g, peanuts 15g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹45
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+#### 160. Dim Chop (Air‑fried Egg Chop)
+- State: Assam
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, potato 60g, oats crumb
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹56
+- Prep: 11 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use mustard oil sparingly; focus on steaming and grilling.
+
+---
+
+
+## SIKKIM REGIONAL CUISINE
+*Nepali–Tibetan–Lepcha influences with steaming and fermentation; light broths, barley and buckwheat suit PCOS well.*
+
+### BREAKFAST OPTIONS
+
+#### 161. Gundruk Jhol Porridge
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹38
+- Prep: 14 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 162. Sel Roti (Baked) & Curd
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹42
+- Prep: 18 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 163. Kinema Stir Bowl
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹26
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 164. Buckwheat Pancake (Phapar)
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹42
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 165. Tsampa Chicken Bowl
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹119
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 166. Thenthuk Egg Cup
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹96
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 167. Makai Bhutan (Corn Stir)
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹45
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 168. Tofu Millet Wrap
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹23
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 169. Chhurpi Protein Cup
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹25
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 170. Veg Thukpa Lite
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹33
+- Prep: 11 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+
+### LUNCH OPTIONS
+
+#### 171. Chicken Thukpa Broth
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹99
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 172. Phagshapa (Radish‑Pork Lean)
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹68
+- Prep: 43 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 173. Kinema Curry Red Rice
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹37
+- Prep: 32 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 174. Gundruk Sadeko Salad
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹37
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 175. Chhurpi Greens Stew
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹30
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 176. Chicken Shapta Fry
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹109
+- Prep: 43 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 177. Buckwheat Roti Set
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹43
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 178. Chicken Momos (Steamed)
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹112
+- Prep: 37 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 179. Tofu‑Spinach Thukpa
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹44
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 180. Trout Tawa Grill
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹76
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+
+### DINNER OPTIONS
+
+#### 181. Mushroom Thukpa Bowl
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹40
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 182. Gyathuk Chicken
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹104
+- Prep: 34 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 183. Tofu Mustard‑Greens Fry
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹23
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 184. Steamed Pork Bamboo
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹117
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 185. Barley & Dal Soup
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹44
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 186. Egg Curry (Himalayan)
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹100
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 187. Veg Shapta Dry
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹44
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 188. Teesta Trout Grill
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹66
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+#### 189. Chhurpi Veg Stew
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹23
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 190. Chicken–Barley Porridge
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹56
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean on fermentation (gundruk/kinema) for gut health.
+
+### SNACKS OPTIONS
+
+#### 191. Veg Momos (Steamed)
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Filling 120g, wheat wrappers 3–4, steamed
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹22
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 192. Chicken Momos (Steamed) – Sikkim
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹125
+- Prep: 27 mins
+- GI: Medium ⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 193. Sel Roti Crisps (Baked)
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹32
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 194. Kinema Lettuce Cups
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹24
+- Prep: 16 mins
+- GI: Medium ⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 195. Chhurpi Bites
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹45
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 196. Lean Pork Skewers
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹119
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 197. Tofu Chili Air‑fry
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹26
+- Prep: 12 mins
+- GI: Medium ⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 198. Egg Thenthuk Bites
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹70
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 199. Buckwheat Crackers
+- State: Sikkim
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹36
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+#### 200. Trout Fingers (Baked)
+- State: Sikkim
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹103
+- Prep: 11 mins
+- GI: Low ⭐⭐⭐
+- Tip: Steam momos instead of frying; skip refined sauces.
+
+---
+
+
+## MANIPUR REGIONAL CUISINE
+*Herb‑forward cuisine with fermented flavours; black rice and clear stews keep meals light and low‑GI.*
+
+### BREAKFAST OPTIONS
+
+#### 201. Chakhao Porridge
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹36
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 202. Singju Roti Roll
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹26
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 203. Nga‑Flake Omelette
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹79
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 204. Kangsoi Veg Bowl
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹41
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 205. Kanghou Soy Fry
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹28
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 206. Boiled Egg & Greens
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹85
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 207. Millet Pitha (Steamed)
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹40
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 208. Chamthong Rice Soup
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹32
+- Prep: 14 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 209. Chicken Herb Roll
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹118
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 210. Tofu Singju Cup
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹29
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+
+### LUNCH OPTIONS
+
+#### 211. Eromba (Fermented Mash + Fish)
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹83
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 212. Utong Thongba (Bamboo Curry)
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹34
+- Prep: 36 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 213. Nga Thongba (Fish Curry)
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹100
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 214. Yongchak Iromba
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹35
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 215. Masoor + Black Rice
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹42
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 216. Chicken Thongba
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹116
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 217. Soibum Curry (Fermented Bamboo)
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹32
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 218. Prawn Chili Dry
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹106
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 219. Hawai Thongba (Pumpkin)
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹32
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 220. Duck Herb Curry
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹55
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+
+### DINNER OPTIONS
+
+#### 221. Clear Chamthong Veg
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹32
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 222. Savory Oat–Chicken Broth
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹59
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 223. Black Rice Khichdi
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹29
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 224. Nga Kelli (Fish Stew)
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹83
+- Prep: 43 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 225. Tofu & Lai Greens
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹38
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 226. Egg Curry (Mairong)
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹95
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 227. Mushroom Chamthong
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹41
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 228. Herb Chicken Roast
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹68
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 229. Paneer + Black Rice
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹39
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 230. Lite Prawn Soup
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹84
+- Prep: 36 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+
+### SNACKS OPTIONS
+
+#### 231. Soibum Pakora Air‑fry
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹40
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 232. Chicken Herb Skewers
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹97
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 233. Singju Cups
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹36
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 234. Fish Fingers Baked
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹56
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 235. Black Rice Pops
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹44
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 236. Egg Chop Air‑fry
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹57
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 237. Soy Nugget Roast
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹45
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+#### 238. Duck Strips Grill
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹92
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 239. Tofu Chili Bites
+- State: Manipur
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹39
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use indigenous herbs generously; they add flavour without oil.
+#### 240. Prawn Skewers
+- State: Manipur
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹77
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pair black rice with protein to moderate glycemic response.
+
+---
+
+
+## MEGHALAYA REGIONAL CUISINE
+*Smoked meats, hill herbs, and red rice; grilling and sesame flavours adapt well to low‑oil cooking.*
+
+### BREAKFAST OPTIONS
+
+#### 241. Jadoh Lite Bowl
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹26
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 242. Pumaloi Steamed
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹35
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 243. Tungrymbai Scramble
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹35
+- Prep: 18 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 244. Pukhlein (Baked)
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹43
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 245. Millet Roti + Herb
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹33
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 246. Smoked Pork Omelette
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹64
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 247. Black Rice Porridge
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹39
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 248. Chicken Stew Cup
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹109
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 249. Cabbage Roti Set
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹38
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 250. Tofu Herb Wrap
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹22
+- Prep: 14 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+
+### LUNCH OPTIONS
+
+#### 251. Chicken Jadoh
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹55
+- Prep: 44 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 252. Dohkhlieh Pork Salad (Lean)
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹103
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 253. Tungrymbai Curry
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹44
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 254. Dohneiiong (Pork + Sesame)
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹86
+- Prep: 37 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 255. Veg Jadoh
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹40
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 256. Chicken + Lai Greens
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹66
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 257. Black Rice & Dal
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹37
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 258. Hill Herb Fish Grill
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹71
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 259. Pumpkin Masoor Curry
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹31
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 260. Egg Curry Hill Style
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+
+### DINNER OPTIONS
+
+#### 261. Smoked Pork + Mustard Greens
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹89
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 262. Tofu Sesame Fry
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹29
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 263. Pepper‑Lemon Chicken
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹90
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 264. Red Rice + Dal Soup
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹40
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 265. Hill Herb Fish Stew
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹60
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 266. Cabbage‑Carrot Chamthong
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹42
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 267. Tawa Prawn Chili
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹110
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 268. Paneer + Greens Stir
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹36
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 269. Egg Roast Dry
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹121
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 270. Millet Khichdi
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹28
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+
+### SNACKS OPTIONS
+
+#### 271. Pukhlein Bites Baked
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹35
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 272. Chicken Skewers
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹58
+- Prep: 26 mins
+- GI: Medium ⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 273. Lean Pork Sticks
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹84
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 274. Tungrymbai Lettuce Cups
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹28
+- Prep: 14 mins
+- GI: Medium ⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 275. Baked Fish Fingers
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹115
+- Prep: 24 mins
+- GI: Medium ⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 276. Black Rice Pops – Meghalaya
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹31
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 277. Tofu Chili Bites – Meghalaya
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹36
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 278. Egg Chop Air‑fry – Meghalaya
+- State: Meghalaya
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹82
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+#### 279. Pumpkin Seed Mix
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹22
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Sesame adds calcium—use modestly in stews.
+#### 280. Cabbage Cutlet Air‑fry
+- State: Meghalaya
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹27
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Prefer smoked meats trimmed of visible fat.
+
+---
+
+
+## MIZORAM REGIONAL CUISINE
+*Clean, fresh flavours with bamboo shoots and greens; light stews and steaming are default techniques.*
+
+### BREAKFAST OPTIONS
+
+#### 281. Chicken Sawchiar Porridge
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹94
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 282. Bai Veg Stew
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹42
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 283. Chhangban Lehkhabu (Baked)
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 284. Tofu + Mustard Greens Wrap
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹35
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 285. Lean Pork Omelette
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹90
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 286. Black Rice Porridge – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹31
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 287. Millet Roti + Herb – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹35
+- Prep: 18 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 288. Chicken Stew Cup – Mizoram
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹78
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 289. Bamboo Shoot Stir
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹24
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 290. Egg + Greens Wrap
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹123
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+
+### LUNCH OPTIONS
+
+#### 291. Bai + Red Rice
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹29
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 292. Smoked Pork + Bamboo (Lean)
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹60
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 293. Chicken Sawhchiar Broth
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹99
+- Prep: 36 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 294. Paneer + Mustard Greens
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹45
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 295. Mizo Fish Curry
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹123
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 296. Tofu Bai
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹39
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 297. Lean Pork Stew
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹107
+- Prep: 38 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 298. Black Rice & Dal – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹40
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 299. Light Egg Curry
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹81
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 300. Pumpkin Lentil Curry
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹31
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+
+### DINNER OPTIONS
+
+#### 301. Steamed Pork & Greens
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹72
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 302. Tofu Chili‑Lime Fry
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹28
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 303. Pepper Chicken Roast
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹123
+- Prep: 43 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 304. Mizo Rice + Dal Soup
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹31
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 305. Herb Fish Stew
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹56
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 306. Bamboo + Veg Fry
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹30
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 307. Prawn Chili Tawa
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹87
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 308. Paneer Greens Khichdi
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹37
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 309. Egg Roast Dry – Mizoram
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹100
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 310. Millet Khichdi – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹40
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+
+### SNACKS OPTIONS
+
+#### 311. Veg Momos Steamed
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Filling 120g, wheat wrappers 3–4, steamed
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹26
+- Prep: 27 mins
+- GI: Medium ⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 312. Chicken Momos Steamed
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹120
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 313. Lean Pork Skewers – Mizoram
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹108
+- Prep: 17 mins
+- GI: Medium ⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 314. Bamboo Cutlet Air‑fry
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹44
+- Prep: 26 mins
+- GI: Medium ⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 315. Baked Fish Fingers – Mizoram
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹107
+- Prep: 14 mins
+- GI: Medium ⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 316. Black Rice Pops – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹43
+- Prep: 18 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 317. Tofu Chili Bites – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹24
+- Prep: 22 mins
+- GI: Medium ⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+#### 318. Egg Chop Air‑fry – Mizoram
+- State: Mizoram
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹123
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 319. Pumpkin Seed Trail
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹36
+- Prep: 27 mins
+- GI: Medium ⭐⭐
+- Tip: Boil or steam, then flash‑sauté to limit oil absorption.
+#### 320. Cabbage Cutlet Air‑fry – Mizoram
+- State: Mizoram
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹25
+- Prep: 26 mins
+- GI: Medium ⭐⭐
+- Tip: Bamboo shoots add fibre with minimal calories.
+
+---
+
+
+## NAGALAND REGIONAL CUISINE
+*Smoked meats, axone (fermented soy), and raja mircha define bold flavours; boiling and steaming are common.*
+
+### BREAKFAST OPTIONS
+
+#### 321. Millet Roti + Axone Chutney
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹22
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 322. Lean Pork Omelette – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹84
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 323. Spinach Rice Stew
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹23
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 324. Tofu Bamboo Stir
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹39
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 325. Chicken Herb Broth
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹78
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 326. Black Rice Porridge – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹32
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 327. Axone Red Rice (Baked)
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹35
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 328. Prawn Omelette
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹111
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 329. Pumpkin Porridge
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹44
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 330. Egg + Greens Wrap – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹112
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+
+### LUNCH OPTIONS
+
+#### 331. Smoked Pork + Bamboo (Lean) – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹110
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 332. Axone Veg Curry
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹44
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 333. Raja Mircha Chicken (Lite)
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹61
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 334. Herb Fish Stew – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹96
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 335. Black Rice & Dal – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹25
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 336. Veg Bamboo Stew
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹41
+- Prep: 38 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 337. Prawn Chili Tawa – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹63
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 338. Paneer + Greens Fry
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹42
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 339. Pumpkin Lentil Curry – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹43
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 340. Light Egg Curry – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹116
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+
+### DINNER OPTIONS
+
+#### 341. Steamed Pork + Mustard Greens
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹62
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 342. Tofu Chili‑Lime Fry – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹33
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 343. Pepper Chicken Roast – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹109
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 344. Naga Rice + Dal Soup
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹23
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 345. Herb Fish Stew – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹58
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 346. Bamboo Veg Fry
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹31
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 347. Prawn Chili Tawa – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹94
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 348. Paneer Greens Khichdi – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹35
+- Prep: 44 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 349. Egg Roast Dry – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹105
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 350. Millet Khichdi – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹28
+- Prep: 23 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+
+### SNACKS OPTIONS
+
+#### 351. Veg Momos Steamed – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Filling 120g, wheat wrappers 3–4, steamed
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹36
+- Prep: 19 mins
+- GI: Medium ⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 352. Chicken Momos Steamed – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹86
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 353. Lean Pork Skewers – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹107
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 354. Bamboo Cutlet Air‑fry – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹31
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 355. Baked Fish Fingers – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹64
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+#### 356. Black Rice Pops – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹44
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 357. Tofu Chili Bites – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹33
+- Prep: 29 mins
+- GI: Medium ⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 358. Egg Chop Air‑fry – Nagaland
+- State: Nagaland
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹58
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 359. Pumpkin Seed Mix – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹34
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Raja mircha adds heat—use sparingly for stomach comfort.
+#### 360. Cabbage Cutlet Air‑fry – Nagaland
+- State: Nagaland
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹22
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Axone brings umami; combine with greens for balance.
+
+---
+
+
+## TRIPURA REGIONAL CUISINE
+*Mui Borok uses berma (fermented fish) and bamboo; steaming and simple broths make PCOS‑friendly dishes easy.*
+
+### BREAKFAST OPTIONS
+
+#### 361. Chakhwi + Millet Roti
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹42
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 362. Tofu Herb Wrap – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹29
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 363. Berma Omelette
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Fermented base 20–40g, vegetable/protein base
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹30
+- Prep: 21 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 364. Poha Tripuri
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹23
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 365. Black Rice Porridge – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹45
+- Prep: 13 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 366. Chicken Stew Cup – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹84
+- Prep: 18 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 367. Bamboo Shoot Stir – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹37
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 368. Egg + Greens Wrap – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹77
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 369. Pumpkin Porridge – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹28
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 370. Millet Roti + Herb – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹33
+- Prep: 14 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+
+### LUNCH OPTIONS
+
+#### 371. Mui Borok Fish (Berma)
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹118
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 372. Bamboo + Veg Stew
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹30
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 373. Chicken Chili Tawa
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹64
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 374. Herb Fish Grill
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹112
+- Prep: 43 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 375. Black Rice & Dal – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹24
+- Prep: 41 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 376. Paneer + Greens Fry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹30
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 377. Prawn Chili
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹117
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 378. Pumpkin Lentil Curry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹23
+- Prep: 32 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 379. Light Egg Curry – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹58
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 380. Tofu Thukpa (Fusion)
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹43
+- Prep: 31 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+
+### DINNER OPTIONS
+
+#### 381. Steamed Fish + Greens
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹93
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 382. Tofu Chili‑Lime Fry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹29
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 383. Pepper Chicken Roast – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹68
+- Prep: 44 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 384. Red Rice + Dal Soup – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹39
+- Prep: 33 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 385. Lite Prawn Stew
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹69
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 386. Bamboo Veg Fry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹22
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 387. Paneer Greens Khichdi – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹22
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 388. Egg Roast Dry – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹64
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 389. Millet Khichdi – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹31
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 390. Mushroom Herb Bowl
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹33
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+
+### SNACKS OPTIONS
+
+#### 391. Veg Momos Steamed – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Filling 120g, wheat wrappers 3–4, steamed
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹24
+- Prep: 16 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 392. Chicken Momos Steamed – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹79
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 393. Berma Fish Sticks (Baked)
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹97
+- Prep: 19 mins
+- GI: Medium ⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 394. Bamboo Cutlet Air‑fry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹41
+- Prep: 24 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 395. Black Rice Pops – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹28
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 396. Tofu Chili Bites – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹29
+- Prep: 16 mins
+- GI: Medium ⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 397. Egg Chop Air‑fry – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹112
+- Prep: 18 mins
+- GI: Medium ⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 398. Pumpkin Seed Mix – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹29
+- Prep: 19 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+#### 399. Cabbage Cutlet Air‑fry – Tripura
+- State: Tripura
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹26
+- Prep: 26 mins
+- GI: Medium ⭐⭐
+- Tip: Berma is potent—use small amounts for depth, not bulk.
+#### 400. Chicken Skewers – Tripura
+- State: Tripura
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹88
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use red rice in measured portions to keep GI low.
+
+---
+
+
+## ARUNACHAL PRADESH REGIONAL CUISINE
+*Tribal diversity with buckwheat, millet, and river fish; steaming/boiling with herbs keeps dishes gentle.*
+
+### BREAKFAST OPTIONS
+
+#### 401. Zan Millet Porridge
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹33
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 402. Khura Buckwheat Pancake (Baked)
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹38
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 403. Chura Leafy Stew
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 14g, Carbs 36g, Fats 6g
+- Budget: ₹31
+- Prep: 14 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 404. Chicken Herb Broth – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹110
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 405. Lean Pork Omelette – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹94
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 406. Black Rice Porridge – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹43
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 407. Millet Roti + Herb – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹36
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 408. Egg + Greens Wrap – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹113
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 409. Bamboo Stir‑fry
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹26
+- Prep: 12 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 410. Tofu + Mustard Greens Wrap – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+
+### LUNCH OPTIONS
+
+#### 411. Lean Pork + Bamboo Shoots
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹61
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 412. Fermented Soy Curry (Local)
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹39
+- Prep: 39 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 413. Herb Chicken Stew
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹58
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 414. Ngatok (River Fish Grill)
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹121
+- Prep: 32 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 415. Red Rice & Dal Set
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹22
+- Prep: 28 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 416. Leafy Greens Stew
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹31
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 417. Prawn Chili Tawa – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹71
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 418. Paneer + Greens Fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹44
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 419. Pumpkin Lentil Curry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹45
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 420. Light Egg Curry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹102
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+
+### DINNER OPTIONS
+
+#### 421. Steamed Pork + Mustard Greens – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 30g, Carbs 15g, Fats 11g
+- Budget: ₹88
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 422. Tofu Chili‑Lime Fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹44
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 423. Pepper Chicken Roast – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹101
+- Prep: 44 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 424. Arunachali Rice + Dal Soup
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹28
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 425. Herb Fish Stew – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹86
+- Prep: 37 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 426. Bamboo Veg Fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹38
+- Prep: 26 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 427. Prawn Chili Tawa – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Prawns 120g, chili/onion, minimal oil
+- Macros: Protein 29g, Carbs 14g, Fats 13g
+- Budget: ₹101
+- Prep: 44 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 428. Paneer Greens Khichdi – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Paneer/Chhurpi 100–120g, greens 150g
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹24
+- Prep: 27 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 429. Egg Roast Dry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹75
+- Prep: 42 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 430. Millet Khichdi – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹29
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+
+### SNACKS OPTIONS
+
+#### 431. Veg Momos Steamed – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Filling 120g, wheat wrappers 3–4, steamed
+- Macros: Protein 12g, Carbs 38g, Fats 7g
+- Budget: ₹31
+- Prep: 12 mins
+- GI: Medium ⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 432. Chicken Momos Steamed – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 120–150g, tomato/stock, herbs
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹106
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 433. Lean Pork Skewers – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Pork 120–150g (lean), bamboo shoots/greens, herbs
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹119
+- Prep: 24 mins
+- GI: Medium ⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 434. Bamboo Cutlet Air‑fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Bamboo shoots 100–120g, veg/protein
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹28
+- Prep: 17 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 435. Baked Fish Fingers – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, lemon/herbs, light spice
+- Macros: Protein 32g, Carbs 18g, Fats 12g
+- Budget: ₹109
+- Prep: 22 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 436. Black Rice Pops – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Local grain 50–70g, dal/veg 60–80g
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹29
+- Prep: 29 mins
+- GI: Medium ⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+#### 437. Tofu Chili Bites – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Tofu 120–140g, greens/herbs
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹38
+- Prep: 15 mins
+- GI: Medium ⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 438. Egg Chop Air‑fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2–3, onion/tomato, spice
+- Macros: Protein 28g, Carbs 12g, Fats 12g
+- Budget: ₹96
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 439. Pumpkin Seed Mix – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 16g, Carbs 40g, Fats 7g
+- Budget: ₹24
+- Prep: 29 mins
+- GI: Low ⭐⭐⭐
+- Tip: Buckwheat and millet are great low‑GI staples—rotate them.
+#### 440. Cabbage Cutlet Air‑fry – Arunachal Pradesh
+- State: Arunachal Pradesh
+- Type: Vegetarian
+- Ingredients: Seasonal vegetables 150–200g, local spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹36
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Fresh river herbs add aroma without extra salt.
+
+---
+
+## REGIONAL INGREDIENT SUMMARY TABLE (RAG Helper)
+
+| State | Primary Grains | Protein Sources | Cooking Techniques | Core Flavors |
+|------|-----------------|-----------------|-------------------|--------------|
+| Assam | Red/black rice, komal saul | Fish, duck, chicken, eggs | Steaming, grilling, light stews | Sour (tenga), mild spice |
+| Sikkim | Buckwheat, barley, millets | Chicken, tofu, chhurpi | Steaming, fermentation, broths | Umami, herbal |
+| Manipur | Black rice, millets | Fish, soy, chicken, eggs | Clear stews, fermentation | Earthy, tangy |
+| Meghalaya | Red rice, millets | Pork (lean), chicken, soy | Smoking, grilling, boiling | Smoky, nutty, sesame |
+| Mizoram | Red rice, bamboo | Pork (lean), chicken, paneer | Steaming, boiling, light fry | Fresh, clean, light spice |
+| Nagaland | Red rice, millets | Pork (lean), chicken, fish | Smoking, stewing, steaming | Fiery (raja mircha), savory |
+| Tripura | Red rice, millets | Fish, chicken, eggs | Steaming, boiling, light grill | Spicy, fermented (berma) |
+| Arunachal Pradesh | Buckwheat, millets | Chicken, pork (lean), fish | Steaming, boiling | Herbal, subtle |
+
+*All templates are PCOS‑adapted: low oil, lean proteins, high‑fibre grains, and controlled portions.*

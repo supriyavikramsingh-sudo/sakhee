@@ -1,213 +1,1282 @@
-# West Indian PCOS-Friendly Meals
+# WEST INDIAN PCOS-FRIENDLY MEAL TEMPLATES
 
-## Breakfast Options
+This file contains state-wise structured PCOS-friendly meal templates for Maharashtra, Gujarat, and Goa, covering Breakfast, Lunch, Dinner, and Snacks — categorized into Vegetarian and Non-Vegetarian options, each with GI indicators and detailed nutritional information.
 
-### Methi Thepla (Low GI: ★★★)
-- Ingredients: Whole wheat flour 80g, fenugreek leaves 50g, yogurt 2 tbsp, ajwain, turmeric
-- Macros: Protein 10g, Carbs 35g, Fats 6g
-- Budget: ₹20-25
-- Prep: 20 mins
-- Tip: Fenugreek helps with insulin resistance
+---
 
-### Zunka Bhakri (Maharashtra)
-- Ingredients: Besan 80g, jowar bhakri 2, onion 1, green chili, curry leaves
-- Macros: Protein 14g, Carbs 38g, Fats 7g
-- Budget: ₹25-30
-- Prep: 25 mins
-- Tip: Jowar has low glycemic index
+## MAHARASHTRA REGIONAL CUISINE (PCOS-FRIENDLY MEAL TEMPLATES)
 
-### Handvo (Gujarati Savory Cake)
-- Ingredients: Mixed dal 50g, rice 30g, bottle gourd 100g, yogurt 50g, sesame seeds
-- Macros: Protein 12g, Carbs 32g, Fats 8g
-- Budget: ₹35-40
-- Prep: 35 mins
-- Tip: Fermented batter aids digestion
 
-### Poha with Sprouted Moong
-- Ingredients: Poha 50g, sprouted moong 30g, peanuts, curry leaves, mustard seeds
-- Macros: Protein 10g, Carbs 28g, Fats 8g
-- Budget: ₹20-25
-- Prep: 15 mins
-- Tip: Sprouts add protein and fiber
+### BREAKFAST OPTIONS
 
-### Bajra Rotla with Garlic Chutney
-- Ingredients: Bajra flour 80g, garlic 20g, green chili, coriander
-- Macros: Protein 8g, Carbs 40g, Fats 5g
-- Budget: ₹18-22
-- Prep: 20 mins
-- Tip: Bajra is rich in iron and magnesium
+#### 1. Poha with Sprouted Moong
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Poha 60g, sprouted moong 40g, peanuts 10g, curry leaves, mustard seeds  
+- **Macros:** Protein 12g, Carbs 40g, Fats 7g  
+- **Budget:** ₹25–30  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use thick poha and steam for a softer, lower-GI texture.
 
-## Lunch Options
+#### 2. Thalipeeth
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Multigrain flour 80g (bajra, jowar, wheat), onion, chili, yogurt 50g  
+- **Macros:** Protein 10g, Carbs 38g, Fats 8g  
+- **Budget:** ₹20–25  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Multigrain mix increases satiety and balances hormones.
 
-### Bharwan Bhindi with Multigrain Roti
-- Ingredients: Bhindi 200g, besan 30g, spices, multigrain flour 80g
-- Macros: Protein 11g, Carbs 38g, Fats 9g
-- Budget: ₹40-50
-- Prep: 30 mins
-- Tip: Okra helps regulate blood sugar
+#### 3. Zunka Bhakri
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Besan 80g, jowar bhakri 2, onion, garlic, chili  
+- **Macros:** Protein 14g, Carbs 40g, Fats 8g  
+- **Budget:** ₹25–30  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Protein-rich start to the day; skip oil-based tempering.
 
-### Varan Bhaat with Cabbage Sabzi (Maharashtra)
-- Ingredients: Toor dal 70g, brown rice 50g, cabbage 150g, coconut 10g
-- Macros: Protein 16g, Carbs 42g, Fats 7g
-- Budget: ₹35-45
-- Prep: 35 mins
-- Tip: Cabbage is low-calorie and high-fiber
+#### 4. Upma with Mixed Vegetables
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Rava 50g, vegetables 100g, ghee 1 tsp, mustard seeds  
+- **Macros:** Protein 8g, Carbs 42g, Fats 7g  
+- **Budget:** ₹20–25  
+- **Prep:** 15 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Add sprouts to increase protein.
 
-### Gujarati Dal with Jowar Roti
-- Ingredients: Toor dal 70g, jowar flour 80g, jaggery 5g, tamarind, peanuts
-- Macros: Protein 15g, Carbs 45g, Fats 8g
-- Budget: ₹30-40
-- Prep: 40 mins
-- Tip: Use minimal jaggery for PCOS-friendly version
+#### 5. Methi Thepla with Yogurt
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Whole wheat 80g, methi leaves 50g, yogurt 50g  
+- **Macros:** Protein 10g, Carbs 35g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Methi supports insulin sensitivity.
 
-### Vangi Bhaat (Brinjal Rice)
-- Ingredients: Brown rice 60g, brinjal 150g, peanuts 20g, coconut 15g, spices
-- Macros: Protein 10g, Carbs 40g, Fats 12g
-- Budget: ₹35-45
-- Prep: 30 mins
-- Tip: Use brown rice for lower GI
+#### 6. Anda Bhurji with Multigrain Toast
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, tomato, onion, multigrain toast 2  
+- **Macros:** Protein 25g, Carbs 28g, Fats 12g  
+- **Budget:** ₹45–55  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Add spinach or methi for fiber.
 
-### Amti with Nachni Bhakri
-- Ingredients: Toor dal 70g, ragi flour 80g, kokum, jaggery 5g, vegetables
-- Macros: Protein 14g, Carbs 42g, Fats 6g
-- Budget: ₹40-50
-- Prep: 35 mins
-- Tip: Ragi is calcium-rich and low GI
+#### 7. Chicken Keema Pav
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken mince 120g, onion, tomato, whole wheat pav 2  
+- **Macros:** Protein 28g, Carbs 40g, Fats 14g  
+- **Budget:** ₹65–75  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Grill pav with minimal ghee.
 
-### Rajasthani Gatte Ki Sabzi
-- Ingredients: Besan 100g, yogurt 50g, spices, whole wheat roti 2
-- Macros: Protein 18g, Carbs 38g, Fats 10g
-- Budget: ₹30-40
-- Prep: 40 mins
-- Tip: High protein from chickpea flour
+#### 8. Fish Cutlet (Pan-Fried)
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 100g, mashed potato 50g, egg 1, breadcrumbs  
+- **Macros:** Protein 24g, Carbs 30g, Fats 9g  
+- **Budget:** ₹60–70  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Air-fry instead of deep-frying.
 
-## Dinner Options
+#### 9. Egg Paratha
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Whole wheat 100g, egg 2, onion, chili  
+- **Macros:** Protein 22g, Carbs 40g, Fats 10g  
+- **Budget:** ₹35–45  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Cook on iron tawa to boost iron.
 
-### Undhiyu (Gujarati Mixed Vegetables)
-- Ingredients: Surti papdi 50g, sweet potato 50g, brinjal 100g, methi dumplings
-- Macros: Protein 10g, Carbs 35g, Fats 8g
-- Budget: ₹50-60
-- Prep: 45 mins
-- Tip: Rich in fiber and seasonal vegetables
+#### 10. Kombdi Egg Curry with Rice Bhakri
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 100g, egg 1, rice bhakri 1, coconut milk  
+- **Macros:** Protein 30g, Carbs 38g, Fats 14g  
+- **Budget:** ₹80–90  
+- **Prep:** 40 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Light coconut milk keeps it PCOS-friendly.
 
-### Zunka with Nachni Roti
-- Ingredients: Besan 80g, ragi flour 80g, onion 1, spices
-- Macros: Protein 16g, Carbs 40g, Fats 7g
-- Budget: ₹25-35
-- Prep: 25 mins
-- Tip: Light, protein-rich dinner
 
-### Pithla Bhakri (Maharashtra)
-- Ingredients: Besan 80g, jowar flour 80g, onion, green chili, garlic
-- Macros: Protein 15g, Carbs 42g, Fats 8g
-- Budget: ₹22-30
-- Prep: 20 mins
-- Tip: Simple, economical, and nutritious
+### LUNCH OPTIONS
 
-### Kadhi with Brown Rice
-- Ingredients: Yogurt 100g, besan 30g, brown rice 50g, spices
-- Macros: Protein 12g, Carbs 38g, Fats 9g
-- Budget: ₹30-40
-- Prep: 30 mins
-- Tip: Probiotic-rich from yogurt
+#### 11. Varan Bhaat with Cabbage Sabzi
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Toor dal 80g, brown rice 60g, cabbage 150g  
+- **Macros:** Protein 18g, Carbs 45g, Fats 7g  
+- **Budget:** ₹40–45  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Classic comfort meal, low GI if brown rice used.
 
-### Dal Dhokli
-- Ingredients: Whole wheat flour 60g, toor dal 70g, vegetables 100g
-- Macros: Protein 16g, Carbs 40g, Fats 6g
-- Budget: ₹30-40
-- Prep: 35 mins
-- Tip: One-pot nutritious meal
+#### 12. Bharli Vangi (Stuffed Brinjal)
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Brinjal 200g, peanuts 15g, coconut 10g, spices  
+- **Macros:** Protein 8g, Carbs 28g, Fats 12g  
+- **Budget:** ₹30–35  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Roast masala instead of frying.
 
-### Bharli Vangi (Stuffed Brinjal)
-- Ingredients: Brinjal 200g, peanuts 20g, coconut 15g, spices
-- Macros: Protein 8g, Carbs 20g, Fats 14g
-- Budget: ₹35-45
-- Prep: 35 mins
-- Tip: Low-carb dinner option
+#### 13. Amti with Ragi Bhakri
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Toor dal 80g, tamarind, ragi flour 80g, kokum  
+- **Macros:** Protein 15g, Carbs 42g, Fats 6g  
+- **Budget:** ₹35–40  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Ragi improves calcium and insulin balance.
 
-## Snacks
+#### 14. Masale Bhaat
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Brown rice 70g, vegetables 150g, coconut 10g  
+- **Macros:** Protein 10g, Carbs 48g, Fats 7g  
+- **Budget:** ₹35–40  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Add sprouts for extra protein.
 
-### Kothimbir Vadi (Coriander Fritters)
-- Ingredients: Besan 50g, coriander 50g, sesame seeds, spices
-- Macros: Protein 10g, Carbs 18g, Fats 8g
-- Budget: ₹20-25
-- Prep: 25 mins
-- Tip: Steamed version is healthier
+#### 15. Pitla Bhakri
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Besan 80g, onion, garlic, jowar bhakri 2  
+- **Macros:** Protein 16g, Carbs 38g, Fats 7g  
+- **Budget:** ₹25–30  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High protein, low carb meal.
 
-### Moong Dal Dhokla
-- Ingredients: Moong dal 80g, ginger, green chili, eno/baking soda
-- Macros: Protein 14g, Carbs 22g, Fats 4g
-- Budget: ₹25-30
-- Prep: 30 mins
-- Tip: High protein, low fat
+#### 16. Malvani Chicken Curry with Brown Rice
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, coconut 20g, brown rice 70g  
+- **Macros:** Protein 32g, Carbs 45g, Fats 15g  
+- **Budget:** ₹90–100  
+- **Prep:** 40 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use light coconut milk for a lighter version.
 
-### Roasted Chana with Puffed Rice
-- Ingredients: Roasted chana 30g, murmura 20g, onion, tomato, lemon
-- Macros: Protein 8g, Carbs 25g, Fats 4g
-- Budget: ₹15-20
-- Prep: 5 mins
-- Tip: Crunchy and filling
+#### 17. Kolhapuri Mutton Sukka with Jowar Bhakri
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Mutton 150g, grated coconut 15g, jowar bhakri 2  
+- **Macros:** Protein 35g, Carbs 40g, Fats 18g  
+- **Budget:** ₹120–140  
+- **Prep:** 90 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Skip oil tadka; pressure-cook first.
 
-### Mathri (Baked Version)
-- Ingredients: Whole wheat flour 60g, ajwain, sesame seeds, minimal oil
-- Macros: Protein 8g, Carbs 35g, Fats 6g
-- Budget: ₹15-20
-- Prep: 30 mins
-- Tip: Bake instead of frying
+#### 18. Nagpuri Saoji Chicken Curry
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, Saoji spice mix, curd, minimal oil  
+- **Macros:** Protein 32g, Carbs 30g, Fats 12g  
+- **Budget:** ₹85–95  
+- **Prep:** 50 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use curd for gravy instead of oil.
 
-### Sprouted Matki Usal
-- Ingredients: Sprouted matki 80g, onion, tomato, coconut 10g
-- Macros: Protein 12g, Carbs 20g, Fats 5g
-- Budget: ₹20-25
-- Prep: 20 mins (after sprouting)
-- Tip: Excellent protein source
+#### 19. Konkani Fish Curry
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, coconut milk 100ml, kokum, spices  
+- **Macros:** Protein 28g, Carbs 35g, Fats 12g  
+- **Budget:** ₹80–90  
+- **Prep:** 40 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Lightly simmer to retain nutrients.
 
-### Dry Fruit and Seed Mix
-- Ingredients: Almonds 10g, walnuts 10g, pumpkin seeds 10g, sunflower seeds 10g
-- Macros: Protein 8g, Carbs 10g, Fats 18g
-- Budget: ₹40-50
-- Prep: 0 mins
-- Tip: Control portions for calorie management
+#### 20. Prawns Khichdi
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, brown rice 70g, moong dal 40g  
+- **Macros:** Protein 30g, Carbs 45g, Fats 10g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Add leafy greens for fiber.
 
-## Regional Specialties
 
-### Misal Pav (Modified) - Maharashtra
-- Ingredients: Sprouted matki 100g, whole wheat pav 1, farsan 10g
-- Macros: Protein 15g, Carbs 40g, Fats 10g
-- Budget: ₹30-40
-- Prep: 30 mins
-- Tip: Limit pav to 1, focus on sprouts
+### DINNER OPTIONS
 
-### Sev Tamatar - Rajasthan
-- Ingredients: Tomatoes 200g, besan sev 20g, spices, roti 2
-- Macros: Protein 8g, Carbs 38g, Fats 9g
-- Budget: ₹25-35
-- Prep: 20 mins
-- Tip: Use minimal sev for garnish
+#### 21. Moong Dal Khichdi with Kadhi
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Moong dal 70g, brown rice 60g, yogurt 150ml  
+- **Macros:** Protein 16g, Carbs 42g, Fats 7g  
+- **Budget:** ₹30–35  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Comfort meal for digestion.
 
-### Thalipeeth - Maharashtra
-- Ingredients: Multigrain flour 80g (jowar, bajra, wheat), onion, spices
-- Macros: Protein 10g, Carbs 40g, Fats 7g
-- Budget: ₹20-28
-- Prep: 20 mins
-- Tip: Multi-millet option is best
+#### 22. Lauki Chana Dal
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Bottle gourd 200g, chana dal 80g, roti 2  
+- **Macros:** Protein 17g, Carbs 40g, Fats 6g  
+- **Budget:** ₹35–40  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Excellent for hormonal balance.
 
-## Beverages and Accompaniments
+#### 23. Palak Paneer with Roti
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Spinach 250g, low-fat paneer 120g, roti 2  
+- **Macros:** Protein 24g, Carbs 35g, Fats 13g  
+- **Budget:** ₹60–70  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Iron and calcium-rich meal.
 
-### Chaas (Buttermilk)
-- Ingredients: Yogurt 100ml, cumin, salt, coriander
-- Macros: Protein 3g, Carbs 5g, Fats 2g
-- Budget: ₹10-15
-- Tip: Probiotic-rich, aids digestion
+#### 24. Mixed Vegetable Curry with Millets
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Seasonal vegetables 200g, foxtail millet 70g  
+- **Macros:** Protein 12g, Carbs 45g, Fats 7g  
+- **Budget:** ₹40–45  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Millets help regulate insulin.
 
-### Kokum Sherbet (Sugar-free)
-- Ingredients: Kokum 10g, stevia, cumin powder, black salt
-- Macros: Protein 0g, Carbs 3g, Fats 0g
-- Budget: ₹15-20
-- Tip: Cooling and aids digestion
+#### 25. Tandalachi Bhakri with Amti
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Rice flour 80g, toor dal 70g, spices  
+- **Macros:** Protein 15g, Carbs 42g, Fats 8g  
+- **Budget:** ₹35–40  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use hand-ground flour for texture.
 
-### Karela Juice
-- Ingredients: Bitter gourd 100g, lemon, black salt
-- Macros: Protein 1g, Carbs 4g, Fats 0g
-- Budget: ₹10-15
-- Tip: Excellent for blood sugar control
+#### 26. Grilled Fish with Salad
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, yogurt marinade, salad 100g  
+- **Macros:** Protein 32g, Carbs 10g, Fats 11g  
+- **Budget:** ₹80–90  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High protein, quick dinner.
+
+#### 27. Egg Curry with Roti
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, onion-tomato gravy, whole wheat roti 2  
+- **Macros:** Protein 25g, Carbs 40g, Fats 12g  
+- **Budget:** ₹40–45  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Add spinach to gravy for fiber.
+
+#### 28. Tandoori Chicken with Sauteed Vegetables
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, yogurt marinade, vegetables 100g  
+- **Macros:** Protein 32g, Carbs 15g, Fats 11g  
+- **Budget:** ₹75–85  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Yogurt-based marinade aids digestion.
+
+#### 29. Prawns Sukka
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, coconut 15g, chili, garlic  
+- **Macros:** Protein 28g, Carbs 20g, Fats 13g  
+- **Budget:** ₹90–100  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Pan-roast instead of frying.
+
+#### 30. Chicken Stew (Konkani)
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, light coconut milk 120ml, curry leaves  
+- **Macros:** Protein 30g, Carbs 32g, Fats 12g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Gentle coconut milk curry good for dinner.
+
+
+### SNACKS & LIGHT MEALS
+
+#### 31. Kothimbir Vadi (Steamed)
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Besan 50g, coriander 50g, sesame, spices  
+- **Macros:** Protein 10g, Carbs 20g, Fats 8g  
+- **Budget:** ₹20–25  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Steam instead of deep-fry.
+
+#### 32. Sprouted Matki Usal
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Sprouted matki 80g, onion, tomato  
+- **Macros:** Protein 14g, Carbs 25g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Protein-dense evening meal.
+
+#### 33. Moong Dhokla
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Moong dal 100g, ginger, chili, ENO  
+- **Macros:** Protein 14g, Carbs 22g, Fats 4g  
+- **Budget:** ₹25–30  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Fermented and gut-friendly.
+
+#### 34. Baked Sabudana Vada
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Sabudana 60g, potato 50g, peanuts 15g  
+- **Macros:** Protein 9g, Carbs 45g, Fats 10g  
+- **Budget:** ₹25–30  
+- **Prep:** 35 mins  
+- **GI:** High ⭐  
+- **Tip:** Bake or air-fry to cut oil.
+
+#### 35. Dahi Poha Chaat
+- **State:** Maharashtra  
+- **Type:** Vegetarian  
+- **Ingredients:** Poha 40g, yogurt 150ml, veggies  
+- **Macros:** Protein 10g, Carbs 35g, Fats 6g  
+- **Budget:** ₹20–25  
+- **Prep:** 10 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Cooling probiotic snack.
+
+#### 36. Chicken Cutlets (Air-Fried)
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 120g, potato 30g, spices, egg white  
+- **Macros:** Protein 28g, Carbs 20g, Fats 8g  
+- **Budget:** ₹60–70  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Air-fry for crispness without oil.
+
+#### 37. Fish Tikka
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 120g, yogurt, chili, garlic  
+- **Macros:** Protein 30g, Carbs 10g, Fats 9g  
+- **Budget:** ₹70–80  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Excellent protein snack.
+
+#### 38. Chicken Soup (Kokum-Infused)
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 100g, kokum, pepper, herbs  
+- **Macros:** Protein 20g, Carbs 8g, Fats 6g  
+- **Budget:** ₹40–45  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Perfect light evening option.
+
+#### 39. Egg Muffins with Vegetables
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 2, spinach, onion, tomato, cheese 10g  
+- **Macros:** Protein 20g, Carbs 8g, Fats 10g  
+- **Budget:** ₹35–40  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Great meal-prep snack.
+
+#### 40. Prawns Chaat
+- **State:** Maharashtra  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 80g, cucumber, tomato, lemon, chili  
+- **Macros:** Protein 25g, Carbs 10g, Fats 7g  
+- **Budget:** ₹70–80  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High-protein, cooling snack.
+
+---
+
+## GUJARAT REGIONAL CUISINE
+
+
+### BREAKFAST OPTIONS
+
+#### 1. Methi Thepla with Dahi
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Whole wheat 80g, methi leaves 50g, yogurt 50g  
+- **Macros:** Protein 10g, Carbs 35g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Fenugreek supports insulin sensitivity.
+
+#### 2. Handvo (Baked)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Mixed dal 70g, rice 30g, bottle gourd 120g, yogurt 50g, sesame  
+- **Macros:** Protein 14g, Carbs 34g, Fats 8g  
+- **Budget:** ₹35–40  
+- **Prep:** 45 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Fermented batter enhances gut health.
+
+#### 3. Moong Dal Chilla
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Moong dal 100g, ginger, chili, coriander  
+- **Macros:** Protein 16g, Carbs 28g, Fats 5g  
+- **Budget:** ₹25–30  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High-protein savory pancake.
+
+#### 4. Bajri Rotla with Lasan Chutney
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Bajra flour 90g, garlic 20g, green chili, coriander  
+- **Macros:** Protein 9g, Carbs 42g, Fats 6g  
+- **Budget:** ₹18–22  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Rich in iron and magnesium.
+
+#### 5. Khakhra (Multigrain)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Multigrain flour 80g, spices, minimal oil  
+- **Macros:** Protein 9g, Carbs 38g, Fats 6g  
+- **Budget:** ₹15–20  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Roast crisp without oil.
+
+#### 6. Egg Bhurji Khakhra Wrap
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 2, multigrain khakhra 2, onions, tomato  
+- **Macros:** Protein 22g, Carbs 30g, Fats 12g  
+- **Budget:** ₹35–45  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use khakhra as a high-fiber wrap.
+
+#### 7. Chicken Poha
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Poha 60g, shredded chicken 80g, peanuts 10g  
+- **Macros:** Protein 24g, Carbs 40g, Fats 9g  
+- **Budget:** ₹45–55  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Balanced carbs and protein.
+
+#### 8. Tawa Fish with Rotla
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 120g, bajra rotla 1, lemon, spices  
+- **Macros:** Protein 28g, Carbs 30g, Fats 9g  
+- **Budget:** ₹70–80  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Lean protein with millet base.
+
+#### 9. Keema Thepla Roll
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken mince 100g, methi thepla 2  
+- **Macros:** Protein 26g, Carbs 40g, Fats 12g  
+- **Budget:** ₹65–75  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Portable breakfast roll.
+
+#### 10. Egg Dhokla
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Besan 80g, eggs 2, ENO, ginger  
+- **Macros:** Protein 20g, Carbs 28g, Fats 7g  
+- **Budget:** ₹30–35  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Protein-fortified dhokla.
+
+
+### LUNCH OPTIONS
+
+#### 11. Gujarati Dal with Jowar Roti
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Toor dal 80g, jowar flour 80g, tamarind, peanuts  
+- **Macros:** Protein 16g, Carbs 46g, Fats 8g  
+- **Budget:** ₹35–40  
+- **Prep:** 40 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use minimal jaggery for PCOS-friendly version.
+
+#### 12. Undhiyu (Light)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Mixed winter vegetables 250g, methi muthia (baked) 80g  
+- **Macros:** Protein 12g, Carbs 40g, Fats 10g  
+- **Budget:** ₹50–60  
+- **Prep:** 50 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Bake muthia and limit oil.
+
+#### 13. Sev Tameta (Controlled Sev)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Tomatoes 250g, roasted besan sev 15g, whole wheat roti 2  
+- **Macros:** Protein 9g, Carbs 40g, Fats 9g  
+- **Budget:** ₹25–35  
+- **Prep:** 20 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use sev as garnish only.
+
+#### 14. Ringan Bataka nu Shaak with Rotli
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Brinjal 150g, potato 80g, whole wheat rotli 2  
+- **Macros:** Protein 8g, Carbs 45g, Fats 7g  
+- **Budget:** ₹25–35  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Reduce potato; add peas for protein.
+
+#### 15. Patra (Steamed Alu Vadi) + Curd
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Colocasia leaves 5, besan 70g, yogurt 150ml  
+- **Macros:** Protein 14g, Carbs 32g, Fats 8g  
+- **Budget:** ₹30–35  
+- **Prep:** 40 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Steam and temper lightly.
+
+#### 16. Chicken Shaak with Rotli
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, tomato-onion gravy, rotli 2  
+- **Macros:** Protein 32g, Carbs 40g, Fats 12g  
+- **Budget:** ₹80–90  
+- **Prep:** 40 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Lean curry; avoid cream.
+
+#### 17. Fish Curry (Surti style) with Brown Rice
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, mustard-coconut gravy, brown rice 70g  
+- **Macros:** Protein 30g, Carbs 45g, Fats 12g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Simmer gently; use coconut milk light.
+
+#### 18. Prawns Tuver Dal Khichdi
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, toor dal 60g, brown rice 70g  
+- **Macros:** Protein 30g, Carbs 48g, Fats 10g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** One-pot protein-carb balance.
+
+#### 19. Egg Curry with Rotli
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, rotli 2, onion-tomato gravy  
+- **Macros:** Protein 24g, Carbs 42g, Fats 14g  
+- **Budget:** ₹40–50  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Add spinach to the gravy.
+
+#### 20. Keema Muthia Bowl
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken mince 120g, baked methi muthia 80g  
+- **Macros:** Protein 30g, Carbs 32g, Fats 12g  
+- **Budget:** ₹75–85  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Bake muthia; avoid frying.
+
+
+### DINNER OPTIONS
+
+#### 21. Khichu Bowl with Veg Tadka
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Rice flour 70g, ajwain, chili oil (1 tsp), veggie tadka  
+- **Macros:** Protein 7g, Carbs 46g, Fats 6g  
+- **Budget:** ₹20–25  
+- **Prep:** 20 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Control oil; add veggie tadka for fiber.
+
+#### 22. Moong Dal Dhokli
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Whole wheat 60g, moong dal 70g, veggies 100g  
+- **Macros:** Protein 18g, Carbs 42g, Fats 6g  
+- **Budget:** ₹30–35  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** One-pot filling dinner.
+
+#### 23. Lauki Muthia Curry
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Bottle gourd 200g, steamed muthia 100g, tomato gravy  
+- **Macros:** Protein 16g, Carbs 40g, Fats 8g  
+- **Budget:** ₹35–40  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Steam muthia, light tadka.
+
+#### 24. Palak Corn Shaak with Rotli
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Spinach 250g, sweet corn 80g, rotli 2  
+- **Macros:** Protein 14g, Carbs 42g, Fats 8g  
+- **Budget:** ₹35–40  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use less corn; add paneer if needed.
+
+#### 25. Bajra Rotla with Mixed Dal
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Bajra rotla 2, mixed dal 80g  
+- **Macros:** Protein 18g, Carbs 44g, Fats 8g  
+- **Budget:** ₹30–35  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Classic winter dinner combo.
+
+#### 26. Tawa Fish with Veggies
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, mixed vegetables 150g  
+- **Macros:** Protein 32g, Carbs 18g, Fats 10g  
+- **Budget:** ₹80–90  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Pan-sear with minimal oil.
+
+#### 27. Chicken Tikka Bowl
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, salad 150g, lemon, herbs  
+- **Macros:** Protein 34g, Carbs 12g, Fats 11g  
+- **Budget:** ₹80–90  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High-protein light dinner.
+
+#### 28. Egg Akuri with Rotla
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, bajra rotla 1, onions, tomato  
+- **Macros:** Protein 26g, Carbs 30g, Fats 14g  
+- **Budget:** ₹40–50  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Moist scramble; add greens.
+
+#### 29. Prawns Shaak with Brown Rice
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, tomato-onion gravy, brown rice 60g  
+- **Macros:** Protein 28g, Carbs 42g, Fats 10g  
+- **Budget:** ₹85–95  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Keep gravy light.
+
+#### 30. Keema Rotli (Lite)
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken mince 120g, rotli 2, onions, spices  
+- **Macros:** Protein 30g, Carbs 42g, Fats 12g  
+- **Budget:** ₹70–80  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use whole wheat rotli.
+
+
+### SNACKS & LIGHT MEALS
+
+#### 31. Dudhi Muthia (Steamed)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Bottle gourd 200g, besan 70g, sesame  
+- **Macros:** Protein 14g, Carbs 30g, Fats 7g  
+- **Budget:** ₹25–30  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Steam and temper lightly.
+
+#### 32. Khandvi (Low-Oil)
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Besan 80g, buttermilk 200ml, mustard, curry leaves  
+- **Macros:** Protein 12g, Carbs 28g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Tight rolls; minimal oil.
+
+#### 33. Moong Sprouts Chaat
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Sprouted moong 100g, veggies, lemon  
+- **Macros:** Protein 12g, Carbs 20g, Fats 4g  
+- **Budget:** ₹20–25  
+- **Prep:** 10 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Great evening protein snack.
+
+#### 34. Roasted Chana & Makhana Mix
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Roasted chana 30g, makhana 20g, spices  
+- **Macros:** Protein 10g, Carbs 22g, Fats 5g  
+- **Budget:** ₹20–25  
+- **Prep:** 10 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Crunchy, portion-control.
+
+#### 35. Baked Khichu Chips
+- **State:** Gujarat  
+- **Type:** Vegetarian  
+- **Ingredients:** Khichu dough baked into chips, ajwain  
+- **Macros:** Protein 5g, Carbs 30g, Fats 4g  
+- **Budget:** ₹15–20  
+- **Prep:** 20 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Bake thin for crispness.
+
+#### 36. Chicken Patra Rolls
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Colocasia leaves 5, chicken mince 120g, spices  
+- **Macros:** Protein 30g, Carbs 20g, Fats 10g  
+- **Budget:** ₹70–80  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Steam, then light temper.
+
+#### 37. Egg Khakhra Nachos
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Egg whites 3, multigrain khakhra 2, salsa  
+- **Macros:** Protein 22g, Carbs 28g, Fats 8g  
+- **Budget:** ₹35–45  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Fun high-protein snack.
+
+#### 38. Fish Pepper Fry (Air-Fried)
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 120g, pepper, lemon, herbs  
+- **Macros:** Protein 28g, Carbs 6g, Fats 8g  
+- **Budget:** ₹70–80  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Air-fry for crisp edges.
+
+#### 39. Chicken Dhokla Bites
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Besan 80g, shredded chicken 80g, ENO  
+- **Macros:** Protein 24g, Carbs 24g, Fats 7g  
+- **Budget:** ₹55–65  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Mix chicken into batter.
+
+#### 40. Prawns Rotli Tacos
+- **State:** Gujarat  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 100g, small rotli 2, salad  
+- **Macros:** Protein 24g, Carbs 30g, Fats 9g  
+- **Budget:** ₹70–80  
+- **Prep:** 20 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Street-style, light mayo-free.
+
+---
+
+## GOA REGIONAL CUISINE
+
+
+### BREAKFAST OPTIONS
+
+#### 1. Ragi Pulao Bowl
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Ragi 70g, mixed veggies 150g, coconut 10g  
+- **Macros:** Protein 10g, Carbs 44g, Fats 6g  
+- **Budget:** ₹30–35  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use grated coconut sparingly.
+
+#### 2. Alsande (Cowpea) Usal with Pav (Whole Wheat)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Alsande 120g, onions, tomato, whole wheat pav 1  
+- **Macros:** Protein 16g, Carbs 42g, Fats 7g  
+- **Budget:** ₹35–40  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** High-fiber legume breakfast.
+
+#### 3. Veg Xacuti (Lite) with Red Rice Idli
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Mixed veg 200g, xacuti masala (minimal oil), red rice idli 2  
+- **Macros:** Protein 12g, Carbs 40g, Fats 8g  
+- **Budget:** ₹40–45  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use coconut milk light.
+
+#### 4. Semolina Porridge with Coconut & Jaggery (Lite)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Rava 50g, light coconut milk 120ml, jaggery 5g  
+- **Macros:** Protein 6g, Carbs 40g, Fats 7g  
+- **Budget:** ₹20–25  
+- **Prep:** 15 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Keep jaggery minimal.
+
+#### 5. Sprouted Moong Poi Sandwich
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Goan poi 1, sprouted moong 80g, veggies, chutney  
+- **Macros:** Protein 12g, Carbs 38g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Choose whole wheat poi.
+
+#### 6. Egg Poi with Tomato-Onion Masala
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 2, whole wheat poi 1, onions, tomato  
+- **Macros:** Protein 22g, Carbs 34g, Fats 10g  
+- **Budget:** ₹35–40  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Moist masala; portion control poi.
+
+#### 7. Tuna Cutlet (Air-Fried)
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Canned tuna 120g, potato 40g, egg white, crumbs  
+- **Macros:** Protein 28g, Carbs 22g, Fats 8g  
+- **Budget:** ₹60–70  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Air-fry for texture.
+
+#### 8. Chicken Choris Scramble (Lite)
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken chorizo 80g (lean), eggs 2, onion, chili  
+- **Macros:** Protein 28g, Carbs 6g, Fats 12g  
+- **Budget:** ₹70–80  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Opt for lean chicken choris.
+
+#### 9. Prawn Omelette with Salad
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 2, prawns 80g, onions, chili, salad  
+- **Macros:** Protein 26g, Carbs 8g, Fats 11g  
+- **Budget:** ₹70–80  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Classic Goan breakfast, PCOS-friendly.
+
+#### 10. Fish Recheado Toastie
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 100g, recheado masala (lite), multigrain toast 2  
+- **Macros:** Protein 24g, Carbs 30g, Fats 9g  
+- **Budget:** ₹65–75  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Grill; avoid deep-fry.
+
+
+### LUNCH OPTIONS
+
+#### 11. Goan Red Rice with Veg Caldeen
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Goan red rice 70g, mixed veg 200g, light coconut milk  
+- **Macros:** Protein 12g, Carbs 48g, Fats 8g  
+- **Budget:** ₹45–55  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use local red rice for fiber.
+
+#### 12. Tendli Batata Bhaji + Rotis
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Ivy gourd 200g, potato 60g, rotis 2  
+- **Macros:** Protein 9g, Carbs 46g, Fats 7g  
+- **Budget:** ₹25–30  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Balance potato with tendli.
+
+#### 13. Alsande Tonak with Brown Rice
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Cowpea curry 150g, brown rice 70g, coconut (lite)  
+- **Macros:** Protein 15g, Carbs 48g, Fats 9g  
+- **Budget:** ₹35–45  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Protein-rich coastal curry.
+
+#### 14. Veg Xacuti Bowl (Lite)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Mixed veg 220g, xacuti masala (minimal oil)  
+- **Macros:** Protein 12g, Carbs 28g, Fats 9g  
+- **Budget:** ₹35–40  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Serve with salad instead of bread.
+
+#### 15. Moong Udid Polle (Dosa) with Chutney
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Moong dal 70g, urad 30g, chutney (minimal oil)  
+- **Macros:** Protein 14g, Carbs 38g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Fermented; gut friendly.
+
+#### 16. Goan Fish Curry with Red Rice
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, red rice 70g, light coconut milk, kokum  
+- **Macros:** Protein 30g, Carbs 45g, Fats 12g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Simmer gently to keep fish tender.
+
+#### 17. Chicken Cafreal with Millet Phulka
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, cafreal marinade, millet phulka 2  
+- **Macros:** Protein 32g, Carbs 40g, Fats 11g  
+- **Budget:** ₹80–90  
+- **Prep:** 40 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Grill or air-fry marinated chicken.
+
+#### 18. Prawn Balchão (Lite) + Salad
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, reduced-oil balchão masala, salad  
+- **Macros:** Protein 28g, Carbs 10g, Fats 10g  
+- **Budget:** ₹90–100  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Use less oil and sugar in pickle base.
+
+#### 19. Calamari Stir-Fry with Veggies
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Squid 150g, peppers, onion, garlic, herbs  
+- **Macros:** Protein 30g, Carbs 12g, Fats 9g  
+- **Budget:** ₹100–120  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Quick high-protein sauté.
+
+#### 20. Egg Drop Curry with Red Rice
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, red rice 60g, tomato-coconut curry (lite)  
+- **Macros:** Protein 24g, Carbs 44g, Fats 12g  
+- **Budget:** ₹45–55  
+- **Prep:** 25 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use thin coconut milk.
+
+
+### DINNER OPTIONS
+
+#### 21. Sol Kadhi with Cucumber Salad + Millet Khichdi
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Sol kadhi 200ml (light coconut milk), cucumber 150g, millet khichdi 200g  
+- **Macros:** Protein 12g, Carbs 42g, Fats 9g  
+- **Budget:** ₹35–45  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Cooling, probiotic-friendly.
+
+#### 22. Chana Ros with Pao (Whole Wheat)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** White peas 120g, gravy, whole wheat pao 1  
+- **Macros:** Protein 16g, Carbs 48g, Fats 8g  
+- **Budget:** ₹30–35  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Limit bread; add salad.
+
+#### 23. Tofu Caldinho (Goan-style)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Tofu 150g, light coconut milk 120ml, turmeric, garlic  
+- **Macros:** Protein 24g, Carbs 16g, Fats 10g  
+- **Budget:** ₹60–70  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Plant-protein Goan curry.
+
+#### 24. Veg Ambotik Curry with Brown Rice
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Mixed veg 220g, ambotik masala, brown rice 60g  
+- **Macros:** Protein 12g, Carbs 44g, Fats 8g  
+- **Budget:** ₹40–50  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Sour-spicy curry; low oil.
+
+#### 25. Red Amaranth Stir-Fry + Rotis
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Tambdi bhaji 200g, garlic, mustard, rotis 2  
+- **Macros:** Protein 10g, Carbs 40g, Fats 7g  
+- **Budget:** ₹25–30  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Iron-rich leafy dinner.
+
+#### 26. Grilled Pomfret with Veggies
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Pomfret 150g, lemon, herbs, mixed veg 150g  
+- **Macros:** Protein 32g, Carbs 14g, Fats 11g  
+- **Budget:** ₹120–140  
+- **Prep:** 20 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Classic coastal grill.
+
+#### 27. Chicken Xacuti (Lite) with Red Rice
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, xacuti masala, red rice 60g  
+- **Macros:** Protein 32g, Carbs 44g, Fats 12g  
+- **Budget:** ₹85–95  
+- **Prep:** 35 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Use light coconut milk.
+
+#### 28. Prawn Curry with Poi (Whole Wheat)
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawns 120g, coconut curry (lite), whole wheat poi 1  
+- **Macros:** Protein 28g, Carbs 42g, Fats 11g  
+- **Budget:** ₹90–100  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Swap refined poi for whole wheat.
+
+#### 29. Egg Vindaloo (Lite) + Salad
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Eggs 3, vindaloo paste (reduced oil/sugar), salad  
+- **Macros:** Protein 24g, Carbs 12g, Fats 12g  
+- **Budget:** ₹45–55  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Keep paste spicy, not oily.
+
+#### 30. Fish Caldinho with Veggies
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, light coconut milk, turmeric, garlic, veggies  
+- **Macros:** Protein 30g, Carbs 18g, Fats 10g  
+- **Budget:** ₹85–95  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Gentle stew, dinner-friendly.
+
+
+### SNACKS & LIGHT MEALS
+
+#### 31. Cabbage Pan Rolls (Baked)
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Cabbage leaves 6, veggie filling 150g, besan slurry  
+- **Macros:** Protein 12g, Carbs 28g, Fats 6g  
+- **Budget:** ₹25–30  
+- **Prep:** 30 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Bake with light brush of oil.
+
+#### 32. Kismur (Dry Shrimp) Salad – Veg Alternative with Roasted Chana
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Roasted chana 40g, coconut 10g, onions, chili  
+- **Macros:** Protein 10g, Carbs 22g, Fats 7g  
+- **Budget:** ₹20–25  
+- **Prep:** 10 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Coastal-style veg swap.
+
+#### 33. Red Rice Idli Chaat
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Red rice idli 2, yogurt 120ml, veggies, chutneys (lite)  
+- **Macros:** Protein 10g, Carbs 34g, Fats 6g  
+- **Budget:** ₹20–25  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Probiotic topping.
+
+#### 34. Sprouts Poi Slider
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Mini whole wheat poi, sprouts 80g, salad  
+- **Macros:** Protein 12g, Carbs 28g, Fats 6g  
+- **Budget:** ₹20–25  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Snack-sized sandwich.
+
+#### 35. Feni-Free Virgin Kokum Fizz
+- **State:** Goa  
+- **Type:** Vegetarian  
+- **Ingredients:** Kokum 10g, soda, stevia, cumin  
+- **Macros:** Protein 0g, Carbs 3g, Fats 0g  
+- **Budget:** ₹10–15  
+- **Prep:** 5 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Cooling low-cal drink.
+
+#### 36. Prawn Rissóis (Baked)
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Prawn filling 120g, whole wheat outer, bake  
+- **Macros:** Protein 24g, Carbs 28g, Fats 8g  
+- **Budget:** ₹80–90  
+- **Prep:** 30 mins  
+- **GI:** Medium ⭐⭐  
+- **Tip:** Bake instead of fry.
+
+#### 37. Chicken Cafreal Skewers
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Chicken 150g, cafreal marinade, skewers  
+- **Macros:** Protein 32g, Carbs 6g, Fats 10g  
+- **Budget:** ₹80–90  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Grill; serve with salad.
+
+#### 38. Fish Fingers (Air-Fried) with Kokum Dip
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Fish 150g, whole wheat crumbs, kokum yogurt dip  
+- **Macros:** Protein 30g, Carbs 20g, Fats 9g  
+- **Budget:** ₹85–95  
+- **Prep:** 25 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Air-fry, avoid deep oil.
+
+#### 39. Egg Poi Pocket
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Whole wheat poi 1, egg 2, onions, chili  
+- **Macros:** Protein 22g, Carbs 34g, Fats 10g  
+- **Budget:** ₹35–40  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Portable protein snack.
+
+#### 40. Calamari Salad Cup
+- **State:** Goa  
+- **Type:** Non-Vegetarian  
+- **Ingredients:** Squid 120g, lettuce, cucumber, lemon, herbs  
+- **Macros:** Protein 26g, Carbs 8g, Fats 7g  
+- **Budget:** ₹90–100  
+- **Prep:** 15 mins  
+- **GI:** Low ⭐⭐⭐  
+- **Tip:** Light coastal salad.
+
+---
+
+## NOTES FOR PCOS MANAGEMENT – WEST INDIA
+### Best Ingredients by Region
+- **Maharashtra:** Jowar, ragi, bajra, methi, moong sprouts, coconut in moderation.
+- **Gujarat:** Bajra, jowar, buttermilk, fermented batters (handvo, dhokla), seasonal vegetables.
+- **Goa:** Fish (omega-3), light coconut milk, kokum, red rice, leafy greens.
+
+### Ideal Cooking Methods
+- Prefer **steaming, roasting, air-frying,** or **light sautéing** over deep frying.
+- Replace coconut cream with light coconut milk.
+- Use **fermented** and **sprouted** preparations to improve gut health.
+
+### Meal Timings
+- **Breakfast:** Within 60 minutes of waking up
+- **Lunch:** 12–2 PM (main meal)
+- **Dinner:** Before 8 PM (light and high-protein)
+- **Snacks:** Two light, high-protein options per day
+
+### Portion Guide
+- **Breakfast:** 300–400 kcal
+- **Lunch:** 400–500 kcal
+- **Dinner:** 300–400 kcal
+- **Snacks:** 100–150 kcal each
+
+### PCOS Benefits Summary
+- **Low GI grains** stabilize blood sugar.
+- **Lean proteins (fish, eggs, legumes)** improve insulin sensitivity.
+- **Probiotics and fermented foods** enhance gut microbiota.
+- **Regional diversity** ensures nutrient variety and sustainability.

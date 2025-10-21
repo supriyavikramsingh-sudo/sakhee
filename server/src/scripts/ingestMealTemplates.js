@@ -24,79 +24,116 @@ class MealTemplateIngester {
 
   /**
    * Parse a meal template .txt file into structured documents
+   * Now extracts individual meals (####) instead of categories (###)
    */
   parseMealTemplate(content, filename) {
     const docs = [];
     const region = filename.replace('.txt', '').replace(/_/g, '-');
 
-    // Split into sections by ## headers
+    // Split into sections by ## headers (regional sections)
     const sections = content.split(/\n## /);
 
-    sections.forEach((section, idx) => {
+    sections.forEach((section, sectionIdx) => {
       if (!section.trim()) return;
 
-      const lines = section.split('\n');
-      const sectionTitle = idx === 0 ? lines[0].replace(/^# /, '') : lines[0];
-      const sectionContent = lines.slice(1).join('\n').trim();
+      const sectionLines = section.split('\n');
+      const regionalSection =
+        sectionIdx === 0 ? sectionLines[0].replace(/^# /, '') : sectionLines[0];
+      const sectionContent = sectionLines.slice(1).join('\n').trim();
 
       if (!sectionContent) return;
 
-      // Further split into individual meals by ### headers
-      const meals = sectionContent.split(/\n### /);
+      // Split into meal categories by ### headers (e.g., BREAKFAST OPTIONS)
+      const categories = sectionContent.split(/\n### /);
 
-      meals.forEach((meal, mealIdx) => {
-        if (!meal.trim()) return;
+      categories.forEach((category, categoryIdx) => {
+        if (!category.trim()) return;
 
-        const mealLines = meal.split('\n');
-        const mealName = mealIdx === 0 ? mealLines[0].replace(/^### /, '') : mealLines[0];
-        const mealContent = mealLines.slice(1).join('\n').trim();
+        const categoryLines = category.split('\n');
+        const categoryName =
+          categoryIdx === 0 ? categoryLines[0].replace(/^### /, '') : categoryLines[0];
+        const categoryContent = categoryLines.slice(1).join('\n').trim();
 
-        if (!mealContent) return;
+        if (!categoryContent) return;
 
-        // Extract structured data
-        const ingredients = this.extractIngredients(mealContent);
-        const macros = this.extractMacros(mealContent);
-        const budget = this.extractBudget(mealContent);
-        const prepTime = this.extractPrepTime(mealContent);
-        const tip = this.extractTip(mealContent);
-        const gi = this.extractGI(mealContent);
+        // Split into individual meals by #### headers (e.g., "1. Poha with Sev")
+        const individualMeals = categoryContent.split(/\n#### /);
 
-        // Create a rich document for embedding
-        const structuredContent = `
+        individualMeals.forEach((meal, mealIdx) => {
+          if (!meal.trim()) return;
+
+          const mealLines = meal.split('\n');
+          const mealName = mealIdx === 0 ? mealLines[0].replace(/^#### /, '') : mealLines[0];
+          const mealContent = mealLines.slice(1).join('\n').trim();
+
+          if (!mealContent) return;
+
+          // Extract structured data
+          const state = this.extractState(mealContent);
+          const dietType = this.extractDietType(mealContent);
+          const ingredients = this.extractIngredients(mealContent);
+          const macros = this.extractMacros(mealContent);
+          const budget = this.extractBudget(mealContent);
+          const prepTime = this.extractPrepTime(mealContent);
+          const tip = this.extractTip(mealContent);
+          const gi = this.extractGI(mealContent);
+
+          // Create a rich document for embedding
+          const structuredContent = `
 Region: ${region}
-Category: ${sectionTitle}
+State: ${state}
+Regional Section: ${regionalSection}
+Category: ${categoryName}
 Meal: ${mealName}
+Type: ${dietType}
 Ingredients: ${ingredients}
 Macros: Protein ${macros.protein}g, Carbs ${macros.carbs}g, Fats ${macros.fats}g
 Budget: ${budget}
 Prep Time: ${prepTime}
 Glycemic Index: ${gi}
 Tip: ${tip}
-        `.trim();
+          `.trim();
 
-        docs.push({
-          content: structuredContent,
-          metadata: {
-            source: filename,
-            type: 'meal_template',
-            region: region,
-            category: sectionTitle.toLowerCase(),
-            mealName: mealName,
-            ingredients: ingredients.split(', '),
-            protein: macros.protein,
-            carbs: macros.carbs,
-            fats: macros.fats,
-            budgetMin: budget.split('-')[0],
-            budgetMax: budget.split('-')[1] || budget.split('-')[0],
-            prepTime: prepTime,
-            gi: gi,
-            tip: tip,
-          },
+          docs.push({
+            content: structuredContent,
+            metadata: {
+              source: filename,
+              type: 'meal_template',
+              region: region,
+              state: state,
+              regionalSection: regionalSection.toLowerCase(),
+              category: categoryName.toLowerCase(),
+              mealName: mealName,
+              dietType: dietType,
+              ingredients: ingredients.split(', ').filter((i) => i),
+              protein: macros.protein,
+              carbs: macros.carbs,
+              fats: macros.fats,
+              budgetMin: budget.split('-')[0]?.replace('₹', '') || '0',
+              budgetMax:
+                budget.split('-')[1]?.replace('₹', '') ||
+                budget.split('-')[0]?.replace('₹', '') ||
+                '0',
+              prepTime: prepTime,
+              gi: gi,
+              tip: tip,
+            },
+          });
         });
       });
     });
 
     return docs;
+  }
+
+  extractState(content) {
+    const match = content.match(/- State: (.+)/);
+    return match ? match[1].trim() : '';
+  }
+
+  extractDietType(content) {
+    const match = content.match(/- Type: (.+)/);
+    return match ? match[1].trim() : 'Vegetarian';
   }
 
   extractIngredients(content) {

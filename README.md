@@ -199,6 +199,34 @@ cd client && npm run dev
 |--------|-------------|
 | `npm run dev` | Start server with auto-restart on changes (node --watch) |
 | `npm run start` | Start server in production mode |
+
+## 🧭 Vector DB management (server side)
+
+The project uses an HNSWLib vector store stored under `server/src/storage/localCache/vectordb`.
+For development and maintenance there are a few helper scripts in `server/src/scripts/` to inspect, back up, clear and restore the vector store.
+
+Important: run these from the `server` folder (or use `cd server` first). The scripts assume the server-relative storage path. If your repo path contains spaces, the scripts are already quoted to avoid child-process path truncation issues.
+
+Common commands (run inside `server`):
+
+- npm run vector:health — run a quick health check (checks files, loads index, runs a small similarity query)
+- npm run vector:backup — creates a timestamped backup of the current vector store under `server/backups/vectorstore/`
+- npm run vector:clear — backs up then clears the vector store (interactive confirmation)
+- npm run vector:list — lists the files in the vector store folder and a rough document count
+- npm run vector:restore -- <backup-folder> — restores a backup folder into `server/src/storage/localCache/vectordb`
+
+Notes & recent fixes
+- All vector scripts were updated to use server-relative paths (previously some scripts pointed to the wrong `src` path and failed to find the vector store).
+- The master ingestion launcher was fixed to quote child-process invocations so `node "${scriptPath}"` works even when the repository path contains spaces.
+- Meal template ingestion was updated to extract individual meal entries (#### level) instead of only category-level docs (###). If you re-index after this fix you should see many more meal documents (previously ~149, now ~1,300+ depending on templates).
+- Recommended workflow to re-index safely:
+  1. cd server
+  2. npm run vector:backup
+  3. npm run vector:clear   (confirm)
+  4. npm run ingest:all     (or `npm run ingest:meals` / `npm run ingest:medical` / `npm run ingest:nutrition`)
+  5. npm run vector:health
+
+If you want this automated in CI, consider adding a guarded task that runs the backup + ingest + health-check and fails loudly if the health check does not return expected counts.
 | `npm run ingest:meals` | Index meal templates into vector store for RAG |
 | `npm run ingest:all` | Index all data sources (meals, medical, nutritional) |
 | `npm run test` | Run server tests with Vitest |

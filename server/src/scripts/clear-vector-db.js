@@ -20,17 +20,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-// Vector store is in the root /src/storage/localCache/vectordb
-const VECTOR_STORE_PATH = path.join(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'src',
-  'storage',
-  'localCache',
-  'vectordb'
-);
+// Vector store is in server/src/storage/localCache/vectordb
+const VECTOR_STORE_PATH = path.join(__dirname, '..', 'storage', 'localCache', 'vectordb');
 const BACKUP_PATH = path.join(__dirname, '..', '..', '..', 'backups', 'vectorstore');
 
 // ANSI color codes for terminal output

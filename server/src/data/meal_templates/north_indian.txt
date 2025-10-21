@@ -1,84 +1,3043 @@
-# North Indian PCOS-Friendly Meals
+# North Indian PCOS-Friendly Meal Templates
 
-## Breakfast Options
+## UTTAR PRADESH REGIONAL CUISINE
 
-### Besan Chilla (Low GI: ★★★)
-- Ingredients: Besan (chickpea flour) 100g, onion 1 small, tomato 1, coriander, turmeric, cumin
-- Macros: Protein 15g, Carbs 20g, Fats 5g
+### BREAKFAST OPTIONS
+
+#### 1. Aloo Puri (Modified - Low Oil)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat flour 100g, potato 150g, cumin, turmeric, minimal oil
+- Macros: Protein 8g, Carbs 45g, Fats 10g
 - Budget: ₹25-30
-- Prep: 10 mins
-- Tip: Add flaxseeds for omega-3 boost
-
-### Moong Dal Khichdi
-- Ingredients: Moong dal 50g, brown rice 30g, vegetables, ghee 1 tsp
-- Macros: Protein 12g, Carbs 35g, Fats 6g
-- Budget: ₹35-40
 - Prep: 25 mins
-- Tip: Use brown rice for lower GI
+- GI: Medium ⭐⭐
+- Tip: Use air fryer for puris, reduce oil significantly
 
-### Vegetable Poha (Low GI)
-- Ingredients: Flattened rice 50g, mixed vegetables, peanuts, curry leaves
-- Macros: Protein 8g, Carbs 30g, Fats 7g
-- Budget: ₹20-25
-- Prep: 15 mins
-- Tip: Soak poha briefly to reduce carb content
-
-## Lunch Options
-
-### Palak Paneer with Roti
-- Ingredients: Spinach 200g, paneer 100g, whole wheat roti 2, spices
-- Macros: Protein 20g, Carbs 40g, Fats 15g
-- Budget: ₹60-70
+#### 2. Bedmi Puri with Aloo Sabzi
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat 80g, urad dal 20g, potato 100g, spices
+- Macros: Protein 12g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
 - Prep: 30 mins
-- Tip: Use low-fat paneer for better health
+- GI: Medium ⭐⭐
+- Tip: Shallow fry instead of deep frying
 
-### Rajma Curry with Brown Rice
-- Ingredients: Rajma 100g (soaked), brown rice 50g, onion, tomato, spices
-- Macros: Protein 18g, Carbs 45g, Fats 8g
+#### 3. Kachori Sabzi (Healthier Version)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, moong dal 30g, green peas 50g
+- Macros: Protein 10g, Carbs 40g, Fats 9g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Bake kachoris instead of frying
+
+#### 4. Poha Jalebi (Modified)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Flattened rice 60g, peanuts, vegetables, sugar-free jalebi alternative
+- Macros: Protein 7g, Carbs 35g, Fats 8g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Skip jalebi or use dates-based sweet
+
+#### 5. Matar Kachori (Baked)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, green peas 80g, spices
+- Macros: Protein 11g, Carbs 38g, Fats 7g
+- Budget: ₹25-30
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Bake at 180°C for 20 mins
+
+#### 6. Keema Paratha
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, onion, spices
+- Macros: Protein 25g, Carbs 40g, Fats 12g
+- Budget: ₹60-70
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use lean chicken mince
+
+#### 7. Egg Bhurji with Roti
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, onion, tomato, coriander
+- Macros: Protein 22g, Carbs 35g, Fats 15g
 - Budget: ₹40-50
-- Prep: 40 mins (after soaking)
-- Tip: Rajma is rich in fiber and protein
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein breakfast option
 
-### Mixed Vegetable Sabzi with Multigrain Roti
-- Ingredients: Cauliflower, beans, carrots, peas, multigrain flour
-- Macros: Protein 10g, Carbs 35g, Fats 6g
+#### 8. Chana Samosa (Baked)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat 80g, chickpeas 100g, potato 50g, spices
+- Macros: Protein 12g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Bake for healthier version
+
+#### 9. Malaiyo (Sugar-Free Version)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Milk 200ml, stevia, cardamom, saffron
+- Macros: Protein 8g, Carbs 15g, Fats 6g
+- Budget: ₹35-40
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Winter special, use sugar alternatives
+
+#### 10. Keema Pav (Whole Wheat)
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat pav 2, minced mutton 100g, spices
+- Macros: Protein 24g, Carbs 38g, Fats 14g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Use lean mutton
+
+### LUNCH OPTIONS
+
+#### 11. Lucknowi Biryani (Brown Rice)
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Brown rice 80g, chicken 150g, yogurt, saffron, spices
+- Macros: Protein 28g, Carbs 45g, Fats 12g
+- Budget: ₹90-100
+- Prep: 60 mins
+- GI: Medium ⭐⭐
+- Tip: Use minimal oil, opt for brown rice
+
+#### 12. Arhar Dal Tadka with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Arhar dal 100g, whole wheat roti 3, ghee 1 tsp, spices
+- Macros: Protein 18g, Carbs 50g, Fats 8g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Rich in protein and fiber
+
+#### 13. Kadhi Pakora (Baked Pakoras)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan 50g, brown rice 60g, spices
+- Macros: Protein 15g, Carbs 48g, Fats 9g
+- Budget: ₹40-45
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Bake pakoras instead of frying
+
+#### 14. Gobhi Matar with Multigrain Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Cauliflower 200g, green peas 100g, multigrain roti 3
+- Macros: Protein 12g, Carbs 42g, Fats 7g
+- Budget: ₹45-50
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High fiber vegetable combination
+
+#### 15. Chicken Korma with Roti
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, yogurt, cashews 20g, whole wheat roti 2
+- Macros: Protein 30g, Carbs 38g, Fats 16g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use low-fat yogurt
+
+#### 16. Aloo Gobhi with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Potato 100g, cauliflower 150g, whole wheat roti 3, spices
+- Macros: Protein 10g, Carbs 45g, Fats 6g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Reduce potato quantity
+
+#### 17. Mutton Rogan Josh with Rice
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, brown rice 70g, yogurt, Kashmiri spices
+- Macros: Protein 32g, Carbs 42g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Use lean mutton cuts
+
+#### 18. Paneer Butter Masala (Low Fat)
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Low-fat paneer 150g, tomato 200g, roti 2, minimal cream
+- Macros: Protein 22g, Carbs 38g, Fats 14g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Replace cream with cashew paste
+
+#### 19. Fish Curry with Rice
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, mustard, curry leaves
+- Macros: Protein 28g, Carbs 42g, Fats 10g
+- Budget: ₹80-90
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Rich in omega-3 fatty acids
+
+#### 20. Mixed Dal with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Mixed lentils 100g, whole wheat roti 3, ghee 1 tsp
+- Macros: Protein 20g, Carbs 48g, Fats 8g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich combination
+
+### DINNER OPTIONS
+
+#### 21. Chicken Tikka with Salad
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken breast 150g, yogurt, spices, mixed salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 10g
+- Budget: ₹75-85
+- Prep: 35 mins (+ marination)
+- GI: Low ⭐⭐⭐
+- Tip: Grill or bake, high protein dinner
+
+#### 22. Palak Paneer with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Spinach 250g, low-fat paneer 100g, roti 2, spices
+- Macros: Protein 20g, Carbs 35g, Fats 12g
+- Budget: ₹55-65
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron and calcium rich
+
+#### 23. Khichdi with Kadhi
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Moong dal 60g, brown rice 40g, yogurt 150ml
+- Macros: Protein 15g, Carbs 38g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Easy to digest, perfect dinner
+
+#### 24. Egg Curry with Roti
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, tomato gravy, spices
+- Macros: Protein 24g, Carbs 35g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- Tip: Add bitter gourd for insulin sensitivity
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich economical option
 
-## Dinner Options
-
-### Quinoa Pulao
-- Ingredients: Quinoa 60g, mixed vegetables, ghee 1 tsp
-- Macros: Protein 12g, Carbs 30g, Fats 8g
-- Budget: ₹70-80
-- Prep: 20 mins
-- Tip: Quinoa is complete protein with low GI
-
-### Dal Tadka with Cucumber Salad
-- Ingredients: Masoor dal 70g, cucumber 100g, tomatoes, spices
-- Macros: Protein 16g, Carbs 28g, Fats 5g
-- Budget: ₹30-40
-- Prep: 30 mins
-- Tip: Light dinner aids better sleep
-
-### Vegetable Khichdi
-- Ingredients: Moong dal 50g, rice 30g, vegetables, ghee
-- Macros: Protein 12g, Carbs 32g, Fats 6g
-- Budget: ₹35-45
+#### 25. Bhindi Masala with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Okra 200g, onion, tomato, roti 2, minimal oil
+- Macros: Protein 8g, Carbs 38g, Fats 7g
+- Budget: ₹40-45
 - Prep: 25 mins
-- Tip: Easy to digest, perfect for dinner
+- GI: Low ⭐⭐⭐
+- Tip: Good for blood sugar control
 
-## Snacks
+#### 26. Mutton Seekh Kebab with Salad
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad 100g
+- Macros: Protein 30g, Carbs 10g, Fats 15g
+- Budget: ₹90-100
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill for healthier option
 
-### Roasted Makhana
-- Ingredients: Makhana 30g, ghee, salt, pepper
+#### 27. Lauki Chana Dal
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Bottle gourd 200g, chana dal 70g, roti 2
+- Macros: Protein 16g, Carbs 40g, Fats 6g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and nutritious
+
+#### 28. Fish Tikka with Vegetables
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt, mixed vegetables 100g, spices
+- Macros: Protein 30g, Carbs 15g, Fats 12g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Omega-3 rich dinner
+
+#### 29. Turai Sabzi with Roti
+- State: Uttar Pradesh
+- Type: Vegetarian
+- Ingredients: Ridge gourd 200g, roti 2, minimal spices
+- Macros: Protein 7g, Carbs 35g, Fats 5g
+- Budget: ₹25-30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Very light dinner option
+
+#### 30. Chicken Soup with Multigrain Toast
+- State: Uttar Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, vegetables 150g, multigrain toast 2
+- Macros: Protein 22g, Carbs 30g, Fats 8g
+- Budget: ₹60-70
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Warm, comforting, protein-rich
+
+---
+
+## PUNJAB REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 31. Makki Di Roti with Sarson Da Saag
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Maize flour 100g, mustard greens 200g, minimal ghee
+- Macros: Protein 12g, Carbs 42g, Fats 10g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional winter breakfast, very nutritious
+
+#### 32. Aloo Paratha (Minimal Oil)
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, potato 100g, yogurt 50g
+- Macros: Protein 10g, Carbs 45g, Fats 8g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Cook with minimal ghee or oil
+
+#### 33. Paneer Paratha
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, crumbled paneer 80g, spices
+- Macros: Protein 18g, Carbs 40g, Fats 12g
+- Budget: ₹50-60
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: High protein breakfast option
+
+#### 34. Keema Paratha
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, spices
+- Macros: Protein 26g, Carbs 40g, Fats 14g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-packed breakfast
+
+#### 35. Chhole Bhature (Baked)
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Chickpeas 100g, whole wheat 100g, minimal oil
+- Macros: Protein 15g, Carbs 50g, Fats 10g
+- Budget: ₹40-50
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Bake bhature instead of frying
+
+#### 36. Egg Bhurji Paratha
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat 100g, onion, tomato
+- Macros: Protein 24g, Carbs 40g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Quick protein-rich breakfast
+
+#### 37. Mooli Paratha
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, radish 150g, minimal oil
+- Macros: Protein 9g, Carbs 42g, Fats 7g
+- Budget: ₹20-25
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Good for digestion
+
+#### 38. Chicken Tikka Roll
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, whole wheat roti 2, vegetables, yogurt
+- Macros: Protein 28g, Carbs 38g, Fats 12g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grilled chicken, healthy wrap
+
+#### 39. Besan Cheela
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Besan 100g, onion, tomato, coriander, spices
+- Macros: Protein 15g, Carbs 25g, Fats 6g
+- Budget: ₹25-30
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein, gluten-free option
+
+#### 40. Mutton Keema Pav (Whole Wheat)
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Mutton mince 100g, whole wheat pav 2, spices
+- Macros: Protein 26g, Carbs 38g, Fats 16g
+- Budget: ₹80-90
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Use lean mutton
+
+### LUNCH OPTIONS
+
+#### 41. Rajma Chawal
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Kidney beans 100g, brown rice 70g, spices
+- Macros: Protein 18g, Carbs 50g, Fats 7g
+- Budget: ₹40-50
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Iconic Punjabi comfort food
+
+#### 42. Butter Chicken (Low Fat) with Roti
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, tomato 200g, minimal cream, roti 2
+- Macros: Protein 30g, Carbs 38g, Fats 15g
+- Budget: ₹90-100
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Use yogurt instead of cream
+
+#### 43. Kadhi Pakora (Baked)
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan 50g, rice 60g
+- Macros: Protein 14g, Carbs 48g, Fats 8g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Bake pakoras for health
+
+#### 44. Amritsari Fish with Roti
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, besan coating, roti 2, minimal oil
+- Macros: Protein 32g, Carbs 38g, Fats 14g
+- Budget: ₹95-110
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Bake or air fry instead of deep frying
+
+#### 45. Paneer Tikka Masala with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Paneer 150g, tomato gravy, roti 2, spices
+- Macros: Protein 22g, Carbs 38g, Fats 16g
+- Budget: ₹75-85
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Grill paneer before adding to gravy
+
+#### 46. Chicken Curry with Rice
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, onion-tomato gravy
+- Macros: Protein 30g, Carbs 45g, Fats 13g
+- Budget: ₹80-90
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Reduce oil in preparation
+
+#### 47. Chana Masala with Kulcha (Whole Wheat)
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Chickpeas 120g, whole wheat kulcha 2, spices
+- Macros: Protein 17g, Carbs 52g, Fats 8g
+- Budget: ₹45-55
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: High protein vegetarian meal
+
+#### 48. Mutton Curry with Roti
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, roti 2, onion-tomato gravy, spices
+- Macros: Protein 32g, Carbs 38g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Pressure cook for tenderness
+
+#### 49. Palak Paneer with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Spinach 250g, paneer 120g, roti 2
+- Macros: Protein 22g, Carbs 38g, Fats 14g
+- Budget: ₹60-70
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Nutrient-dense meal
+
+#### 50. Fish Curry with Rice
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, Punjabi spices
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Omega-3 rich
+
+### DINNER OPTIONS
+
+#### 51. Dal Makhani (Low Fat) with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Black lentils 80g, kidney beans 30g, roti 2, minimal cream
+- Macros: Protein 20g, Carbs 42g, Fats 9g
+- Budget: ₹45-55
+- Prep: 60 mins
+- GI: Medium ⭐⭐
+- Tip: Use low-fat milk instead of cream
+
+#### 52. Tandoori Chicken with Salad
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, yogurt marinade, mixed salad 100g
+- Macros: Protein 32g, Carbs 10g, Fats 12g
+- Budget: ₹75-85
+- Prep: 40 mins (+ marination)
+- GI: Low ⭐⭐⭐
+- Tip: High protein, low carb dinner
+
+#### 53. Baingan Bharta with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Eggplant 200g, roti 2, minimal oil, spices
+- Macros: Protein 8g, Carbs 38g, Fats 8g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Roast eggplant for smoky flavor
+
+#### 54. Egg Curry with Roti
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, Punjabi masala gravy
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical protein source
+
+#### 55. Aloo Gobi with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Potato 100g, cauliflower 150g, roti 2
+- Macros: Protein 10g, Carbs 45g, Fats 7g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Reduce potato portion
+
+#### 56. Fish Tikka with Vegetables
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt marinade, grilled vegetables 100g
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Tandoor-style preparation
+
+#### 57. Mixed Vegetable Sabzi with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 250g, roti 2, minimal oil
+- Macros: Protein 9g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: High fiber meal
+
+#### 58. Chicken Seekh Kebab with Salad
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, spices, salad 100g
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Grill for best results
+
+#### 59. Bhindi Do Pyaza with Roti
+- State: Punjab
+- Type: Vegetarian
+- Ingredients: Okra 200g, onion 100g, roti 2
+- Macros: Protein 8g, Carbs 40g, Fats 7g
+- Budget: ₹40-45
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Good for blood sugar
+
+#### 60. Mutton Seekh Kebab with Salad
+- State: Punjab
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad 100g
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## RAJASTHAN REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 61. Bajra Roti with Lehsun Chutney
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Pearl millet flour 100g, garlic 30g, yogurt 50g
+- Macros: Protein 11g, Carbs 40g, Fats 8g
+- Budget: ₹25-30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bajra is excellent for PCOS
+
+#### 62. Methi Thepla
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Whole wheat 80g, fenugreek leaves 50g, yogurt
+- Macros: Protein 10g, Carbs 38g, Fats 7g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fenugreek helps insulin sensitivity
+
+#### 63. Pyaaz Kachori (Baked)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, onion 80g, spices
+- Macros: Protein 9g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of frying
+
+#### 64. Mirchi Vada (Baked)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Green chili 4 large, potato 100g, besan 50g
+- Macros: Protein 10g, Carbs 40g, Fats 8g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Stuff with paneer for more protein
+
+#### 65. Makhaniya Lassi (Sugar-Free)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Yogurt 250ml, stevia, cardamom, saffron
+- Macros: Protein 10g, Carbs 18g, Fats 8g
+- Budget: ₹35-40
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Probiotic-rich breakfast drink
+
+#### 66. Egg Bhurji Rajasthani Style
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, bajra roti 2, onion, tomato, Rajasthani spices
+- Macros: Protein 24g, Carbs 38g, Fats 15g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein breakfast
+
+#### 67. Mawa Kachori (Healthier Version)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, khoya 30g, dates 40g, nuts 20g
+- Macros: Protein 12g, Carbs 45g, Fats 10g
+- Budget: ₹50-60
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Use dates instead of sugar
+
+#### 68. Chicken Paratha Rajasthani
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, Rajasthani spices
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-packed traditional breakfast
+
+#### 69. Mohanthal (Sugar-Free Version)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Besan 80g, dates syrup 40ml, ghee 20g, nuts
+- Macros: Protein 14g, Carbs 40g, Fats 12g
+- Budget: ₹45-50
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Natural sweeteners only
+
+#### 70. Mutton Keema Paratha
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g, spices
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use lean mutton
+
+### LUNCH OPTIONS
+
+#### 71. Dal Baati Churma (Modified)
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Mixed dal 100g, whole wheat baati 2, jaggery 20g
+- Macros: Protein 18g, Carbs 55g, Fats 12g
+- Budget: ₹40-50
+- Prep: 60 mins
+- GI: Medium ⭐⭐
+- Tip: Bake baati, use less ghee
+
+#### 72. Gatte Ki Sabzi with Bajra Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Besan 100g, yogurt 100ml, bajra roti 3, spices
+- Macros: Protein 16g, Carbs 45g, Fats 10g
+- Budget: ₹35-45
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein vegetarian option
+
+#### 73. Laal Maas (Modified) with Roti
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, yogurt, red chilies, roti 2
+- Macros: Protein 32g, Carbs 38g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Use lean mutton cuts
+
+#### 74. Ker Sangri with Bajra Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Ker sangri 150g, bajra roti 3, minimal oil
+- Macros: Protein 10g, Carbs 42g, Fats 7g
+- Budget: ₹50-60
+- Prep: 45 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional desert vegetable
+
+#### 75. Safed Maas with Roti
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, cashew paste, yogurt, roti 2
+- Macros: Protein 30g, Carbs 40g, Fats 20g
+- Budget: ₹130-150
+- Prep: 80 mins
+- GI: Low ⭐⭐⭐
+- Tip: Royal Rajasthani delicacy
+
+#### 76. Panchmel Dal with Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Five lentils mix 100g, roti 3, ghee 1 tsp
+- Macros: Protein 20g, Carbs 50g, Fats 8g
+- Budget: ₹40-45
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein and fiber rich
+
+#### 77. Chicken Curry Rajasthani Style
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, Rajasthani spices
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Spicy and flavorful
+
+#### 78. Papad Ki Sabzi with Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Roasted papad 4, yogurt gravy, roti 2
+- Macros: Protein 12g, Carbs 42g, Fats 8g
+- Budget: ₹25-30
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Quick and unique dish
+
+#### 79. Fish Curry Rajasthani Style
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, red chili gravy
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Coastal Rajasthani specialty
+
+#### 80. Bajre Ki Khichdi
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Pearl millet 70g, moong dal 50g, vegetables
+- Macros: Protein 14g, Carbs 45g, Fats 7g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Nutritious one-pot meal
+
+### DINNER OPTIONS
+
+#### 81. Missi Roti with Yogurt
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Gram flour 60g, wheat flour 40g, yogurt 100g, spices
+- Macros: Protein 14g, Carbs 38g, Fats 8g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein roti
+
+#### 82. Tandoori Chicken with Salad
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, Rajasthani marinade, mixed salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light protein dinner
+
+#### 83. Kadhi with Bajra Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan 30g, bajra roti 2
+- Macros: Protein 13g, Carbs 40g, Fats 9g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Probiotic-rich dinner
+
+#### 84. Egg Curry Rajasthani
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, spicy red gravy
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical protein meal
+
+#### 85. Lahsun Ki Chutney with Bajra Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Garlic 50g, red chili, bajra roti 3, ghee minimal
+- Macros: Protein 10g, Carbs 42g, Fats 8g
+- Budget: ₹25-30
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Garlic helps with PCOS
+
+#### 86. Mutton Seekh Kebab with Vegetables
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, Rajasthani spices, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 16g
+- Budget: ₹100-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 87. Gatta Curry with Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Besan dumplings 100g, yogurt gravy, roti 2
+- Macros: Protein 15g, Carbs 40g, Fats 10g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich gram flour
+
+#### 88. Fish Tikka Rajasthani
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, Rajasthani marinade, salad
+- Macros: Protein 32g, Carbs 10g, Fats 11g
+- Budget: ₹95-105
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Omega-3 rich
+
+#### 89. Moong Dal with Missi Roti
+- State: Rajasthan
+- Type: Vegetarian
+- Ingredients: Moong dal 70g, missi roti 2, minimal ghee
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and digestible
+
+#### 90. Chicken Tikka with Bajra Roti
+- State: Rajasthan
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, bajra roti 2, yogurt marinade
+- Macros: Protein 32g, Carbs 38g, Fats 12g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional combination
+
+---
+
+## HARYANA REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 91. Besan Masala Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Gram flour 60g, wheat flour 40g, spices
+- Macros: Protein 13g, Carbs 38g, Fats 7g
+- Budget: ₹25-30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein breakfast
+
+#### 92. Bathua Raita with Bajra Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Bathua leaves 100g, yogurt 150ml, bajra roti 2
+- Macros: Protein 12g, Carbs 40g, Fats 8g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Bathua is iron-rich
+
+#### 93. Mixed Sprouts Paratha
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, mixed sprouts 80g, minimal oil
+- Macros: Protein 16g, Carbs 42g, Fats 8g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein and fiber rich
+
+#### 94. Egg Paratha Haryanvi
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, eggs 2, onion, spices
+- Macros: Protein 20g, Carbs 40g, Fats 14g
+- Budget: ₹40-50
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Quick protein breakfast
+
+#### 95. Singri Ki Sabzi with Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Singri 150g, whole wheat roti 2, minimal oil
+- Macros: Protein 9g, Carbs 38g, Fats 6g
+- Budget: ₹40-45
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional Haryanvi vegetable
+
+#### 96. Chicken Paratha
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, spices
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Filling breakfast
+
+#### 97. Methi Bajra Roti with Yogurt
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Pearl millet 80g, fenugreek 40g, yogurt 100ml
+- Macros: Protein 11g, Carbs 40g, Fats 8g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fenugreek aids insulin sensitivity
+
+#### 98. Mutton Keema Paratha
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g, spices
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hearty breakfast
+
+#### 99. Cholia with Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Black chickpeas 100g, whole wheat roti 2, spices
+- Macros: Protein 15g, Carbs 45g, Fats 7g
+- Budget: ₹30-35
+- Prep: 40 mins (after soaking)
+- GI: Low ⭐⭐⭐
+- Tip: High protein breakfast
+
+#### 100. Egg Bhurji with Bajra Roti
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, bajra roti 2, onion, tomato
+- Macros: Protein 24g, Carbs 38g, Fats 15g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional combination
+
+### LUNCH OPTIONS
+
+#### 101. Kadhi Pakora Haryanvi Style
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan 50g, rice 60g
+- Macros: Protein 14g, Carbs 48g, Fats 9g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Thicker than regular kadhi
+
+#### 102. Kachri Ki Sabzi with Bajra Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Wild cucumber 200g, bajra roti 3, spices
+- Macros: Protein 10g, Carbs 42g, Fats 7g
+- Budget: ₹40-45
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Unique desert vegetable
+
+#### 103. Chicken Curry Haryanvi
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, Haryanvi spices
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹80-90
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Rich and flavorful
+
+#### 104. Mixed Dal with Bajra Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Mixed lentils 100g, bajra roti 3, ghee 1 tsp
+- Macros: Protein 20g, Carbs 48g, Fats 8g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich meal
+
+#### 105. Mutton Curry with Roti
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, roti 2, onion-based gravy
+- Macros: Protein 32g, Carbs 38g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional meat curry
+
+#### 106. Bathua Saag with Makki Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Bathua leaves 250g, maize roti 2, minimal ghee
+- Macros: Protein 13g, Carbs 42g, Fats 9g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron and protein rich
+
+#### 107. Fish Curry with Rice
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, mustard-based gravy
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Omega-3 rich
+
+#### 108. Hara Chana with Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Fresh chickpeas 120g, roti 3, spices
+- Macros: Protein 17g, Carbs 50g, Fats 7g
+- Budget: ₹45-50
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Seasonal delicacy
+
+#### 109. Chicken Tikka Masala with Roti
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, tomato gravy, roti 2
+- Macros: Protein 30g, Carbs 38g, Fats 15g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Popular preparation
+
+#### 110. Arhar Dal with Bajra Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Arhar dal 100g, bajra roti 3, ghee 1 tsp
+- Macros: Protein 18g, Carbs 48g, Fats 8g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Daily staple meal
+
+### DINNER OPTIONS
+
+#### 111. Khichdi Haryanvi Style
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Rice 50g, moong dal 60g, vegetables, ghee
+- Macros: Protein 14g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Comfort food, easy to digest
+
+#### 112. Tandoori Chicken with Salad
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, yogurt marinade, mixed salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light protein dinner
+
+#### 113. Lauki Chana Dal
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Bottle gourd 200g, chana dal 70g, roti 2
+- Macros: Protein 16g, Carbs 40g, Fats 6g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and nutritious
+
+#### 114. Egg Curry with Roti
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, Haryanvi masala
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical protein source
+
+#### 115. Mixed Vegetable Sabzi with Bajra Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 250g, bajra roti 2
+- Macros: Protein 10g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: High fiber dinner
+
+#### 116. Fish Tikka with Vegetables
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy grilled option
+
+#### 117. Moong Dal with Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Moong dal 70g, roti 2, minimal ghee
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner option
+
+#### 118. Chicken Seekh Kebab with Salad
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, spices, mixed salad 100g
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein, low carb
+
+#### 119. Turai Sabzi with Roti
+- State: Haryana
+- Type: Vegetarian
+- Ingredients: Ridge gourd 200g, roti 2, minimal oil
+- Macros: Protein 7g, Carbs 38g, Fats 5g
+- Budget: ₹25-30
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Very light dinner
+
+#### 120. Mutton Seekh Kebab
+- State: Haryana
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, salad
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## DELHI REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 121. Chole Bhature (Baked Bhature)
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Chickpeas 120g, whole wheat bhature 2, minimal oil
+- Macros: Protein 17g, Carbs 52g, Fats 10g
+- Budget: ₹45-55
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Iconic Delhi breakfast
+
+#### 122. Bedmi Puri with Aloo Sabzi
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Wheat-urad mix 100g, potato 100g, minimal oil
+- Macros: Protein 12g, Carbs 45g, Fats 9g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Air fry puris
+
+#### 123. Paranthe Wali Gali Style Paratha
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, mixed filling 80g, yogurt
+- Macros: Protein 11g, Carbs 42g, Fats 10g
+- Budget: ₹40-50
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Multiple stuffing options
+
+#### 124. Egg Omelette with Toast
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat toast 2, vegetables
+- Macros: Protein 22g, Carbs 32g, Fats 15g
+- Budget: ₹40-50
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Quick breakfast
+
+#### 125. Moong Dal Chilla
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Moong dal 100g, onion, tomato, coriander
+- Macros: Protein 16g, Carbs 30g, Fats 6g
+- Budget: ₹30-35
+- Prep: 20 mins (after soaking)
+- GI: Low ⭐⭐⭐
+- Tip: High protein option
+
+#### 126. Chicken Sandwich (Whole Wheat)
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat bread 4, chicken 100g, vegetables
+- Macros: Protein 28g, Carbs 40g, Fats 12g
+- Budget: ₹60-70
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Street food favorite
+
+#### 127. Aloo Tikki with Chana
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Potato 100g, chickpeas 80g, minimal oil
+- Macros: Protein 13g, Carbs 48g, Fats 8g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Bake tikkis instead of frying
+
+#### 128. Mutton Keema Pav
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Mutton mince 100g, whole wheat pav 2, spices
+- Macros: Protein 26g, Carbs 38g, Fats 16g
+- Budget: ₹80-90
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Popular street food
+
+#### 129. Poha with Peanuts
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Flattened rice 60g, peanuts 20g, vegetables
+- Macros: Protein 9g, Carbs 35g, Fats 8g
+- Budget: ₹25-30
+- Prep: 15 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light breakfast
+
+#### 130. Egg Bhurji with Pav
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat pav 2, onion, tomato
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Classic Delhi breakfast
+
+### LUNCH OPTIONS
+
+#### 131. Butter Chicken with Naan (Whole Wheat)
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, tomato gravy, whole wheat naan 2
+- Macros: Protein 30g, Carbs 42g, Fats 16g
+- Budget: ₹95-110
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Delhi's signature dish
+
+#### 132. Dal Makhani with Roti
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Black lentils 80g, kidney beans 30g, roti 2
+- Macros: Protein 20g, Carbs 42g, Fats 10g
+- Budget: ₹45-55
+- Prep: 60 mins
+- GI: Medium ⭐⭐
+- Tip: Use low-fat milk
+
+#### 133. Rajma Chawal Delhi Style
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Kidney beans 120g, brown rice 70g, spices
+- Macros: Protein 19g, Carbs 52g, Fats 8g
+- Budget: ₹45-55
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Comfort food classic
+
+#### 134. Chicken Biryani (Brown Rice)
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 80g, yogurt, spices
+- Macros: Protein 28g, Carbs 48g, Fats 14g
+- Budget: ₹90-100
+- Prep: 60 mins
+- GI: Medium ⭐⭐
+- Tip: Fragrant and flavorful
+
+#### 135. Paneer Tikka Masala with Naan
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Paneer 150g, tomato gravy, whole wheat naan 2
+- Macros: Protein 22g, Carbs 40g, Fats 16g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Popular restaurant dish
+
+#### 136. Mutton Rogan Josh with Rice
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, brown rice 70g, Kashmiri spices
+- Macros: Protein 32g, Carbs 45g, Fats 18g
+- Budget: ₹130-150
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Rich and aromatic
+
+#### 137. Kadhi Pakora with Rice
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan pakoras 60g, rice 60g
+- Macros: Protein 14g, Carbs 48g, Fats 10g
+- Budget: ₹40-45
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Bake pakoras
+
+#### 138. Fish Tikka Masala with Rice
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, tomato gravy, brown rice 70g
+- Macros: Protein 30g, Carbs 45g, Fats 13g
+- Budget: ₹95-110
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Omega-3 rich
+
+#### 139. Chana Masala with Bhatura
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Chickpeas 120g, whole wheat bhatura 2
+- Macros: Protein 17g, Carbs 52g, Fats 9g
+- Budget: ₹45-55
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Street food favorite
+
+#### 140. Chicken Curry with Roti
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, roti 3, Delhi-style gravy
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Home-style curry
+
+### DINNER OPTIONS
+
+#### 141. Tandoori Chicken with Salad
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, yogurt marinade, mixed salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹80-90
+- Prep: 40 mins (+ marination)
+- GI: Low ⭐⭐⭐
+- Tip: Iconic Delhi preparation
+
+#### 142. Palak Paneer with Roti
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Spinach 250g, paneer 120g, roti 2
+- Macros: Protein 22g, Carbs 38g, Fats 14g
+- Budget: ₹60-70
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron and calcium rich
+
+#### 143. Khichdi with Kadhi
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Rice 50g, moong dal 60g, yogurt 150ml
+- Macros: Protein 15g, Carbs 40g, Fats 7g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Comfort food
+
+#### 144. Egg Curry with Roti
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, onion-tomato gravy
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Quick protein dinner
+
+#### 145. Mixed Vegetable Sabzi with Roti
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 250g, roti 2, minimal oil
+- Macros: Protein 9g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fiber-rich meal
+
+#### 146. Fish Tikka with Vegetables
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹95-105
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and healthy
+
+#### 147. Dal Tadka with Roti
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Mixed dal 80g, roti 2, ghee 1 tsp
+- Macros: Protein 17g, Carbs 42g, Fats 8g
+- Budget: ₹35-40
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Daily staple
+
+#### 148. Chicken Seekh Kebab with Salad
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, spices, mixed salad 100g
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 149. Bhindi Masala with Roti
+- State: Delhi
+- Type: Vegetarian
+- Ingredients: Okra 200g, roti 2, minimal oil
+- Macros: Protein 8g, Carbs 38g, Fats 7g
+- Budget: ₹40-45
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Good for blood sugar
+
+#### 150. Mutton Seekh Kebab with Salad
+- State: Delhi
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad 100g
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Rich in protein
+
+---
+
+## UTTARAKHAND REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 151. Mandua Roti with Ghee
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Finger millet flour 100g, ghee 10g, jaggery 20g
+- Macros: Protein 12g, Carbs 40g, Fats 11g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Ragi is excellent for PCOS
+
+#### 152. Aloo Ke Gutke with Puri
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Potato 150g, whole wheat puri 3, minimal oil
+- Macros: Protein 8g, Carbs 48g, Fats 10g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Pahadi-style spiced potatoes
+
+#### 153. Gahat Dal Paratha
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, horse gram dal 50g
+- Macros: Protein 16g, Carbs 42g, Fats 8g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Gahat is protein-rich
+
+#### 154. Egg Bhurji Pahadi Style
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, mandua roti 2, Pahadi spices
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Mountain-style preparation
+
+#### 155. Jhangora Kheer (Sugar-Free)
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Barnyard millet 60g, milk 200ml, dates 40g
+- Macros: Protein 10g, Carbs 42g, Fats 6g
+- Budget: ₹40-45
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional breakfast porridge
+
+#### 156. Chicken Paratha Pahadi
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, Pahadi spices
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Filling mountain breakfast
+
+#### 157. Singal with Ghee
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Barnyard millet flour 100g, ghee 10g
+- Macros: Protein 11g, Carbs 38g, Fats 11g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional millet roti
+
+#### 158. Mutton Keema Paratha
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hearty breakfast
+
+#### 159. Urad Dal Paratha
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Whole wheat 80g, urad dal 40g, spices
+- Macros: Protein 15g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich breakfast
+
+#### 160. Egg Omelette with Mandua Roti
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, mandua roti 2, vegetables
+- Macros: Protein 24g, Carbs 38g, Fats 15g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy combination
+
+### LUNCH OPTIONS
+
+#### 161. Bhatt Ki Churkani with Rice
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Black soybean 100g, brown rice 70g, spices
+- Macros: Protein 22g, Carbs 48g, Fats 10g
+- Budget: ₹45-55
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein Pahadi dal
+
+#### 162. Gahat Dal with Mandua Roti
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Horse gram 100g, mandua roti 3
+- Macros: Protein 20g, Carbs 45g, Fats 8g
+- Budget: ₹40-50
+- Prep: 60 mins
+- GI: Low ⭐⭐⭐
+- Tip: Excellent for PCOS
+
+#### 163. Chicken Curry Pahadi Style
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, Pahadi spices
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Simple mountain-style curry
+
+#### 164. Kafuli with Rice
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Spinach-fenugreek 250g, brown rice 70g
+- Macros: Protein 14g, Carbs 45g, Fats 8g
+- Budget: ₹40-45
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron-rich green curry
+
+#### 165. Mutton Curry with Roti
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, roti 2, minimal spices
+- Macros: Protein 32g, Carbs 38g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional preparation
+
+#### 166. Jhangora Pulao
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Barnyard millet 80g, vegetables 150g
+- Macros: Protein 12g, Carbs 42g, Fats 7g
+- Budget: ₹40-45
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy millet pulao
+
+#### 167. Fish Curry Kumaoni Style
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, mustard
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: River fish preparation
+
+#### 168. Chainsoo with Rice
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Black gram 100g, brown rice 70g, spices
+- Macros: Protein 20g, Carbs 48g, Fats 10g
+- Budget: ₹45-50
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich Pahadi dish
+
+#### 169. Chicken Tikka Masala with Roti
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, roti 2, tomato gravy
+- Macros: Protein 30g, Carbs 38g, Fats 15g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Popular preparation
+
+#### 170. Phaanu with Mandua Roti
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Mixed lentils 100g, mandua roti 3
+- Macros: Protein 21g, Carbs 45g, Fats 9g
+- Budget: ₹40-45
+- Prep: 60 mins
+- GI: Low ⭐⭐⭐
+- Tip: Slow-cooked dal dish
+
+### DINNER OPTIONS
+
+#### 171. Mandua Roti with Bhatt Dal
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Finger millet roti 2, black soybean dal 80g
+- Macros: Protein 18g, Carbs 40g, Fats 9g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Complete protein meal
+
+#### 172. Tandoori Chicken with Salad
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, Pahadi marinade, salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner option
+
+#### 173. Aloo Tamatar Ka Jhol with Roti
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Potato 100g, tomato 150g, roti 2
+- Macros: Protein 8g, Carbs 42g, Fats 7g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Simple curry
+
+#### 174. Egg Curry Pahadi Style
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, mandua roti 2, Pahadi spices
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Mountain-style preparation
+
+#### 175. Jhangora Khichdi
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Barnyard millet 60g, moong dal 50g
+- Macros: Protein 13g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Easy to digest
+
+#### 176. Fish Tikka with Vegetables
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy grilled option
+
+#### 177. Gahat Dal with Roti
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Horse gram 70g, roti 2
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹35-40
+- Prep: 50 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner
+
+#### 178. Chicken Seekh Kebab Pahadi
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, Pahadi spices, salad
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 179. Mixed Vegetable Sabzi with Mandua Roti
+- State: Uttarakhand
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 250g, mandua roti 2
+- Macros: Protein 11g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fiber-rich meal
+
+#### 180. Mutton Seekh Kebab with Salad
+- State: Uttarakhand
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## HIMACHAL PRADESH REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 181. Sidu with Ghee
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Wheat flour 100g, yeast, ghee 15g
+- Macros: Protein 10g, Carbs 45g, Fats 14g
+- Budget: ₹30-35
+- Prep: 90 mins (with rising time)
+- GI: Medium ⭐⭐
+- Tip: Steamed bread, eat in moderation
+
+#### 182. Chana Madra with Rice
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Chickpeas 100g, yogurt 100ml, brown rice 50g
+- Macros: Protein 16g, Carbs 50g, Fats 9g
+- Budget: ₹40-45
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Protein-rich breakfast
+
+#### 183. Babru (Baked Version)
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, black gram paste 50g
+- Macros: Protein 14g, Carbs 42g, Fats 8g
+- Budget: ₹35-40
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Bake instead of frying
+
+#### 184. Egg Bhurji Himachali Style
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, Himachali spices
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Mountain-style preparation
+
+#### 185. Aktori (Buckwheat Pancake)
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Buckwheat flour 100g, wheat flour 30g
+- Macros: Protein 12g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Gluten-free option
+
+#### 186. Chicken Paratha Himachali
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Filling breakfast
+
+#### 187. Patande (Sweetened with Dates)
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Wheat flour 100g, dates paste 40g, milk
+- Macros: Protein 10g, Carbs 48g, Fats 6g
+- Budget: ₹35-40
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Pancakes with natural sweetener
+
+#### 188. Mutton Keema Paratha
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hearty mountain breakfast
+
+#### 189. Chilra (Savory Pancake)
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Wheat flour 100g, vegetables 80g
+- Macros: Protein 9g, Carbs 42g, Fats 6g
+- Budget: ₹30-35
+- Prep: 20 mins
+- GI: Medium ⭐⭐
+- Tip: Quick breakfast option
+
+#### 190. Egg Omelette with Roti
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, vegetables
+- Macros: Protein 24g, Carbs 38g, Fats 15g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Simple and nutritious
+
+### LUNCH OPTIONS
+
+#### 191. Madra with Rice
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Mixed chickpeas 120g, yogurt 100ml, rice 70g
+- Macros: Protein 18g, Carbs 52g, Fats 10g
+- Budget: ₹45-55
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Traditional festival dish
+
+#### 192. Tudkiya Bhath
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Brown rice 80g, mixed lentils 50g, vegetables
+- Macros: Protein 15g, Carbs 50g, Fats 8g
+- Budget: ₹40-45
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: One-pot pulao
+
+#### 193. Chicken Anardana
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, pomegranate seeds 30g, rice 70g
+- Macros: Protein 30g, Carbs 48g, Fats 14g
+- Budget: ₹90-100
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Tangy and flavorful
+
+#### 194. Bhey (Lotus Stem) with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Lotus stem 200g, yogurt 50ml, roti 3
+- Macros: Protein 10g, Carbs 45g, Fats 8g
+- Budget: ₹50-60
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fiber-rich vegetable
+
+#### 195. Mutton Curry Himachali Style
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, yogurt, rice 70g
+- Macros: Protein 32g, Carbs 45g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Rich and aromatic
+
+#### 196. Khatta (Sour Curry) with Rice
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Mixed lentils 80g, tamarind, rice 70g
+- Macros: Protein 16g, Carbs 50g, Fats 7g
+- Budget: ₹35-40
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Tangy and nutritious
+
+#### 197. Fish Curry Himachali Style
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, local spices
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Omega-3 rich
+
+#### 198. Sepu Vadi with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Spinach 200g, besan dumplings 80g, roti 2
+- Macros: Protein 14g, Carbs 42g, Fats 9g
+- Budget: ₹40-45
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Iron-rich meal
+
+#### 199. Chicken Curry with Rice
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, yogurt-based gravy
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Traditional preparation
+
+#### 200. Aloo Palda with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Potato 120g, yogurt 100ml, roti 3
+- Macros: Protein 11g, Carbs 48g, Fats 9g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Comfort food
+
+### DINNER OPTIONS
+
+#### 201. Sidu with Dal
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Sidu 2, mixed dal 80g, ghee minimal
+- Macros: Protein 16g, Carbs 45g, Fats 10g
+- Budget: ₹35-40
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Traditional combination
+
+#### 202. Tandoori Chicken with Salad
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, Himachali marinade, salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner option
+
+#### 203. Auriya Kadoo (Pumpkin Curry) with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Pumpkin 200g, roti 2, minimal spices
+- Macros: Protein 7g, Carbs 40g, Fats 6g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and nutritious
+
+#### 204. Egg Curry Himachali
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, yogurt-based gravy
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical protein meal
+
+#### 205. Khichdi Himachali Style
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Rice 50g, moong dal 60g, vegetables
+- Macros: Protein 14g, Carbs 42g, Fats 6g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Easy to digest
+
+#### 206. Fish Tikka with Vegetables
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, yogurt marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy option
+
+#### 207. Chana Dal with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Chana dal 70g, roti 2, minimal ghee
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner
+
+#### 208. Chicken Seekh Kebab with Salad
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, Himachali spices, salad
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 209. Mixed Vegetable Sabzi with Roti
+- State: Himachal Pradesh
+- Type: Vegetarian
+- Ingredients: Mixed vegetables 250g, roti 2
+- Macros: Protein 9g, Carbs 40g, Fats 6g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fiber-rich meal
+
+#### 210. Mutton Seekh Kebab with Salad
+- State: Himachal Pradesh
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## JAMMU & KASHMIR REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 211. Noon Chai with Lavasa
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Noon chai 250ml (made with milk, tea, salt), lavasa bread 2
+- Macros: Protein 9g, Carbs 40g, Fats 8g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Traditional Kashmiri breakfast
+
+#### 212. Kashmiri Kulcha with Yogurt
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Kulcha 2, yogurt 100g, sesame seeds
+- Macros: Protein 11g, Carbs 42g, Fats 9g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Slightly sweet bread
+
+#### 213. Harissa (Chicken Porridge)
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Chicken 100g, wheat 60g, spices
+- Macros: Protein 24g, Carbs 40g, Fats 12g
+- Budget: ₹70-80
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Winter special, hearty
+
+#### 214. Egg Omelette with Kashmiri Roti
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, Kashmiri roti 2, vegetables
+- Macros: Protein 24g, Carbs 38g, Fats 15g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Simple breakfast
+
+#### 215. Khambir (Whole Wheat Bread)
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, minimal yeast
+- Macros: Protein 10g, Carbs 45g, Fats 5g
+- Budget: ₹25-30
+- Prep: 90 mins (with rising)
+- GI: Medium ⭐⭐
+- Tip: Traditional Ladakhi bread
+
+#### 216. Chicken Paratha Kashmiri
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, Kashmiri spices
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Filling breakfast
+
+#### 217. Modur Pulav (Less Sweet Version)
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Brown rice 70g, dates 30g, nuts 20g, saffron
+- Macros: Protein 10g, Carbs 48g, Fats 10g
+- Budget: ₹50-60
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Festive breakfast rice
+
+#### 218. Mutton Keema Paratha
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g, spices
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hearty breakfast
+
+#### 219. Sheermal (Healthier Version)
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, milk 50ml, dates syrup 30g
+- Macros: Protein 11g, Carbs 45g, Fats 8g
+- Budget: ₹40-45
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Mildly sweet bread
+
+#### 220. Egg Bhurji with Lavasa
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, lavasa 2, Kashmiri spices
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional combination
+
+### LUNCH OPTIONS
+
+#### 221. Rogan Josh with Rice
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, brown rice 70g, Kashmiri spices, yogurt
+- Macros: Protein 32g, Carbs 45g, Fats 18g
+- Budget: ₹130-150
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Iconic Kashmiri dish
+
+#### 222. Rajma Chawal Kashmiri Style
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Kidney beans 120g, brown rice 70g, Kashmiri spices
+- Macros: Protein 19g, Carbs 52g, Fats 8g
+- Budget: ₹45-55
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Comfort food
+
+#### 223. Yakhni (Yogurt-Based Mutton)
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, yogurt 150ml, rice 70g
+- Macros: Protein 32g, Carbs 45g, Fats 16g
+- Budget: ₹120-140
+- Prep: 80 mins
+- GI: Medium ⭐⭐
+- Tip: Mild and aromatic
+
+#### 224. Dum Aloo Kashmiri with Rice
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Baby potatoes 150g, yogurt 100ml, rice 70g
+- Macros: Protein 10g, Carbs 55g, Fats 10g
+- Budget: ₹40-45
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Rich and flavorful
+
+#### 225. Gushtaba with Rice
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton balls 150g, yogurt gravy, rice 70g
+- Macros: Protein 30g, Carbs 45g, Fats 18g
+- Budget: ₹130-150
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Royal dish
+
+#### 226. Chaman (Paneer) Kaliya with Rice
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Paneer 150g, turmeric-based gravy, rice 70g
+- Macros: Protein 22g, Carbs 45g, Fats 15g
+- Budget: ₹70-80
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Yellow curry
+
+#### 227. Chicken Curry Kashmiri Style
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, Kashmiri spices
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Mildly spiced
+
+#### 228. Haak (Collard Greens) with Rice
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Collard greens 250g, brown rice 70g, minimal oil
+- Macros: Protein 12g, Carbs 45g, Fats 7g
+- Budget: ₹35-40
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional greens
+
+#### 229. Tabak Maaz (Modified) with Rice
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Mutton ribs 150g, brown rice 70g, minimal oil
+- Macros: Protein 30g, Carbs 45g, Fats 18g
+- Budget: ₹120-140
+- Prep: 80 mins
+- GI: Medium ⭐⭐
+- Tip: Pan-fry with minimal oil
+
+#### 230. Rajma Gogji with Rice
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Kidney beans 100g, turnips 100g, rice 70g
+- Macros: Protein 16g, Carbs 50g, Fats 7g
+- Budget: ₹40-45
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Unique combination
+
+### DINNER OPTIONS
+
+#### 231. Kashmiri Pulao (Less Sweet)
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Brown rice 80g, mixed nuts 20g, dates 20g, saffron
+- Macros: Protein 11g, Carbs 48g, Fats 11g
+- Budget: ₹55-65
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Aromatic rice dish
+
+#### 232. Tandoori Chicken with Salad
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, Kashmiri marinade, salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner
+
+#### 233. Monji Haak (Knol Khol Greens) with Roti
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Knol khol greens 250g, roti 2
+- Macros: Protein 10g, Carbs 38g, Fats 6g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Simple and healthy
+
+#### 234. Egg Curry Kashmiri
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, Kashmiri masala
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical meal
+
+#### 235. Nadru (Lotus Stem) with Rice
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Lotus stem 200g, brown rice 60g
+- Macros: Protein 10g, Carbs 45g, Fats 7g
+- Budget: ₹50-60
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Fiber-rich vegetable
+
+#### 236. Fish Tikka Kashmiri Style
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, Kashmiri marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹90-100
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy option
+
+#### 237. Dal with Roti
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Mixed dal 70g, roti 2, minimal ghee
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Simple dinner
+
+#### 238. Chicken Seekh Kebab with Salad
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, Kashmiri spices, salad
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 239. Gogji (Turnip) Sabzi with Roti
+- State: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Turnip 200g, roti 2, minimal spices
+- Macros: Protein 8g, Carbs 40g, Fats 6g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner
+
+#### 240. Mutton Seekh Kebab with Salad
+- State: Jammu & Kashmir
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, Kashmiri spices, salad
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## BIHAR REGIONAL CUISINE
+
+### BREAKFAST OPTIONS
+
+#### 241. Sattu Paratha
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, roasted gram flour 50g, spices
+- Macros: Protein 16g, Carbs 42g, Fats 8g
+- Budget: ₹25-30
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein breakfast
+
+#### 242. Litti Chokha (Modified)
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, sattu 50g, eggplant 100g, potato 80g
+- Macros: Protein 14g, Carbs 48g, Fats 10g
+- Budget: ₹35-40
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Bake litti instead of roasting in coals
+
+#### 243. Chuda Dahi (Flattened Rice with Yogurt)
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Flattened rice 60g, yogurt 150ml, jaggery 20g
+- Macros: Protein 10g, Carbs 45g, Fats 6g
+- Budget: ₹25-30
+- Prep: 10 mins
+- GI: Medium ⭐⭐
+- Tip: Probiotic-rich breakfast
+
+#### 244. Egg Paratha Bihari Style
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, eggs 2, onion, green chili
+- Macros: Protein 20g, Carbs 40g, Fats 14g
+- Budget: ₹40-50
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Street-style preparation
+
+#### 245. Malpua (Healthier Version)
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Whole wheat 80g, banana 1, dates syrup 30ml
+- Macros: Protein 8g, Carbs 45g, Fats 8g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Use dates syrup instead of sugar
+
+#### 246. Chicken Paratha
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, minced chicken 100g, spices
+- Macros: Protein 26g, Carbs 40g, Fats 13g
+- Budget: ₹65-75
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-packed breakfast
+
+#### 247. Dhuska (Baked Version)
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Rice flour 60g, chana dal 40g, minimal oil
+- Macros: Protein 12g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 40 mins (after soaking)
+- GI: Medium ⭐⭐
+- Tip: Bake instead of deep frying
+
+#### 248. Mutton Keema Paratha
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Whole wheat 100g, mutton mince 100g
+- Macros: Protein 28g, Carbs 40g, Fats 16g
+- Budget: ₹80-90
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hearty breakfast
+
+#### 249. Pua (Less Sweet Version)
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, dates paste 40g, minimal ghee
+- Macros: Protein 9g, Carbs 48g, Fats 8g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Medium ⭐⭐
+- Tip: Festival sweet
+
+#### 250. Egg Bhurji with Roti
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, whole wheat roti 2, mustard oil
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 20 mins
+- GI: Low ⭐⭐⭐
+- Tip: Traditional preparation
+
+### LUNCH OPTIONS
+
+#### 251. Dal Pitha with Dal
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Rice flour dumplings 100g, mixed dal 80g
+- Macros: Protein 16g, Carbs 50g, Fats 7g
+- Budget: ₹35-40
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Steamed dumplings
+
+#### 252. Ghugni with Litti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Yellow peas 100g, litti 2, spices
+- Macros: Protein 17g, Carbs 52g, Fats 9g
+- Budget: ₹40-45
+- Prep: 50 mins
+- GI: Medium ⭐⭐
+- Tip: Protein-rich meal
+
+#### 253. Chicken Curry Bihari Style with Rice
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, brown rice 70g, mustard-based gravy
+- Macros: Protein 30g, Carbs 45g, Fats 14g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Mustard oil adds flavor
+
+#### 254. Chokha (Mixed) with Roti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Eggplant 100g, potato 80g, tomato 50g, roti 3
+- Macros: Protein 9g, Carbs 50g, Fats 8g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Medium ⭐⭐
+- Tip: Smoky flavored mash
+
+#### 255. Mutton Curry with Rice
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Mutton 150g, brown rice 70g, spices
+- Macros: Protein 32g, Carbs 45g, Fats 18g
+- Budget: ₹120-140
+- Prep: 90 mins
+- GI: Medium ⭐⭐
+- Tip: Rich and flavorful
+
+#### 256. Kadhi Bari with Rice
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, besan dumplings 60g, rice 70g
+- Macros: Protein 14g, Carbs 50g, Fats 9g
+- Budget: ₹35-40
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Probiotic-rich meal
+
+#### 257. Fish Curry Bihari Style with Rice
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, brown rice 70g, mustard, curry leaves
+- Macros: Protein 30g, Carbs 45g, Fats 12g
+- Budget: ₹80-90
+- Prep: 35 mins
+- GI: Medium ⭐⭐
+- Tip: Mustard-based curry
+
+#### 258. Aloo Chokha with Litti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Potato 150g, litti 2, mustard oil
+- Macros: Protein 10g, Carbs 55g, Fats 10g
+- Budget: ₹30-35
+- Prep: 40 mins
+- GI: Medium ⭐⭐
+- Tip: Classic combination
+
+#### 259. Chicken Tikka Masala with Roti
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, roti 2, tomato-based gravy
+- Macros: Protein 30g, Carbs 38g, Fats 15g
+- Budget: ₹85-95
+- Prep: 45 mins
+- GI: Medium ⭐⭐
+- Tip: Popular preparation
+
+#### 260. Sattu Ka Paratha with Yogurt
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Whole wheat 100g, sattu 60g, yogurt 100g
+- Macros: Protein 18g, Carbs 42g, Fats 8g
+- Budget: ₹30-35
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein meal
+
+### DINNER OPTIONS
+
+#### 261. Khichdi Bihari Style
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Rice 50g, moong dal 60g, vegetables
+- Macros: Protein 14g, Carbs 42g, Fats 6g
+- Budget: ₹30-35
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: Comfort food
+
+#### 262. Tandoori Chicken with Salad
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Chicken 150g, mustard marinade, salad 100g
+- Macros: Protein 32g, Carbs 12g, Fats 11g
+- Budget: ₹75-85
+- Prep: 40 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner option
+
+#### 263. Chana Dal with Roti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Chana dal 70g, roti 2, minimal ghee
+- Macros: Protein 16g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light and nutritious
+
+#### 264. Egg Curry with Roti
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Eggs 3, roti 2, Bihari masala
+- Macros: Protein 24g, Carbs 38g, Fats 16g
+- Budget: ₹45-55
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Economical protein meal
+
+#### 265. Lauki Chana Dal
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Bottle gourd 200g, chana dal 70g, roti 2
+- Macros: Protein 16g, Carbs 40g, Fats 6g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Light dinner
+
+#### 266. Fish Tikka with Vegetables
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Fish 150g, mustard marinade, grilled vegetables
+- Macros: Protein 32g, Carbs 15g, Fats 11g
+- Budget: ₹85-95
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Omega-3 rich
+
+#### 267. Mixed Dal with Roti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Mixed lentils 70g, roti 2, minimal ghee
+- Macros: Protein 17g, Carbs 42g, Fats 7g
+- Budget: ₹30-35
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Daily staple
+
+#### 268. Chicken Seekh Kebab with Salad
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Minced chicken 150g, spices, mixed salad
+- Macros: Protein 30g, Carbs 10g, Fats 13g
+- Budget: ₹70-80
+- Prep: 30 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein dinner
+
+#### 269. Bhindi Masala with Roti
+- State: Bihar
+- Type: Vegetarian
+- Ingredients: Okra 200g, roti 2, mustard oil
+- Macros: Protein 8g, Carbs 38g, Fats 8g
+- Budget: ₹40-45
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Good for blood sugar
+
+#### 270. Mutton Seekh Kebab with Salad
+- State: Bihar
+- Type: Non-Vegetarian
+- Ingredients: Minced mutton 150g, spices, mixed salad
+- Macros: Protein 32g, Carbs 10g, Fats 16g
+- Budget: ₹95-110
+- Prep: 35 mins
+- GI: Low ⭐⭐⭐
+- Tip: Protein-rich dinner
+
+---
+
+## SNACKS & BEVERAGES (ALL STATES)
+
+### HEALTHY SNACKS
+
+#### 271. Roasted Makhana
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Makhana 30g, ghee 5g, salt, pepper
 - Macros: Protein 5g, Carbs 18g, Fats 4g
 - Budget: ₹20-25
 - Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Great for PCOS
 
-### Sprouts Chaat
+#### 272. Sprouts Chaat
+- Region: North India (All States)
+- Type: Vegetarian
 - Ingredients: Mixed sprouts 50g, onion, tomato, lemon
 - Macros: Protein 8g, Carbs 15g, Fats 2g
 - Budget: ₹15-20
 - Prep: 5 mins (after sprouting)
+- GI: Low ⭐⭐⭐
+- Tip: High protein snack
+
+#### 273. Roasted Chana
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Roasted chickpeas 40g, chaat masala
+- Macros: Protein 9g, Carbs 22g, Fats 3g
+- Budget: ₹15-20
+- Prep: 2 mins
+- GI: Low ⭐⭐⭐
+- Tip: Crunchy protein snack
+
+#### 274. Cucumber Raita
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Cucumber 100g, yogurt 100ml, cumin
+- Macros: Protein 5g, Carbs 8g, Fats 3g
+- Budget: ₹15-20
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Cooling and probiotic
+
+#### 275. Boiled Egg with Spices
+- Region: North India (All States)
+- Type: Non-Vegetarian
+- Ingredients: Eggs 2, chaat masala, salt
+- Macros: Protein 13g, Carbs 1g, Fats 10g
+- Budget: ₹20-25
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Perfect protein snack
+
+#### 276. Peanuts Chaat
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Roasted peanuts 30g, onion, tomato, lemon
+- Macros: Protein 8g, Carbs 10g, Fats 14g
+- Budget: ₹15-20
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Healthy fats and protein
+
+#### 277. Paneer Tikka (Small Portion)
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Paneer 60g, yogurt marinade, grilled
+- Macros: Protein 12g, Carbs 4g, Fats 8g
+- Budget: ₹35-40
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: High protein snack
+
+#### 278. Fruit Chaat
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Mixed fruits 150g, chaat masala, lemon
+- Macros: Protein 2g, Carbs 25g, Fats 0g
+- Budget: ₹30-35
+- Prep: 5 mins
+- GI: Medium ⭐⭐
+- Tip: Fiber and vitamins
+
+#### 279. Roasted Pumpkin Seeds
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Pumpkin seeds 30g, salt
+- Macros: Protein 9g, Carbs 4g, Fats 13g
+- Budget: ₹25-30
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Zinc-rich for PCOS
+
+#### 280. Chicken Tikka Bites
+- Region: North India (All States)
+- Type: Non-Vegetarian
+- Ingredients: Chicken 80g, yogurt marinade, grilled
+- Macros: Protein 18g, Carbs 3g, Fats 6g
+- Budget: ₹45-50
+- Prep: 25 mins
+- GI: Low ⭐⭐⭐
+- Tip: Lean protein snack
+
+### HEALTHY BEVERAGES
+
+#### 281. Sattu Drink (Sugar-Free)
+- Region: Bihar/UP
+- Type: Vegetarian
+- Ingredients: Sattu 30g, water 250ml, lemon, salt/stevia
+- Macros: Protein 8g, Carbs 15g, Fats 2g
+- Budget: ₹15-20
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Cooling summer drink
+
+#### 282. Lassi (Sugar-Free)
+- Region: Punjab/All North India
+- Type: Vegetarian
+- Ingredients: Yogurt 200ml, water 50ml, stevia, cardamom
+- Macros: Protein 8g, Carbs 12g, Fats 6g
+- Budget: ₹25-30
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Probiotic drink
+
+#### 283. Chaas (Buttermilk)
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Yogurt 150ml, water 100ml, cumin, salt
+- Macros: Protein 6g, Carbs 9g, Fats 4g
+- Budget: ₹15-20
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Digestive aid
+
+#### 284. Herbal Tea (Kahwa Style)
+- Region: Jammu & Kashmir
+- Type: Vegetarian
+- Ingredients: Green tea, saffron, cardamom, cinnamon
+- Macros: Protein 0g, Carbs 2g, Fats 0g
+- Budget: ₹20-25
+- Prep: 10 mins
+- GI: Low ⭐⭐⭐
+- Tip: Antioxidant-rich
+
+#### 285. Lemon Water with Chia Seeds
+- Region: North India (All States)
+- Type: Vegetarian
+- Ingredients: Water 250ml, lemon juice, chia seeds 10g
+- Macros: Protein 2g, Carbs 5g, Fats 3g
+- Budget: ₹15-20
+- Prep: 5 mins
+- GI: Low ⭐⭐⭐
+- Tip: Hydrating and fiber-rich
+
+---
+
+## NOTES FOR PCOS MANAGEMENT
+
+### BEST CHOICES FOR PCOS:
+1. **Low GI Millets**: Bajra, jowar, ragi (mandua), barnyard millet (jhangora)
+2. **Protein-Rich Legumes**: Horse gram (gahat), black gram, sattu, all lentils
+3. **Beneficial Vegetables**: Bitter gourd, bottle gourd, okra, spinach, fenugreek
+4. **Healthy Fats**: Ghee in moderation, mustard oil, nuts, seeds
+5. **Probiotic Foods**: Yogurt, buttermilk, fermented preparations
+
+### PORTION CONTROL:
+- Breakfast: 300-400 calories
+- Lunch: 400-500 calories
+- Dinner: 300-400 calories
+- Snacks: 100-150 calories (2 per day)
+
+### COOKING METHODS:
+- Prefer: Steaming, grilling, baking, roasting
+- Minimize: Deep frying, excessive oil use
+- Use: Non-stick cookware, air fryer when possible
+
+### MEAL TIMING:
+- Breakfast: Within 1 hour of waking
+- Lunch: 12-2 PM
+- Dinner: Before 8 PM (3 hours before sleep)
+- Snacks: Mid-morning and evening
+
+### HYDRATION:
+- 8-10 glasses of water daily
+- Herbal teas, buttermilk, lemon water
+- Avoid sugary drinks and excessive caffeine
+
+### REGIONAL ADAPTATIONS:
+- All meals can be customized based on:
+  * Available ingredients in your region
+  * Family cooking traditions
+  * Personal taste preferences
+  * Budget constraints
+  * Seasonal availability
+
+### MEDICAL DISCLAIMER:
+These meal plans are general guidelines for PCOS management. Always consult with:
+- Registered dietitian for personalized meal plans
+- Endocrinologist for medical management
+- Healthcare provider before making major dietary changes
+
+### PORTION SIZES:
+- Roti/Bread: 1 roti = 30-35g (6 inch diameter)
+- Rice: 1 serving = 60-80g cooked
+- Dal/Lentils: 1 serving = 70-100g cooked
+- Vegetables: 1 serving = 150-250g
+- Protein (meat/fish): 1 serving = 100-150g
+- Paneer: 1 serving = 80-120g
+
+---
+
+## RECIPE CUSTOMIZATION TIPS
+
+### For Weight Management:
+- Reduce rice/roti portions by 20-30%
+- Increase vegetable portions
+- Choose grilled/baked over fried
+- Use minimal oil (1-2 tsp per meal)
+
+### For Insulin Resistance:
+- Focus on Low GI options (⭐⭐⭐)
+- Pair carbs with protein
+- Include fiber-rich vegetables
+- Choose whole grains over refined
+
+### For Hormonal Balance:
+- Include omega-3 rich foods (fish, walnuts)
+- Anti-inflammatory spices (turmeric, ginger)
+- Cruciferous vegetables (cauliflower, cabbage)
+- Adequate protein at each meal
+
+### For Budget-Conscious Choices:
+- Dal-based meals are economical
+- Seasonal vegetables are cheaper
+- Eggs are affordable protein
+- Bulk-cook grains and freeze
+
+### For Time-Saving:
+- Batch cook dal and freeze
+- Pre-chop vegetables
+- Use pressure cooker for faster cooking
+- Keep healthy snacks ready
+
+---
+
+**Total Meal Options Across North India: 285+**
+**Coverage: 9 States with 30+ meals each**
+**Balance: 50% Vegetarian | 50% Non-Vegetarian**
+**Focus: PCOS-Friendly, Budget-Conscious, Culturally Authentic**
