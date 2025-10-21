@@ -15,11 +15,18 @@
     "test:vitest": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "ingest:meals": "node server/src/scripts/ingestMealTemplates.js",
-    "ingest:meals:watch": "node --watch server/src/scripts/ingestMealTemplates.js",
-    "ingest:medical": "node server/src/scripts/ingestMedicalKnowledge.js",
-    "ingest:nutritional": "node server/src/scripts/ingestNutritionalData.js",
-    "ingest:all": "node server/src/scripts/ingestAll.js"
+    "ingest:meals": "node src/scripts/ingestMealTemplates.js",
+    "ingest:meals:watch": "node --watch src/scripts/ingestMealTemplates.js",
+    "ingest:medical": "node src/scripts/ingestMedicalKnowledge.js",
+    "ingest:nutritional": "node src/scripts/ingestNutritionalData.js",
+    "ingest:all": "node src/scripts/ingestAll.js",
+    "vector:clear": "node src/scripts/clear-vector-db.js",
+    "vector:clear-reddit": "node src/scripts/clear-vector-db.js clear-reddit",
+    "vector:clear-medical": "node src/scripts/clear-vector-db.js clear-medical",
+    "vector:backup": "node src/scripts/clear-vector-db.js backup",
+    "vector:list": "node src/scripts/clear-vector-db.js list",
+    "vector:restore": "node src/scripts/restore-vector-db.js",
+    "vector:health": "node src/scripts/vector-health-check.js"
   },
   "dependencies": {
     "@langchain/community": "^0.0.57",
