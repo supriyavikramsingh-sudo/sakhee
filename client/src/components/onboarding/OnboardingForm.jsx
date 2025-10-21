@@ -1,29 +1,47 @@
+// client/src/components/onboarding/OnboardingForm.jsx
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import QuestionField from './QuestionField';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
 
-const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} }) => {
+const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({});
+  const [availableStates, setAvailableStates] = useState([]);
 
-  // ✅ Sync with initialData changes (for email auto-population)
+  // Update available states when regions change
   useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      ...initialData,
-    }));
-  }, [initialData]);
+    if (step === 4 && formData.regions && formData.regions.length > 0) {
+      const states = regionalCuisineConfig.getStatesForRegions(formData.regions);
+      setAvailableStates(states);
+
+      // Remove any selected states that are no longer available
+      if (formData.cuisineStates && formData.cuisineStates.length > 0) {
+        const availableStateIds = states.map((s) => s.id);
+        const filteredStates = formData.cuisineStates.filter((id) =>
+          availableStateIds.includes(id)
+        );
+        if (filteredStates.length !== formData.cuisineStates.length) {
+          setFormData((prev) => ({
+            ...prev,
+            cuisineStates: filteredStates,
+          }));
+        }
+      }
+    } else {
+      setAvailableStates([]);
+    }
+  }, [formData.regions, step]);
 
   const questions = {
     0: [
-      // Personal Info
       {
         key: 'email',
         type: 'email',
         label: t('onboarding.email'),
         required: true,
-        helpText: 'Pre-filled from your Google account. You can edit if needed.',
+        placeholder: 'your.email@example.com',
       },
       {
         key: 'age',
@@ -31,11 +49,11 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
         label: t('onboarding.age'),
         required: true,
         options: [
-          { value: '18-24', label: '18-24' },
-          { value: '25-30', label: '25-30' },
-          { value: '31-35', label: '31-35' },
-          { value: '36-40', label: '36-40' },
-          { value: '41-45', label: '41-45' },
+          { value: '18-24', label: '18-24 years' },
+          { value: '25-29', label: '25-29 years' },
+          { value: '30-34', label: '30-34 years' },
+          { value: '35-39', label: '35-39 years' },
+          { value: '40-45', label: '40-45 years' },
         ],
       },
       {
@@ -43,39 +61,40 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
         type: 'text',
         label: t('onboarding.location'),
         required: true,
-        placeholder: 'City, State',
+        placeholder: 'e.g., Mumbai, Maharashtra',
       },
     ],
     1: [
-      // Health Info
       {
         key: 'diagnosisTime',
         type: 'select',
         label: t('onboarding.diagnosisTime'),
         required: true,
         options: [
-          { value: '0-6', label: 'Within 6 months' },
-          { value: '6-12', label: '6-12 months' },
-          { value: '12+', label: 'Over a year ago' },
+          { value: 'not-diagnosed', label: 'Not yet diagnosed' },
+          { value: 'recent', label: 'Recently (< 1 year)' },
+          { value: '1-3-years', label: '1-3 years ago' },
+          { value: '3-5-years', label: '3-5 years ago' },
+          { value: '5-plus', label: '5+ years ago' },
         ],
       },
       {
         key: 'symptoms',
         type: 'checkbox',
         label: t('onboarding.symptoms'),
-        required: false,
+        required: true,
         options: [
           { value: 'irregular-periods', label: 'Irregular periods' },
-          { value: 'acne', label: 'Acne' },
-          { value: 'weight-changes', label: 'Weight changes' },
+          { value: 'weight-gain', label: 'Weight gain' },
+          { value: 'acne', label: 'Acne/skin issues' },
           { value: 'hair-loss', label: 'Hair loss' },
+          { value: 'hirsutism', label: 'Excessive hair growth' },
           { value: 'fatigue', label: 'Fatigue' },
           { value: 'mood-swings', label: 'Mood swings' },
         ],
       },
     ],
     2: [
-      // Diet & Lifestyle
       {
         key: 'dietType',
         type: 'select',
@@ -114,13 +133,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
       },
     ],
     3: [
-      // Goals
       {
         key: 'goals',
         type: 'checkbox',
         label: t('onboarding.primaryGoals'),
         required: true,
-        maxSelections: 2, // ✅ Limit to 2 goals
+        maxSelections: 2,
         options: [
           { value: 'regularize-periods', label: 'Regularize periods' },
           { value: 'weight-management', label: 'Weight management' },
@@ -145,7 +163,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
       },
     ],
     4: [
-      // Preferences
+      // Preferences with Region -> State hierarchy
       {
         key: 'language',
         type: 'select',
@@ -159,16 +177,27 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
         ],
       },
       {
-        key: 'cuisine',
-        type: 'select',
-        label: t('onboarding.cuisine'),
+        key: 'regions',
+        type: 'multiselect',
+        label: 'Preferred Regions',
         required: true,
-        options: [
-          { value: 'north-indian', label: 'North Indian' },
-          { value: 'south-indian', label: 'South Indian' },
-          { value: 'east-indian', label: 'East Indian' },
-          { value: 'west-indian', label: 'West Indian' },
-        ],
+        options: regionalCuisineConfig.regions.map((region) => ({
+          value: region.id,
+          label: region.label,
+        })),
+        helperText: 'Select one or more regions for cuisine preferences',
+      },
+      {
+        key: 'cuisineStates',
+        type: 'multiselect',
+        label: 'Preferred Cuisines/States',
+        required: true,
+        options: availableStates.map((state) => ({
+          value: state.id,
+          label: state.label,
+        })),
+        helperText: 'Select cuisines based on your preferred regions',
+        disabled: !formData.regions || formData.regions.length === 0,
       },
     ],
   };
@@ -176,24 +205,49 @@ const OnboardingForm = ({ step, onComplete, onBack, loading, initialData = {} })
   const currentQuestions = questions[step] || [];
 
   const handleFieldChange = (key, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [key]: value,
+      };
+
+      // Reset cuisineStates when regions change
+      if (key === 'regions') {
+        newData.cuisineStates = [];
+      }
+
+      return newData;
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onComplete(formData);
+
+    // For step 4, convert cuisineStates to cuisines array before submitting
+    if (step === 4) {
+      const cuisines = regionalCuisineConfig.getCuisinesFromStates(formData.cuisineStates || []);
+      const finalData = {
+        ...formData,
+        cuisines, // Array of cuisine names like ['Gujarati', 'Uttar Pradesh']
+        // Keep cuisineStates for reference
+      };
+      onComplete(finalData);
+    } else {
+      onComplete(formData);
+    }
   };
 
-  // ✅ Updated validation to handle checkbox arrays properly
+  // Validation
   const isValid = currentQuestions
     .filter((q) => q.required)
     .every((q) => {
       const value = formData[q.key];
       // For checkbox fields, ensure at least one is selected
       if (q.type === 'checkbox' && q.required) {
+        return Array.isArray(value) && value.length > 0;
+      }
+      // For multiselect fields
+      if (q.type === 'multiselect' && q.required) {
         return Array.isArray(value) && value.length > 0;
       }
       return value;

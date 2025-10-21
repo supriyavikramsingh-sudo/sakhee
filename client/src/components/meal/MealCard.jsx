@@ -43,9 +43,19 @@ const MealCard = ({ meal }) => {
         <div className="mb-4">
           <p className="text-sm font-medium text-gray-700 mb-2">Ingredients:</p>
           <ul className="text-sm text-muted space-y-1">
-            {meal.ingredients.slice(0, 5).map((ingredient, idx) => (
-              <li key={idx}>• {ingredient}</li>
-            ))}
+            {meal.ingredients.slice(0, 5).map((ingredient, idx) => {
+              // Handle both string and object formats
+              const ingredientText =
+                typeof ingredient === 'string'
+                  ? ingredient
+                  : ingredient.item
+                  ? `${ingredient.item}${ingredient.quantity ? ` - ${ingredient.quantity}` : ''}${
+                      ingredient.unit ? ` ${ingredient.unit}` : ''
+                    }`
+                  : JSON.stringify(ingredient);
+
+              return <li key={idx}>• {ingredientText}</li>;
+            })}
             {meal.ingredients.length > 5 && (
               <li className="text-primary font-medium">+ {meal.ingredients.length - 5} more</li>
             )}

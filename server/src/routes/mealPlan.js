@@ -11,17 +11,17 @@ const mealPlans = new Map();
 
 /**
  * POST /api/meals/generate
- * Generate a personalized meal plan with RAG retrieval
+ * Generate a personalized meal plan with RAG retrieval (UPDATED for multiple cuisines)
  */
 router.post('/generate', async (req, res) => {
   try {
     const {
       userId,
-      region,
+      regions,
+      cuisines,
       dietType,
       budget,
       restrictions,
-      cuisines,
       mealsPerDay,
       goals,
       duration,
@@ -29,12 +29,13 @@ router.post('/generate', async (req, res) => {
       userOverrides,
     } = req.body;
 
-    logger.info('Generating RAG-enhanced meal plan', {
+    logger.info('Generating RAG-enhanced meal plan with multiple cuisines', {
       userId,
-      region,
+      regions: regions?.length || 0,
+      cuisines: cuisines?.length || 0,
+      cuisineList: cuisines,
       dietType,
       restrictions: restrictions?.length || 0,
-      cuisines: cuisines?.length || 0,
       hasHealthContext: !!healthContext,
       hasMedicalData: !!healthContext?.medicalData,
       userOverrides,
@@ -48,24 +49,40 @@ router.post('/generate', async (req, res) => {
       });
     }
 
-    // Use defaults if region/dietType not provided (optional fields)
-    const finalRegion = region || 'north-india';
+    // Validate cuisines array
+    if (!cuisines || !Array.isArray(cuisines) || cuisines.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'At least one cuisine must be selected' },
+      });
+    }
+
+    // Use defaults if regions not provided
+    const finalRegions = regions && regions.length > 0 ? regions : ['north-indian'];
     const finalDietType = dietType || 'vegetarian';
 
-    // Generate plan using RAG-enhanced LLM
+    logger.info('Meal plan generation parameters', {
+      finalRegions,
+      cuisines,
+      cuisineCount: cuisines.length,
+      finalDietType,
+      duration,
+    });
+
+    // Generate plan using RAG-enhanced LLM with multiple cuisines
     const mealPlan = await mealPlanChain.generateMealPlan({
       duration,
-      region: finalRegion,
+      regions: finalRegions,
+      cuisines, // Now an array of cuisine names
       dietType: finalDietType,
       budget,
       restrictions: restrictions || [],
-      cuisines: cuisines || [],
       mealsPerDay: mealsPerDay || 3,
       healthContext: healthContext || {},
       userOverrides: userOverrides || {},
     });
 
-    // Extract RAG metadata if available
+    // Extract RAG metadata
     const ragMetadata = mealPlan.ragMetadata || null;
     delete mealPlan.ragMetadata; // Remove from plan data
 
@@ -75,7 +92,8 @@ router.post('/generate', async (req, res) => {
       id: planId,
       userId,
       plan: mealPlan,
-      region: finalRegion,
+      regions: finalRegions,
+      cuisines, // Store array of cuisines
       dietType: finalDietType,
       budget,
       goals: goals || [],
@@ -87,61 +105,73 @@ router.post('/generate', async (req, res) => {
       personalizationSources: {
         onboarding: !!(restrictions?.length || cuisines?.length || healthContext?.symptoms?.length),
         medicalReport: !!healthContext?.medicalData,
-        userOverrides: !!(userOverrides?.region || userOverrides?.dietType),
+        userOverrides: !!(
+          userOverrides?.regions ||
+          userOverrides?.cuisineStates ||
+          userOverrides?.dietType
+        ),
         rag: true, // RAG always attempted
         ragQuality: ragMetadata?.retrievalQuality || 'unknown',
         ragSources: ragMetadata
           ? {
-              mealTemplates: ragMetadata.mealTemplatesUsed || 0,
-              nutritionGuidelines: ragMetadata.nutritionGuidelinesUsed || 0,
-              symptomRecommendations: ragMetadata.symptomSpecificRecommendations || false,
+              mealTemplates: ragMetadata.mealTemplates || 0,
+              nutritionGuidelines: ragMetadata.nutritionGuidelines || 0,
+              labGuidance: ragMetadata.labGuidance || 0,
+              symptomRecommendations: !!ragMetadata.symptomRecommendations,
             }
-          : null,
+          : {},
       },
     };
 
     mealPlans.set(planId, planData);
 
-    logger.info('RAG-enhanced meal plan generated successfully', {
+    logger.info('Meal plan generated successfully', {
       planId,
       userId,
+      daysGenerated: mealPlan.days?.length || 0,
+      cuisinesUsed: cuisines,
       ragQuality: ragMetadata?.retrievalQuality,
-      sources: planData.personalizationSources,
+      personalizationSources: Object.keys(planData.personalizationSources).filter(
+        (k) => planData.personalizationSources[k]
+      ),
     });
 
     res.json({
       success: true,
       data: {
         planId,
-        region: finalRegion,
-        dietType: finalDietType,
-        budget,
-        duration,
         plan: mealPlan,
-        createdAt: new Date(),
+        ragMetadata,
         personalizationSources: planData.personalizationSources,
-        ragMetadata: ragMetadata, // Send to frontend for transparency
       },
     });
   } catch (error) {
-    logger.error('Meal plan generation failed', { error: error.message, stack: error.stack });
+    logger.error('Meal plan generation failed', {
+      error: error.message,
+      stack: error.stack,
+    });
+
     res.status(500).json({
       success: false,
-      error: { message: 'Failed to generate meal plan' },
+      error: {
+        message: 'Failed to generate meal plan',
+        details: error.message,
+      },
     });
   }
 });
 
 /**
  * GET /api/meals/:planId
- * Get a specific meal plan
+ * Retrieve a specific meal plan
  */
 router.get('/:planId', (req, res) => {
   try {
     const { planId } = req.params;
-    const plan = mealPlans.get(planId);
 
-    if (!plan) {
+    const planData = mealPlans.get(planId);
+
+    if (!planData) {
       return res.status(404).json({
         success: false,
         error: { message: 'Meal plan not found' },
@@ -150,10 +180,13 @@ router.get('/:planId', (req, res) => {
 
     res.json({
       success: true,
-      data: plan,
+      data: planData,
     });
   } catch (error) {
-    logger.error('Get meal plan failed', { error: error.message });
+    logger.error('Failed to retrieve meal plan', {
+      error: error.message,
+    });
+
     res.status(500).json({
       success: false,
       error: { message: 'Failed to retrieve meal plan' },
@@ -163,22 +196,28 @@ router.get('/:planId', (req, res) => {
 
 /**
  * GET /api/meals/user/:userId
- * Get user's meal plans
+ * Get all meal plans for a user
  */
 router.get('/user/:userId', (req, res) => {
   try {
     const { userId } = req.params;
+
     const userPlans = Array.from(mealPlans.values()).filter((plan) => plan.userId === userId);
+
+    logger.info('Retrieved user meal plans', {
+      userId,
+      count: userPlans.length,
+    });
 
     res.json({
       success: true,
-      data: {
-        plans: userPlans,
-        count: userPlans.length,
-      },
+      data: userPlans,
     });
   } catch (error) {
-    logger.error('Get user meal plans failed', { error: error.message });
+    logger.error('Failed to retrieve user meal plans', {
+      error: error.message,
+    });
+
     res.status(500).json({
       success: false,
       error: { message: 'Failed to retrieve meal plans' },
@@ -187,64 +226,33 @@ router.get('/user/:userId', (req, res) => {
 });
 
 /**
- * PUT /api/meals/:planId
- * Update meal plan
- */
-router.put('/:planId', (req, res) => {
-  try {
-    const { planId } = req.params;
-    const { feedback, ratings } = req.body;
-
-    const plan = mealPlans.get(planId);
-    if (!plan) {
-      return res.status(404).json({
-        success: false,
-        error: { message: 'Meal plan not found' },
-      });
-    }
-
-    plan.feedback = feedback;
-    plan.ratings = ratings;
-    plan.updatedAt = new Date();
-
-    mealPlans.set(planId, plan);
-
-    res.json({
-      success: true,
-      data: plan,
-    });
-  } catch (error) {
-    logger.error('Update meal plan failed', { error: error.message });
-    res.status(500).json({
-      success: false,
-      error: { message: 'Failed to update meal plan' },
-    });
-  }
-});
-
-/**
  * DELETE /api/meals/:planId
- * Delete meal plan
+ * Delete a meal plan
  */
 router.delete('/:planId', (req, res) => {
   try {
     const { planId } = req.params;
 
-    if (!mealPlans.has(planId)) {
+    const deleted = mealPlans.delete(planId);
+
+    if (!deleted) {
       return res.status(404).json({
         success: false,
         error: { message: 'Meal plan not found' },
       });
     }
 
-    mealPlans.delete(planId);
+    logger.info('Meal plan deleted', { planId });
 
     res.json({
       success: true,
       message: 'Meal plan deleted successfully',
     });
   } catch (error) {
-    logger.error('Delete meal plan failed', { error: error.message });
+    logger.error('Failed to delete meal plan', {
+      error: error.message,
+    });
+
     res.status(500).json({
       success: false,
       error: { message: 'Failed to delete meal plan' },

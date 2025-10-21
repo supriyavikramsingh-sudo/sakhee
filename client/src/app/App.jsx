@@ -16,6 +16,22 @@ import MealPlanPage from '../pages/MealPlanPage';
 import ProgressPage from '../pages/ProgressPage';
 import ReportsPage from '../pages/ReportsPage';
 import SettingsPage from '../pages/SettingsPage';
+import LandingPage from '../pages/LandingPage';
+
+// Small wrapper to show LandingPage for unauthenticated users, otherwise HomePage.
+function LandingOrHome() {
+  const { isAuthenticated, isLoading } = useAuthStore();
+
+  if (isLoading) return <LoadingSpinner />;
+
+  return isAuthenticated ? (
+    <ProtectedRoute>
+      <HomePage />
+    </ProtectedRoute>
+  ) : (
+    <LandingPage />
+  );
+}
 
 function App() {
   const { initAuth, isLoading } = useAuthStore();
@@ -56,13 +72,14 @@ function App() {
               }
             />
 
-            {/* Protected Routes - Require auth AND onboarding */}
+            {/* Root - show landing when not authenticated, otherwise home */}
             <Route
               path="/"
               element={
-                <ProtectedRoute>
-                  <HomePage />
-                </ProtectedRoute>
+                // ProtectedRoute will redirect unauthenticated users to /login.
+                // We want unauthenticated users to see the LandingPage instead of being sent to /login,
+                // so handle rendering conditionally by reading auth state inside a small wrapper.
+                <LandingOrHome />
               }
             />
 

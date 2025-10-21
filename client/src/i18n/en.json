@@ -78,7 +78,11 @@
     "primaryGoals": "Primary Goals (select up to 2)",
     "income": "Monthly Household Income",
     "language": "Preferred Language",
-    "cuisine": "Favorite Cuisine"
+    "regions": "Preferred Regions",
+    "regionsHelper": "Select one or more regions for cuisine preferences",
+    "cuisineStates": "Preferred Cuisines/States",
+    "cuisineStatesHelper": "Select cuisines based on your preferred regions",
+    "cuisine": "Favorite Cuisine (Legacy)"
   },
   "common": {
     "back": "Back",
@@ -99,16 +103,28 @@
     "sources": "Sources"
   },
   "meals": {
-    "title": "Meal Planning",
-    "subtitle": "Personalized PCOS-friendly meal plans tailored to your preferences",
-    "generateNew": "Generate New Plan",
-    "noPlans": "You don't have any meal plans yet",
-    "createFirst": "Create Your First Plan",
-    "region": "Region",
-    "dietType": "Diet Type",
-    "budget": "Daily Budget",
-    "duration": "Duration",
-    "mealsPerDay": "Meals Per Day",
-    "loading": "Generating your personalized plan..."
+    "generator": {
+      "title": "Generate Your Personalized Meal Plan",
+      "subtitle": "Create a PCOS-friendly meal plan tailored to your preferences and health goals",
+      "regionsLabel": "Preferred Regions",
+      "regionsHelper": "Optional - Multi-select",
+      "cuisinesLabel": "Preferred Cuisines/States",
+      "cuisinesHelper": "Optional - Multi-select",
+      "selectRegionsFirst": "Please select regions first to see available cuisines",
+      "noCuisinesAvailable": "No cuisines available for selected regions",
+      "regionsSelected": "region(s) selected",
+      "cuisinesSelected": "cuisine(s) selected",
+      "useOnboardingRegions": "Will use your onboarding preference",
+      "useOnboardingCuisines": "Will use your onboarding cuisines",
+      "multiCuisineTip": "💡 Pro Tip: Customize regions and cuisines below to try different options. Your selections take priority over onboarding data.",
+      "dietTypeLabel": "Diet Type (Optional)",
+      "overrideDietType": "Override your onboarding diet type if needed",
+      "mealsPerDay": "Meals Per Day",
+      "duration": "Duration",
+      "dailyBudget": "Daily Budget",
+      "generateButton": "Generate Meal Plan",
+      "generating": "Generating Your Personalized Plan...",
+      "comingSoon": "Feature Coming Soon"
+    }
   }
 }
