@@ -1,0 +1,1020 @@
+PCOS-FRIENDLY INGREDIENT SUBSTITUTES - INDIAN REGIONAL CUISINE
+Version: 2025-10-22
+Purpose: RAG file for LangChain embeddings to enable intelligent meal template modifications
+Format: Ingredient → Substitute mapping with regional alternatives and diet-type considerations
+Usage: Query by ingredient name, cooking method, or diet restriction to retrieve PCOS-friendly alternatives
+
+================================================================================
+STRUCTURE:
+- PROBLEMATIC INGREDIENT: [Original ingredient with PCOS concerns]
+- PCOS CONCERNS: [Why it's problematic - GI, inflammation, hormones, etc.]
+- UNIVERSAL SUBSTITUTE: [Best general replacement]
+- REGIONAL ALTERNATIVES:
+  - North India: [region-specific options]
+  - South India: [region-specific options]
+  - East India: [region-specific options]
+  - West India: [region-specific options]
+- DIET-TYPE MODIFICATIONS:
+  - Vegetarian: [if different from universal]
+  - Vegan: [plant-based only]
+  - Jain: [no root vegetables]
+  - Non-Vegetarian: [protein-rich options]
+- ALLERGY ALTERNATIVES: [common allergen substitutes]
+- COOKING TIP: [practical preparation advice]
+================================================================================
+
+### SECTION 1: GRAINS & FLOURS ###
+
+--- WHITE RICE (POLISHED) ---
+PROBLEMATIC INGREDIENT: White rice, polished rice, steamed rice
+PCOS CONCERNS: High GI (70-80), rapid blood sugar spike, low fiber, poor satiety, increases insulin resistance
+UNIVERSAL SUBSTITUTE: Brown rice (limited 60-80g cooked) OR mixed millet rice
+REGIONAL ALTERNATIVES:
+  - North India: Brown basmati rice, quinoa, bulgur wheat (dalia), pearl millet (bajra) rice
+  - South India: Red rice (matta rice), brown rice, little millet (samai), foxtail millet (thinai)
+  - East India: Red rice, gobindobhog brown rice, barnyard millet (jhangora)
+  - West India: Brown rice, foxtail millet (kang/rala), pearl millet (bajra)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All grain alternatives acceptable
+  - Non-Vegetarian: Pair with protein (chicken, fish, eggs) to reduce portion by 30%
+ALLERGY ALTERNATIVES: Quinoa (gluten-free), buckwheat (gluten-free), amaranth
+COOKING TIP: Soak overnight, cook with 1 tsp ghee/coconut oil, cool before eating (increases resistant starch)
+
+--- REFINED WHEAT FLOUR (MAIDA) ---
+PROBLEMATIC INGREDIENT: Maida, all-purpose flour, refined white flour
+PCOS CONCERNS: Very high GI (85+), zero fiber, strips nutrients, causes inflammation, insulin spikes
+UNIVERSAL SUBSTITUTE: Whole wheat flour (atta) + 25% besan (chickpea flour) OR 100% whole wheat
+REGIONAL ALTERNATIVES:
+  - North India: Whole wheat atta, multigrain atta (wheat + bajra + jowar), besan (chickpea flour)
+  - South India: Ragi flour (finger millet), whole wheat atta, rice flour + urad dal (50:50 for dosa/idli)
+  - East India: Whole wheat atta, sattu (roasted gram flour), rice flour + moong dal mix
+  - West India: Jowar (sorghum) flour, bajra (pearl millet) flour, whole wheat + besan mix
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Mix 20% soya flour for added protein
+ALLERGY ALTERNATIVES (Gluten-free): 100% besan, ragi flour, jowar flour, bajra flour, rice flour + dal blend
+COOKING TIP: For binding, add 1 tbsp ground flaxseed or psyllium husk; for softness add yogurt
+
+--- REGULAR WHEAT ATTA (EXCESSIVE AMOUNTS) ---
+PROBLEMATIC INGREDIENT: Whole wheat flour in excess (5+ rotis/meal)
+PCOS CONCERNS: Moderate GI (60-70), can spike insulin if eaten in large quantities, gluten sensitivity in some
+UNIVERSAL SUBSTITUTE: Reduce to 2 rotis + replace rest with millet rotis OR vegetable-based alternatives
+REGIONAL ALTERNATIVES:
+  - North India: Bajra roti, makki (corn) roti, cauliflower roti, palak roti
+  - South India: Ragi roti, jowar roti, akki roti (rice + vegetables)
+  - East India: Sattu roti (roasted gram), mixed millet roti
+  - West India: Bajra bhakri, jowar bhakri, nachni (ragi) bhakri
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Reduce roti count, increase dal/protein
+ALLERGY ALTERNATIVES (Gluten-free): Millet rotis, cauliflower flatbreads, lettuce wraps
+COOKING TIP: Add fenugreek leaves (methi), spinach, or grated vegetables to dough for added fiber
+
+--- BREAD (WHITE/PACKAGED) ---
+PROBLEMATIC INGREDIENT: White bread, sandwich bread, pav, buns
+PCOS CONCERNS: High GI (75+), preservatives, added sugar, low fiber, rapid glucose spike
+UNIVERSAL SUBSTITUTE: Homemade whole wheat bread OR cloud bread (eggs + cream cheese)
+REGIONAL ALTERNATIVES:
+  - North India: Whole wheat roti, multigrain bread, tandoori roti
+  - South India: Idli (fermented dal-rice, higher dal ratio), whole grain dosa
+  - East India: Whole wheat luchi (baked not fried), roti
+  - West India: Whole wheat pav, multigrain bread, jowar bhakri
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: Cloud bread → Chickpea flour bread (besan chilla rolled)
+  - Jain: All alternatives work
+  - Non-Vegetarian: Egg-based cloud bread, protein bread
+ALLERGY ALTERNATIVES (Gluten-free): Almond flour bread, coconut flour bread, besan chilla
+COOKING TIP: Toast lightly to lower GI slightly; always pair with protein
+
+--- SUJI/SEMOLINA/RAVA ---
+PROBLEMATIC INGREDIENT: Semolina, rava, sooji (fine wheat)
+PCOS CONCERNS: High GI (65-70), refined, low fiber despite being wheat-based
+UNIVERSAL SUBSTITUTE: Broken wheat (dalia/lapsi) OR oats OR quinoa
+REGIONAL ALTERNATIVES:
+  - North India: Dalia (broken wheat), quinoa, oats upma
+  - South India: Oats upma, ragi upma, quinoa upma, mixed millet rava
+  - East India: Broken wheat (dalia), oats
+  - West India: Broken wheat, pearl millet rava, foxtail millet
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Add egg scrambled into upma for protein
+ALLERGY ALTERNATIVES (Gluten-free): Quinoa, rice flakes (thick poha), millet rava
+COOKING TIP: Roast substitute lightly before cooking; add vegetables generously
+
+--- POHA (WHITE RICE FLAKES) ---
+PROBLEMATIC INGREDIENT: White poha, thin rice flakes
+PCOS CONCERNS: Moderate-high GI (65-70), processed rice, quick digesting
+UNIVERSAL SUBSTITUTE: Brown rice poha OR thick poha + peanuts/dal
+REGIONAL ALTERNATIVES:
+  - North India: Brown poha, thick white poha with extra peanuts, dalia upma
+  - South India: Brown poha, vermicelli made from millets, oats
+  - East India: Thick white poha (chira), muri mix with peanuts and jaggery (small amount)
+  - West India: Brown poha, thick kanda poha with extra vegetables
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Add roasted peanuts, chana dal (2 tbsp)
+  - Vegan: Same as vegetarian
+  - Jain: Add peanuts, cashews (avoid onion in tempering)
+  - Non-Vegetarian: Add boiled egg or scrambled egg
+ALLERGY ALTERNATIVES (Nut allergy): Replace peanuts with roasted chana, sunflower seeds
+COOKING TIP: Soak briefly, add 50% vegetables, increase fat (peanuts/ghee) to lower GI
+
+
+### SECTION 2: COOKING OILS & FATS ###
+
+--- EXCESSIVE GHEE ---
+PROBLEMATIC INGREDIENT: Ghee/clarified butter in excess (>1-1.5 tbsp/day)
+PCOS CONCERNS: High saturated fat, can worsen insulin resistance if consumed excessively, inflammation
+UNIVERSAL SUBSTITUTE: Measured ghee (1 tsp/meal) OR blend with cold-pressed oils
+REGIONAL ALTERNATIVES:
+  - North India: Mustard oil (for cooking), ghee (tadka only 1 tsp)
+  - South India: Coconut oil (small amount), gingelly (sesame) oil, ghee (tadka only)
+  - East India: Mustard oil, rice bran oil
+  - West India: Groundnut oil, ghee (minimal), coconut oil
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: Replace ghee completely with coconut oil, mustard oil, sesame oil
+  - Jain: All alternatives work
+  - Non-Vegetarian: All alternatives work
+ALLERGY ALTERNATIVES: Olive oil, avocado oil (not traditional but PCOS-friendly)
+COOKING TIP: Use ghee for flavor in tadka only; for cooking use mustard/coconut oil
+
+--- DEEP FRYING OIL (REUSED) ---
+PROBLEMATIC INGREDIENT: Reused vegetable oil, palm oil, vanaspati (hydrogenated oil)
+PCOS CONCERNS: Trans fats, oxidized fats, extreme inflammation, worsens insulin resistance, hormonal imbalance
+UNIVERSAL SUBSTITUTE: AIR FRYING or BAKING with light oil spray (cold-pressed oils)
+REGIONAL ALTERNATIVES:
+  - North India: Bake samosas, kachoris with 1 tbsp mustard oil brushed; air fry
+  - South India: Bake vadai, bonda with coconut oil spray; steam instead of fry
+  - East India: Steam or shallow fry with mustard oil (minimal)
+  - West India: Bake dhokla, khandvi (already steamed), air fry pakoras
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: Air fry or bake with oil spray
+  - Non-Vegetarian: Same methods
+ALLERGY ALTERNATIVES: Olive oil spray (not traditional but works)
+COOKING TIP: For crispy texture, use besan coating + air fry at 180°C; spray oil lightly
+
+--- REFINED VEGETABLE OILS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Refined sunflower oil, refined soybean oil, refined corn oil (in excess)
+PCOS CONCERNS: High omega-6 fatty acids, pro-inflammatory, processed, low antioxidants
+UNIVERSAL SUBSTITUTE: Cold-pressed oils in moderation (1-2 tbsp/meal total)
+REGIONAL ALTERNATIVES:
+  - North India: Cold-pressed mustard oil, ghee (limited)
+  - South India: Cold-pressed coconut oil, sesame (gingelly) oil
+  - East India: Mustard oil (kachi ghani), rice bran oil
+  - West India: Cold-pressed groundnut oil, coconut oil
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: All cold-pressed plant oils
+  - Non-Vegetarian: Same, can add omega-3 from fish
+ALLERGY ALTERNATIVES: Olive oil, avocado oil
+COOKING TIP: Store cold-pressed oils in dark bottles; don't overheat; use for tadka/light sauté
+
+
+### SECTION 3: SWEETENERS & SUGARS ###
+
+--- WHITE SUGAR (REFINED) ---
+PROBLEMATIC INGREDIENT: White sugar, cane sugar, table sugar
+PCOS CONCERNS: Highest GI (65), direct insulin spike, inflammation, worsens hormonal imbalance, empty calories
+UNIVERSAL SUBSTITUTE: AVOID or use stevia (liquid/powder), monk fruit sweetener
+REGIONAL ALTERNATIVES:
+  - North India: Stevia in chai, no sugar in desserts (use dates paste minimal)
+  - South India: Stevia in coffee, coconut sugar (very small amount), date syrup (minimal)
+  - East India: Stevia, date paste for sweets (small amount)
+  - West India: Stevia, minimal jaggery powder if needed (1 tsp)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain/Non-Veg: Stevia, monk fruit, erythritol (all suitable)
+ALLERGY ALTERNATIVES: Monk fruit (for stevia sensitivity)
+COOKING TIP: Start with 1/4 tsp stevia (very sweet); in baking use erythritol 1:1 ratio
+
+--- JAGGERY (GUR) ---
+PROBLEMATIC INGREDIENT: Jaggery, gur, gud
+PCOS CONCERNS: High GI (84), similar to sugar metabolically, spikes insulin despite being "natural"
+UNIVERSAL SUBSTITUTE: Dates paste (2-3 dates blended) OR minimal jaggery powder (1 tsp max)
+REGIONAL ALTERNATIVES:
+  - North India: Dates paste, minimal jaggery in gur wale chawal (use 1 tsp for 4 servings)
+  - South India: Palm jaggery (slightly lower GI but still limit to 1 tsp), dates
+  - East India: Date palm jaggery (patali gur) - very small amount, dates paste
+  - West India: Minimal jaggery, dates paste
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: Dates paste, minimal jaggery
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES: Fig paste (for date allergy)
+COOKING TIP: Use jaggery ONLY post-meal in tiny amounts; dates have fiber so better option
+
+--- HONEY ---
+PROBLEMATIC INGREDIENT: Honey, commercial honey
+PCOS CONCERNS: Moderate-high GI (58), fructose-heavy, can spike insulin if used liberally
+UNIVERSAL SUBSTITUTE: Raw honey (1 tsp max) OR stevia OR avoid
+REGIONAL ALTERNATIVES:
+  - All regions: Limit to 1 tsp raw, unprocessed honey if needed; prefer stevia
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Raw honey (1 tsp max)
+  - Vegan: NO honey - use maple syrup (1 tsp), date syrup, or stevia
+  - Jain: Honey controversial (some avoid) - use stevia
+  - Non-Vegetarian: Raw honey (1 tsp max)
+ALLERGY ALTERNATIVES: Monk fruit syrup, date syrup (very small)
+COOKING TIP: Never heat honey (becomes toxic in Ayurveda); add after cooking
+
+--- ARTIFICIAL SWEETENERS (ASPARTAME, SUCRALOSE) ---
+PROBLEMATIC INGREDIENT: Artificial sweeteners in packaged foods
+PCOS CONCERNS: Gut microbiome disruption, insulin response despite zero calories, cravings
+UNIVERSAL SUBSTITUTE: Stevia (plant-based), monk fruit, erythritol
+REGIONAL ALTERNATIVES:
+  - All regions: Stevia drops/powder (natural), monk fruit sweetener
+DIET-TYPE MODIFICATIONS:
+  - All: Natural sweeteners only
+ALLERGY ALTERNATIVES: Rotate stevia/monk fruit if sensitivity
+COOKING TIP: Check labels; avoid "diet" sodas
+
+
+### SECTION 4: DAIRY PRODUCTS ###
+
+--- FULL-FAT MILK (EXCESS) ---
+PROBLEMATIC INGREDIENT: Full-fat cow milk, buffalo milk (in excess quantities)
+PCOS CONCERNS: High in natural sugars (lactose), can trigger insulin, some women react to dairy hormones
+UNIVERSAL SUBSTITUTE: Low-fat milk (limited 1 cup/day) OR unsweetened almond/soy milk
+REGIONAL ALTERNATIVES:
+  - North India: Diluted low-fat milk, unsweetened almond milk
+  - South India: Coconut milk (small amount), diluted low-fat milk
+  - East India: Low-fat milk, soy milk
+  - West India: Low-fat milk, coconut milk
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Low-fat dairy milk or plant milk
+  - Vegan: Almond milk, soy milk, coconut milk (all unsweetened)
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same options
+ALLERGY ALTERNATIVES (Lactose intolerant): Almond milk, coconut milk, oat milk (unsweetened)
+COOKING TIP: Use milk in tea/coffee; avoid drinking glasses of milk alone
+
+--- PANEER (FULL-FAT) ---
+PROBLEMATIC INGREDIENT: Full-fat paneer, high-fat cottage cheese
+PCOS CONCERNS: High saturated fat, can worsen insulin resistance if consumed in excess
+UNIVERSAL SUBSTITUTE: Low-fat paneer (homemade from low-fat milk) OR tofu
+REGIONAL ALTERNATIVES:
+  - North India: Low-fat paneer, hung curd (Greek yogurt style), tofu in paneer recipes
+  - South India: Tofu, low-fat paneer
+  - East India: Tofu (chhana), low-fat paneer
+  - West India: Low-fat paneer, tofu
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Low-fat paneer, tofu
+  - Vegan: Tofu (soy paneer), tempeh
+  - Jain: Low-fat paneer, tofu
+  - Non-Vegetarian: Replace with chicken breast, fish (higher protein, lower fat)
+ALLERGY ALTERNATIVES (Dairy allergy): Tofu, tempeh, legume-based paneer
+COOKING TIP: Make paneer from low-fat milk; press tofu well before cooking
+
+--- CREAM/MALAI ---
+PROBLEMATIC INGREDIENT: Heavy cream, malai, cooking cream
+PCOS CONCERNS: Very high saturated fat, inflammation, insulin resistance
+UNIVERSAL SUBSTITUTE: Greek yogurt OR cashew cream OR coconut cream (small amount)
+REGIONAL ALTERNATIVES:
+  - North India: Hung low-fat yogurt, cashew paste (soaked + blended)
+  - South India: Coconut milk (first press, small amount), cashew cream
+  - East India: Hung low-fat yogurt, poppy seed paste (posto) for thickness
+  - West India: Hung yogurt, cashew cream
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Hung yogurt, cashew cream
+  - Vegan: Cashew cream, coconut cream, almond cream
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Hung Greek yogurt
+ALLERGY ALTERNATIVES: Coconut cream (for nut allergy), sunflower seed cream (for nut/coconut allergy)
+COOKING TIP: Blend soaked cashews with water for cream consistency
+
+--- FLAVORED YOGURT ---
+PROBLEMATIC INGREDIENT: Sweetened yogurt, fruit yogurt, flavored dahi
+PCOS CONCERNS: Added sugars, high GI, defeats probiotic benefits
+UNIVERSAL SUBSTITUTE: Plain unsweetened yogurt (dahi) OR Greek yogurt + fresh berries
+REGIONAL ALTERNATIVES:
+  - North India: Homemade plain dahi, lassi without sugar (use stevia + cardamom)
+  - South India: Homemade curd, buttermilk (chaas) unsweetened
+  - East India: Plain doi (curd), homemade mishti doi with stevia
+  - West India: Homemade dahi, buttermilk (mattha) unsweetened
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Plain dairy yogurt
+  - Vegan: Coconut yogurt (unsweetened), almond yogurt
+  - Jain: Plain dairy yogurt
+  - Non-Vegetarian: Plain Greek yogurt (high protein)
+ALLERGY ALTERNATIVES: Coconut yogurt, cashew yogurt (unsweetened)
+COOKING TIP: Make yogurt at home; add fresh fruit if needed, no sugar
+
+
+### SECTION 5: PROTEINS & LEGUMES ###
+
+--- OVERCOOKED DALS (MUSHY) ---
+PROBLEMATIC INGREDIENT: Pressure-cooked dal (10+ whistles), very soft dal
+PCOS CONCERNS: Higher GI when overcooked, rapid digestion, less fiber benefit
+UNIVERSAL SUBSTITUTE: Al dente dal (firm texture) - 2-3 whistles OR sprouted lentils
+REGIONAL ALTERNATIVES:
+  - North India: Whole urad, whole moong, rajma (kidney beans) - firmer texture
+  - South India: Whole green gram, toor dal (not overcooked), sambar with firm dal
+  - East India: Whole moong, masoor dal (firm), ghugni (firmer chickpeas)
+  - West India: Whole moong, varan (toor dal firm), usal (sprouted)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All dal types, pressure cook less
+  - Vegan: Same
+  - Jain: Same
+  - Non-Vegetarian: Mix dal with chicken/fish for protein boost
+ALLERGY ALTERNATIVES: Lentils generally low allergen; rotate types if needed
+COOKING TIP: Cook dal just until soft, not mushy; add vegetables for bulk
+
+--- CANNED/PROCESSED LEGUMES ---
+PROBLEMATIC INGREDIENT: Canned chickpeas, canned kidney beans with added salt/sugar
+PCOS CONCERNS: Added sodium, preservatives, BPA in can lining, sometimes added sugars
+UNIVERSAL SUBSTITUTE: Dried legumes soaked overnight and cooked fresh
+REGIONAL ALTERNATIVES:
+  - All regions: Soak dried chana, rajma, whole moong overnight; pressure cook fresh
+DIET-TYPE MODIFICATIONS:
+  - All: Use dried legumes
+ALLERGY ALTERNATIVES: N/A (if legume allergy, replace with seeds, nuts, fish, chicken)
+COOKING TIP: Soak legumes 8-12 hours; cook with kombu seaweed to reduce gas
+
+--- SOY PRODUCTS (EXCESSIVE) ---
+PROBLEMATIC INGREDIENT: Soy chunks, soy milk (excessive amounts), textured soy protein
+PCOS CONCERNS: Phytoestrogens may affect hormones in some women; controversial in PCOS
+UNIVERSAL SUBSTITUTE: Moderate amounts (2-3x/week) OR replace with chickpeas, paneer, eggs
+REGIONAL ALTERNATIVES:
+  - North India: Rajma, black chana, paneer, eggs instead of soy chunks
+  - South India: Toor dal, moong dal, sambar instead of soy
+  - East India: Fish, eggs, lentils
+  - West India: Sprouted moong, varan, groundnuts
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Rotate soy with other protein sources
+  - Vegan: Moderate soy; include hemp seeds, pumpkin seeds
+  - Jain: Moderate soy or replace with dairy/nuts
+  - Non-Vegetarian: Replace soy with chicken, fish, eggs
+ALLERGY ALTERNATIVES (Soy allergy): Pea protein, hemp protein, egg, chicken
+COOKING TIP: If using soy, choose fermented (tempeh) and limit to 2x/week
+
+
+### SECTION 6: VEGETABLES & FRUITS ###
+
+--- POTATO (EXCESS, ESPECIALLY FRIED) ---
+PROBLEMATIC INGREDIENT: White potato (especially fried, mashed, or excessive amounts)
+PCOS CONCERNS: High GI (85+ when mashed/fried), rapid starch digestion, blood sugar spike
+UNIVERSAL SUBSTITUTE: Sweet potato (small amount), cauliflower, turnip (shalgam)
+REGIONAL ALTERNATIVES:
+  - North India: Sweet potato (shakarkandi) 50g, turnip (shalgam), cauliflower for aloo
+  - South India: Raw banana (limited), yam (suran) 50g, elephant yam, cauliflower
+  - East India: Sweet potato, elephant yam (ol), arbi (colocasia) - small portions
+  - West India: Sweet potato, suran (yam), cauliflower
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All vegetable alternatives
+  - Vegan: Same
+  - Jain: Avoid all root vegetables → Use cauliflower, pumpkin, raw banana
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES: Cauliflower rice, turnip, pumpkin
+COOKING TIP: If using potato, boil with skin, cool before eating (resistant starch); limit to 50g
+
+--- HIGH-GI FRUITS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Mango, banana (ripe), grapes, watermelon (in excess), fruit juices
+PCOS CONCERNS: High natural sugars, rapid glucose spike, low fiber when juiced
+UNIVERSAL SUBSTITUTE: Berries, apple with skin, pear, guava (limited 1 serving/day)
+REGIONAL ALTERNATIVES:
+  - North India: Apple, pear, guava, pomegranate (small amount)
+  - South India: Papaya (small), guava, Indian gooseberry (amla)
+  - East India: Guava, papaya (small), jamun (Indian blackberry)
+  - West India: Guava, papaya (small), custard apple (sitaphal) - very small amount
+DIET-TYPE MODIFICATIONS:
+  - All: Limit high-GI fruits; prefer berries, guava, apple
+ALLERGY ALTERNATIVES: Rotate fruits; avoid allergenic ones
+COOKING TIP: Eat whole fruit with skin; pair with nuts; avoid fruit juices completely
+
+--- DRIED FRUITS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Raisins (kishmish), dried figs, dried apricots in excess
+PCOS CONCERNS: Concentrated sugars, lack of water content, easy to overeat, GI spike
+UNIVERSAL SUBSTITUTE: 3-4 pieces soaked overnight as occasional treat OR fresh fruit
+REGIONAL ALTERNATIVES:
+  - North India: Soaked almonds, walnuts instead of raisins in dishes
+  - South India: Fresh coconut pieces, roasted peanuts instead of dry fruits
+  - East India: Roasted chana instead of raisins
+  - West India: Roasted peanuts, fresh fruits
+DIET-TYPE MODIFICATIONS:
+  - All: Limit to 3-4 pieces if used; prefer fresh fruits
+ALLERGY ALTERNATIVES: Seeds (pumpkin, sunflower) for crunch instead
+COOKING TIP: If using in cooking, soak dried fruits; use minimal quantities
+
+
+### SECTION 7: COOKING METHODS ###
+
+--- DEEP FRYING ---
+PROBLEMATIC METHOD: Deep frying samosas, pakoras, puris, kachoris, vadai, bonda
+PCOS CONCERNS: Extremely high fat content, oxidized oils, inflammation, insulin resistance
+UNIVERSAL SUBSTITUTE: Air frying (180°C, 12-15 min) OR baking (200°C) OR shallow fry with 1 tbsp oil
+REGIONAL ALTERNATIVES:
+  - North India: Baked samosas, air-fried pakoras, baked kachoris
+  - South India: Steamed idli instead of vadai, air-fried bonda, baked murukku
+  - East India: Steamed luchi (not fried), air-fried beguni, baked fish
+  - West India: Steamed dhokla (already good), baked khandvi, air-fried chakli
+DIET-TYPE MODIFICATIONS:
+  - All: Air fry or bake with minimal oil spray
+ALLERGY ALTERNATIVES: N/A
+COOKING TIP: Spray oil lightly; preheat air fryer; coat with besan for crispy texture
+
+--- PRESSURE COOKING (EXCESSIVE) ---
+PROBLEMATIC METHOD: Overcooking grains, dals (10+ whistles)
+PCOS CONCERNS: Breaks down fiber, increases GI, reduces nutrient content
+UNIVERSAL SUBSTITUTE: Cook to al dente (firm) texture - 2-3 whistles for dal, rice cooker for grains
+REGIONAL ALTERNATIVES:
+  - All regions: Pressure cook minimally; aim for bite texture not mush
+DIET-TYPE MODIFICATIONS:
+  - All: Reduce cooking time
+ALLERGY ALTERNATIVES: N/A
+COOKING TIP: For rice: 1 whistle + 5 min simmer; for dal: 2-3 whistles
+
+--- TADKA/TEMPERING (EXCESSIVE OIL) ---
+PROBLEMATIC METHOD: Tadka with 3-4 tbsp oil/ghee
+PCOS CONCERNS: Excess calories, saturated fat, inflammation
+UNIVERSAL SUBSTITUTE: Tadka with 1 tsp ghee + spices OR dry roast spices
+REGIONAL ALTERNATIVES:
+  - North India: 1 tsp ghee tadka, mustard oil tempering (1 tsp)
+  - South India: 1 tsp coconut oil + mustard seeds + curry leaves
+  - East India: 1 tsp mustard oil + panch phoron
+  - West India: 1 tsp ghee or groundnut oil tempering
+DIET-TYPE MODIFICATIONS:
+  - Vegan: Use coconut oil, mustard oil (no ghee)
+  - Others: Limit to 1 tsp fat
+ALLERGY ALTERNATIVES: Olive oil (not traditional but works)
+COOKING TIP: Heat oil/ghee, add spices, immediately pour over dish; don't leave oil pooling
+
+
+### SECTION 8: SNACKS & PROCESSED FOODS ###
+
+--- NAMKEEN/PACKAGED SNACKS ---
+PROBLEMATIC INGREDIENT: Bikaneri bhujia, sev, mixture, chips, packaged snacks
+PCOS CONCERNS: Refined flour, excessive salt, trans fats, preservatives, high GI
+UNIVERSAL SUBSTITUTE: Roasted makhana, roasted chana, homemade trail mix (nuts + seeds)
+REGIONAL ALTERNATIVES:
+  - North India: Roasted chana, makhana, roasted peanuts with spices
+  - South India: Roasted groundnuts, sundal (steamed chana), murukku (baked, homemade)
+  - East India: Roasted chana, muri (puffed rice) with peanuts, jhalmuri (controlled)
+  - West India: Roasted chana, groundnuts, homemade chakli (baked)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Jain: Roasted nuts, seeds, makhana
+  - Vegan: Same
+  - Non-Vegetarian: Add boiled eggs, chicken tikka pieces
+ALLERGY ALTERNATIVES (Nut allergy): Roasted chana, roasted seeds (pumpkin, sunflower)
+COOKING TIP: Roast at home with minimal salt; store in airtight containers
+
+--- BISCUITS/COOKIES (PACKAGED) ---
+PROBLEMATIC INGREDIENT: Glucose biscuits, Marie biscuits, cream biscuits, cookies
+PCOS CONCERNS: Maida, sugar, trans fats, preservatives, high GI
+UNIVERSAL SUBSTITUTE: Homemade almond flour cookies OR oats cookies (no sugar) OR nuts
+REGIONAL ALTERNATIVES:
+  - All regions: Homemade whole wheat + besan cookies with stevia, roasted nuts
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Homemade cookies
+  - Vegan: Flax egg cookies (1 tbsp flax + 3 tbsp water = 1 egg)
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Add protein powder to homemade cookies
+ALLERGY ALTERNATIVES (Gluten): Almond flour, coconut flour, besan cookies
+COOKING TIP: Bake at 160°C for 15-20 min; store 5-7 days
+
+--- INSTANT NOODLES/PASTA ---
+PROBLEMATIC INGREDIENT: Maggi, instant noodles, white pasta
+PCOS CONCERNS: Maida, excessive sodium, MSG, trans fats, zero nutrition
+UNIVERSAL SUBSTITUTE: Whole wheat pasta (small portion) OR zucchini noodles (zoodles) OR shirataki noodles
+REGIONAL ALTERNATIVES:
+  - North India: Whole wheat pasta, zucchini noodles
+  - South India: Brown rice noodles (limited), vegetable noodles
+  - East India: Whole wheat noodles
+  - West India: Whole wheat pasta, vegetable noodles
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan: Veggie noodles, whole wheat pasta
+  - Jain: Same
+  - Non-Vegetarian: Add grilled chicken, prawns for protein
+ALLERGY ALTERNATIVES (Gluten): Zucchini noodles, shirataki noodles, chickpea pasta
+COOKING TIP: Cook pasta al dente; cool before eating to increase resistant starch
+
+--- AERATED DRINKS/SODAS ---
+PROBLEMATIC INGREDIENT: Coca-Cola, Pepsi, Thumbs Up, Sprite, any soda
+PCOS CONCERNS: Liquid sugar, zero fiber, immediate insulin spike, inflammation, bone health issues
+UNIVERSAL SUBSTITUTE: Plain water, sparkling water with lemon, unsweetened green tea, herbal tea
+REGIONAL ALTERNATIVES:
+  - North India: Nimbu paani (no sugar), jeera water, mint water
+  - South India: Nannari sherbet (with stevia), tender coconut water, buttermilk (chaas)
+  - East India: Jal jeera, coconut water, lemon water
+  - West India: Sol kadhi, kokum sherbet (stevia), buttermilk
+DIET-TYPE MODIFICATIONS:
+  - All: Avoid all sodas completely
+ALLERGY ALTERNATIVES: N/A
+COOKING TIP: Infuse water with mint, cucumber, lemon; chill for refreshing drink
+
+
+### SECTION 9: TRADITIONAL SWEETS & DESSERTS ###
+
+--- HALWA (ALL TYPES) ---
+PROBLEMATIC INGREDIENT: Suji halwa, gajar halwa, moong dal halwa
+PCOS CONCERNS: High sugar, ghee in excess, maida/suji base, very high GI
+UNIVERSAL SUBSTITUTE: Sugar-free carrot halwa (grated carrot + almond milk + stevia + 1 tsp ghee) OR chia pudding
+REGIONAL ALTERNATIVES:
+  - North India: Sugar-free gajar halwa (minimal), kheer with almond milk + stevia
+  - South India: Ragi halwa (with stevia), coconut barfi (minimal jaggery)
+  - East India: Sugar-free sandesh (paneer + stevia), payesh with brown rice + stevia
+  - West India: Sugar-free shrikhand (hung yogurt + stevia + cardamom)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Sugar-free versions with dairy
+  - Vegan: Use coconut milk, almond milk, dates (minimal)
+  - Jain: Sugar-free dairy-based sweets
+  - Non-Vegetarian: Same as vegetarian
+ALLERGY ALTERNATIVES (Dairy): Coconut milk-based sweets
+COOKING TIP: Use stevia or dates paste; reduce ghee to 1 tsp; add nuts for texture
+
+--- LADOO/LADDU ---
+PROBLEMATIC INGREDIENT: Besan ladoo, rava ladoo, boondi ladoo
+PCOS CONCERNS: High sugar, ghee in excess, some have maida, high calorie density
+UNIVERSAL SUBSTITUTE: No-sugar besan ladoo (roasted besan + dates paste + ghee 1 tsp + nuts) OR protein balls
+REGIONAL ALTERNATIVES:
+  - North India: Til (sesame) ladoo with jaggery powder (1 tsp), no-sugar besan ladoo
+  - South India: Ragi ladoo (with stevia), coconut ladoo (minimal jaggery)
+  - East India: Nolen gur sandesh (minimal jaggery), narkol naru (coconut balls, less sugar)
+  - West India: Dry fruit ladoo (dates + nuts, no added sugar)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: No-sugar versions with ghee
+  - Vegan: Replace ghee with coconut oil
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES (Nut allergy): Seed-based ladoos (sesame, sunflower seeds)
+COOKING TIP: Roast flour well; use dates paste for binding; 1 ladoo as occasional treat
+
+--- KHEER/PAYASAM ---
+PROBLEMATIC INGREDIENT: Rice kheer, vermicelli kheer with sugar
+PCOS CONCERNS: White rice, sugar, condensed milk (some recipes), high GI
+UNIVERSAL SUBSTITUTE: Quinoa kheer OR chia pudding with almond milk + stevia
+REGIONAL ALTERNATIVES:
+  - North India: Quinoa kheer, broken wheat (dalia) kheer with almond milk + stevia
+  - South India: Ragi payasam, broken wheat payasam, coconut milk payasam with stevia
+  - East India: Patali gur payesh (minimal jaggery), quinoa payesh
+  - West India: Sabudana kheer (occasional, small amount), quinoa kheer
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Dairy milk kheer (sugar-free)
+  - Vegan: Almond milk, coconut milk kheer
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES (Dairy): Coconut milk, cashew milk payasam
+COOKING TIP: Use broken wheat/quinoa; cook in almond milk; add stevia + cardamom
+
+--- JALEBI/GULAB JAMUN ---
+PROBLEMATIC INGREDIENT: Jalebi, gulab jamun, rasgulla
+PCOS CONCERNS: Maida, sugar syrup, deep fried, extremely high GI, zero nutrition
+UNIVERSAL SUBSTITUTE: AVOID completely OR make baked gulab jamun (once in 3 months as rare treat)
+REGIONAL ALTERNATIVES:
+  - All regions: Replace with fresh fruit, no-sugar homemade sweets, dark chocolate (85%+) 1-2 squares
+DIET-TYPE MODIFICATIONS:
+  - All: Avoid traditional versions; opt for fruit
+ALLERGY ALTERNATIVES: N/A (avoid these)
+COOKING TIP: If making rare treat, bake instead of fry; reduce sugar syrup by 70%
+
+--- BARFI/BURFI ---
+PROBLEMATIC INGREDIENT: Milk barfi, kaju barfi, coconut barfi
+PCOS CONCERNS: Sugar, condensed milk, high calorie density
+UNIVERSAL SUBSTITUTE: No-sugar coconut barfi (desiccated coconut + almond milk + stevia + cardamom)
+REGIONAL ALTERNATIVES:
+  - North India: Sugar-free kaju barfi (limited), fig barfi with dates
+  - South India: Coconut barfi (stevia), badam burfi (sugar-free)
+  - East India: Narkol naru (minimal jaggery), sandesh (stevia)
+  - West India: Sugar-free coconut barfi
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Dairy-based sugar-free barfi
+  - Vegan: Coconut milk, nut-based barfi
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES (Nut allergy): Coconut barfi, sesame barfi
+COOKING TIP: Use stevia; set in refrigerator; cut into small pieces (1 inch)
+
+
+### SECTION 10: BEVERAGES ###
+
+--- CHAI WITH SUGAR ---
+PROBLEMATIC INGREDIENT: Tea with sugar, masala chai with sugar
+PCOS CONCERNS: Added sugar, rapid glucose spike, caffeine can worsen insulin resistance if consumed with sugar
+UNIVERSAL SUBSTITUTE: Green tea, herbal tea, OR black tea with stevia + almond milk
+REGIONAL ALTERNATIVES:
+  - North India: Masala chai (stevia), green tea with ginger
+  - South India: Filter coffee (stevia), herbal tea
+  - East India: Cha (stevia), lemon tea without sugar
+  - West India: Kadha (herbal decoction), masala chai (stevia)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Low-fat milk + stevia
+  - Vegan: Almond milk, coconut milk + stevia
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES (Dairy): Plant milk (unsweetened)
+COOKING TIP: Add cinnamon, cardamom, ginger for flavor without sugar
+
+--- PACKAGED FRUIT JUICES ---
+PROBLEMATIC INGREDIENT: Tetra pack juices, fresh fruit juice (even homemade)
+PCOS CONCERNS: Liquid sugar, no fiber, rapid absorption, insulin spike
+UNIVERSAL SUBSTITUTE: Whole fresh fruit OR vegetable juice (with pulp) OR infused water
+REGIONAL ALTERNATIVES:
+  - North India: Whole apple, guava; vegetable juice (carrot + beetroot + ginger) with pulp
+  - South India: Whole fruit; buttermilk (unsweetened)
+  - East India: Whole fruit; coconut water (limited)
+  - West India: Whole fruit; kokum juice (stevia), buttermilk
+DIET-TYPE MODIFICATIONS:
+  - All: Eat whole fruit, don't juice
+ALLERGY ALTERNATIVES: Vegetable juice if fruit intolerant
+COOKING TIP: If making juice, include pulp; dilute 50% with water
+
+--- COFFEE (EXCESS CAFFEINE) ---
+PROBLEMATIC INGREDIENT: Multiple cups of coffee (3+/day), coffee with sugar/cream
+PCOS CONCERNS: Excess caffeine worsens cortisol, insulin resistance, anxiety, sleep issues
+UNIVERSAL SUBSTITUTE: 1 cup black coffee (morning only) OR decaf coffee OR green tea
+REGIONAL ALTERNATIVES:
+  - North India: 1 cup black coffee (stevia), herbal tea rest of day
+  - South India: 1 cup filter coffee (stevia + low-fat milk), chicory coffee
+  - East India: 1 cup coffee (stevia), rest herbal tea
+  - West India: 1 cup coffee (stevia), kadha (herbal)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Non-Veg: Limit to 1 cup, use stevia
+  - Vegan: Use plant milk
+  - Jain: Same
+ALLERGY ALTERNATIVES: Chicory root coffee (caffeine-free)
+COOKING TIP: Have coffee before 12 PM only; use stevia, not sugar
+
+--- ALCOHOL ---
+PROBLEMATIC INGREDIENT: Beer, wine, spirits, cocktails
+PCOS CONCERNS: Disrupts blood sugar, worsens insulin resistance, affects liver function, hormonal imbalance
+UNIVERSAL SUBSTITUTE: AVOID or limit to 1 drink/month max
+REGIONAL ALTERNATIVES:
+  - All regions: Mocktails (mint + lime + sparkling water), fresh lime soda (no sugar)
+DIET-TYPE MODIFICATIONS:
+  - All: Avoid or extreme moderation
+ALLERGY ALTERNATIVES: N/A
+COOKING TIP: If drinking (rare), choose dry wine over beer/cocktails; eat protein/fat first
+
+
+### SECTION 11: REGIONAL SPECIALTY MODIFICATIONS ###
+
+--- NORTH INDIA: DAL BATI CHURMA ---
+PROBLEMATIC ASPECTS: Deep-fried baati, excessive ghee, sugar in churma
+PCOS-FRIENDLY MODIFICATIONS:
+- Bake baati in oven (200°C, 25-30 min) instead of frying
+- Brush with 1 tsp ghee instead of dunking in ghee
+- Churma: Use jaggery powder (1 tsp) + dates paste OR stevia
+- Increase dal proportion, reduce baati count (1 instead of 3)
+- Use whole wheat flour + bajra (50:50) for baati
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Above modifications
+- Vegan: Skip ghee, use coconut oil spray on baati
+- Non-Vegetarian: Pair with protein curry, reduce baati count
+
+--- NORTH INDIA: CHOLE BHATURE ---
+PROBLEMATIC ASPECTS: Deep-fried bhature (maida), large portions
+PCOS-FRIENDLY MODIFICATIONS:
+- Replace bhature with whole wheat tandoori roti OR baked whole wheat kulcha
+- Keep chole as-is (already good protein source)
+- Serve with onion-tomato salad
+DIET-TYPE MODIFICATIONS:
+- Vegetarian: Whole wheat roti
+- Vegan: Same
+- Jain: Chole without onion/garlic, whole wheat roti
+- Non-Vegetarian: Same
+
+--- NORTH INDIA: RAJASTHANI KACHORI ---
+PROBLEMATIC ASPECTS: Deep-fried, maida, spicy moong dal filling
+PCOS-FRIENDLY MODIFICATIONS:
+- Bake kachori with whole wheat + besan dough (70:30)
+- Air fry at 180°C for 15 min, spray oil lightly
+- Filling: Spiced moong dal (already good)
+- Serve 1-2 kachoris with mint chutney + vegetable curry
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Baked version
+- Vegan: Same
+- Non-Vegetarian: Same
+
+--- GUJARAT: DHOKLA ---
+PROBLEMATIC ASPECTS: White rice flour, sugar in batter
+PCOS-FRIENDLY MODIFICATIONS:
+- Use 100% besan (chickpea flour) dhokla OR ragi + besan (50:50)
+- Replace sugar with 1/4 tsp stevia in batter
+- Steam as usual (already good cooking method)
+- Tempering with 1 tsp oil (not excess)
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Above modifications
+- Vegan: Same (already vegan)
+- Non-Vegetarian: Same
+
+--- GUJARAT: THEPLA ---
+PROBLEMATIC ASPECTS: Excessive oil in cooking
+PCOS-FRIENDLY MODIFICATIONS:
+- Make with whole wheat + methi (fenugreek) leaves
+- Cook on tawa with 1/2 tsp oil per thepla (spray if possible)
+- Add grated vegetables (bottle gourd, spinach)
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Above modifications
+- Vegan: Same
+- Non-Vegetarian: Same
+
+--- GUJARAT: UNDHIYU ---
+PROBLEMATIC ASPECTS: Fried dumplings (muthiya), some recipes use sugar
+PCOS-FRIENDLY MODIFICATIONS:
+- Steam muthiya instead of frying
+- Skip sugar completely
+- Increase green beans, cluster beans (gavar)
+- Use 1 tbsp groundnut oil for cooking (not deep frying)
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Above modifications
+- Vegan: Same (already vegan)
+- Non-Vegetarian: Same
+
+--- SOUTH INDIA: DOSA (WHITE RICE BATTER) ---
+PROBLEMATIC ASPECTS: White rice in batter, fermentation increases GI
+PCOS-FRIENDLY MODIFICATIONS:
+- Use brown rice OR millets (ragi, jowar) with urad dal (60:40 ratio)
+- Increase dal proportion for more protein
+- Make thin dosa, use minimal oil (spray if possible)
+- Pair with sambar (high protein) and coconut chutney
+DIET-TYPE MODIFICATIONS:
+- Vegetarian: Millet dosa
+- Vegan: Same (already vegan)
+- Jain: Same
+- Non-Vegetarian: Add egg dosa (spread beaten egg on dosa), stuff with chicken
+
+--- SOUTH INDIA: IDLI ---
+PROBLEMATIC ASPECTS: White rice in batter
+PCOS-FRIENDLY MODIFICATIONS:
+- Use brown rice OR ragi with urad dal (60:40 ratio)
+- Increase dal proportion to 50% for protein boost
+- Steam as usual
+- Pair with sambar + vegetable curry
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Millet idli
+- Vegan: Same (already vegan)
+- Non-Vegetarian: Serve with egg curry
+
+--- SOUTH INDIA: VADA/MEDU VADA ---
+PROBLEMATIC ASPECTS: Deep-fried
+PCOS-FRIENDLY MODIFICATIONS:
+- Air fry OR bake vada at 180°C with oil spray
+- Use urad dal batter (already high protein)
+- Make mini vadas (smaller size)
+- Serve 2 vadas max with sambar
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Air-fried version
+- Vegan: Same (already vegan)
+- Non-Vegetarian: Same
+
+--- SOUTH INDIA: PONGAL ---
+PROBLEMATIC ASPECTS: White rice, ghee in excess
+PCOS-FRIENDLY MODIFICATIONS:
+- Use brown rice + moong dal (50:50)
+- Use 1 tsp ghee for tempering (not mixed throughout)
+- Add cashews, pepper, cumin generously
+DIET-TYPE MODIFICATIONS:
+- Vegetarian: Above modifications
+- Vegan: Replace ghee with coconut oil
+- Jain: Same as vegetarian
+- Non-Vegetarian: Same
+
+--- MAHARASHTRA: VADA PAV ---
+PROBLEMATIC ASPECTS: Deep-fried vada, white bread pav, potato
+PCOS-FRIENDLY MODIFICATIONS:
+- Bake/air fry vada with besan coating
+- Use whole wheat pav OR skip pav, eat vada with chutney
+- Reduce potato, add cauliflower in vada filling
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Baked version
+- Vegan: Same (already vegan)
+- Non-Vegetarian: Same
+
+--- MAHARASHTRA: PURAN POLI ---
+PROBLEMATIC ASPECTS: Jaggery filling, ghee, refined flour
+PCOS-FRIENDLY MODIFICATIONS:
+- Use whole wheat flour
+- Reduce jaggery in filling by 70%, use stevia + minimal jaggery
+- Increase dal proportion in filling
+- Serve 1 small poli with minimal ghee
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Above modifications
+- Vegan: Skip ghee, use coconut oil
+- Non-Vegetarian: Same
+
+--- WEST BENGAL: LUCHI ---
+PROBLEMATIC ASPECTS: Deep-fried, maida
+PCOS-FRIENDLY MODIFICATIONS:
+- Use whole wheat flour instead of maida
+- Bake in oven OR shallow fry with 1 tbsp oil
+- Serve 1-2 luchis with aloo dum (use sweet potato)
+DIET-TYPE MODIFICATIONS:
+- Vegetarian: Whole wheat baked luchi
+- Vegan: Same
+- Jain: Whole wheat version (no potato), serve with paneer curry
+- Non-Vegetarian: Serve with egg curry
+
+--- WEST BENGAL: MISHTI DOI ---
+PROBLEMATIC ASPECTS: Sugar, condensed milk
+PCOS-FRIENDLY MODIFICATIONS:
+- Make with low-fat milk + stevia
+- Add cardamom for flavor
+- Reduce sweetness by 80%
+DIET-TYPE MODIFICATIONS:
+- Vegetarian: Sugar-free version
+- Vegan: Use coconut milk + stevia
+- Jain: Same as vegetarian
+- Non-Vegetarian: Same
+
+--- EAST INDIA: SANDESH ---
+PROBLEMATIC ASPECTS: Sugar
+PCOS-FRIENDLY MODIFICATIONS:
+- Make with paneer (chhana) + stevia
+- Add cardamom, saffron for flavor
+- Use minimal jaggery powder (1/2 tsp) if needed
+DIET-TYPE MODIFICATIONS:
+- Vegetarian/Jain: Sugar-free version
+- Vegan: Use tofu instead of paneer + stevia
+- Non-Vegetarian: Same
+
+
+### SECTION 12: ALLERGY-SPECIFIC SUBSTITUTES ###
+
+--- GLUTEN ALLERGY/CELIAC ---
+AVOID: Wheat, maida, atta, suji, barley
+SAFE GRAINS: Rice (brown, red), millets (ragi, jowar, bajra), quinoa, amaranth, buckwheat
+FLOURS: Besan (chickpea), ragi flour, jowar flour, bajra flour, rice flour, almond flour
+BREADS: Ragi roti, besan chilla, rice dosa, millet rotis
+NOTES: Check for cross-contamination; use separate utensils
+
+--- DAIRY ALLERGY/LACTOSE INTOLERANCE ---
+AVOID: Milk, paneer, yogurt, cream, ghee, butter
+MILK SUBSTITUTES: Almond milk, coconut milk, soy milk, oat milk (all unsweetened)
+PANEER SUBSTITUTE: Tofu, tempeh
+YOGURT SUBSTITUTE: Coconut yogurt, cashew yogurt, almond yogurt
+GHEE SUBSTITUTE: Coconut oil, mustard oil, olive oil
+CREAM SUBSTITUTE: Cashew cream, coconut cream
+NOTES: Read labels carefully; many Indian sweets contain hidden dairy
+
+--- NUT ALLERGY ---
+AVOID: Almonds, cashews, walnuts, pistachios, peanuts
+PROTEIN SOURCES: Seeds (pumpkin, sunflower, sesame), legumes, paneer, eggs, chicken
+SNACKS: Roasted chana, makhana, roasted seeds
+MILK SUBSTITUTE: Oat milk, coconut milk (check processing)
+COOKING: Use seed butters instead of nut butters
+NOTES: Check for cross-contamination in packaged foods
+
+--- SOY ALLERGY ---
+AVOID: Soy milk, tofu, tempeh, soy sauce, soy chunks
+PROTEIN SOURCES: Paneer, eggs, chicken, fish, legumes (dal, chickpeas)
+MILK SUBSTITUTE: Almond milk, coconut milk, oat milk
+PANEER SUBSTITUTE: Regular dairy paneer (if no dairy allergy)
+COOKING: Use coconut aminos instead of soy sauce
+NOTES: Soy is hidden in many processed foods
+
+--- EGG ALLERGY ---
+AVOID: Eggs, mayonnaise, some baked goods
+BAKING SUBSTITUTE: Flax egg (1 tbsp ground flax + 3 tbsp water = 1 egg), chia egg, mashed banana (25g = 1 egg)
+PROTEIN SOURCES: Paneer, dal, chickpeas, chicken, fish
+BINDING AGENT: Ground flaxseed, psyllium husk
+NOTES: Many Indian dishes are naturally egg-free
+
+
+### SECTION 13: DIET-TYPE SPECIFIC GUIDANCE ###
+
+--- VEGETARIAN SUBSTITUTES ---
+PROTEIN SOURCES: Paneer, dal (all types), chickpeas, soy (moderate), yogurt, milk
+HIGH-PROTEIN MEALS: Paneer tikka, dal fry, sprouted moong, chana masala, rajma
+SNACKS: Roasted chana, paneer cubes, Greek yogurt with seeds
+ENSURE ADEQUATE: Protein (1.2-1.6 g/kg body weight), iron (fortified foods, vitamin C with dal)
+
+--- VEGAN SUBSTITUTES ---
+PROTEIN SOURCES: Dal, chickpeas, tofu, tempeh, soy (moderate), nuts, seeds
+MILK: Almond milk, soy milk, coconut milk, oat milk (all unsweetened)
+YOGURT: Coconut yogurt, cashew yogurt
+PANEER: Tofu, tempeh
+GHEE: Coconut oil, olive oil
+HIGH-PROTEIN MEALS: Tofu bhurji, sprouted moong salad, chickpea curry, lentil soups
+ENSURE ADEQUATE: B12 (supplement), iron, calcium (fortified plant milks), omega-3 (flax, chia, walnuts)
+
+--- JAIN DIET SUBSTITUTES ---
+AVOID: Onion, garlic, potato, root vegetables (some sects)
+PROTEIN SOURCES: Dal, paneer, milk products, nuts (if allowed)
+FLAVOR BASE: Asafoetida (hing), ginger (allowed by most), cumin, coriander
+POTATO SUBSTITUTE: Cauliflower, raw banana, pumpkin, ridge gourd
+ONION SUBSTITUTE: Asafoetida (hing) in tadka, celery leaves
+GARLIC SUBSTITUTE: Asafoetida, crushed coriander seeds
+MEALS: Dal palak (no garlic), paneer dishes, vegetable curries without root vegetables
+
+--- NON-VEGETARIAN PROTEIN OPTIMIZATION ---
+BEST PROTEINS: Chicken breast, fish (especially fatty fish), eggs, turkey
+PREPARATION: Grilled, baked, steamed (not fried)
+PORTION: 100-150g protein per meal
+FREQUENCY: Can have protein at every meal if desired
+COMBINE: With vegetables (50% plate) + small grain portion
+OMEGA-3: Focus on fatty fish 2-3x/week (salmon, mackerel, sardines)
+
+
+### SECTION 14: QUANTITY & PORTION GUIDANCE ###
+
+--- GRAIN PORTIONS (COOKED) ---
+RICE/MILLETS: 60-80g cooked (about 1/2 cup)
+ROTI/FLATBREADS: 1-2 medium rotis per meal
+AVOID: Large thalis with 5+ rotis or 2 cups rice
+TIP: Fill 1/4 of plate with grains
+
+--- PROTEIN PORTIONS ---
+DAL (COOKED): 150-200g (about 1 cup)
+PANEER: 50-80g (about 3-4 cubes)
+CHICKEN/FISH: 100-150g (palm-sized piece)
+EGGS: 2-3 whole eggs
+TOFU: 100-150g
+TIP: Fill 1/4 of plate with protein
+
+--- VEGETABLE PORTIONS ---
+NON-STARCHY VEG: 200-300g (about 2 cups)
+SALAD: Unlimited
+TIP: Fill 1/2 of plate with vegetables
+
+--- FAT PORTIONS ---
+OIL/GHEE: 1-2 tsp per meal for cooking
+NUTS/SEEDS: 20-30g per day (small handful)
+AVOCADO: 1/4 fruit
+TIP: Don't fear healthy fats but measure them
+
+--- FRUIT PORTIONS ---
+FRESH FRUIT: 1 serving per day (1 apple, 1 orange, 1 cup berries)
+TIMING: Mid-morning or evening snack with nuts
+AVOID: Multiple fruits per day, fruit juices
+
+
+### SECTION 15: COOKING EQUIPMENT RECOMMENDATIONS ###
+
+--- AIR FRYER ---
+USE FOR: Samosas, pakoras, kachoris, vadas, chicken tikka, fish fry
+TEMPERATURE: 180°C for most items
+TIME: 12-18 minutes depending on item
+OIL: Spray lightly or brush 1 tsp oil
+BENEFIT: 70-80% less oil than deep frying
+
+--- PRESSURE COOKER (MINIMAL USE) ---
+USE FOR: Dal (2-3 whistles only), brown rice (1 whistle + simmer), chickpeas
+AVOID: Overcooking (10+ whistles)
+BENEFIT: Fast cooking but don't overcook to mush
+
+--- NON-STICK TAWA ---
+USE FOR: Rotis, dosas, parathas with minimal oil
+OIL: Spray or use 1/2 tsp per item
+BENEFIT: Requires less fat
+
+--- STEAMER ---
+USE FOR: Idli, dhokla, muthiya, vegetables, fish
+BENEFIT: Zero added fat, retains nutrients
+
+--- OVEN ---
+USE FOR: Baking samosas, kachoris, tandoori items, roasting vegetables
+TEMPERATURE: 180-200°C
+BENEFIT: Batch cooking, less oil
+
+
+### SECTION 16: EMERGENCY QUICK SUBSTITUTES ###
+
+WHEN RECIPE CALLS FOR: USE INSTEAD:
+- 1 cup white rice → 3/4 cup brown rice + 1/4 cup quinoa
+- 3-4 rotis → 2 rotis + big salad
+- Deep fry → Air fry 180°C 15 min
+- 3 tbsp oil → 1 tbsp oil + water for moisture
+- 2 tbsp sugar → 1/4 tsp stevia liquid
+- 1 cup full-fat milk → 1 cup almond milk unsweetened
+- 100g paneer → 100g tofu (vegan) OR 2 eggs (non-veg)
+- Potato in curry → Cauliflower florets
+- Maida → Whole wheat + 25% besan
+- Sweetened yogurt → Plain yogurt + 2-3 berries
+
+
+================================================================================
+RAG USAGE NOTES FOR LLM:
+================================================================================
+
+1. QUERY BY INGREDIENT: When user's meal plan includes problematic ingredients (potato, white rice, maida, jaggery, deep-fried items), retrieve relevant substitution section
+
+2. QUERY BY CUISINE: Filter by region (North/South/East/West India) to provide culturally appropriate alternatives
+
+3. QUERY BY DIET TYPE: Filter by vegetarian/vegan/Jain/non-vegetarian to provide suitable alternatives
+
+4. QUERY BY COOKING METHOD: When meal template mentions deep frying, pressure cooking (excessive), retrieve method modification section
+
+5. QUERY BY SYMPTOM: Cross-reference with symptom guidance (separate file) to prioritize certain substitutes
+
+6. QUERY BY LAB VALUES: Cross-reference with lab guidance file to emphasize specific substitutes (e.g., high insulin → focus on low-GI substitutes)
+
+7. ALLERGY CHECK: Always query allergy section if user has specified allergies in profile
+
+8. PORTION CONTROL: Always include portion guidance when suggesting substitutes
+
+9. MULTIPLE SUBSTITUTES: Provide 2-3 options when available so user has choices
+
+10. REGIONAL AUTHENTICITY: Prioritize regional alternatives to maintain cultural connection to food
+
+11. PRACTICAL TIP: Always include cooking tip for successful preparation
+
+12. TRANSPARENCY: When making substitutions, explain briefly why (e.g., "Using brown rice instead of white rice to lower the glycemic impact and improve insulin sensitivity")
+
+================================================================================
+END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES RAG FILE
+================================================================================

@@ -66,11 +66,23 @@ class MealPlanChain {
       hasLabValues: !!healthContext.medicalData?.labValues,
     });
 
-    // ===== STEP 1: RETRIEVE MEAL TEMPLATES FROM VECTOR STORE =====
-    const mealTemplateQuery = this.buildMealTemplateQuery(preferences, healthContext);
-    logger.info('Retrieving meal templates', { query: mealTemplateQuery });
+    // ===== STEP 1: MULTI-STAGE RAG RETRIEVAL (ENHANCED) =====
+    logger.info('Performing multi-stage RAG retrieval');
+    const retrievalResults = await this.performMultiStageRetrieval(preferences, healthContext);
 
-    const mealTemplates = await retriever.retrieve(mealTemplateQuery, { topK: 8 });
+    // Extract results
+    const mealTemplates = retrievalResults.mealTemplates || [];
+    const symptomGuidanceDocs = retrievalResults.symptomGuidance || [];
+    const labGuidanceDocs = retrievalResults.labGuidance || [];
+    const ingredientSubstituteDocs = retrievalResults.ingredientSubstitutes || [];
+
+    logger.info('RAG retrieval complete', {
+      mealTemplates: mealTemplates.length,
+      symptomGuidance: symptomGuidanceDocs.length,
+      labGuidance: labGuidanceDocs.length,
+      ingredientSubstitutes: ingredientSubstituteDocs.length,
+    });
+
     const mealTemplatesContext = retriever.formatContextFromResults(mealTemplates);
 
     // ===== STEP 2: RETRIEVE PCOS NUTRITION GUIDELINES =====
@@ -80,42 +92,10 @@ class MealPlanChain {
     const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
     const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
 
-    // ===== STEP 3: RETRIEVE LAB-SPECIFIC DIETARY GUIDANCE FROM RAG =====
-    let labSpecificContext = '';
-    let labGuidanceDocs = [];
+    // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
+    // (Now handled by multi-stage retrieval above)
 
-    if (healthContext.medicalData?.labValues) {
-      const labGuidanceQuery = this.buildLabGuidanceQuery(healthContext.medicalData.labValues);
-
-      if (labGuidanceQuery) {
-        logger.info('Retrieving lab-specific dietary guidance from RAG', {
-          query: labGuidanceQuery,
-          labCount: Object.keys(healthContext.medicalData.labValues).length,
-        });
-
-        labGuidanceDocs = await retriever.retrieve(labGuidanceQuery, { topK: 10 });
-        labSpecificContext = retriever.formatContextFromResults(labGuidanceDocs);
-
-        logger.info('Lab-specific guidance retrieved', {
-          docsRetrieved: labGuidanceDocs.length,
-          contextLength: labSpecificContext.length,
-        });
-      }
-    }
-
-    // ===== STEP 4: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
-    let symptomContext = '';
-    if (healthContext.symptoms && healthContext.symptoms.length > 0) {
-      const symptomQuery = `PCOS dietary recommendations for ${healthContext.symptoms.join(
-        ' '
-      )} management`;
-      logger.info('Retrieving symptom-specific recommendations', { query: symptomQuery });
-
-      const symptomDocs = await retriever.retrieve(symptomQuery, { topK: 3 });
-      symptomContext = retriever.formatContextFromResults(symptomDocs);
-    }
-
-    // ===== STEP 5: BUILD COMPREHENSIVE CONTEXT =====
+    // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
     let enhancedContext = '';
 
     if (mealTemplatesContext) {
@@ -129,15 +109,35 @@ class MealPlanChain {
       enhancedContext += nutritionContext + '\n\n';
     }
 
-    if (labSpecificContext) {
-      enhancedContext += '🔬 LAB-SPECIFIC DIETARY GUIDANCE:\n';
-      enhancedContext += "(Prioritize these recommendations based on user's lab values)\n\n";
-      enhancedContext += labSpecificContext + '\n\n';
+    // NEW: Add symptom-specific guidance
+    if (symptomGuidanceDocs.length > 0) {
+      const symptomContext = symptomGuidanceDocs
+        .map((doc) => doc.pageContent || doc.content)
+        .join('\n\n');
+
+      enhancedContext += '� SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
+      enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
+      enhancedContext += symptomContext + '\n\n';
     }
 
-    if (symptomContext) {
-      enhancedContext += '💊 SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
-      enhancedContext += symptomContext + '\n\n';
+    // NEW: Add lab-specific guidance
+    if (labGuidanceDocs.length > 0) {
+      const labContext = labGuidanceDocs.map((doc) => doc.pageContent || doc.content).join('\n\n');
+
+      enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
+      enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
+      enhancedContext += labContext + '\n\n';
+    }
+
+    // NEW: Add ingredient substitutes
+    if (ingredientSubstituteDocs.length > 0) {
+      const substituteContext = ingredientSubstituteDocs
+        .map((doc) => doc.pageContent || doc.content)
+        .join('\n\n');
+
+      enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
+      enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
+      enhancedContext += substituteContext + '\n\n';
     }
 
     if (!enhancedContext) {
@@ -174,12 +174,14 @@ class MealPlanChain {
     // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
     this.validateAndAdjustCalories(parsed);
 
-    // ===== STEP 10: COMPILE RAG METADATA =====
+    // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
     const ragMetadata = {
       mealTemplates: mealTemplates.length,
       nutritionGuidelines: nutritionGuidelines.length,
-      labGuidance: labGuidanceDocs.length,
-      symptomRecommendations: symptomContext.length > 0,
+      symptomGuidance: symptomGuidanceDocs.length, // NEW
+      labGuidance: labGuidanceDocs.length, // NEW
+      ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
+      symptomRecommendations: symptomGuidanceDocs.length > 0,
       retrievalQuality: this.assessRetrievalQuality(
         mealTemplates,
         nutritionGuidelines,
@@ -198,6 +200,375 @@ class MealPlanChain {
       ...parsed,
       ragMetadata,
     };
+  }
+
+  /**
+   * NEW: Identify problematic ingredients from retrieved meal templates
+   */
+  identifyProblematicIngredients(mealTemplates) {
+    const problematic = new Set();
+
+    const problematicKeywords = [
+      'white rice',
+      'polished rice',
+      'maida',
+      'refined flour',
+      'deep fried',
+      'deep-fried',
+      'fried',
+      'sugar',
+      'jaggery',
+      'full-fat milk',
+      'cream',
+      'malai',
+      'potato',
+      'white bread',
+      'refined',
+      'puris',
+      'kachori',
+      'excessive ghee',
+      'jalebi',
+      'gulab jamun',
+      'sweetened',
+      'packaged',
+    ];
+
+    mealTemplates.forEach((template) => {
+      const content = (template.pageContent || template.content || '').toLowerCase();
+      problematicKeywords.forEach((keyword) => {
+        if (content.includes(keyword)) {
+          problematic.add(keyword);
+        }
+      });
+    });
+
+    return Array.from(problematic);
+  }
+
+  /**
+   * NEW: Identify abnormal lab markers from user's medical data
+   */
+  identifyAbnormalLabMarkers(labValues) {
+    const abnormal = [];
+
+    // Reference ranges (simplified - you can expand these)
+    const referenceRanges = {
+      'Fasting Glucose': { max: 100, severity: 'prediabetes' },
+      'Fasting Insulin': { max: 10, severity: 'elevated' },
+      'HOMA-IR': { max: 2.5, severity: 'insulin resistance' },
+      'Total Cholesterol': { max: 200, severity: 'borderline high' },
+      'LDL Cholesterol': { max: 100, severity: 'elevated' },
+      Triglycerides: { max: 150, severity: 'high' },
+      'Testosterone Total': { max: 80, severity: 'elevated' },
+      TSH: { min: 0.4, max: 4.0, severity: 'abnormal' },
+    };
+
+    Object.entries(labValues).forEach(([testName, testData]) => {
+      const value = parseFloat(testData.value);
+      if (isNaN(value)) return;
+
+      const ref = referenceRanges[testName];
+      if (!ref) return;
+
+      let isAbnormal = false;
+      if (ref.max && value > ref.max) isAbnormal = true;
+      if (ref.min && value < ref.min) isAbnormal = true;
+
+      if (isAbnormal) {
+        abnormal.push({
+          name: testName,
+          value: value,
+          severity: ref.severity,
+        });
+      }
+    });
+
+    return abnormal;
+  }
+
+  /**
+   * NEW: Identify problematic ingredients from retrieved meal templates
+   */
+  identifyProblematicIngredients(mealTemplates) {
+    const problematic = new Set();
+
+    const problematicKeywords = [
+      'white rice',
+      'polished rice',
+      'maida',
+      'refined flour',
+      'deep fried',
+      'deep-fried',
+      'fried',
+      'sugar',
+      'jaggery',
+      'full-fat milk',
+      'cream',
+      'malai',
+      'potato',
+      'white bread',
+      'refined',
+      'puris',
+      'kachori',
+      'excessive ghee',
+      'jalebi',
+      'gulab jamun',
+      'sweetened',
+      'packaged',
+    ];
+
+    mealTemplates.forEach((template) => {
+      const content = (template.pageContent || template.content || '').toLowerCase();
+      problematicKeywords.forEach((keyword) => {
+        if (content.includes(keyword)) {
+          problematic.add(keyword);
+        }
+      });
+    });
+
+    return Array.from(problematic);
+  }
+
+  /**
+   * Perform multi-stage RAG retrieval for enhanced personalization
+   */
+  async performMultiStageRetrieval(preferences, healthContext) {
+    const logger = new Logger('MultiStageRetrieval');
+    const retrievalResults = {
+      mealTemplates: [],
+      symptomGuidance: [],
+      labGuidance: [],
+      ingredientSubstitutes: [],
+    };
+
+    try {
+      const cuisines = preferences.cuisines || [];
+      const dietType = preferences.dietType || 'vegetarian';
+
+      // ===== STAGE 1: Retrieve meal templates =====
+      logger.info('Stage 1: Retrieving meal templates');
+      if (cuisines.length > 0) {
+        const templateQueries = cuisines.flatMap((cuisine) => [
+          `${cuisine} breakfast PCOS friendly`,
+          `${cuisine} lunch healthy recipe`,
+          `${cuisine} dinner recipe`,
+          `${cuisine} snacks nutritious`,
+        ]);
+
+        for (const query of templateQueries) {
+          const results = await retriever.retrieve(query, 5);
+          retrievalResults.mealTemplates.push(...results);
+        }
+      }
+
+      // ===== STAGE 2: Retrieve symptom-specific guidance =====
+      logger.info('Stage 2: Retrieving symptom guidance');
+      const symptoms = healthContext?.symptoms || [];
+
+      if (symptoms.length > 0) {
+        const primarySymptoms = symptoms.slice(0, 3);
+
+        for (const symptom of primarySymptoms) {
+          // ⭐ IMPROVED: More specific query to target symptom_guidance docs
+          const query = `${symptom} PCOS dietary recommendations nutrition foods`;
+          logger.info(`  Querying symptom: "${query}"`);
+
+          const results = await retriever.retrieve(query, 5);
+
+          // Log what we got
+          logger.info(`  Retrieved ${results.length} results`);
+          const types = results.map((r) => r.metadata?.type).filter(Boolean);
+          logger.info(`  Document types: ${types.join(', ')}`);
+
+          // ⭐ FIX: Very lenient filtering for symptoms - accept medical/nutritional content
+          const symptomDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+            const symptomKeywords = symptom.toLowerCase().replace(/-/g, ' ');
+            
+            // Exclude meal templates (too specific)
+            if (type === 'meal_template') return false;
+            
+            // Accept any medical/nutritional content that mentions the symptom OR dietary advice
+            if (type === 'symptom_guidance' || 
+                type === 'medical_info' || 
+                type === 'lab_guidance' ||
+                type === 'nutritional_data' ||
+                type === 'medical_knowledge') {
+              // Accept if it contains symptom keywords OR general PCOS dietary terms
+              return content.includes(symptomKeywords) || 
+                     content.includes('pcos') || 
+                     content.includes('hormone') ||
+                     content.includes('insulin');
+            }
+            
+            return false;
+          });
+
+          logger.info(`  Filtered to ${symptomDocs.length} symptom-related docs`);
+          retrievalResults.symptomGuidance.push(...symptomDocs);
+        }
+
+        logger.info(`Total symptom guidance docs: ${retrievalResults.symptomGuidance.length}`);
+      }
+
+      // ===== STAGE 3: Retrieve lab-marker guidance =====
+      logger.info('Stage 3: Retrieving lab marker guidance');
+      const labValues = healthContext?.medicalData?.labValues || {};
+      const abnormalMarkers = this.identifyAbnormalLabMarkers(labValues);
+
+      if (abnormalMarkers.length > 0) {
+        logger.info(`Processing ${abnormalMarkers.length} abnormal markers`);
+
+        for (const marker of abnormalMarkers) {
+          // ⭐ IMPROVED: More specific query
+          const query = `${marker.name} PCOS dietary guidance nutrition recommendations`;
+          logger.info(`  Querying lab marker: "${query}"`);
+
+          const results = await retriever.retrieve(query, 5);
+
+          // ⭐ FIX: Very lenient filtering for lab markers - accept all medical content
+          const labDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+            const markerName = marker.name.toLowerCase();
+            
+            // Exclude meal templates
+            if (type === 'meal_template') return false;
+            
+            // Accept any medical/nutritional content
+            if (type === 'lab_guidance' || 
+                type === 'medical_info' ||
+                type === 'nutritional_data' ||
+                type === 'medical_knowledge') {
+              // Accept if it mentions the marker OR general lab/insulin/glucose terms
+              return content.includes(markerName) ||
+                     content.includes('insulin') ||
+                     content.includes('glucose') ||
+                     content.includes('cholesterol');
+            }
+            
+            return false;
+          });
+
+          logger.info(`  Filtered to ${labDocs.length} lab guidance docs`);
+          retrievalResults.labGuidance.push(...labDocs);
+        }
+
+        logger.info(`Total lab guidance docs: ${retrievalResults.labGuidance.length}`);
+      }
+
+      // ===== STAGE 4: Retrieve ingredient substitutes =====
+      logger.info('Stage 4: Identifying problematic ingredients and retrieving substitutes');
+      const problematicIngredients = this.identifyProblematicIngredients(
+        retrievalResults.mealTemplates
+      );
+
+      if (problematicIngredients.length > 0) {
+        logger.info(`Found ${problematicIngredients.length} problematic ingredients`);
+
+        // Limit to top 8 most important
+        const topIngredients = problematicIngredients.slice(0, 8);
+
+        for (const ingredient of topIngredients) {
+          // ⭐ IMPROVED: More specific query targeting substitutes
+          const query = `${ingredient} PCOS substitute alternative ${dietType}`;
+          logger.info(`  Querying substitute: "${query}"`);
+
+          const results = await retriever.retrieve(query, 5);
+
+          // Log what we got
+          const types = results.map((r) => r.metadata?.type).filter(Boolean);
+          logger.info(`  Retrieved types: ${types.join(', ')}`);
+
+          // ⭐ FIX: Very lenient filtering for substitutes - accept nutritional advice
+          const substituteDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+            const ingredientLower = ingredient.toLowerCase();
+            
+            // Exclude meal templates
+            if (type === 'meal_template') return false;
+            
+            // Accept any medical/nutritional content about substitutes or the ingredient
+            if (type === 'ingredient_substitute' || 
+                type === 'medical_info' ||
+                type === 'nutritional_data' ||
+                type === 'medical_knowledge') {
+              // Accept if it mentions substitutes/alternatives OR the ingredient itself
+              return (content.includes('substitute') || 
+                      content.includes('alternative') || 
+                      content.includes('swap') ||
+                      content.includes('replace')) &&
+                     (content.includes(ingredientLower) || 
+                      content.includes('pcos') ||
+                      content.includes('healthy'));
+            }
+            
+            return false;
+          });
+
+          logger.info(`  Filtered to ${substituteDocs.length} substitute docs`);
+          retrievalResults.ingredientSubstitutes.push(...substituteDocs);
+        }
+
+        logger.info(`Total substitute docs: ${retrievalResults.ingredientSubstitutes.length}`);
+      }
+
+      // ===== FINAL SUMMARY =====
+      logger.info('Multi-stage retrieval complete', {
+        mealTemplates: retrievalResults.mealTemplates.length,
+        symptomGuidance: retrievalResults.symptomGuidance.length,
+        labGuidance: retrievalResults.labGuidance.length,
+        ingredientSubstitutes: retrievalResults.ingredientSubstitutes.length,
+      });
+
+      return retrievalResults;
+    } catch (error) {
+      logger.error('Multi-stage retrieval failed', { error: error.message, stack: error.stack });
+      return retrievalResults;
+    }
+  }
+
+  /**
+   * NEW: Identify abnormal lab markers from user's medical data
+   */
+  identifyAbnormalLabMarkers(labValues) {
+    const abnormal = [];
+
+    // Reference ranges (simplified - you can expand these)
+    const referenceRanges = {
+      'Fasting Glucose': { max: 100, severity: 'prediabetes' },
+      'Fasting Insulin': { max: 10, severity: 'elevated' },
+      'HOMA-IR': { max: 2.5, severity: 'insulin resistance' },
+      'Total Cholesterol': { max: 200, severity: 'borderline high' },
+      'LDL Cholesterol': { max: 100, severity: 'elevated' },
+      Triglycerides: { max: 150, severity: 'high' },
+      'Testosterone Total': { max: 80, severity: 'elevated' },
+      TSH: { min: 0.4, max: 4.0, severity: 'abnormal' },
+    };
+
+    Object.entries(labValues).forEach(([testName, testData]) => {
+      const value = parseFloat(testData.value);
+      if (isNaN(value)) return;
+
+      const ref = referenceRanges[testName];
+      if (!ref) return;
+
+      let isAbnormal = false;
+      if (ref.max && value > ref.max) isAbnormal = true;
+      if (ref.min && value < ref.min) isAbnormal = true;
+
+      if (isAbnormal) {
+        abnormal.push({
+          name: testName,
+          value: value,
+          severity: ref.severity,
+        });
+      }
+    });
+
+    return abnormal;
   }
 
   /**

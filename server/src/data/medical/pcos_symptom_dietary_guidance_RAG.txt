@@ -1,0 +1,856 @@
+PCOS SYMPTOM-SPECIFIC DIETARY GUIDANCE - INDIAN REGIONAL CUISINE
+Version: 2025-10-22
+Purpose: RAG file for LangChain embeddings to map PCOS symptoms to targeted dietary recommendations
+Format: Symptom → Nutritional strategy → Regional ingredient recommendations
+Usage: Query by symptom name to retrieve targeted dietary interventions with culturally appropriate ingredients
+
+================================================================================
+STRUCTURE:
+- SYMPTOM: [Common PCOS symptom]
+- UNDERLYING CAUSE: [Physiological mechanism]
+- NUTRITIONAL STRATEGY: [Evidence-based dietary approach]
+- KEY NUTRIENTS: [Specific nutrients to emphasize]
+- FOODS TO EMPHASIZE:
+  - North India: [region-specific recommendations]
+  - South India: [region-specific recommendations]
+  - East India: [region-specific recommendations]
+  - West India: [region-specific recommendations]
+- FOODS TO AVOID/LIMIT: [Specific items that worsen this symptom]
+- MEAL TIMING: [When to eat these foods]
+- SUPPLEMENTS TO CONSIDER: [Evidence-based supplements - mention as reference only]
+- LIFESTYLE INTEGRATION: [Complementary lifestyle tips]
+================================================================================
+
+### SYMPTOM CATEGORY 1: INSULIN RESISTANCE & WEIGHT MANAGEMENT ###
+
+--- INSULIN RESISTANCE ---
+SYMPTOM: Insulin resistance, high fasting insulin, high HOMA-IR, elevated HbA1c
+UNDERLYING CAUSE: Cells don't respond to insulin properly → pancreas produces excess insulin → drives weight gain, androgen excess, inflammation
+NUTRITIONAL STRATEGY: Low glycemic index diet, high fiber (30-40g/day), balanced macros with emphasis on protein (1.2-1.6 g/kg body weight), healthy fats, meal timing
+KEY NUTRIENTS: Chromium (food sources), magnesium, fiber (soluble & insoluble), omega-3 fatty acids, vitamin D, inositol (from foods)
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Grains: Bajra, jowar, whole wheat (small portions), quinoa, barley (jau)
+    - Proteins: Kala chana (black chickpeas), rajma, moong dal, paneer (low-fat), eggs
+    - Vegetables: Methi (fenugreek leaves), karela (bitter gourd), lauki, spinach, cauliflower
+    - Fats: Almonds, walnuts, ghee (1 tsp/meal), mustard oil
+    - Spices: Cinnamon (dalchini), fenugreek seeds (methi dana), turmeric
+  
+  South India:
+    - Grains: Ragi (finger millet), brown rice (small), foxtail millet (thinai), barnyard millet
+    - Proteins: Toor dal, horsegram (kulthi), urad dal, sambar with vegetables
+    - Vegetables: Drumstick, snake gourd, ridge gourd, moringa leaves, curry leaves
+    - Fats: Coconut (small amount), sesame oil, groundnuts (limited)
+    - Spices: Curry leaves, fenugreek seeds, turmeric, black pepper
+  
+  East India:
+    - Grains: Red rice (small portions), sattu (roasted gram flour)
+    - Proteins: Moong dal, masoor dal, fish (rohu, hilsa, salmon), eggs
+    - Vegetables: Poi saag (Malabar spinach), lau (bottle gourd), bitter gourd, leafy greens
+    - Fats: Mustard oil, fish oil (from fatty fish), peanuts (limited)
+    - Spices: Panch phoron, mustard seeds, turmeric
+  
+  West India:
+    - Grains: Jowar, bajra, nachni (ragi)
+    - Proteins: Varan (toor dal), groundnuts, sprouted moong, paneer
+    - Vegetables: Gawar (cluster beans), bhendi, dudhi (bottle gourd), methi
+    - Fats: Groundnut oil (cold-pressed), coconut oil, almonds
+    - Spices: Hing (asafoetida), ajwain, turmeric
+
+FOODS TO AVOID/LIMIT:
+- White rice, maida (refined flour), white bread
+- Sugar, jaggery (excess), honey (excess)
+- Fruit juices (even fresh), sugary beverages, sodas
+- Deep-fried foods (samosas, pakoras, puris)
+- Processed snacks (biscuits, chips, namkeen)
+- Potatoes (especially fried or mashed)
+
+MEAL TIMING:
+- Eat within 1 hour of waking (stabilizes morning cortisol)
+- 3 main meals + 2 small snacks
+- Protein at every meal (especially breakfast)
+- Last meal 3 hours before bedtime
+- 10-15 minute walk after lunch and dinner
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Inositol (Myo-inositol 2g + D-chiro-inositol 50mg)
+- Vitamin D3 (if deficient)
+- Omega-3 (or eat fatty fish 2-3x/week)
+- Magnesium glycinate
+
+LIFESTYLE INTEGRATION:
+- Resistance training 3x/week (builds insulin-sensitive muscle)
+- 7-8 hours sleep (poor sleep worsens insulin resistance)
+- Stress management (high cortisol worsens insulin resistance)
+- Eat meals mindfully, chew thoroughly
+
+---
+
+--- DIFFICULTY LOSING WEIGHT / WEIGHT LOSS RESISTANCE ---
+SYMPTOM: Cannot lose weight despite diet and exercise, weight gain around abdomen, slow metabolism
+UNDERLYING CAUSE: Insulin resistance, hormonal imbalance, inflammation, thyroid dysfunction (common comorbidity)
+NUTRITIONAL STRATEGY: Caloric deficit (but not extreme), high protein (preserves muscle), low-moderate carb, meal timing, avoid long fasting initially
+KEY NUTRIENTS: Protein (1.5-1.8 g/kg), fiber (30-40g), iodine, selenium, B-vitamins
+
+FOODS TO EMPHASIZE:
+  North India:
+    - High-protein: Paneer (low-fat), moong dal, sprouted chana, eggs, chicken breast
+    - Vegetables: Leafy greens (50% of plate), cauliflower, cabbage, bell peppers
+    - Fats: Small portions of nuts (10-15 pieces), ghee (measured 1 tsp)
+    - Spices: Ginger, black pepper, cayenne (metabolism boosters)
+  
+  South India:
+    - High-protein: Sambar (dal-heavy), fish (grilled/steamed), egg white dosa
+    - Vegetables: Kootu (dal + vegetable), avial (mixed vegetables), leafy greens
+    - Fats: Coconut (small), sesame seeds
+    - Spices: Curry leaves, black pepper, turmeric
+  
+  East India:
+    - High-protein: Fish (lean - rohu, katla), eggs, moong dal
+    - Vegetables: Saag (leafy greens), lau, jhinge (ridge gourd)
+    - Fats: Mustard oil (small), fish oil from fatty fish
+    - Spices: Mustard seeds, ginger, turmeric
+  
+  West India:
+    - High-protein: Usal (sprouted beans), varan, groundnuts (limited)
+    - Vegetables: Bhaji (leafy greens), bhendi, gawar
+    - Fats: Measured groundnut oil, coconut
+    - Spices: Kokum, ajwain
+
+FOODS TO AVOID/LIMIT:
+- All refined carbs (maida, white rice, white bread)
+- Liquid calories (juices, sodas, sweetened beverages)
+- Fried foods (very calorie-dense)
+- Excess fats (even healthy fats - measure everything)
+- Large portions of grains (even whole grains - limit to 1/4 plate)
+
+MEAL TIMING:
+- Front-load calories (bigger breakfast, moderate lunch, lighter dinner)
+- Stop eating 3-4 hours before bed
+- Protein at breakfast (minimum 20g)
+- Consider eating carbs earlier in the day
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Get thyroid checked (TSH, T3, T4) - thyroid dysfunction common with PCOS
+- Vitamin B-complex (metabolism support)
+- L-carnitine (helps with fat metabolism)
+
+LIFESTYLE INTEGRATION:
+- Weight training (builds muscle = higher metabolism)
+- NEAT (Non-Exercise Activity Thermogenesis) - stay active throughout day
+- Sleep optimization (7-9 hours, poor sleep sabotages weight loss)
+- Track portions initially to understand quantities
+
+---
+
+--- ACANTHOSIS NIGRICANS (DARK SKIN PATCHES) ---
+SYMPTOM: Dark, velvety patches on neck, armpits, groin, knuckles
+UNDERLYING CAUSE: Severe insulin resistance → excess insulin stimulates skin cells
+NUTRITIONAL STRATEGY: Aggressive insulin management through strict low-GI diet
+KEY NUTRIENTS: Same as insulin resistance + alpha-lipoic acid (food sources)
+
+FOODS TO EMPHASIZE:
+  All Regions:
+    - Focus on foods from insulin resistance section (above)
+    - Emphasize: Leafy greens, cruciferous vegetables, lean proteins
+    - Antioxidant-rich: Berries (limited), green tea, turmeric, cinnamon
+    - High-fiber vegetables to slow glucose absorption
+
+FOODS TO AVOID/LIMIT:
+- Zero tolerance for: Sugary drinks, white rice, maida, deep-fried foods
+- Strict avoidance of high-GI foods
+- Limit even natural sugars initially
+
+MEAL TIMING:
+- Never eat carbs alone (always pair with protein + fat + fiber)
+- Smaller, more frequent meals to avoid glucose spikes
+- 15-20 minute walk after every meal (non-negotiable)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- High-dose inositol (4g/day split doses)
+- Alpha-lipoic acid (food sources: spinach, broccoli, tomatoes)
+- Berberine (under medical supervision)
+
+LIFESTYLE INTEGRATION:
+- Skin patches indicate severe insulin resistance - medical monitoring essential
+- Daily exercise (even 30 min walk)
+- Topical treatments (with dermatologist) + dietary changes work together
+
+
+### SYMPTOM CATEGORY 2: HORMONAL & REPRODUCTIVE ###
+
+--- IRREGULAR PERIODS / AMENORRHEA (MISSING PERIODS) ---
+SYMPTOM: Irregular menstrual cycles, missing periods for months, unpredictable bleeding
+UNDERLYING CAUSE: Hormonal imbalance (high LH, high androgens, anovulation), insulin resistance
+NUTRITIONAL STRATEGY: Balance blood sugar, anti-inflammatory foods, healthy fats for hormone production, adequate calories (not extreme restriction)
+KEY NUTRIENTS: Omega-3 fatty acids, vitamin D, zinc, B-vitamins (especially B6, folate), magnesium, iron
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Healthy fats: Ghee (measured), almonds, walnuts, flaxseeds (alsi)
+    - Iron-rich: Dates (2-3 soaked), spinach, amaranth (chaulai), jaggery (minimal)
+    - Hormone-supporting: Sesame seeds (til), fenugreek seeds, fennel (saunf)
+    - Proteins: Paneer, dal, eggs, chicken
+  
+  South India:
+    - Healthy fats: Coconut, sesame oil, groundnuts
+    - Iron-rich: Drumstick leaves, curry leaves, ragi
+    - Hormone-supporting: Sesame seeds, fenugreek, ajwain
+    - Proteins: Sambar, fish (omega-3 rich), eggs
+  
+  East India:
+    - Healthy fats: Mustard oil, fish (hilsa, salmon), flaxseeds
+    - Iron-rich: Leafy greens (saag), dates, beetroot
+    - Hormone-supporting: Sesame seeds, fennel
+    - Proteins: Fish, eggs, dal
+  
+  West India:
+    - Healthy fats: Groundnut oil, coconut, sesame
+    - Iron-rich: Jaggery (minimal), dates, green leafy vegetables
+    - Hormone-supporting: Sesame til ladoo (minimal sugar), ajwain
+    - Proteins: Sprouted beans, groundnuts, dal
+
+FOODS TO AVOID/LIMIT:
+- Excessive caloric restriction (can worsen amenorrhea)
+- Trans fats (processed foods, reused oils)
+- Excessive caffeine (>2 cups/day)
+- Alcohol (disrupts hormones)
+
+MEAL TIMING:
+- Don't skip meals (regular eating supports hormonal balance)
+- Adequate calorie intake (at least 1500-1800 calories depending on activity)
+- Include healthy fats at each meal
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Inositol (improves ovulation)
+- Vitamin D (improves menstrual regularity)
+- Omega-3 fish oil
+- Iron (if deficient from heavy periods)
+
+LIFESTYLE INTEGRATION:
+- Avoid over-exercising (can worsen amenorrhea)
+- Stress management (high cortisol disrupts ovulation)
+- Adequate sleep (7-9 hours)
+- Weight loss if overweight (5-10% loss can restore cycles)
+
+---
+
+--- HEAVY OR PROLONGED PERIODS ---
+SYMPTOM: Heavy menstrual bleeding, periods lasting >7 days, clotting
+UNDERLYING CAUSE: Hormonal imbalance, anovulation, endometrial thickening
+NUTRITIONAL STRATEGY: Iron-rich foods (prevent anemia), anti-inflammatory foods, vitamin K for clotting
+KEY NUTRIENTS: Iron, vitamin C (enhances iron absorption), vitamin K, zinc, B-vitamins
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Iron-rich: Dates (3-4 soaked), spinach, amaranth, black chickpeas, pomegranate
+    - Vitamin C: Amla (Indian gooseberry), lemon, tomatoes (eat with iron sources)
+    - Vitamin K: Fenugreek leaves (methi), spinach, cabbage
+  
+  South India:
+    - Iron-rich: Drumstick leaves, ragi, sesame seeds, dates
+    - Vitamin C: Tamarind, tomatoes, curry leaves, amla
+    - Vitamin K: Moringa leaves, curry leaves, cabbage
+  
+  East India:
+    - Iron-rich: Leafy greens (saag), beetroot, dates, sesame
+    - Vitamin C: Tomatoes, lemon, amla
+    - Vitamin K: Leafy greens, mustard greens
+  
+  West India:
+    - Iron-rich: Dates, groundnuts, sesame, green leafy vegetables
+    - Vitamin C: Kokum, lemon, amla
+    - Vitamin K: Methi, leafy vegetables
+
+FOODS TO AVOID/LIMIT:
+- Excessive caffeine (can worsen bleeding)
+- Alcohol (thins blood)
+- NSAIDs during periods (can increase bleeding) - use food strategies instead
+
+MEAL TIMING:
+- Iron-rich foods with vitamin C source at same meal
+- Avoid tea/coffee with meals (inhibits iron absorption)
+- Small frequent meals during periods (combat fatigue)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Iron supplement (if anemic)
+- Vitamin C (with iron)
+- Tranexamic acid (medical treatment, not supplement)
+
+LIFESTYLE INTEGRATION:
+- Monitor blood loss (change pads/tampons frequency)
+- See doctor if soaking through pad in <2 hours
+- Adequate rest during periods
+
+---
+
+--- LOW LIBIDO / VAGINAL DRYNESS ---
+SYMPTOM: Decreased sexual desire, vaginal dryness, painful intercourse
+UNDERLYING CAUSE: Hormonal imbalance, high androgens paradoxically can lower libido, stress, inflammation
+NUTRITIONAL STRATEGY: Healthy fats for hormone production, zinc-rich foods, stress-reducing foods
+KEY NUTRIENTS: Omega-3 fatty acids, zinc, vitamin E, B-vitamins, magnesium
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Healthy fats: Ghee, almonds, walnuts, flaxseeds, pumpkin seeds
+    - Zinc-rich: Pumpkin seeds, sesame seeds, chickpeas
+    - Vitamin E: Almonds, sunflower seeds, spinach
+  
+  South India:
+    - Healthy fats: Coconut, sesame oil, groundnuts, fish (omega-3)
+    - Zinc-rich: Pumpkin seeds, sesame, cashews
+    - Vitamin E: Almonds, groundnuts, spinach
+  
+  East India:
+    - Healthy fats: Mustard oil, fish (fatty varieties), flaxseeds
+    - Zinc-rich: Pumpkin seeds, fish, eggs
+    - Vitamin E: Mustard greens, spinach, nuts
+  
+  West India:
+    - Healthy fats: Groundnut oil, coconut, sesame
+    - Zinc-rich: Groundnuts, pumpkin seeds, sesame
+    - Vitamin E: Groundnuts, almonds, spinach
+
+FOODS TO AVOID/LIMIT:
+- Excessive alcohol (lowers libido)
+- High sugar (inflammation, mood swings)
+- Trans fats (affect hormone production)
+
+MEAL TIMING:
+- Include healthy fats at every meal
+- Don't restrict calories excessively (can lower libido)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Omega-3 fish oil
+- Vitamin E
+- Maca root (adaptogen - under guidance)
+- Ashwagandha (Ayurvedic herb for stress and libido)
+
+LIFESTYLE INTEGRATION:
+- Stress management (high cortisol kills libido)
+- Adequate sleep (7-9 hours)
+- Exercise (but not excessive)
+- Communication with partner
+- Pelvic floor exercises
+
+
+### SYMPTOM CATEGORY 3: METABOLIC & CARDIOVASCULAR ###
+
+--- HIGH CHOLESTEROL / DYSLIPIDEMIA ---
+SYMPTOM: High LDL, high triglycerides, low HDL, high total cholesterol
+UNDERLYING CAUSE: Insulin resistance, inflammation, genetic factors
+NUTRITIONAL STRATEGY: Soluble fiber (lowers LDL), omega-3 (lowers triglycerides), plant sterols, minimize saturated fat
+KEY NUTRIENTS: Soluble fiber, omega-3 fatty acids, plant sterols, niacin (B3)
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Soluble fiber: Oats, barley (jau), psyllium husk (isabgol), methi seeds
+    - Omega-3: Walnuts, flaxseeds, chia seeds
+    - Plant sterols: Almonds, sunflower seeds
+    - Heart-healthy: Legumes (rajma, chana), whole grains (limited)
+  
+  South India:
+    - Soluble fiber: Oats, ragi, horsegram
+    - Omega-3: Fish (sardines, mackerel, salmon), flaxseeds
+    - Plant sterols: Groundnuts, sesame seeds
+    - Heart-healthy: Sambar (dal-rich), kootu, vegetable curries
+  
+  East India:
+    - Soluble fiber: Oats, barley, isabgol
+    - Omega-3: Fatty fish (hilsa, salmon), mustard oil, flaxseeds
+    - Plant sterols: Sunflower seeds, sesame
+    - Heart-healthy: Fish, dal, leafy greens
+  
+  West India:
+    - Soluble fiber: Oats, psyllium, jowar
+    - Omega-3: Groundnuts, flaxseeds
+    - Plant sterols: Groundnuts, sesame
+    - Heart-healthy: Sprouted beans, vegetable curries
+
+FOODS TO AVOID/LIMIT:
+- Trans fats (completely avoid - vanaspati, reused oils)
+- Saturated fats (limit red meat, full-fat dairy, excessive ghee)
+- Simple sugars (raise triglycerides)
+- Refined carbs (raise triglycerides)
+- Alcohol (raises triglycerides)
+
+MEAL TIMING:
+- Include soluble fiber at breakfast (oats, isabgol)
+- Omega-3 source daily (fish, flaxseeds, walnuts)
+- Smaller, more frequent meals (better for lipid control)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Omega-3 fish oil (EPA/DHA 1-2g/day lowers triglycerides)
+- Psyllium husk (lowers LDL)
+- Plant sterols (2g/day can lower LDL by 10%)
+- Niacin (under medical supervision only)
+
+LIFESTYLE INTEGRATION:
+- Aerobic exercise (30-45 min, 5x/week lowers triglycerides, raises HDL)
+- No smoking (critical for cardiovascular health)
+- Weight loss (even 5-10% improves lipids)
+- Stress management
+
+---
+
+--- HIGH BLOOD PRESSURE ---
+SYMPTOM: Elevated blood pressure (>130/80 mmHg), hypertension
+UNDERLYING CAUSE: Insulin resistance, inflammation, vascular dysfunction, sodium sensitivity
+NUTRITIONAL STRATEGY: DASH-style diet, low sodium, high potassium, magnesium, adequate protein
+KEY NUTRIENTS: Potassium, magnesium, calcium, fiber, omega-3
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Potassium-rich: Bananas (small), potatoes (with skin, limited), spinach, beans
+    - Magnesium: Almonds, pumpkin seeds, spinach, whole wheat
+    - Low-sodium proteins: Dal (unsalted), paneer (low-sodium), eggs
+  
+  South India:
+    - Potassium-rich: Bananas, coconut water, drumstick, ridge gourd
+    - Magnesium: Ragi, sesame seeds, spinach
+    - Low-sodium proteins: Sambar (low salt), fish (not salted), eggs
+  
+  East India:
+    - Potassium-rich: Bananas, coconut water, bottle gourd (lau), spinach
+    - Magnesium: Fish, sesame, leafy greens
+    - Low-sodium proteins: Fish (fresh), dal, eggs
+  
+  West India:
+    - Potassium-rich: Bananas, coconut water, bottle gourd (dudhi)
+    - Magnesium: Groundnuts, sesame, nachni (ragi)
+    - Low-sodium proteins: Dal (low salt), sprouted beans
+
+FOODS TO AVOID/LIMIT:
+- High sodium: Pickles, papad, namkeen, packaged foods, processed meats
+- Excessive salt in cooking (limit to <5g/day total)
+- Caffeine excess (>2 cups/day)
+- Alcohol
+- Licorice (mulethi) - can raise blood pressure
+
+MEAL TIMING:
+- Consistent meal timing (supports blood pressure regulation)
+- Avoid heavy dinners
+- Adequate hydration
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Magnesium glycinate (if deficient)
+- Potassium (only if deficient and under medical guidance)
+- Coenzyme Q10 (may help lower BP)
+- Hibiscus tea (natural BP support)
+
+LIFESTYLE INTEGRATION:
+- Daily exercise (lowers BP by 5-10 mmHg)
+- Weight loss (1 kg loss = 1 mmHg reduction)
+- Stress management (yoga, meditation)
+- Limit alcohol
+- Monitor BP at home regularly
+
+
+### SYMPTOM CATEGORY 4: DERMATOLOGICAL ###
+
+--- ACNE ---
+SYMPTOM: Facial acne, back acne, chest acne, cystic acne
+UNDERLYING CAUSE: High androgens (testosterone, DHEAS), insulin resistance, inflammation
+NUTRITIONAL STRATEGY: Low-GI diet, anti-inflammatory foods, limit dairy, adequate zinc and vitamin A
+KEY NUTRIENTS: Zinc, vitamin A (beta-carotene), omega-3, antioxidants, probiotics
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Zinc-rich: Pumpkin seeds, chickpeas, sesame seeds, peanuts
+    - Vitamin A: Carrots, spinach, sweet potato (limited), amaranth
+    - Anti-inflammatory: Turmeric, ginger, walnuts, flaxseeds
+    - Probiotic: Plain unsweetened yogurt (if tolerated)
+  
+  South India:
+    - Zinc-rich: Pumpkin seeds, sesame, cashews
+    - Vitamin A: Drumstick leaves, curry leaves, carrots, papaya
+    - Anti-inflammatory: Turmeric, curry leaves, fish (omega-3), coconut
+    - Probiotic: Plain curd (if tolerated), fermented foods
+  
+  East India:
+    - Zinc-rich: Pumpkin seeds, fish, sesame
+    - Vitamin A: Leafy greens (saag), carrots, sweet potato
+    - Anti-inflammatory: Turmeric, mustard oil, fish (hilsa, salmon)
+    - Probiotic: Plain doi (if tolerated)
+  
+  West India:
+    - Zinc-rich: Groundnuts, pumpkin seeds, sesame
+    - Vitamin A: Leafy vegetables, carrots, papaya
+    - Anti-inflammatory: Turmeric, kokum, groundnuts (omega-6, use sparingly)
+    - Probiotic: Plain yogurt (if tolerated)
+
+FOODS TO AVOID/LIMIT:
+- Dairy products (milk, paneer, cheese) - many women see improvement when limiting dairy
+- High-GI foods (sugar, maida, white rice)
+- Excessive iodine (iodized salt in excess) - can worsen acne in some
+- Processed foods with additives
+- Whey protein supplements (can trigger acne)
+
+MEAL TIMING:
+- Focus on low-GI meals to prevent insulin spikes
+- Include zinc-rich foods daily
+- Probiotic food once daily (if tolerated)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Zinc (25-50mg/day, but not long-term without monitoring)
+- Omega-3 fish oil (anti-inflammatory)
+- Probiotics (gut-skin axis)
+- Evening primrose oil (some women benefit)
+- Saw palmetto (anti-androgen effects)
+
+LIFESTYLE INTEGRATION:
+- Gentle skincare routine (don't over-wash)
+- Topical treatments (prescribed by dermatologist) + diet work together
+- Stress management (stress worsens acne)
+- Avoid picking/squeezing (causes scarring)
+- Clean pillowcases frequently
+
+---
+
+--- HIRSUTISM (EXCESS BODY/FACIAL HAIR) ---
+SYMPTOM: Unwanted facial hair, chest hair, back hair, male-pattern hair growth
+UNDERLYING CAUSE: High androgens (testosterone, DHEAS), high insulin (increases androgen production)
+NUTRITIONAL STRATEGY: Lower insulin levels, anti-androgen foods, balance blood sugar
+KEY NUTRIENTS: Inositol, zinc, magnesium, vitamin D, omega-3
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Anti-androgen: Flaxseeds (ground), spearmint tea (2 cups/day proven to lower androgens)
+    - Blood sugar control: Same as insulin resistance foods
+    - Zinc-rich: Pumpkin seeds, chickpeas
+  
+  South India:
+    - Anti-androgen: Flaxseeds, spearmint tea
+    - Blood sugar control: Millets, sambar, vegetable curries
+    - Zinc-rich: Pumpkin seeds, sesame, cashews
+  
+  East India:
+    - Anti-androgen: Flaxseeds, spearmint tea
+    - Blood sugar control: Red rice (limited), fish, dal
+    - Zinc-rich: Fish, pumpkin seeds
+  
+  West India:
+    - Anti-androgen: Flaxseeds, spearmint tea
+    - Blood sugar control: Jowar, bajra, sprouted beans
+    - Zinc-rich: Groundnuts, pumpkin seeds
+
+FOODS TO AVOID/LIMIT:
+- Same as insulin resistance (high-GI foods worsen hirsutism)
+- Excessive soy (controversial - phytoestrogens)
+
+MEAL TIMING:
+- Focus on stabilizing blood sugar (prevents insulin spikes)
+- Spearmint tea: 1 cup morning, 1 cup evening (shown to reduce androgens)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Inositol (4g/day - lowers testosterone)
+- Spearmint capsules (if tea not feasible)
+- Saw palmetto (anti-androgen)
+- Zinc (if deficient)
+- Vitamin D (if deficient)
+
+LIFESTYLE INTEGRATION:
+- Weight loss (5-10% reduces androgens)
+- Exercise (improves insulin sensitivity)
+- Hair removal methods (diet helps but may not eliminate hair - cosmetic treatments okay)
+- Manage stress (high cortisol can worsen)
+
+---
+
+--- HAIR LOSS / THINNING (SCALP) ---
+SYMPTOM: Hair thinning, hair fall, receding hairline, widening part
+UNDERLYING CAUSE: High androgens (DHT), nutritional deficiencies (iron, protein, biotin, zinc), inflammation
+NUTRITIONAL STRATEGY: Adequate protein, iron, biotin, anti-inflammatory foods, blood sugar control
+KEY NUTRIENTS: Protein (1.2-1.5g/kg), iron, biotin (B7), zinc, vitamin D, omega-3, silica
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Protein: Paneer, dal, eggs, chicken, sprouted moong
+    - Iron: Dates (3-4 soaked), spinach, amaranth, pomegranate
+    - Biotin: Eggs, almonds, cauliflower, mushrooms
+    - Silica: Oats, barley, leafy greens
+  
+  South India:
+    - Protein: Sambar, fish, eggs, idli with more dal
+    - Iron: Ragi, drumstick leaves, dates, curry leaves
+    - Biotin: Eggs, groundnuts, cauliflower
+    - Silica: Ragi, oats, green beans
+  
+  East India:
+    - Protein: Fish, eggs, dal, sprouted moong
+    - Iron: Leafy greens (saag), dates, beetroot
+    - Biotin: Eggs, fish, mushrooms
+    - Silica: Oats, leafy greens
+  
+  West India:
+    - Protein: Dal, groundnuts, sprouted beans, eggs
+    - Iron: Dates, leafy vegetables, sesame seeds
+    - Biotin: Groundnuts, eggs, cauliflower
+    - Silica: Jowar, bajra, leafy greens
+
+FOODS TO AVOID/LIMIT:
+- Crash diets (severe calorie restriction causes hair loss)
+- High mercury fish (excessive consumption)
+- Excessive vitamin A supplements (can cause hair loss)
+
+MEAL TIMING:
+- Protein at every meal (essential for hair growth)
+- Iron-rich foods with vitamin C (enhances absorption)
+- Don't drink tea/coffee with meals (blocks iron absorption)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Biotin (5-10mg/day - but check thyroid interaction)
+- Iron (if ferritin <50, optimal for hair is 70+)
+- Zinc (if deficient)
+- Vitamin D (if deficient)
+- Marine collagen peptides (emerging evidence)
+
+LIFESTYLE INTEGRATION:
+- Gentle hair care (avoid tight hairstyles, excessive heat)
+- Scalp massage (improves circulation)
+- Manage stress (telogen effluvium from stress)
+- Check thyroid (hypothyroidism causes hair loss)
+- Minoxidil (topical treatment) + diet work together
+
+
+### SYMPTOM CATEGORY 5: PSYCHOLOGICAL & NEUROLOGICAL ###
+
+--- ANXIETY & MOOD SWINGS ---
+SYMPTOM: Anxiety, panic attacks, mood swings, irritability, emotional instability
+UNDERLYING CAUSE: Hormonal fluctuations, blood sugar instability, inflammation, neurotransmitter imbalance
+NUTRITIONAL STRATEGY: Stable blood sugar, omega-3 for brain health, magnesium for mood, tryptophan for serotonin
+KEY NUTRIENTS: Omega-3 (EPA/DHA), magnesium, B-vitamins (especially B6, B12, folate), tryptophan, vitamin D
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Omega-3: Walnuts, flaxseeds, chia seeds
+    - Magnesium: Pumpkin seeds, spinach, almonds, dark chocolate (85%+)
+    - Tryptophan: Paneer, eggs, chicken, pumpkin seeds
+    - B-vitamins: Whole grains, eggs, leafy greens, legumes
+  
+  South India:
+    - Omega-3: Fish (mackerel, sardines, salmon), flaxseeds
+    - Magnesium: Ragi, pumpkin seeds, sesame, spinach
+    - Tryptophan: Fish, eggs, sesame seeds
+    - B-vitamins: Ragi, brown rice, eggs, leafy greens
+  
+  East India:
+    - Omega-3: Fatty fish (hilsa, salmon), mustard oil, flaxseeds
+    - Magnesium: Fish, sesame, leafy greens (saag)
+    - Tryptophan: Fish, eggs, pumpkin seeds
+    - B-vitamins: Fish, eggs, leafy greens
+  
+  West India:
+    - Omega-3: Flaxseeds, chia seeds, groundnuts (omega-6 heavy)
+    - Magnesium: Ragi (nachni), pumpkin seeds, sesame
+    - Tryptophan: Eggs, groundnuts, sesame
+    - B-vitamins: Jowar, bajra, eggs, leafy greens
+
+FOODS TO AVOID/LIMIT:
+- Caffeine (worsens anxiety in many people)
+- Sugar (blood sugar swings worsen mood)
+- Alcohol (depressant, worsens anxiety and mood)
+- Processed foods (lack nutrients needed for mental health)
+
+MEAL TIMING:
+- Stable blood sugar is critical (don't skip meals, avoid sugar spikes)
+- Protein at breakfast (supports dopamine production)
+- Complex carbs in evening (supports serotonin/melatonin)
+- Avoid caffeine after 2 PM
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Omega-3 fish oil (1-2g EPA/DHA - clinically proven for mood)
+- Magnesium glycinate (calming form, 200-400mg)
+- Vitamin B-complex (neurotransmitter synthesis)
+- Vitamin D (if deficient - affects mood)
+- Ashwagandha (adaptogen for anxiety - Ayurvedic)
+- L-theanine (calming, from green tea)
+
+LIFESTYLE INTEGRATION:
+- Therapy/counseling (CBT effective for anxiety)
+- Meditation/mindfulness (10-20 min daily)
+- Yoga (pranayama especially helpful)
+- Regular exercise (proven anti-anxiety effects)
+- Sleep hygiene (7-9 hours)
+- Limit social media/news (reduces anxiety triggers)
+
+---
+
+--- DEPRESSION / LOW MOOD ---
+SYMPTOM: Persistent sadness, loss of interest, hopelessness, fatigue, crying spells
+UNDERLYING CAUSE: Hormonal imbalance, inflammation, neurotransmitter deficiency, chronic stress
+NUTRITIONAL STRATEGY: Anti-inflammatory diet, foods supporting serotonin/dopamine, omega-3, B-vitamins
+KEY NUTRIENTS: Omega-3, magnesium, B-vitamins (especially folate, B12), vitamin D, iron, zinc, tryptophan
+
+FOODS TO EMPHASIZE:
+  All Regions:
+    - Same as anxiety section above
+    - Emphasize: Fatty fish (if non-veg), eggs, leafy greens, nuts, seeds
+    - Dark chocolate (85%+ cacao, small amount) - mood-boosting
+
+FOODS TO AVOID/LIMIT:
+- Alcohol (depressant)
+- Excessive sugar (inflammation, crashes)
+- Processed foods (nutrient-poor)
+- Inflammatory foods (refined carbs, trans fats)
+
+MEAL TIMING:
+- Don't skip meals (blood sugar crashes worsen mood)
+- Include protein at all meals (amino acids for neurotransmitters)
+- Omega-3 daily (critical for brain health)
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Omega-3 fish oil (2g EPA/DHA shown effective in studies)
+- Vitamin D (if deficient - strongly linked to depression)
+- Methylated folate + B12 (if MTHFR variant or deficient)
+- SAMe (S-adenosyl methionine - proven antidepressant effect)
+- St. John's Wort (caution - interacts with many medications)
+
+LIFESTYLE INTEGRATION:
+- **Seek professional help** - depression requires medical evaluation
+- Therapy (CBT, IPT proven effective)
+- Exercise (30 min/day as effective as antidepressants in some studies)
+- Light exposure (morning sunlight supports circadian rhythm)
+- Social connection (isolation worsens depression)
+- Sleep (depression and insomnia bidirectional)
+
+---
+
+--- BRAIN FOG / POOR CONCENTRATION ---
+SYMPTOM: Mental fatigue, difficulty concentrating, memory problems, "fuzzy thinking"
+UNDERLYING CAUSE: Blood sugar instability, insulin resistance, inflammation, poor sleep, nutrient deficiency
+NUTRITIONAL STRATEGY: Stable blood sugar, anti-inflammatory, brain-boosting nutrients
+KEY NUTRIENTS: Omega-3 (DHA), B-vitamins, iron, magnesium, antioxidants
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Brain fats: Walnuts, ghee (1 tsp), flaxseeds, almonds
+    - Antioxidants: Berries (limited), turmeric, green tea
+    - B-vitamins: Eggs, whole grains, legumes
+  
+  South India:
+    - Brain fats: Fish (salmon, mackerel), coconut, sesame
+    - Antioxidants: Curry leaves, turmeric, green tea
+    - B-vitamins: Eggs, ragi, brown rice
+  
+  East India:
+    - Brain fats: Fatty fish, mustard oil, flaxseeds
+    - Antioxidants: Green tea, turmeric
+    - B-vitamins: Fish, eggs, leafy greens
+  
+  West India:
+    - Brain fats: Coconut, groundnuts, flaxseeds
+    - Antioxidants: Kokum, turmeric, green tea
+    - B-vitamins: Eggs, jowar, bajra
+
+FOODS TO AVOID/LIMIT:
+- High-GI foods (cause blood sugar swings → brain fog)
+- Excessive caffeine (initially helps, then crashes)
+- Alcohol (impairs cognition)
+
+MEAL TIMING:
+- Never skip breakfast (brain needs fuel)
+- Protein + healthy fat at every meal
+- Avoid blood sugar rollercoaster
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Omega-3 (DHA specifically for brain)
+- B-complex (energy and cognition)
+- Iron (if deficient - check ferritin)
+- Magnesium (helps with focus)
+
+LIFESTYLE INTEGRATION:
+- Sleep (7-9 hours non-negotiable for cognitive function)
+- Exercise (increases BDNF - brain-derived neurotrophic factor)
+- Stress management (cortisol impairs memory)
+- Cognitive exercises (reading, puzzles)
+- Limit multitasking
+
+
+### SYMPTOM CATEGORY 6: ENERGY & FATIGUE ###
+
+--- CHRONIC FATIGUE ---
+SYMPTOM: Persistent exhaustion, low energy, difficulty completing daily tasks, need for naps
+UNDERLYING CAUSE: Insulin resistance, anemia, thyroid dysfunction, poor sleep, nutrient deficiencies, inflammation
+NUTRITIONAL STRATEGY: Balanced meals for steady energy, adequate protein, iron if deficient, B-vitamins, complex carbs
+KEY NUTRIENTS: Iron, B-vitamins (especially B12), magnesium, CoQ10, vitamin D, protein
+
+FOODS TO EMPHASIZE:
+  North India:
+    - Iron-rich: Dates, spinach, amaranth, chickpeas, pomegranate, eggs
+    - B-vitamins: Eggs, whole grains, dal, chicken
+    - Energy foods: Complex carbs (whole wheat, millets) in moderate amounts, protein at each meal
+  
+  South India:
+    - Iron-rich: Ragi, drumstick leaves, dates, sesame, curry leaves, fish
+    - B-vitamins: Eggs, ragi, brown rice, fish
+    - Energy foods: Idli with more dal, sambar, brown rice (small portions)
+  
+  East India:
+    - Iron-rich: Leafy greens (saag), dates, fish, beetroot
+    - B-vitamins: Fish, eggs, whole grains
+    - Energy foods: Red rice (small), dal, fish
+  
+  West India:
+    - Iron-rich: Dates, leafy vegetables, groundnuts, sesame
+    - B-vitamins: Eggs, jowar, bajra
+    - Energy foods: Jowar/bajra rotis, dal, sprouted beans
+
+FOODS TO AVOID/LIMIT:
+- Simple sugars (give temporary energy then crash)
+- Excessive caffeine (masks fatigue, doesn't fix it)
+- Large heavy meals (cause post-meal fatigue)
+
+MEAL TIMING:
+- Eat within 1 hour of waking (kickstarts metabolism)
+- Small frequent meals (prevents energy dips)
+- Protein at every meal (sustained energy)
+- Don't skip meals
+
+SUPPLEMENTS TO CONSIDER (CONSULT DOCTOR):
+- Iron (if ferritin <30, optimal for energy is 50-70)
+- Vitamin B12 (if deficient - common in vegetarians)
+- Vitamin D (if deficient)
+- CoQ10 (cellular energy production)
+- Check thyroid function (TSH, T3, T4)
+
+LIFESTYLE INTEGRATION:
+- Sleep quality (not just quantity - 7-9 hours quality sleep)
+- Exercise (counterintuitive but increases energy over time)
+- Stress management (chronic stress causes fatigue)
+- Screen time before bed (disrupts sleep quality)
+- Rule out: Anemia, thyroid, vitamin D, B12, sleep apnea
+
+
+================================================================================
+CROSS-REFERENCING NOTES FOR LLM:
+================================================================================
+
+1. SYMPTOM CLUSTERING: Many symptoms co-occur. When user reports multiple symptoms, prioritize dietary strategies that address multiple issues simultaneously
+
+2. LAB VALUE INTEGRATION: Cross-reference symptoms with lab values from pcos_lab_guidance_RAG.txt file:
+   - High insulin/HOMA-IR → Prioritize insulin resistance dietary strategies
+   - High androgens (testosterone, DHEAS) → Emphasize anti-androgen foods (spearmint, flaxseeds)
+   - Low iron/ferritin → Prioritize iron-rich foods with vitamin C
+   - High cholesterol/triglycerides → Add heart-healthy fats, soluble fiber
+
+3. REGIONAL CUSTOMIZATION: Always provide region-specific ingredient suggestions based on user's cuisine preference
+
+4. DIET-TYPE FILTERING: Filter food suggestions by user's diet type (vegetarian/vegan/Jain/non-vegetarian)
+
+5. ALLERGY SCREENING: Always check user allergies and exclude those ingredients
+
+6. MEAL PLAN INTEGRATION: When generating meal plans, weight meal suggestions toward ingredients that address user's primary symptoms
+
+7. PORTION AWARENESS: Include appropriate portion sizes for recommended foods
+
+8. LIFESTYLE SYNERGY: Dietary interventions work best with lifestyle changes - always mention complementary lifestyle tips
+
+9. MEDICAL DISCLAIMER: Always remind user that severe symptoms require medical evaluation, and dietary changes complement (not replace) medical treatment
+
+10. SUPPLEMENT GUIDANCE: Supplements mentioned are for reference only - user should consult healthcare provider before taking any supplements
+
+================================================================================
+END OF PCOS SYMPTOM-SPECIFIC DIETARY GUIDANCE RAG FILE
+================================================================================

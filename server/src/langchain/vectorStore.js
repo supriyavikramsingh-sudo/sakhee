@@ -100,12 +100,13 @@ class VectorStoreManager {
 
           return {
             pageContent: normalizedContent, // LangChain standard property
-            metadata: {
-              source: doc.source || doc.metadata?.source || 'unknown',
-              type: doc.type || doc.metadata?.type || 'general',
-              id: doc.id || doc.metadata?.id || idx,
-              ...(doc.metadata || {}),
-            },
+            metadata: doc.metadata || {},
+            // metadata: {
+            //   source: doc.source || doc.metadata?.source || 'unknown',
+            //   type: doc.type || doc.metadata?.type || 'general',
+            //   id: doc.id || doc.metadata?.id || idx,
+            //   ...(doc.metadata || {}),
+            // },
           };
         })
         .filter(Boolean); // Remove null entries
