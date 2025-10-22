@@ -83,6 +83,9 @@ class MealPlanChain {
       ingredientSubstitutes: ingredientSubstituteDocs.length,
     });
 
+    // ===== STEP 1: MULTI-STAGE RAG RETRIEVAL (ENHANCED) =====
+    logger.info('Performing multi-stage RAG retrieval');
+
     const mealTemplatesContext = retriever.formatContextFromResults(mealTemplates);
 
     // ===== STEP 2: RETRIEVE PCOS NUTRITION GUIDELINES =====
@@ -92,6 +95,10 @@ class MealPlanChain {
     const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
     const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
 
+    // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
+    // (Now handled by multi-stage retrieval above)
+
+    // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
     // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
     // (Now handled by multi-stage retrieval above)
 
@@ -117,89 +124,127 @@ class MealPlanChain {
 
       enhancedContext += '� SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
       enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
-      enhancedContext += symptomContext + '\n\n';
+      // NEW: Add symptom-specific guidance
+      if (symptomGuidanceDocs.length > 0) {
+        const symptomContext = symptomGuidanceDocs
+          .map((doc) => doc.pageContent || doc.content)
+          .join('\n\n');
+
+        enhancedContext += '� SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
+        enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
+        enhancedContext += symptomContext + '\n\n';
+      }
+
+      // NEW: Add lab-specific guidance
+      if (labGuidanceDocs.length > 0) {
+        const labContext = labGuidanceDocs
+          .map((doc) => doc.pageContent || doc.content)
+          .join('\n\n');
+
+        enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
+        enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
+        enhancedContext += labContext + '\n\n';
+      }
+
+      // NEW: Add ingredient substitutes
+      if (ingredientSubstituteDocs.length > 0) {
+        const substituteContext = ingredientSubstituteDocs
+          .map((doc) => doc.pageContent || doc.content)
+          .join('\n\n');
+
+        enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
+        enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
+        enhancedContext += substituteContext + '\n\n';
+      }
+
+      // NEW: Add lab-specific guidance
+      if (labGuidanceDocs.length > 0) {
+        const labContext = labGuidanceDocs
+          .map((doc) => doc.pageContent || doc.content)
+          .join('\n\n');
+
+        enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
+        enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
+        enhancedContext += labContext + '\n\n';
+      }
+
+      // NEW: Add ingredient substitutes
+      if (ingredientSubstituteDocs.length > 0) {
+        const substituteContext = ingredientSubstituteDocs
+          .map((doc) => doc.pageContent || doc.content)
+          .join('\n\n');
+
+        enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
+        enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
+        enhancedContext += substituteContext + '\n\n';
+      }
+
+      if (!enhancedContext) {
+        enhancedContext = this.getFallbackGuidelines();
+      }
+
+      // ===== STEP 6: BUILD PROMPT WITH MULTI-CUISINE INSTRUCTIONS =====
+      const prompt = this.buildMealPlanPrompt(preferences, healthContext, enhancedContext);
+
+      // ===== STEP 7: INVOKE LLM =====
+      logger.info('Invoking LLM for meal plan generation', {
+        promptLength: prompt.length,
+        cuisineCount: cuisines.length,
+      });
+
+      const response = await this.structuredLLM.invoke(prompt);
+      const rawContent = response.content || response;
+
+      logger.info('LLM response received', { responseLength: rawContent.length });
+
+      // ===== STEP 8: PARSE AND VALIDATE =====
+      let parsed = this.parseJSON(rawContent);
+
+      if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
+        logger.warn('Invalid structure detected, attempting fix');
+        parsed = this.fixStructure(parsed, duration, mealsPerDay);
+      }
+
+      if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
+        logger.error('Structure validation failed after fixes');
+        throw new Error('Invalid meal plan structure');
+      }
+
+      // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
+      this.validateAndAdjustCalories(parsed);
+
+      // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
+      // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
+      const ragMetadata = {
+        mealTemplates: mealTemplates.length,
+        nutritionGuidelines: nutritionGuidelines.length,
+        symptomGuidance: symptomGuidanceDocs.length, // NEW
+        labGuidance: labGuidanceDocs.length, // NEW
+        ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
+        symptomRecommendations: symptomGuidanceDocs.length > 0,
+        symptomGuidance: symptomGuidanceDocs.length, // NEW
+        labGuidance: labGuidanceDocs.length, // NEW
+        ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
+        symptomRecommendations: symptomGuidanceDocs.length > 0,
+        retrievalQuality: this.assessRetrievalQuality(
+          mealTemplates,
+          nutritionGuidelines,
+          labGuidanceDocs
+        ),
+        cuisinesUsed: cuisines,
+        multiCuisine: cuisines.length > 1,
+      };
+
+      logger.info('Meal plan generated successfully with RAG', {
+        days: parsed.days.length,
+        ragMetadata,
+      });
+
+      return {
+        ...parsed,
+        ragMetadata,
+      };
     }
-
-    // NEW: Add lab-specific guidance
-    if (labGuidanceDocs.length > 0) {
-      const labContext = labGuidanceDocs.map((doc) => doc.pageContent || doc.content).join('\n\n');
-
-      enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
-      enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
-      enhancedContext += labContext + '\n\n';
-    }
-
-    // NEW: Add ingredient substitutes
-    if (ingredientSubstituteDocs.length > 0) {
-      const substituteContext = ingredientSubstituteDocs
-        .map((doc) => doc.pageContent || doc.content)
-        .join('\n\n');
-
-      enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
-      enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
-      enhancedContext += substituteContext + '\n\n';
-    }
-
-    if (!enhancedContext) {
-      enhancedContext = this.getFallbackGuidelines();
-    }
-
-    // ===== STEP 6: BUILD PROMPT WITH MULTI-CUISINE INSTRUCTIONS =====
-    const prompt = this.buildMealPlanPrompt(preferences, healthContext, enhancedContext);
-
-    // ===== STEP 7: INVOKE LLM =====
-    logger.info('Invoking LLM for meal plan generation', {
-      promptLength: prompt.length,
-      cuisineCount: cuisines.length,
-    });
-
-    const response = await this.structuredLLM.invoke(prompt);
-    const rawContent = response.content || response;
-
-    logger.info('LLM response received', { responseLength: rawContent.length });
-
-    // ===== STEP 8: PARSE AND VALIDATE =====
-    let parsed = this.parseJSON(rawContent);
-
-    if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
-      logger.warn('Invalid structure detected, attempting fix');
-      parsed = this.fixStructure(parsed, duration, mealsPerDay);
-    }
-
-    if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
-      logger.error('Structure validation failed after fixes');
-      throw new Error('Invalid meal plan structure');
-    }
-
-    // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
-    this.validateAndAdjustCalories(parsed);
-
-    // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
-    const ragMetadata = {
-      mealTemplates: mealTemplates.length,
-      nutritionGuidelines: nutritionGuidelines.length,
-      symptomGuidance: symptomGuidanceDocs.length, // NEW
-      labGuidance: labGuidanceDocs.length, // NEW
-      ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
-      symptomRecommendations: symptomGuidanceDocs.length > 0,
-      retrievalQuality: this.assessRetrievalQuality(
-        mealTemplates,
-        nutritionGuidelines,
-        labGuidanceDocs
-      ),
-      cuisinesUsed: cuisines,
-      multiCuisine: cuisines.length > 1,
-    };
-
-    logger.info('Meal plan generated successfully with RAG', {
-      days: parsed.days.length,
-      ragMetadata,
-    });
-
-    return {
-      ...parsed,
-      ragMetadata,
-    };
   }
 
   /**
@@ -247,40 +292,155 @@ class MealPlanChain {
 
   /**
    * NEW: Identify abnormal lab markers from user's medical data
+   * Uses flexible keyword matching to handle variations in test names
    */
   identifyAbnormalLabMarkers(labValues) {
+    const logger = new Logger('LabMarkerDetection');
     const abnormal = [];
 
-    // Reference ranges (simplified - you can expand these)
+    logger.info(`Starting lab marker analysis for ${Object.keys(labValues).length} tests`);
+
+    // Reference ranges with flexible matching
     const referenceRanges = {
-      'Fasting Glucose': { max: 100, severity: 'prediabetes' },
-      'Fasting Insulin': { max: 10, severity: 'elevated' },
-      'HOMA-IR': { max: 2.5, severity: 'insulin resistance' },
-      'Total Cholesterol': { max: 200, severity: 'borderline high' },
-      'LDL Cholesterol': { max: 100, severity: 'elevated' },
-      Triglycerides: { max: 150, severity: 'high' },
-      'Testosterone Total': { max: 80, severity: 'elevated' },
-      TSH: { min: 0.4, max: 4.0, severity: 'abnormal' },
+      // Glucose tests (various names)
+      glucose: {
+        keywords: ['glucose', 'fasting glucose', 'fasting blood sugar', 'fbs', 'blood sugar'],
+        max: 100,
+        severity: 'prediabetes',
+      },
+      insulin: {
+        keywords: ['insulin', 'fasting insulin'],
+        max: 10,
+        severity: 'elevated',
+      },
+      homa: {
+        keywords: ['homa', 'homa-ir', 'homa ir'],
+        max: 2.5,
+        severity: 'insulin resistance',
+      },
+      cholesterol: {
+        keywords: ['total cholesterol', 'cholesterol', 'tc', 'cholesterol_total'],
+        max: 200,
+        severity: 'borderline high',
+      },
+      ldl: {
+        keywords: ['ldl', 'ldl cholesterol', 'bad cholesterol', 'ldl_cholesterol'],
+        max: 100,
+        severity: 'elevated',
+      },
+      hdl: {
+        keywords: ['hdl', 'hdl cholesterol', 'good cholesterol', 'hdl_cholesterol'],
+        min: 50,
+        severity: 'low (protective HDL)',
+      },
+      triglycerides: {
+        keywords: ['triglycerides', 'tg', 'trigs'],
+        max: 150,
+        severity: 'high',
+      },
+      testosterone: {
+        keywords: [
+          'testosterone',
+          'testosterone total',
+          'total testosterone',
+          'testosterone_total',
+        ],
+        max: 80,
+        severity: 'elevated',
+      },
+      tsh: {
+        keywords: ['tsh', 'thyroid stimulating hormone'],
+        min: 0.4,
+        max: 4.0,
+        severity: 'abnormal',
+      },
+      // ⭐ NEW: Iron-related markers
+      ferritin: {
+        keywords: ['ferritin', 'serum ferritin'],
+        min: 15,
+        severity: 'iron deficiency',
+      },
+      iron: {
+        keywords: ['iron', 'serum iron'],
+        min: 60,
+        severity: 'iron deficiency',
+      },
+      // ⭐ NEW: Vitamin markers
+      vitaminD: {
+        keywords: ['vitamin d', 'vitamin_d', '25-hydroxyvitamin d', '25(oh)d'],
+        min: 30,
+        severity: 'vitamin D deficiency',
+      },
+      vitaminB12: {
+        keywords: ['vitamin b12', 'vitamin_b12', 'b12', 'cobalamin'],
+        min: 200,
+        severity: 'vitamin B12 deficiency',
+      },
+      // ⭐ NEW: Hormone markers
+      dheas: {
+        keywords: ['dheas', 'dhea-s', 'dehydroepiandrosterone'],
+        max: 350,
+        severity: 'elevated androgens',
+      },
+      prolactin: {
+        keywords: ['prolactin', 'prl'],
+        max: 25,
+        severity: 'elevated prolactin',
+      },
     };
 
     Object.entries(labValues).forEach(([testName, testData]) => {
       const value = parseFloat(testData.value);
       if (isNaN(value)) return;
 
-      const ref = referenceRanges[testName];
-      if (!ref) return;
+      const testNameLower = testName.toLowerCase();
 
-      let isAbnormal = false;
-      if (ref.max && value > ref.max) isAbnormal = true;
-      if (ref.min && value < ref.min) isAbnormal = true;
+      // Find matching reference range
+      for (const [markerKey, ref] of Object.entries(referenceRanges)) {
+        const matches = ref.keywords.some((keyword) => testNameLower.includes(keyword));
 
-      if (isAbnormal) {
-        abnormal.push({
-          name: testName,
-          value: value,
-          severity: ref.severity,
-        });
+        if (matches) {
+          let isAbnormal = false;
+          let reason = '';
+
+          if (ref.max && value > ref.max) {
+            isAbnormal = true;
+            reason = `value ${value} > max ${ref.max}`;
+          }
+          if (ref.min && value < ref.min) {
+            isAbnormal = true;
+            reason = `value ${value} < min ${ref.min}`;
+          }
+
+          // ⭐ DEBUG: Log all checked markers for troubleshooting
+          if (
+            markerKey === 'ferritin' ||
+            markerKey === 'iron' ||
+            markerKey === 'vitaminD' ||
+            markerKey === 'vitaminB12'
+          ) {
+            logger.info(
+              `Checked ${testName}: value=${value}, min=${ref.min || 'none'}, max=${
+                ref.max || 'none'
+              }, abnormal=${isAbnormal}, reason=${reason || 'within range'}`
+            );
+          }
+
+          if (isAbnormal) {
+            abnormal.push({
+              name: markerKey, // Use normalized name for querying
+              displayName: testName, // Keep original for display
+              value: value,
+              severity: ref.severity,
+            });
+            break; // Don't match the same test to multiple ranges
+          }
+        }
       }
+    });
+
+    logger.info(`Lab analysis complete: ${abnormal.length} abnormal markers found`, {
+      abnormalMarkers: abnormal.map((m) => `${m.displayName}=${m.value} (${m.severity})`),
     });
 
     return abnormal;
@@ -349,15 +509,59 @@ class MealPlanChain {
       logger.info('Stage 1: Retrieving meal templates');
       if (cuisines.length > 0) {
         const templateQueries = cuisines.flatMap((cuisine) => [
-          `${cuisine} breakfast PCOS friendly`,
-          `${cuisine} lunch healthy recipe`,
-          `${cuisine} dinner recipe`,
-          `${cuisine} snacks nutritious`,
+          `${cuisine} traditional authentic breakfast regional ${dietType}`,
+          `${cuisine} traditional authentic lunch regional ${dietType}`,
+          `${cuisine} traditional authentic dinner regional ${dietType}`,
+          `${cuisine} traditional authentic snacks regional ${dietType}`,
         ]);
 
         for (const query of templateQueries) {
           const results = await retriever.retrieve(query, 5);
-          retrievalResults.mealTemplates.push(...results);
+
+          // ⭐ FILTER: For vegan/vegetarian, exclude non-veg dishes
+          const filteredResults = results.filter((doc) => {
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+            if (dietType === 'vegan') {
+              // Exclude meat, dairy, eggs
+              const nonVeganKeywords = [
+                'chicken',
+                'mutton',
+                'pork',
+                'fish',
+                'egg',
+                'meat',
+                'paneer',
+                'cheese',
+                'milk',
+                'curd',
+                'yogurt',
+                'ghee',
+                'butter',
+                'cream',
+              ];
+              return !nonVeganKeywords.some((keyword) => content.includes(keyword));
+            } else if (dietType === 'vegetarian') {
+              // Exclude meat, fish, eggs
+              const nonVegKeywords = [
+                'chicken',
+                'mutton',
+                'pork',
+                'fish',
+                'egg',
+                'meat',
+                'non-vegetarian',
+              ];
+              return !nonVegKeywords.some((keyword) => content.includes(keyword));
+            }
+
+            return true; // Allow all for non-veg
+          });
+
+          logger.info(
+            `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals`
+          );
+          retrievalResults.mealTemplates.push(...filteredResults);
         }
       }
 
@@ -385,23 +589,27 @@ class MealPlanChain {
             const type = doc.metadata?.type;
             const content = (doc.pageContent || doc.content || '').toLowerCase();
             const symptomKeywords = symptom.toLowerCase().replace(/-/g, ' ');
-            
+
             // Exclude meal templates (too specific)
             if (type === 'meal_template') return false;
-            
+
             // Accept any medical/nutritional content that mentions the symptom OR dietary advice
-            if (type === 'symptom_guidance' || 
-                type === 'medical_info' || 
-                type === 'lab_guidance' ||
-                type === 'nutritional_data' ||
-                type === 'medical_knowledge') {
+            if (
+              type === 'symptom_guidance' ||
+              type === 'medical_info' ||
+              type === 'lab_guidance' ||
+              type === 'nutritional_data' ||
+              type === 'medical_knowledge'
+            ) {
               // Accept if it contains symptom keywords OR general PCOS dietary terms
-              return content.includes(symptomKeywords) || 
-                     content.includes('pcos') || 
-                     content.includes('hormone') ||
-                     content.includes('insulin');
+              return (
+                content.includes(symptomKeywords) ||
+                content.includes('pcos') ||
+                content.includes('hormone') ||
+                content.includes('insulin')
+              );
             }
-            
+
             return false;
           });
 
@@ -415,10 +623,39 @@ class MealPlanChain {
       // ===== STAGE 3: Retrieve lab-marker guidance =====
       logger.info('Stage 3: Retrieving lab marker guidance');
       const labValues = healthContext?.medicalData?.labValues || {};
+
+      // ⭐ DEBUG: Log what lab values we have
+      logger.info(`Lab values available: ${Object.keys(labValues).join(', ')}`);
+
+      // ⭐ DEBUG: Log critical values for troubleshooting
+      if (labValues.ferritin) {
+        logger.info(
+          `[DEBUG] Ferritin: ${labValues.ferritin.value} ${
+            labValues.ferritin.unit || ''
+          } (ref min: 15)`
+        );
+      }
+      if (labValues.vitamin_d) {
+        logger.info(
+          `[DEBUG] Vitamin D: ${labValues.vitamin_d.value} ${
+            labValues.vitamin_d.unit || ''
+          } (ref min: 30)`
+        );
+      }
+      if (labValues.iron) {
+        logger.info(
+          `[DEBUG] Iron: ${labValues.iron.value} ${labValues.iron.unit || ''} (ref min: 60)`
+        );
+      }
+
       const abnormalMarkers = this.identifyAbnormalLabMarkers(labValues);
 
       if (abnormalMarkers.length > 0) {
-        logger.info(`Processing ${abnormalMarkers.length} abnormal markers`);
+        logger.info(
+          `Processing ${abnormalMarkers.length} abnormal markers: ${abnormalMarkers
+            .map((m) => m.name)
+            .join(', ')}`
+        );
 
         for (const marker of abnormalMarkers) {
           // ⭐ IMPROVED: More specific query
@@ -427,28 +664,24 @@ class MealPlanChain {
 
           const results = await retriever.retrieve(query, 5);
 
-          // ⭐ FIX: Very lenient filtering for lab markers - accept all medical content
+          // Log what we got
+          const types = results.map((r) => r.metadata?.type).filter(Boolean);
+          logger.info(`  Retrieved types: ${types.join(', ')}`);
+
+          // ⭐ FIX: More lenient filtering - accept multiple medical document types
           const labDocs = results.filter((doc) => {
             const type = doc.metadata?.type;
-            const content = (doc.pageContent || doc.content || '').toLowerCase();
-            const markerName = marker.name.toLowerCase();
-            
+
             // Exclude meal templates
             if (type === 'meal_template') return false;
-            
+
             // Accept any medical/nutritional content
-            if (type === 'lab_guidance' || 
-                type === 'medical_info' ||
-                type === 'nutritional_data' ||
-                type === 'medical_knowledge') {
-              // Accept if it mentions the marker OR general lab/insulin/glucose terms
-              return content.includes(markerName) ||
-                     content.includes('insulin') ||
-                     content.includes('glucose') ||
-                     content.includes('cholesterol');
-            }
-            
-            return false;
+            return (
+              type === 'lab_guidance' ||
+              type === 'medical_info' ||
+              type === 'nutritional_data' ||
+              type === 'medical_knowledge'
+            );
           });
 
           logger.info(`  Filtered to ${labDocs.length} lab guidance docs`);
@@ -456,6 +689,8 @@ class MealPlanChain {
         }
 
         logger.info(`Total lab guidance docs: ${retrievalResults.labGuidance.length}`);
+      } else {
+        logger.info('No abnormal lab markers detected - skipping Stage 3');
       }
 
       // ===== STAGE 4: Retrieve ingredient substitutes =====
@@ -481,31 +716,20 @@ class MealPlanChain {
           const types = results.map((r) => r.metadata?.type).filter(Boolean);
           logger.info(`  Retrieved types: ${types.join(', ')}`);
 
-          // ⭐ FIX: Very lenient filtering for substitutes - accept nutritional advice
+          // ⭐ FIX: More lenient filtering for substitutes - accept multiple types
           const substituteDocs = results.filter((doc) => {
             const type = doc.metadata?.type;
-            const content = (doc.pageContent || doc.content || '').toLowerCase();
-            const ingredientLower = ingredient.toLowerCase();
-            
+
             // Exclude meal templates
             if (type === 'meal_template') return false;
-            
-            // Accept any medical/nutritional content about substitutes or the ingredient
-            if (type === 'ingredient_substitute' || 
-                type === 'medical_info' ||
-                type === 'nutritional_data' ||
-                type === 'medical_knowledge') {
-              // Accept if it mentions substitutes/alternatives OR the ingredient itself
-              return (content.includes('substitute') || 
-                      content.includes('alternative') || 
-                      content.includes('swap') ||
-                      content.includes('replace')) &&
-                     (content.includes(ingredientLower) || 
-                      content.includes('pcos') ||
-                      content.includes('healthy'));
-            }
-            
-            return false;
+
+            // Accept any medical/nutritional content
+            return (
+              type === 'ingredient_substitute' ||
+              type === 'medical_info' ||
+              type === 'nutritional_data' ||
+              type === 'medical_knowledge'
+            );
           });
 
           logger.info(`  Filtered to ${substituteDocs.length} substitute docs`);
@@ -528,47 +752,6 @@ class MealPlanChain {
       logger.error('Multi-stage retrieval failed', { error: error.message, stack: error.stack });
       return retrievalResults;
     }
-  }
-
-  /**
-   * NEW: Identify abnormal lab markers from user's medical data
-   */
-  identifyAbnormalLabMarkers(labValues) {
-    const abnormal = [];
-
-    // Reference ranges (simplified - you can expand these)
-    const referenceRanges = {
-      'Fasting Glucose': { max: 100, severity: 'prediabetes' },
-      'Fasting Insulin': { max: 10, severity: 'elevated' },
-      'HOMA-IR': { max: 2.5, severity: 'insulin resistance' },
-      'Total Cholesterol': { max: 200, severity: 'borderline high' },
-      'LDL Cholesterol': { max: 100, severity: 'elevated' },
-      Triglycerides: { max: 150, severity: 'high' },
-      'Testosterone Total': { max: 80, severity: 'elevated' },
-      TSH: { min: 0.4, max: 4.0, severity: 'abnormal' },
-    };
-
-    Object.entries(labValues).forEach(([testName, testData]) => {
-      const value = parseFloat(testData.value);
-      if (isNaN(value)) return;
-
-      const ref = referenceRanges[testName];
-      if (!ref) return;
-
-      let isAbnormal = false;
-      if (ref.max && value > ref.max) isAbnormal = true;
-      if (ref.min && value < ref.min) isAbnormal = true;
-
-      if (isAbnormal) {
-        abnormal.push({
-          name: testName,
-          value: value,
-          severity: ref.severity,
-        });
-      }
-    });
-
-    return abnormal;
   }
 
   /**
@@ -860,7 +1043,27 @@ class MealPlanChain {
 
     // Main task
     prompt += `📋 TASK:\n`;
-    prompt += `Generate a ${preferences.duration}-day PCOS-friendly meal plan with ${preferences.mealsPerDay} meals per day.\n\n`;
+    prompt += `Generate a ${preferences.duration}-day PCOS-friendly meal plan with ${preferences.mealsPerDay} meals per day.\n`;
+    prompt += `💰 BUDGET CONSTRAINT: Keep total daily cost within ₹${
+      preferences.budget || 300
+    }/day using affordable, locally available ingredients.\n`;
+
+    // ⭐ Add exclusion list if this is a continuation chunk
+    if (preferences.excludeMeals && preferences.excludeMeals.length > 0) {
+      prompt += `\n🚫 DO NOT USE THESE MEALS (already used in previous days):\n`;
+      prompt += preferences.excludeMeals.map((m) => `- ${m}`).join('\n');
+      prompt += `\n\n`;
+    }
+
+    // ⭐ IMPORTANT: Specify WHICH meals based on mealsPerDay
+    if (preferences.mealsPerDay === 3) {
+      prompt += `Each day must include exactly these 3 meals: BREAKFAST, LUNCH, and DINNER (NO snacks).\n`;
+    } else if (preferences.mealsPerDay === 4) {
+      prompt += `Each day must include exactly these 4 meals: BREAKFAST, LUNCH, SNACK, and DINNER.\n`;
+    } else if (preferences.mealsPerDay === 2) {
+      prompt += `Each day must include exactly these 2 meals: BREAKFAST and DINNER.\n`;
+    }
+    prompt += `\n`;
 
     prompt += `REQUIREMENTS:\n`;
     prompt += `1. Each meal must include:\n`;
@@ -877,18 +1080,72 @@ class MealPlanChain {
     prompt += `   - time: Prep time in minutes\n`;
     prompt += `   - tip: 1-2 PCOS-specific tips\n\n`;
 
-    if (preferences.cuisines && preferences.cuisines.length > 1) {
-      prompt += `2. DISTRIBUTE cuisines evenly: Each cuisine (${preferences.cuisines.join(
-        ', '
-      )}) should appear multiple times across all ${preferences.duration} days\n`;
+    // ⭐ NEW: Add regional authenticity requirement
+    if (preferences.cuisines && preferences.cuisines.length > 0) {
+      prompt += `2. ⭐⭐⭐ REGIONAL AUTHENTICITY (CRITICAL):\n`;
+      prompt += `   - ONLY use dishes that are AUTHENTIC to ${preferences.cuisines.join(
+        ' and '
+      )} cuisine\n`;
+      prompt += `   - DO NOT use generic pan-Indian dishes like Poha, Upma, Idli, Dosa, or Chilla UNLESS they are explicitly mentioned in the RAG meal templates for this cuisine\n`;
+      prompt += `   - Use the EXACT dish names from the RAG meal templates provided above\n`;
+      prompt += `   - If you see dishes like "Dhuska", "Rugra Bhurji", "Thekua", "Sattu", "Handia" in the templates, USE THOSE instead of generic alternatives\n`;
+      prompt += `   - Each cuisine has unique traditional dishes - honor them!\n\n`;
     }
 
-    prompt += `3. Target ~2000 kcal per day total (adjust based on activity level)\n`;
-    prompt += `4. Focus on low-GI foods, high fiber, lean protein, healthy fats\n`;
-    prompt += `5. Include variety in ingredients and preparation methods\n`;
-    prompt += `6. Keep it affordable within ₹${preferences.budget || 300}/day budget\n`;
-    prompt += `7. Consider Indian meal timing and portion sizes\n`;
-    prompt += `8. Use regional, seasonal, and easily available ingredients\n\n`;
+    // ⭐ NEW: Add strict diet type enforcement
+    const dietType = preferences.dietType || 'vegetarian';
+    if (dietType === 'vegan') {
+      prompt += `2b. 🚨🚨🚨 VEGAN DIET REQUIREMENT (ABSOLUTE MUST):\n`;
+      prompt += `   - The user is STRICTLY VEGAN - this is NON-NEGOTIABLE\n`;
+      prompt += `   - ABSOLUTELY NO animal products of any kind:\n`;
+      prompt += `     ❌ NO meat (chicken, mutton, pork, beef, lamb)\n`;
+      prompt += `     ❌ NO fish or seafood\n`;
+      prompt += `     ❌ NO eggs\n`;
+      prompt += `     ❌ NO dairy (milk, paneer, cheese, curd, yogurt, ghee, butter, cream)\n`;
+      prompt += `     ❌ NO honey\n`;
+      prompt += `   - Use ONLY plant-based ingredients: vegetables, fruits, grains, legumes, nuts, seeds, plant-based oils\n`;
+      prompt += `   - If a traditional dish contains animal products, you MUST adapt it to be 100% vegan\n`;
+      prompt += `   - Example: Naga pork dishes → use tofu/mushrooms/jackfruit instead\n`;
+      prompt += `   - THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE IT!\n\n`;
+    } else if (dietType === 'vegetarian') {
+      prompt += `2b. 🚨 VEGETARIAN DIET REQUIREMENT (STRICT):\n`;
+      prompt += `   - The user is STRICTLY VEGETARIAN\n`;
+      prompt += `   - ABSOLUTELY NO meat, fish, or eggs:\n`;
+      prompt += `     ❌ NO chicken, mutton, pork, beef, lamb, fish, seafood, eggs\n`;
+      prompt += `   - Dairy is ALLOWED: paneer, milk, curd, ghee, butter, cheese\n`;
+      prompt += `   - If a traditional dish contains meat/fish/eggs, you MUST adapt it to be vegetarian\n\n`;
+    } else if (dietType === 'eggetarian') {
+      prompt += `2b. EGGETARIAN DIET:\n`;
+      prompt += `   - Eggs are ALLOWED\n`;
+      prompt += `   - NO meat, fish, or poultry\n`;
+      prompt += `   - Dairy is ALLOWED\n\n`;
+    }
+
+    if (preferences.cuisines && preferences.cuisines.length > 1) {
+      prompt += `3. DISTRIBUTE cuisines evenly: Each cuisine (${preferences.cuisines.join(
+        ', '
+      )}) should appear multiple times across all ${preferences.duration} days\n`;
+    } else {
+      prompt += `3. Stay true to ${
+        preferences.cuisines?.[0] || 'the selected'
+      } cuisine throughout the meal plan\n`;
+    }
+
+    prompt += `4. Target ~2000 kcal per day total (adjust based on activity level)\n`;
+    prompt += `5. Focus on low-GI foods, high fiber, lean protein, healthy fats\n`;
+    prompt += `6. ⭐ BUDGET: Strictly stay within ₹${
+      preferences.budget || 300
+    }/day. Choose affordable ingredients like seasonal vegetables, whole grains, lentils, local proteins.\n`;
+    prompt += `7. ⭐ MEAL TEMPLATES: Use the meal templates from RAG context as your BASE, but ENHANCE them:\n`;
+    prompt += `   - Start with the dish name and core ingredients from the template\n`;
+    prompt += `   - ADD complementary ingredients to make it more nutritious and PCOS-friendly\n`;
+    prompt += `   - Use the ingredient substitute guidance to swap any problematic ingredients\n`;
+    prompt += `   - Add seasonings, garnishes, and side dishes that are authentic to the cuisine\n`;
+    prompt += `   - Example: If template says "Poha" with basic ingredients, add curry leaves, peanuts, vegetables, lemon\n`;
+    prompt += `8. ⭐ VARIETY: Each meal must be UNIQUE. Do NOT repeat the same dish across different days. Use different recipes for each day.\n`;
+    prompt += `9. Include variety in ingredients and preparation methods\n`;
+    prompt += `10. Consider Indian meal timing and portion sizes\n`;
+    prompt += `11. Use regional, seasonal, and easily available ingredients\n\n`;
 
     prompt += `PCOS NUTRITIONAL PRIORITIES:\n`;
     prompt += `- Protein: 25-30% of calories\n`;
@@ -940,6 +1197,7 @@ class MealPlanChain {
     const duration = parseInt(preferences.duration) || 7;
     const allDays = [];
     const chunkSize = 3;
+    const previousMealNames = new Set(); // ⭐ Track meal names to avoid repetition
 
     for (let startDay = 1; startDay <= duration; startDay += chunkSize) {
       const endDay = Math.min(startDay + chunkSize - 1, duration);
@@ -950,6 +1208,7 @@ class MealPlanChain {
           ...preferences,
           duration: chunkDuration,
           startDay,
+          excludeMeals: Array.from(previousMealNames), // ⭐ Pass previously used meals
         };
 
         const chunk = await this.generateWithRAG(chunkPrefs);
@@ -957,6 +1216,10 @@ class MealPlanChain {
         if (chunk && chunk.days) {
           chunk.days.forEach((day, idx) => {
             day.dayNumber = startDay + idx;
+            // ⭐ Track all meal names from this chunk
+            day.meals?.forEach((meal) => {
+              if (meal.name) previousMealNames.add(meal.name);
+            });
             allDays.push(day);
           });
         } else {
