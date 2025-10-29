@@ -1,6 +1,7 @@
 import { Plus, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PageHeader from '../components/common/PageHeader';
 import Navbar from '../components/layout/Navbar';
 import ProgressCharts from '../components/progress/ProgressCharts';
 import ProgressDashboard from '../components/progress/ProgressDashboard';
@@ -35,17 +36,13 @@ const ProgressPage = () => {
   return (
     <div className="min-h-screen main-bg">
       <Navbar />
-
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-primary mb-2 flex items-center gap-3">
-              <TrendingUp size={40} />
-              {t('progress.title')}
-            </h1>
-            <p className="text-muted">{t('progress.subtitle')}</p>
-          </div>
+        <div className="flex items-start justify-between">
+          <PageHeader
+            title={t('progress.title')}
+            description={t('progress.subtitle')}
+            icon={<TrendingUp size={30} className="text-primary" strokeWidth={3} />}
+          />
 
           <button
             onClick={() => setShowLogger(true)}
@@ -59,7 +56,7 @@ const ProgressPage = () => {
         {/* Logger Modal */}
         {showLogger && (
           <ProgressLogger
-            userId={user?.id}
+            userId={user?.uid ?? ''}
             onComplete={handleLogComplete}
             onCancel={() => setShowLogger(false)}
           />

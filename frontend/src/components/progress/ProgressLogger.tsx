@@ -3,7 +3,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../services/apiClient';
 
-const ProgressLogger = ({ userId, onComplete, onCancel }) => {
+interface ProgressLoggerProps {
+  userId: string;
+  onComplete: (newEntry: any) => void;
+  onCancel: () => void;
+}
+
+const ProgressLogger = ({ userId, onComplete, onCancel }: ProgressLoggerProps) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
