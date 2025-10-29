@@ -1,7 +1,7 @@
+import { Loader, Save, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../services/apiClient';
-import { X, Save, Loader } from 'lucide-react';
 
 const ProgressLogger = ({ userId, onComplete, onCancel }) => {
   const { t } = useTranslation();

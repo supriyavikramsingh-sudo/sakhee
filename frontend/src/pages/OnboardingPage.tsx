@@ -85,7 +85,7 @@ const OnboardingPage = () => {
         {/* Progress Bar */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
-            {steps.map((step, idx) => (
+            {steps.map((_, idx) => (
               <div key={idx} className="flex items-center flex-1">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${

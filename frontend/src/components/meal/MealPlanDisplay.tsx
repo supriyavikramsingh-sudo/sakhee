@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Calendar, Download, AlertCircle, Info, HelpCircle } from 'lucide-react';
-import MealCard from './MealCard';
 import { jsPDF } from 'jspdf';
+import { AlertCircle, Calendar, Download, Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
 import firestoreService from '../../services/firestoreService';
+import { useAuthStore } from '../../store/authStore';
+import MealCard from './MealCard';
 
 const MealPlanDisplay = ({ plan }) => {
   const [selectedDay, setSelectedDay] = useState(0);
@@ -360,7 +360,7 @@ const MealPlanDisplay = ({ plan }) => {
 
         {currentDay && currentDay.meals && currentDay.meals.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-4">
-            {currentDay.meals.map((meal, idx) => (
+            {currentDay.meals.map((meal, idx: number) => (
               <MealCard key={idx} meal={meal} />
             ))}
           </div>

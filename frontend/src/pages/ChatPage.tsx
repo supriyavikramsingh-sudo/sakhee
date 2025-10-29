@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import ChatInterface from '../components/chat/ChatInterface';
 import MedicalDisclaimer from '../components/chat/MedicalDisclaimer';
 import { LoadingSpinner } from '../components/layout/LoadingSpinner';
 import Navbar from '../components/layout/Navbar';
-import { useUserProfileStore } from '../store';
 import { useAuthStore } from '../store/authStore';
 
 const ChatPage = () => {
-  const { t } = useTranslation();
-  const { user } = useAuthStore();
-  const { profile } = useUserProfileStore();
+  const { user, userProfile } = useAuthStore();
   const [disclaimerAcknowledged, setDisclaimerAcknowledged] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -28,7 +24,7 @@ const ChatPage = () => {
   }, [user]);
 
   if (pageLoading) {
-    return <LoadingSpinner message={t('common.loading')} />;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -43,7 +39,7 @@ const ChatPage = () => {
           }}
         />
       ) : (
-        <ChatInterface userProfile={profile} userId={user?.uid} />
+        <ChatInterface userProfile={userProfile} userId={user?.uid} />
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+import { Alert } from 'antd';
+import type { DocumentData } from 'firebase/firestore';
 import { ChevronUp, Loader, Plus, Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +11,12 @@ import MealPlanRedirectCard from './MealPlanRedirectCard';
 import MessageBubble from './MessageBubble';
 import SourceCitations from './SourceCitations';
 
-const ChatInterface = ({ userProfile, userId }) => {
+interface ChatInterfaceProps {
+  userProfile: DocumentData | null | undefined;
+  userId: string;
+}
+
+const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
   const { t } = useTranslation();
   const {
     messages,
@@ -84,7 +91,7 @@ const ChatInterface = ({ userProfile, userId }) => {
       timestamp: userTimestamp,
     });
 
-    await firestoreService.saveChatMessage(user.uid, {
+    await firestoreService.saveChatMessage(user?.uid, {
       type: 'user',
       content: input,
       timestamp: userTimestamp,
@@ -320,10 +327,13 @@ const ChatInterface = ({ userProfile, userId }) => {
           </div>
         </form>
 
-        {/* Disclaimer Footer */}
-        <div className="mt-4 p-3 bg-warning bg-opacity-10 rounded-lg text-xs text-gray-700">
-          ⚠️ {t('common.disclaimerText')}
-        </div>
+        <Alert
+          // message={t('common.disclaimer')}
+          description={t('common.disclaimerText')}
+          type="warning"
+          showIcon
+          className="mt-12"
+        />
       </div>
     </div>
   );

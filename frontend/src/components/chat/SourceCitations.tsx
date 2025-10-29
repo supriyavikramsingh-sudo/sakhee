@@ -57,7 +57,7 @@ const SourceCitations = ({ sources }: SourceCitationsProps) => {
   };
 
   return (
-    <div className="ml-12 mt-3 p-3 bg-surface rounded-lg">
+    <div className="ml-8 mt-3 p-3 bg-surface rounded-lg">
       <button
         onClick={() => setExpanded(!expanded)}
         className="flex items-center gap-2 text-xs font-medium text-muted hover:text-primary transition"
@@ -73,7 +73,7 @@ const SourceCitations = ({ sources }: SourceCitationsProps) => {
       {expanded && (
         <div className="mt-3 space-y-2 text-xs">
           {sources.map((source, idx) => (
-            <div key={idx} className="p-2 bg-white rounded border-l-2 border-primary">
+            <div key={idx} className="p-2 bg-white rounded border-l-4 border border-primary">
               <p className="font-medium text-gray-900 mb-1">{getSourceTitle(source)}</p>
               {source.content && <p className="text-muted line-clamp-2">{source.content}</p>}
               {source.disclaimer && (

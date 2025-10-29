@@ -18,7 +18,19 @@ import { useMealStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
 import RAGMetadataDisplay from './RAGMetadataDisplay';
 
-const MealPlanGenerator = ({ userProfile, userId, onGenerated, isRegenerating = false }) => {
+interface MealPlanGeneratorProps {
+  userProfile: any;
+  userId: string;
+  onGenerated: () => void;
+  isRegenerating?: boolean;
+}
+
+const MealPlanGenerator = ({
+  userProfile,
+  userId,
+  onGenerated,
+  isRegenerating = false,
+}: MealPlanGeneratorProps) => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { setMealPlan } = useMealStore();

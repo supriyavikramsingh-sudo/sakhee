@@ -1,4 +1,4 @@
-import { TrendingDown, TrendingUp, Activity, Moon, Heart, Zap } from 'lucide-react';
+import { Activity, Heart, Moon, TrendingDown, TrendingUp, Zap } from 'lucide-react';
 
 const ProgressDashboard = ({ progressData, loading }) => {
   if (loading) {

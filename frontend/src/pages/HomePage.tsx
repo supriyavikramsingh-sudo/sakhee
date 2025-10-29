@@ -1,11 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store/authStore';
-import Navbar from '../components/layout/Navbar';
-import { Heart, Brain, Leaf, Zap } from 'lucide-react';
 import { Alert } from 'antd';
+import { Brain, Heart, Leaf, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/layout/Navbar';
+import { useAuthStore } from '../store/authStore';
 
-const FeatureCard = ({ icon, title, description }) => (
+interface FeatureCardProps {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
   <div className="card-hover">
     <div className="text-primary mb-3">{icon}</div>
     <h3 className="font-bold text-lg mb-2">{title}</h3>

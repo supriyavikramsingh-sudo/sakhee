@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store';
-import Navbar from '../components/layout/Navbar';
-import ProgressLogger from '../components/progress/ProgressLogger';
-import ProgressDashboard from '../components/progress/ProgressDashboard';
-import ProgressCharts from '../components/progress/ProgressCharts';
 import { Plus, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Navbar from '../components/layout/Navbar';
+import ProgressCharts from '../components/progress/ProgressCharts';
+import ProgressDashboard from '../components/progress/ProgressDashboard';
+import ProgressLogger from '../components/progress/ProgressLogger';
+import { useAuthStore } from '../store/authStore';
 
 const ProgressPage = () => {
   const { t } = useTranslation();

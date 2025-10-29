@@ -1,11 +1,13 @@
+import { Alert } from 'antd';
+import { Utensils } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PageHeader from '../components/common/PageHeader';
+import Navbar from '../components/layout/Navbar';
+import MealPlanDisplay from '../components/meal/MealPlanDisplay';
+import MealPlanGenerator from '../components/meal/MealPlanGenerator';
 import { useMealStore } from '../store';
 import { useAuthStore } from '../store/authStore';
-import Navbar from '../components/layout/Navbar';
-import MealPlanGenerator from '../components/meal/MealPlanGenerator';
-import MealPlanDisplay from '../components/meal/MealPlanDisplay';
-import { Alert } from 'antd';
 
 const MealPlanPage = () => {
   const { t } = useTranslation();
@@ -19,14 +21,15 @@ const MealPlanPage = () => {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2">🍽️ {t('meals.title')}</h1>
-          <p className="text-muted">{t('meals.subtitle')}</p>
-        </div>
+        <PageHeader
+          title={t('meals.generator.title')}
+          description={t('meals.generator.subtitle')}
+          icon={<Utensils size={30} className="text-primary" strokeWidth={3} />}
+        />
 
         {showGenerator ? (
           <MealPlanGenerator
-            userProfile={userProfile.profileData}
+            userProfile={userProfile?.profileData}
             userId={user?.uid}
             onGenerated={() => setShowGenerator(false)}
           />
