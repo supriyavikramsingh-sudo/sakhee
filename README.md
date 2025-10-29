@@ -7,18 +7,20 @@ This README covers how to get the project running locally, available scripts, en
 --### Development Notes
 
 ### Server
+
 - Uses **LangChain.js + OpenAI** for chat and RAG
 - Keep the OpenAI key in `server/.env` (never commit)
 - Auto-restarts on file changes with `node --watch`
 - Uploaded files stored temporarily in `server/src/storage/tmpUploads`
 - Vector store cached in `server/src/storage/localCache/vectordb`
-- **RAG System**: 
+- **RAG System**:
   - Meal templates stored as `.txt` files in `server/src/data/meal_templates/`
   - Run `npm run ingest:meals` after adding/updating templates
   - Server checks RAG status on startup and logs warnings if not initialized
   - Vector store uses HNSWLib for fast similarity search
   - Each meal plan includes RAG metadata showing retrieval quality and sources used
 - **Meal Plan Generation**:
+
   - Plans are generated in chunks (3 days max per LLM call) for reliability
   - Structure validation ensures consistent JSON format
   - Fallback templates used if AI generation fails
@@ -46,6 +48,7 @@ This README covers how to get the project running locally, available scripts, en
 ## 🚀 Quick Setup (Development)
 
 ### Prerequisites
+
 - **Node.js** >= 18
 - **npm** (or yarn)
 - **OpenAI API key** (required)
@@ -56,6 +59,7 @@ This README covers how to get the project running locally, available scripts, en
 ### Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone <repo-url>
 cd sakhee
@@ -65,10 +69,13 @@ npm install
 2. **Configure environment variables**
 
 **Server** (`server/.env`):
+
 ```bash
 cp server/.env.example server/.env
 ```
+
 Edit `server/.env` and add your keys:
+
 ```bash
 PORT=5000
 NODE_ENV=development
@@ -91,10 +98,13 @@ DATABASE_URL=local
 ```
 
 **Client** (`client/.env`):
+
 ```bash
 cp client/.env.example client/.env
 ```
+
 Edit `client/.env` and add your Firebase config:
+
 ```bash
 # API
 VITE_API_URL=http://localhost:5000/api
@@ -116,6 +126,7 @@ VITE_FIREBASE_APP_ID=your_app_id
 3. **Initialize RAG system (Optional but Recommended)**
 
 To enable full RAG functionality with meal templates:
+
 ```bash
 # Create meal templates folder (if not exists)
 mkdir -p server/src/data/meal_templates
@@ -131,15 +142,18 @@ npm run ingest:meals
 The server will work without this step but will use fallback templates instead of RAG retrieval.
 
 4. **Start development servers**
+
 ```bash
 npm run dev
 ```
 
 This will start:
+
 - **Client**: http://localhost:5173
 - **Server**: http://localhost:5000
 
 You can also start each part separately:
+
 ```bash
 # Server only
 cd server && npm run dev
@@ -153,52 +167,56 @@ cd client && npm run dev
 ## 📦 Environment Variables
 
 ### Server (`.env`)
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PORT` | No | Server port (default: 5000) |
-| `NODE_ENV` | No | Environment (development/production) |
-| `OPENAI_API_KEY` | **Yes** | OpenAI API key for LLM and embeddings |
-| `SERP_API_KEY` | No | SERP API key for web search context |
-| `REDDIT_CLIENT_ID` | No | Reddit OAuth client ID |
-| `REDDIT_CLIENT_SECRET` | No | Reddit OAuth client secret |
-| `REDDIT_REDIRECT_URI` | No | Reddit OAuth redirect URI |
-| `CORS_ORIGIN` | No | Allowed CORS origin (default: http://localhost:5173) |
-| `MAX_FILE_SIZE_MB` | No | Max upload file size in MB (default: 10) |
-| `DATABASE_URL` | No | Database URL (default: local) |
+
+| Variable               | Required | Description                                          |
+| ---------------------- | -------- | ---------------------------------------------------- |
+| `PORT`                 | No       | Server port (default: 5000)                          |
+| `NODE_ENV`             | No       | Environment (development/production)                 |
+| `OPENAI_API_KEY`       | **Yes**  | OpenAI API key for LLM and embeddings                |
+| `SERP_API_KEY`         | No       | SERP API key for web search context                  |
+| `REDDIT_CLIENT_ID`     | No       | Reddit OAuth client ID                               |
+| `REDDIT_CLIENT_SECRET` | No       | Reddit OAuth client secret                           |
+| `REDDIT_REDIRECT_URI`  | No       | Reddit OAuth redirect URI                            |
+| `CORS_ORIGIN`          | No       | Allowed CORS origin (default: http://localhost:5173) |
+| `MAX_FILE_SIZE_MB`     | No       | Max upload file size in MB (default: 10)             |
+| `DATABASE_URL`         | No       | Database URL (default: local)                        |
 
 ### Client (`.env`)
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VITE_API_URL` | **Yes** | Backend API URL |
-| `VITE_API_TIMEOUT` | No | API request timeout (default: 30000ms) |
-| `VITE_APP_NAME` | No | App name (default: Sakhee) |
-| `VITE_FIREBASE_API_KEY` | **Yes** | Firebase API key |
-| `VITE_FIREBASE_AUTH_DOMAIN` | **Yes** | Firebase auth domain |
-| `VITE_FIREBASE_PROJECT_ID` | **Yes** | Firebase project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | **Yes** | Firebase storage bucket |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | **Yes** | Firebase messaging sender ID |
-| `VITE_FIREBASE_APP_ID` | **Yes** | Firebase app ID |
+
+| Variable                            | Required | Description                            |
+| ----------------------------------- | -------- | -------------------------------------- |
+| `VITE_API_URL`                      | **Yes**  | Backend API URL                        |
+| `VITE_API_TIMEOUT`                  | No       | API request timeout (default: 30000ms) |
+| `VITE_APP_NAME`                     | No       | App name (default: Sakhee)             |
+| `VITE_FIREBASE_API_KEY`             | **Yes**  | Firebase API key                       |
+| `VITE_FIREBASE_AUTH_DOMAIN`         | **Yes**  | Firebase auth domain                   |
+| `VITE_FIREBASE_PROJECT_ID`          | **Yes**  | Firebase project ID                    |
+| `VITE_FIREBASE_STORAGE_BUCKET`      | **Yes**  | Firebase storage bucket                |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | **Yes**  | Firebase messaging sender ID           |
+| `VITE_FIREBASE_APP_ID`              | **Yes**  | Firebase app ID                        |
 
 ⚠️ **Security Note**: Never commit `.env` files with real API keys to version control.
 
 ## 📜 NPM Scripts
 
 ### Root Workspace
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start both client and server concurrently (development mode) |
-| `npm run build` | Build both client and server for production |
-| `npm run test` | Run tests for client and server |
-| `npm run lint` | Run ESLint across all workspaces |
-| `npm run lint:fix` | Auto-fix linting issues across all workspaces |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting with Prettier |
+
+| Script                 | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `npm run dev`          | Start both client and server concurrently (development mode) |
+| `npm run build`        | Build both client and server for production                  |
+| `npm run test`         | Run tests for client and server                              |
+| `npm run lint`         | Run ESLint across all workspaces                             |
+| `npm run lint:fix`     | Auto-fix linting issues across all workspaces                |
+| `npm run format`       | Format code with Prettier                                    |
+| `npm run format:check` | Check code formatting with Prettier                          |
 
 ### Server (`server/`)
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start server with auto-restart on changes (node --watch) |
-| `npm run start` | Start server in production mode |
+
+| Script          | Description                                              |
+| --------------- | -------------------------------------------------------- |
+| `npm run dev`   | Start server with auto-restart on changes (node --watch) |
+| `npm run start` | Start server in production mode                          |
 
 ## 🧭 Vector DB management (server side)
 
@@ -216,14 +234,15 @@ Common commands (run inside `server`):
 - npm run vector:restore -- <backup-folder> — restores a backup folder into `server/src/storage/localCache/vectordb`
 
 Notes & recent fixes
+
 - All vector scripts were updated to use server-relative paths (previously some scripts pointed to the wrong `src` path and failed to find the vector store).
 - The master ingestion launcher was fixed to quote child-process invocations so `node "${scriptPath}"` works even when the repository path contains spaces.
 - Meal template ingestion was updated to extract individual meal entries (#### level) instead of only category-level docs (###). If you re-index after this fix you should see many more meal documents (previously ~149, now ~1,300+ depending on templates).
 - Recommended workflow to re-index safely:
   1. cd server
   2. npm run vector:backup
-  3. npm run vector:clear   (confirm)
-  4. npm run ingest:all     (or `npm run ingest:meals` / `npm run ingest:medical` / `npm run ingest:nutrition`)
+  3. npm run vector:clear (confirm)
+  4. npm run ingest:all (or `npm run ingest:meals` / `npm run ingest:medical` / `npm run ingest:nutrition`)
   5. npm run vector:health
 
 If you want this automated in CI, consider adding a guarded task that runs the backup + ingest + health-check and fails loudly if the health check does not return expected counts.
@@ -235,19 +254,21 @@ If you want this automated in CI, consider adding a guarded task that runs the b
 | `npm run format` | Format server code with Prettier |
 
 ### Client (`client/`)
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start Vite development server with hot reload |
-| `npm run build` | Build production-ready static assets |
-| `npm run preview` | Preview production build locally |
-| `npm run test` | Run client tests with Vitest |
-| `npm run lint` | Lint client code |
-| `npm run lint:fix` | Auto-fix client linting issues |
-| `npm run format` | Format client code with Prettier |
+
+| Script             | Description                                   |
+| ------------------ | --------------------------------------------- |
+| `npm run dev`      | Start Vite development server with hot reload |
+| `npm run build`    | Build production-ready static assets          |
+| `npm run preview`  | Preview production build locally              |
+| `npm run test`     | Run client tests with Vitest                  |
+| `npm run lint`     | Lint client code                              |
+| `npm run lint:fix` | Auto-fix client linting issues                |
+| `npm run format`   | Format client code with Prettier              |
 
 ## 🏗️ Project Structure
 
 ### Overall Architecture
+
 ```
 sakhee/
 ├── client/              # React frontend (Vite + Tailwind CSS)
@@ -257,6 +278,7 @@ sakhee/
 ```
 
 ### Client Structure (`client/`)
+
 ```
 client/
 ├── src/
@@ -332,6 +354,7 @@ client/
 ```
 
 ### Server Structure (`server/`)
+
 ```
 server/
 ├── src/
@@ -398,6 +421,7 @@ server/
 ## 🔧 Technology Stack
 
 ### Frontend
+
 - **Framework**: React 18.2
 - **Build Tool**: Vite 5.0
 - **Styling**: Tailwind CSS 3.3
@@ -413,9 +437,10 @@ server/
 - **Testing**: Vitest 0.34 + Testing Library
 
 ### Backend
+
 - **Runtime**: Node.js 18+
 - **Framework**: Express 4.18
-- **AI/ML**: 
+- **AI/ML**:
   - LangChain.js 0.1.28
   - @langchain/openai 0.0.34
   - @langchain/community 0.0.57
@@ -429,13 +454,14 @@ server/
   - SERP API (web search)
   - Snoowrap 1.23 (Reddit)
 - **File Upload**: Multer 1.4.5
-- **Security**: 
+- **Security**:
   - CORS 2.8
   - Express Rate Limit 7.1
 - **Logging**: Winston (via custom logger)
 - **Testing**: Vitest 0.34
 
 ### Development Tools
+
 - **Linting**: ESLint 8.52
 - **Formatting**: Prettier 2.8
 - **Process Management**: Concurrently 8.2
@@ -450,6 +476,7 @@ server/
 **New Feature**: Every meal plan now shows users exactly how it was personalized:
 
 **Personalization Sources Display**:
+
 - Visual cards showing data sources used:
   - 🌟 **Onboarding Profile**: User's allergies, symptoms, goals, activity level, cuisine preferences
   - 📋 **Medical Reports**: Latest lab results, hormone levels, nutrient deficiencies
@@ -457,6 +484,7 @@ server/
   - 🧠 **RAG Knowledge Base**: Retrieved meal templates and nutrition guidelines
 
 **RAG Metadata Component** (`RAGMetadataDisplay.jsx`):
+
 - Shows knowledge base coverage quality (Excellent/Good/Limited)
 - Displays specific metrics:
   - Number of meal templates retrieved
@@ -466,12 +494,14 @@ server/
 - Informational tooltip explaining RAG process
 
 **Benefits**:
+
 - Users understand why they received specific meals
 - Builds trust in AI recommendations
 - Encourages users to complete onboarding and upload reports for better personalization
 - Transparent about AI decision-making process
 
 ### 1. AI Chat Assistant
+
 - **Technology**: GPT-4o-mini with RAG (Retrieval-Augmented Generation)
 - **Features**:
   - Context-aware conversations with chat history
@@ -482,6 +512,7 @@ server/
   - Multi-language support (English, Hindi)
 
 ### 2. Personalized Meal Planning
+
 - **AI-generated meal plans** tailored to:
   - User's dietary preferences (vegetarian, vegan, non-veg)
   - Cultural cuisine preferences (North Indian, South Indian, East Indian, West Indian)
@@ -508,6 +539,7 @@ server/
 - **Output**: 1-7+ day meal plans with recipes, nutritional info (protein, carbs, fats, GI), cooking tips, and time estimates
 
 ### 3. Medical Report Analysis
+
 - **Supported formats**: PDF, DOCX, JPG, PNG
 - **OCR**: Tesseract.js for image-based reports
 - **Parsing**: Intelligent extraction of lab values, hormones, and biomarkers
@@ -515,6 +547,7 @@ server/
 - **Storage**: Firestore for report history
 
 ### 4. Progress Tracking
+
 - **Metrics tracked**:
   - Weight and BMI
   - Menstrual cycle regularity
@@ -524,6 +557,7 @@ server/
 - **Insights**: AI-generated progress summaries
 
 ### 5. Authentication & User Management
+
 - **Google OAuth** via Firebase Authentication
 - **User profiles** stored in Firestore
 - **Onboarding flow** to collect user health data
@@ -535,17 +569,20 @@ server/
 ## 🛡️ Safety & Privacy
 
 ### Content Safety
+
 - **Safety guards middleware** filters harmful/inappropriate content
 - **Rate limiting** prevents abuse (100 requests per 15 minutes)
 - **Medical disclaimers** prominently displayed in chat
 
 ### Data Privacy
+
 - **Firebase Authentication** for secure user management
 - **Firestore security rules** (configure in Firebase Console)
 - **No PHI logging** - sensitive health data not logged to console/files
 - **Local development** by default (no external database required for testing)
 
 ### Best Practices
+
 - Always use HTTPS in production
 - Regularly rotate API keys
 - Configure Firebase security rules before deploying
@@ -556,21 +593,25 @@ server/
 ## � RAG System Architecture
 
 ### Overview
+
 Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personalization with a curated knowledge base of meal templates, nutritional guidelines, and PCOS-specific dietary recommendations.
 
 ### Components
 
 **1. Vector Store (HNSWLib)**
+
 - Fast similarity search for meal templates
 - Stores embeddings of meal data, recipes, and nutrition guidelines
 - Located at: `server/src/storage/localCache/vectordb/`
 
 **2. Embeddings (OpenAI)**
+
 - Uses `text-embedding-3-small` model
 - Converts meal templates to dense vector representations
 - Enables semantic search across knowledge base
 
 **3. Meal Templates**
+
 - Stored as `.txt` files in `server/src/data/meal_templates/`
 - Each template contains regional meal variations with:
   - Meal name, ingredients, and quantities
@@ -579,6 +620,7 @@ Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personaliz
 - Organized by region (North, South, East, West Indian)
 
 **4. Ingestion Pipeline**
+
 - Script: `server/src/scripts/ingestMealTemplates.js`
 - Reads all `.txt` files from templates folder
 - Splits documents into chunks
@@ -586,6 +628,7 @@ Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personaliz
 - Run with: `npm run ingest:meals`
 
 **5. Retrieval & Generation**
+
 - Query user preferences to retrieve relevant templates
 - Top-k similarity search (configurable, default k=5)
 - Retrieved context injected into LLM prompt
@@ -598,6 +641,7 @@ Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personaliz
 ### RAG Status Monitoring
 
 Check RAG system health:
+
 ```bash
 # Detailed status
 curl http://localhost:5000/api/rag/status
@@ -607,6 +651,7 @@ curl http://localhost:5000/api/rag/health
 ```
 
 Response includes:
+
 - Vector store existence
 - Template count and file names
 - Indexed document count (approximate)
@@ -616,6 +661,7 @@ Response includes:
 ### RAG Quality Metrics
 
 Each meal plan includes personalization metadata:
+
 ```json
 {
   "personalizationSources": {
@@ -633,6 +679,7 @@ Each meal plan includes personalization metadata:
 ```
 
 Quality levels:
+
 - **High**: 5+ relevant templates retrieved, comprehensive guidelines
 - **Medium**: 2-4 templates retrieved, partial guidelines
 - **Low**: 0-1 templates retrieved, fallback mode
@@ -646,6 +693,7 @@ Quality levels:
 5. Verify: `curl http://localhost:5000/api/rag/status`
 
 Example template format:
+
 ```
 Meal: South Indian Idli Sambar
 Region: south-india
@@ -664,7 +712,9 @@ Tip: Use brown rice idlis for extra fiber and lower GI
 ## �🧪 Testing & Linting
 
 ### Testing
+
 The repository uses **Vitest** for unit and integration tests:
+
 ```bash
 # Run all tests
 npm run test
@@ -677,7 +727,9 @@ cd server && npm run test
 ```
 
 ### Linting & Formatting
+
 **ESLint** and **Prettier** are configured workspace-wide:
+
 ```bash
 # Lint all code
 npm run lint
@@ -697,6 +749,7 @@ npm run format:check
 ## 📝 Development Notes
 
 ### Server
+
 - Uses **LangChain.js + OpenAI** for chat and RAG
 - Keep the OpenAI key in `server/.env` (never commit)
 - Auto-restarts on file changes with `node --watch`
@@ -704,6 +757,7 @@ npm run format:check
 - Vector store cached in `server/src/storage/localCache`
 
 ### Client
+
 - Talks to backend API at `VITE_API_URL` (default: http://localhost:5000/api)
 - Firebase config required for authentication
 - Hot module replacement (HMR) enabled via Vite
@@ -711,27 +765,30 @@ npm run format:check
 - Zustand for lightweight state management (no Redux)
 
 ### API Endpoints
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/health` | GET | Health check |
-| `/api/chat` | POST | Send chat message with RAG context |
-| `/api/meals/generate` | POST | Generate personalized meal plan with RAG |
-| `/api/meals/:planId` | GET | Get specific meal plan |
-| `/api/meals/user/:userId` | GET | Get user's meal plan history |
-| `/api/meals/:planId` | PUT | Update meal plan (feedback, ratings) |
-| `/api/meals/:planId` | DELETE | Delete meal plan |
-| `/api/upload` | POST | Upload medical report (PDF/DOCX/image) |
-| `/api/progress` | GET/POST | Get/update progress data |
-| `/api/onboarding/create` | POST | Complete onboarding |
-| `/api/rag/status` | GET | Get RAG system status and metrics |
-| `/api/rag/health` | GET | Quick RAG health check |
+
+| Endpoint                  | Method   | Description                              |
+| ------------------------- | -------- | ---------------------------------------- |
+| `/api/health`             | GET      | Health check                             |
+| `/api/chat`               | POST     | Send chat message with RAG context       |
+| `/api/meals/generate`     | POST     | Generate personalized meal plan with RAG |
+| `/api/meals/:planId`      | GET      | Get specific meal plan                   |
+| `/api/meals/user/:userId` | GET      | Get user's meal plan history             |
+| `/api/meals/:planId`      | PUT      | Update meal plan (feedback, ratings)     |
+| `/api/meals/:planId`      | DELETE   | Delete meal plan                         |
+| `/api/upload`             | POST     | Upload medical report (PDF/DOCX/image)   |
+| `/api/progress`           | GET/POST | Get/update progress data                 |
+| `/api/onboarding/create`  | POST     | Complete onboarding                      |
+| `/api/rag/status`         | GET      | Get RAG system status and metrics        |
+| `/api/rag/health`         | GET      | Quick RAG health check                   |
 
 ---
 
 ## 🚧 Troubleshooting
 
 ### Port Already in Use
+
 If port 5000 is already in use:
+
 ```bash
 # Find process using the port
 lsof -iTCP:5000 -sTCP:LISTEN -n -P
@@ -744,18 +801,22 @@ PORT=5001 npm run dev
 ```
 
 ### Firebase Configuration Issues
+
 - Ensure all Firebase environment variables are set in `client/.env`
 - Enable Google Authentication in Firebase Console
 - Create Firestore database in Firebase Console
 - Configure Firestore security rules
 
 ### OpenAI API Issues
+
 - Check API key is valid and has credits
 - Verify model name is correct (`gpt-4o-mini`)
 - Check rate limits on OpenAI dashboard
 
 ### RAG System Issues
+
 **Vector Store Not Found**:
+
 ```bash
 # Create templates folder if missing
 mkdir -p server/src/data/meal_templates
@@ -766,18 +827,21 @@ cd server && npm run ingest:meals
 ```
 
 **Templates Not Being Used**:
+
 - Check RAG status: `curl http://localhost:5000/api/rag/status`
 - Verify templates exist: `ls server/src/data/meal_templates/*.txt`
 - Re-ingest templates: `npm run ingest:meals`
 - Check server logs for RAG initialization messages
 
 **Meal Plans Using Fallback Templates**:
+
 - This happens when vector store is not initialized
 - Run `npm run ingest:meals` in the server directory
 - Restart the server after ingestion
 - Check for "✅ RAG system initialized successfully" in logs
 
 ### Module Not Found Errors
+
 ```bash
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
@@ -791,11 +855,13 @@ cd server && rm -rf node_modules && npm install
 ## 🚀 Deployment
 
 ### Prerequisites
+
 - Node.js 18+ hosting (e.g., Railway, Render, AWS, DigitalOcean)
 - Firebase project (production environment)
 - Domain with SSL certificate (recommended)
 
 ### Build for Production
+
 ```bash
 # Build both client and server
 npm run build
@@ -805,12 +871,14 @@ npm run build
 ```
 
 ### Environment Configuration
+
 1. Set all environment variables on your hosting platform
 2. Use production Firebase config in client
 3. Update `CORS_ORIGIN` to your production domain
 4. Set `NODE_ENV=production`
 
 ### Deployment Checklist
+
 - [ ] Configure Firebase security rules
 - [ ] Set up SSL certificate
 - [ ] Configure rate limiting for production
@@ -856,6 +924,7 @@ We welcome contributions! Here's how to get started:
    - Include screenshots for UI changes
 
 ### Contribution Guidelines
+
 - **Code Style**: Follow ESLint and Prettier configurations
 - **Commits**: Use conventional commit messages (feat, fix, docs, etc.)
 - **Testing**: Add tests for new features
@@ -888,6 +957,7 @@ This repository is maintained by @supriyavikramsingh-sudo. For questions about t
 ## 📧 Support
 
 For questions, issues, or suggestions:
+
 - Open an issue on GitHub
 - Check existing documentation
 - Review troubleshooting section
@@ -897,6 +967,7 @@ For questions, issues, or suggestions:
 ## 🗺️ Roadmap
 
 ### Completed ✅
+
 - [x] AI chat assistant with RAG
 - [x] Personalized meal planning with RAG-enhanced generation
 - [x] RAG system with vector store and template indexing
@@ -913,6 +984,7 @@ For questions, issues, or suggestions:
 - [x] Community insights (Reddit integration)
 
 ### Planned 🔜
+
 - [ ] Persistent meal plan storage in Firestore (currently in-memory)
 - [ ] User meal plan history and favorites
 - [ ] Grocery shopping list generation from meal plans
@@ -948,6 +1020,7 @@ For questions, issues, or suggestions:
 ### Latest Updates (v1.1.0)
 
 **🧠 RAG System Enhancements**:
+
 - Added RAG-powered meal plan generation with vector store
 - Implemented meal template indexing pipeline (`ingest:meals` script)
 - Created RAG status monitoring endpoints (`/api/rag/status`, `/api/rag/health`)
@@ -955,6 +1028,7 @@ For questions, issues, or suggestions:
 - Vector store health checks and template freshness validation
 
 **🎨 Frontend Transparency Features**:
+
 - New `RAGMetadataDisplay` component showing knowledge sources used
 - Personalization tracking across onboarding, medical reports, and RAG
 - Visual quality indicators (high/medium/low coverage)
@@ -962,12 +1036,14 @@ For questions, issues, or suggestions:
 - Enhanced `MealPlanGenerator` with source visualization cards
 
 **📄 PDF Export**:
+
 - Full meal plan PDF export functionality
 - Includes all days, meals, ingredients, recipes, and nutrition info
 - Automatic page breaks and proper formatting
 - Download button integrated into `MealPlanDisplay`
 
 **🔧 Meal Plan Improvements**:
+
 - Chunked generation (3 days per request) for reliability
 - Structure validation and auto-repair for malformed LLM responses
 - Regional template fallbacks (North, South, East, West Indian)
@@ -975,6 +1051,7 @@ For questions, issues, or suggestions:
 - Medical report integration into meal plan context
 
 **🛠️ Backend Infrastructure**:
+
 - Added meal plan CRUD endpoints (GET, PUT, DELETE)
 - User meal plan history endpoint (`/api/meals/user/:userId`)
 - RAG metadata injection into responses
@@ -982,11 +1059,13 @@ For questions, issues, or suggestions:
 - Improved logging with RAG quality metrics
 
 **📦 New Dependencies**:
+
 - `jsPDF` for client-side PDF generation
 - HNSWLib integration for vector similarity search
 - LangChain document loaders and text splitters
 
 **🐛 Bug Fixes**:
+
 - Fixed meal plan structure parsing issues
 - Improved error boundaries for failed generations
 - Better handling of missing vector store scenarios
@@ -1001,14 +1080,17 @@ For questions, issues, or suggestions:
 Small maintenance and UX improvements landed after v1.1.0 to make the chat + meal planning flows safer, more robust and more user-friendly:
 
 - Chat -> Meal Plan redirect (server + client)
+
   - Added middleware on the chat route to detect meal-plan requests and block them from invoking the LLM. Instead the server returns a structured `MEAL_PLAN_REDIRECT` response. This protects against the LLM generating free-form meal plans in chat and keeps meal plan generation scoped to the dedicated Meal Plan Generator.
   - Frontend now displays a dedicated `MealPlanRedirectCard` when the redirect response is returned. The card includes CTA, short features list, help text and an action URL to the meal planner.
 
 - UI / content tweaks for the redirect card
+
   - The phrase "Meal Plan Generator" is now rendered as bold in the redirect message (HTML-safe rendering with controlled styling).
   - Updated feature copy shown on the card (3/5/7-day options and ingredient/substitution details).
 
 - Chat timestamp handling
+
   - Messages now display reliable timestamps across environments. The chat bubble rendering code was hardened to accept Firestore Timestamp objects, objects with `seconds`, ISO strings and unix timestamps so "Invalid Date" no longer appears.
 
 - Miscellaneous bug fixes and stability improvements
@@ -1023,26 +1105,31 @@ These changes aim to make the experience safer (no ad-hoc meal plans from chat),
 Significant feature and stability improvements landed in v1.3.0 focused on nutrition accuracy, UX polishing, and robustness across the chat + meal planning flows.
 
 - Calories everywhere
+
   - LLM prompt and validation updated so each generated meal now includes a calorie estimate (kcal). The prompt enforces calories using the formula: (protein × 4) + (carbs × 4) + (fats × 9).
   - Server-side fallback and repair now calculate calories when the model omits them.
   - Hardcoded fallback templates were updated to include calories.
 
 - Daily 2000 kcal enforcement
+
   - New requirement: each day's meals are validated and adjusted to target ~2000 kcal (acceptable range 1900–2100 kcal).
   - Implementation details: `validateAndAdjustCalories()` scales macros proportionally and performs a fine-tune pass to hit the daily target while preserving PCOS-friendly ratios.
   - Fallback plan generation also scales templates to meet the daily calorie target when RAG is unavailable.
 
 - Frontend: Meal UI and transparency
+
   - `MealCard` now displays Calories alongside Protein / Carbs / Fats in the nutrition grid. If calories are missing, the UI computes them from macros as a fallback.
   - `MealPlanDisplay` shows a clear disclaimer about the baseline assumptions used for calorie calculations (moderately active adult woman, ~5'2"–5'4", 56 kg).
   - PDF export (jsPDF) includes nutrition info; calorie values are now included in exported meal plans.
 
 - Chat and message UX improvements
+
   - Pagination added to chat history: only the most recent 5 messages load initially with a "Load older messages" button to fetch 5 more at a time.
   - Auto-scroll behavior refined: when user clicks "Load older messages" the UI preserves scroll position and does NOT jump to the bottom; normal auto-scroll still happens on new incoming messages.
   - Fixed message duplication on re-renders by adding a one-time history loader and replacing (not appending) messages when loading history.
 
 - Reliability & debugging
+
   - Improved logging for meal generation (RAG retrieval counts, calorie totals, adjustment logs) to make troubleshooting easier.
   - Fixed several issues encountered during testing (dotenv fixes, correct Firebase `user.uid` usage in chat page, and more).
 
@@ -1054,34 +1141,39 @@ Significant feature and stability improvements landed in v1.3.0 focused on nutri
   - client/src/components/chat/ChatInterface.jsx — pagination, "Load older messages" button, scroll preservation, and load-history dedupe
   - client/src/store/index.js — chat store updated to support allMessages, visibleCount and loadMoreMessages
 
-
 ### New in v1.4.0
 
 Focused fixes and UX improvements landed after v1.3.0 to improve medical report parsing accuracy, reduce LLM hallucinations from optional community sources, and present cycle-dependent hormones more appropriately in the UI.
 
 - Parser & Medical Report Analysis
+
   - Fixed extraction logic so Free T3 and Free T4 are parsed correctly (value-after-unit/range pattern handling). This prevents T3 values being mis-assigned to T4.
   - Fixed parsing for Estradiol, Progesterone, Vitamin D and Vitamin B12 across typical lab report formats. Vitamin D values reported in ng/mL are now converted to nmol/L when required.
   - Added more robust fallback/snippet extraction and structured debug logging to help diagnose unmatched fields and speed future parser improvements.
   - Added a local parser test harness used during development: `server/test_parser_final.mjs` (developer-only test script).
 
 - Backend updates
+
   - `server/src/services/parserService.js` — improved regex patterns, conversion utilities, fallback snippet extraction, and extended logging.
   - `server/src/utils/labRanges.js` — introduced `skipSeverity` and `cycleDependentNote` flags for cycle-dependent hormones; `getLabSeverity()` respects the new flag and returns a `cycle-dependent` state.
 
 - Frontend / UX
+
   - `client/src/components/files/ReportAnalysis.jsx` — UI updated to treat estradiol and progesterone as "cycle-dependent": the app no longer shows normal/abnormal severity badges for these labs. Instead an info-style card displays per-phase reference ranges so users can interpret results based on their cycle phase.
   - Severity icons/colors/labels updated to include a `cycle-dependent`/info state.
 
 - RAG / Chat anti-hallucination improvements
+
   - The chat/RAG pipeline now explicitly injects an anti-fabrication note when optional Reddit/community data is not available, preventing the LLM from inventing community posts as sources.
   - Additional logging was added around the RAG context construction so triggers like `needsCommunityInsights()` and what was injected are auditable in logs.
 
 - Tests, Docs & Developer aids
+
   - Created `CYCLE_DEPENDENT_HORMONES_UPDATE.md` (developer doc) summarizing the change and showing reference ranges used in the UI.
   - Parser test harness (see above) and enhanced logs to make reproducing failures and writing unit tests easier.
 
 - Why this matters
+
   - Medical report parsing is a core trust surface for the app: improving extraction accuracy reduces false alerts and prevents incorrect personalization of meal plans.
   - Cycle-dependent labeling avoids presenting misleading severity information for hormones whose interpretation depends on cycle timing.
   - Anti-hallucination changes improve user trust by ensuring the system doesn't invent community anecdotes when community data isn't present.
@@ -1091,22 +1183,24 @@ Focused fixes and UX improvements landed after v1.3.0 to improve medical report 
   - Add automated unit tests for `parserService` regexes and CI checks to avoid regressions.
   - Expand RAG/chat regression tests to verify anti-hallucination behavior across more prompts.
 
- 
 ### New in v1.5.0
 
 Focused delivery and bug fixes to the medical report analysis feature, developer tooling, and several robustness/UX issues landed in v1.5.0.
 
 - Medical Report: single-file workflow
+
   - Users can now upload exactly one medical report at a time. Each upload replaces the previous report (the previous document is deleted server-side) so the UI always shows the user's current report.
   - Server persistence: reports are stored in Firestore under a single document per user (convention: `users/{userId}/medicalReport/current`). The server performs sanitization of fields before saving to avoid Firestore INVALID_ARGUMENT errors.
   - Non-blocking saves: file processing and AI analysis return success to the client quickly; Firestore saves are performed in a resilient, non-blocking way so transient DB issues don't block the user flow.
 
 - New/changed server files
+
   - `server/src/services/medicalReportService.js` — CRUD for single-report-per-user, sanitization helpers (`sanitizeData`, `sanitizeFieldName`) and document size validation.
   - `server/src/routes/upload.js` — Upload endpoints and orchestration (file extraction → parser → AI analysis → enqueue DB save). New endpoints include the upload and user-report CRUD routes (POST /api/upload/report, GET /api/upload/user/:userId/report, DELETE /api/upload/user/:userId/report).
   - `server/src/storage/tmpUploads/` — temporary storage for incoming files during processing.
 
 - New/changed client files
+
   - `client/src/pages/ReportsPage.jsx` — main Reports page UI: shows current report card, replace/delete UX, and loads the report on mount. Fixed previous auth store import issues and hardened loading states.
   - `client/src/components/files/FileUpload.jsx` — simplified single-file upload component that returns the new report payload and closes the upload flow.
   - `client/src/components/files/ReportAnalysis.jsx` — improved header and timestamp handling; treats cycle-dependent hormones appropriately (see v1.4.0 notes) and shows formatted uploaded timestamp.
@@ -1114,22 +1208,27 @@ Focused delivery and bug fixes to the medical report analysis feature, developer
   - `client/src/store/authStore.js` — ensured correct auth store import and usage across reports/chat pages.
 
 - Timestamp handling fix
+
   - The client now robustly handles multiple uploadedAt formats: Firestore-style serialized objects with `seconds`/`nanoseconds`, Firestore Timestamp instances, ISO strings, and JS Date objects. This prevents "Invalid Date" from appearing in the UI after uploads/refreshes.
 
 - Data sanitization and Firestore reliability
+
   - To avoid INVALID_ARGUMENT errors the server sanitizes report payloads: removes undefined/NaN values, strips illegal Firestore field name characters, and limits very large text fields.
   - Note: during development the Web (client) Firestore SDK is used on the server in some helper code; for production we recommend migrating server code that writes to Firestore to the Firebase Admin SDK to avoid client-offline/credential limitations.
 
 - Developer docs & helper scripts added
+
   - `MEDICAL_REPORT_FEATURE.md` — feature doc & quick reference for the new single-file report flow.
   - `IMPLEMENTATION_SUMMARY.md` / `IMPLEMENTATION_CHECKLIST.md` / `QUICK_REFERENCE.md` — implementation notes and checklist for reviewers.
   - `start-medical-report-test.sh` — helper for local test runs (developer convenience).
 
 - Testing & verification notes
+
   - After pulling changes that modify server-side code, restart the server (Ctrl+C in the server terminal, then `npm run dev`) so new routes and services are loaded.
   - Use the Report page to upload a report and check browser console logs if you see "Invalid Date" — the client prints the raw `uploadedAt` object when loading the report to aid debugging.
 
 - Known issues & recommendations
+
   - Firestore persistence can appear intermittent in local development due to using the Firebase Web SDK in some server paths. Recommendation: migrate `server/src/config/firebase.js` to use the Firebase Admin SDK (server-side) for reliable server writes in production.
   - The app performs non-blocking saves; if you expect deterministic, synchronous persistence (for example for critical audit trails) review `medicalReportService.saveReport()` and consider awaiting the Firestore write or adding retry/backoff logic.
 
@@ -1138,29 +1237,33 @@ Focused delivery and bug fixes to the medical report analysis feature, developer
   - Client: `client/src/pages/ReportsPage.jsx`, `client/src/components/files/FileUpload.jsx`, `client/src/components/files/ReportAnalysis.jsx`, `client/src/services/apiClient.js`, `client/src/services/firestoreService.js`, `client/src/store/authStore.js`
   - Docs: `MEDICAL_REPORT_FEATURE.md`, `IMPLEMENTATION_SUMMARY.md`, `IMPLEMENTATION_CHECKLIST.md`, `QUICK_REFERENCE.md`, `FIRESTORE_FIXES.md`
 
-
 ### New in v1.6.0
 
 Small but important UX, frontend plumbing, and styling fixes focused on ensuring medical report data is actually used in personalization and cleaning up the Reports UI.
 
 - Meal plan personalization plumbing
+
   - `MealPlanGenerator.jsx` now fetches the user's latest medical report on mount and immediately before generating a meal plan. The fetched report is included in the request body as `healthContext.medicalData` so the backend receives lab values and can incorporate lab-specific guidance into meal generation.
   - This fixes cases where `hasLabValues` / `hasMedicalData` were reported as false even though a report existed in Firestore (the client previously wasn't including the report in the generation request).
   - The component now exposes `userReport` state for display and uses it when calculating `displayPersonalizationSources`.
 
 - Report analysis UI improvements
+
   - `ReportAnalysis.jsx` was updated to:
     - Parse AI analysis sections more robustly and remove stray standalone numbers (e.g., lines containing only "2.") except inside the `Next Steps` section where numbered lists are desired.
     - Render lab value categories as accessible accordions (Thyroid Function, Vitamins, Hormones, etc.). All accordions are collapsed on load except the first category which is expanded by default.
     - Preserve existing cycle-dependent hormone handling and improved severity display.
 
 - Styling / CSS fixes
+
   - `client/src/styles/index.css` was cleaned up to avoid using `@apply` inside `@keyframes` and to split scrollbar thumb hover rules into proper selectors. These changes prevent build-time and linter warnings and keep Tailwind usage compatible with PostCSS/Tailwind processing.
 
 - Backend & RAG improvements (refresher)
+
   - `mealPlanChain.js` includes enhanced lab-guidance support: `buildLabGuidanceQuery()`, `categorizeLabs()`, and integration of lab-specific RAG context into the prompt. This allows the LLM to prioritize evidence-based dietary guidance when abnormal lab values exist.
 
 - Developer notes & testing
+
   - After pulling frontend changes, restart dev servers to ensure new client-side fetching logic is active. The meal generator now logs whether a report was found and how many lab values were passed in (helpful for debugging personalization).
   - If you still see `hasLabValues: false` in server logs after these changes, confirm the report document exists at `users/{userId}/medicalReport/current` in Firestore and that the client is authenticated and able to read it.
 
@@ -1170,12 +1273,12 @@ Small but important UX, frontend plumbing, and styling fixes focused on ensuring
 
 If you'd like, I can also add a short troubleshooting snippet to the README showing how to verify the medical report document in Firestore and an example curl command to call the meal generation endpoint including `healthContext.medicalData`.
 
-
 ### New in v1.7.0
 
 Major improvements to the chat experience, especially around integrating users' medical reports (lab values) into conversational responses, safer output disclaimers, and route plumbing to ensure the chat pipeline can fetch and use lab data.
 
 - Lab-aware Chat (server-side)
+
   - `server/src/langchain/chains/chatChain.js` was expanded into a full lab-aware chat pipeline:
     - `buildEnhancedSystemPrompt()` — stronger system-level instructions to prioritize lab data, RAG context, safety rules, and response structure for three common scenarios (symptom query, lab interpretation, community insights).
     - `getUserLabValues(userId)` — server helper that fetches the user's medical report and extracts lab values, uploadedAt and analysis for use in chat.
@@ -1184,16 +1287,20 @@ Major improvements to the chat experience, especially around integrating users' 
     - `processMessage()` — orchestrates retrievals (medical knowledge, lab-guidance, Reddit community insights, SERP nutrition data), builds the final prompt, invokes the conversation chain, and returns structured sources and a `contextUsed` summary.
 
 - Safer disclaimers (no duplication)
+
   - The chat chain previously appended static disclaimers unconditionally which sometimes resulted in duplicate disclaimers when the LLM already included one. The chain now checks the model output (case-insensitive substring matching) and only appends the general, lab-specific, or community disclaimers if they are not already present. This reduces noisy/duplicated safety text while ensuring required statements are present.
 
 - Chat route plumbing & middleware
+
   - `server/src/routes/chat.js` updated to always pass `userId` (via `userContext`) into `chatChain.processMessage()` so the chain can fetch lab values server-side.
   - `mealPlanIntentDetector` middleware remains integrated to redirect meal-plan requests safely and consistently.
 
 - Client-side: lab context UI
+
   - `client/src/components/chat/LabContextBadge.jsx` (new) — small UI component (badge/display) to show whether lab context was used for a chat response and quick stats (lab count, last uploaded date). This helps users see when their medical data influenced the reply.
 
 - Developer & debugging notes
+
   - The chat pipeline returns `contextUsed` and `sources` with each response. `contextUsed.labValues` and `contextUsed.labGuidance` are useful indicators when testing whether lab-based personalization worked.
   - If you run integration tests and `labValues` are not detected, confirm the medical report exists at `users/{userId}/medicalReport/current` and the server can read it (authentication/permissions).
   - There is a local test harness for lab-chat integration (dev-only). If it fails, check `server` logs for Retriever and Reddit/SERP fetch failures.
@@ -1204,5 +1311,3 @@ Major improvements to the chat experience, especially around integrating users' 
   - Middleware: `server/src/middleware/mealPlanIntentDetector.js` (usage continued)
 
 If you'd like, I can add an example cURL payload that demonstrates how `userId` and `userContext` are passed to `/api/chat/message` and what the server returns (including `contextUsed`).
-
-
