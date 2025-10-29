@@ -1,18 +1,5 @@
 import { create } from 'zustand';
 
-export const useUserProfileStore = create((set) => ({
-  profile: null,
-  onboarded: false,
-  preferences: {},
-
-  setProfile: (profile) => set({ profile }),
-  setOnboarded: (onboarded) => set({ onboarded }),
-  setPreferences: (preferences) =>
-    set((state) => ({
-      preferences: { ...state.preferences, ...preferences },
-    })),
-}));
-
 export const useChatStore = create((set) => ({
   messages: [],
   allMessages: [], // Store all messages

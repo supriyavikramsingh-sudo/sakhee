@@ -22,24 +22,6 @@ const ReportAnalysis = ({ report }) => {
   const [isAnalysisExpanded, setIsAnalysisExpanded] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState({});
 
-  /**
-   * Parse AI analysis into structured sections
-   * Expected format:
-   * **Summary**
-   * text...
-   *
-   * **Key Observations**
-   * text...
-   *
-   * **What This Means for You**
-   * text...
-   *
-   * **Next Steps**
-   * text...
-   *
-   * **When to Reach Out to Your Doctor**
-   * text...
-   */
   const parseAnalysisIntoSections = (text) => {
     if (!text) return null;
 

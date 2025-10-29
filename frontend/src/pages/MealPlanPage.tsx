@@ -19,7 +19,7 @@ const MealPlanPage = () => {
     <div className="min-h-screen main-bg">
       <Navbar />
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <PageHeader
           title={t('meals.generator.title')}
@@ -30,7 +30,7 @@ const MealPlanPage = () => {
         {showGenerator ? (
           <MealPlanGenerator
             userProfile={userProfile?.profileData}
-            userId={user?.uid}
+            userId={user?.uid ?? ''}
             onGenerated={() => setShowGenerator(false)}
           />
         ) : currentMealPlan ? (

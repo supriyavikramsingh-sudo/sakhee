@@ -2,6 +2,7 @@ import { Alert } from 'antd';
 import { FileText, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PageHeader from '../components/common/PageHeader';
 import FileUpload from '../components/files/FileUpload';
 import ReportAnalysis from '../components/files/ReportAnalysis';
 import Navbar from '../components/layout/Navbar';
@@ -119,13 +120,11 @@ const ReportsPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2 flex items-center gap-3">
-            <FileText size={40} />
-            {t('reports.title')}
-          </h1>
-          <p className="text-muted">{t('reports.subtitle')}</p>
-        </div>
+        <PageHeader
+          title={t('reports.title')}
+          description={t('reports.subtitle')}
+          icon={<FileText size={30} className="text-primary" strokeWidth={3} />}
+        />
 
         {/* Medical Disclaimer */}
         <Alert
