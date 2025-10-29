@@ -1,3 +1,4 @@
+import { Alert } from 'antd';
 import {
   AlertCircle,
   CheckSquare,
@@ -697,7 +698,7 @@ const MealPlanGenerator = ({
         <button
           type="submit"
           disabled={loading || (!canGenerate && !isTestAccount)}
-          className="w-full py-3 bg-primary text-white rounded-lg font-bold hover:bg-secondary disabled:opacity-50 transition flex items-center justify-center gap-2"
+          className="w-full btn-primary !py-3 disabled:opacity-50"
         >
           {loading && <Loader className="animate-spin" size={20} />}
           {loading
@@ -708,10 +709,11 @@ const MealPlanGenerator = ({
         </button>
       </form>
 
-      <div className="mt-6 p-4 bg-surface rounded text-sm text-muted">
-        💡 All meal plans are PCOS-friendly with low GI foods, anti-inflammatory ingredients, and
-        hormone-balancing nutrients. Generation takes 20-30 seconds.
-      </div>
+      <Alert
+        className="mt-6"
+        message="💡 All meal plans are PCOS-friendly with low GI foods, anti-inflammatory ingredients, and
+        hormone-balancing nutrients. Generation takes 20-30 seconds."
+      />
     </div>
   );
 };

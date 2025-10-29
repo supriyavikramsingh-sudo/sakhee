@@ -1,14 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Cpu, FileHeart, Heart, Leaf, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Logo from '/images/logo.svg';
 
-const Feature = ({ icon, title, desc }) => (
+interface FeatureCardProps {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
   <div className="card">
     <div className="content">
       {icon}
       <h3 className="font-bold text-lg mb-1">{title}</h3>
-      <p className="para">{desc}</p>
+      <p className="para">{description}</p>
     </div>
   </div>
 );
@@ -18,7 +24,6 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    // Use a vertical snap container so one section fills the viewport at a time
     <div className="h-screen snap-y snap-mandatory overflow-y-auto">
       <header className="bg-white mx-auto sticky top-0 flex items-center justify-between p-4 z-10 shadow-xl">
         <img src={Logo} className="h-12" alt="Sakhee" />
@@ -71,43 +76,48 @@ const LandingPage = () => {
         <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">Key features</h1>
           <div className="grid align-middle place-items-center md:grid-cols-3 gap-6 px-4 w-full max-w-6xl">
-            <Feature
+            <FeatureCard
               icon={<Cpu className="w-8 h-8" />}
               title={t('home.features.ai') || 'AI insights'}
-              desc={t('home.features.aiDesc') || 'Personalized suggestions powered by research.'}
+              description={
+                t('home.features.aiDesc') || 'Personalized suggestions powered by research.'
+              }
             />
-            <Feature
+            <FeatureCard
               icon={<Heart className="w-8 h-8" />}
               title={t('home.features.personalized') || 'Personalized care'}
-              desc={t('home.features.personalizedDesc') || 'Tailored plans based on your profile.'}
+              description={
+                t('home.features.personalizedDesc') || 'Tailored plans based on your profile.'
+              }
             />
-            <Feature
+            <FeatureCard
               icon={<Leaf className="w-8 h-8" />}
               title={t('home.features.meals') || 'Meal plans'}
-              desc={t('home.features.mealsDesc') || 'Weekly meal plans with shopping lists.'}
+              description={t('home.features.mealsDesc') || 'Weekly meal plans with shopping lists.'}
             />
           </div>
           <div className="flex justify-center gap-16 mt-8">
-            <Feature
+            <FeatureCard
               icon={<Zap className="w-8 h-8" />}
               title={t('home.features.tracking') || 'Progress tracking'}
-              desc={t('home.features.trackingDesc') || 'Track symptoms and improvements over time.'}
+              description={
+                t('home.features.trackingDesc') || 'Track symptoms and improvements over time.'
+              }
             />
-            <Feature
+            <FeatureCard
               icon={<FileHeart className="w-8 h-8" />}
               title="AI Powered lab insights"
-              desc="Upload lab reports for simple analysis and food suggestions."
+              description="Upload lab reports for simple analysis and food suggestions."
             />
           </div>
         </section>
-
-        <footer className="bg-white min-h-[120px] snap-end flex items-center justify-center mt-8 w-full">
-          <p className="text-center text-sm text-muted max-w-2xl font-semibold">
-            By creating an account you agree to our Terms of Service and Privacy Policy. Your health
-            data is stored securely and never shared without your consent.
-          </p>
-        </footer>
       </main>
+      <footer className="bg-white min-h-[120px] snap-end flex items-center justify-center mt-8 w-full">
+        <p className="text-center text-sm text-muted max-w-2xl font-semibold">
+          By creating an account you agree to our Terms of Service and Privacy Policy. Your health
+          data is stored securely and never shared without your consent.
+        </p>
+      </footer>
     </div>
   );
 };

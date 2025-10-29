@@ -1,5 +1,5 @@
 import type { MenuProps } from 'antd';
-import { Dropdown, Space } from 'antd';
+import { Badge, Dropdown, Space } from 'antd';
 import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -102,28 +102,30 @@ export const Navbar = () => {
           {/* User Menu */}
           <div className="flex items-center gap-4">
             {user ? (
-              <>
-                <Dropdown menu={{ items }}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
+              <Dropdown menu={{ items }}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    {isTestAccount ? (
+                      <Badge count={'Test User'} offset={[-60, 2]} color="#52c41a">
+                        <img
+                          src={user.photoURL ?? ''}
+                          alt={user.displayName ?? 'User Avatar'}
+                          className="w-8 h-8 rounded-full"
+                        />
+                      </Badge>
+                    ) : (
                       <img
                         src={user.photoURL ?? ''}
                         alt={user.displayName ?? 'User Avatar'}
                         className="w-8 h-8 rounded-full"
                       />
-                      <span className="text-sm">{user.displayName}</span>
-                      <ChevronDown />
-                    </Space>
-                  </a>
-                </Dropdown>
-                {isTestAccount && (
-                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-sm text-yellow-800">
-                      🧪 <strong>Test User</strong>
-                    </p>
-                  </div>
-                )}
-              </>
+                    )}
+
+                    <span className="text-sm">{user.displayName}</span>
+                    <ChevronDown />
+                  </Space>
+                </a>
+              </Dropdown>
             ) : (
               <Link to="/onboarding" className="btn-primary">
                 {t('nav.getStarted')}
