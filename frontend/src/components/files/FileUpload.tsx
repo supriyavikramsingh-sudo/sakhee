@@ -3,7 +3,12 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../services/apiClient';
 
-const FileUpload = ({ userId, onUploadComplete }) => {
+interface FileUploadProps {
+  userId: string;
+  onUploadComplete: (reportData: any) => void;
+}
+
+const FileUpload = ({ userId, onUploadComplete }: FileUploadProps) => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);

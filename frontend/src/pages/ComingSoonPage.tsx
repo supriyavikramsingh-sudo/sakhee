@@ -1,10 +1,10 @@
+import { ArrowLeft, Calendar, Mail, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Sparkles, Calendar, Mail } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 
 const ComingSoonPage = () => {
   return (
-    <div className="min-h-screen main-bgd">
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="max-w-4xl mx-auto px-4 py-16">

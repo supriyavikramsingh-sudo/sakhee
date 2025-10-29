@@ -7,11 +7,12 @@ import FileUpload from '../components/files/FileUpload';
 import ReportAnalysis from '../components/files/ReportAnalysis';
 import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
+import type { ReportData } from '../types/report.type';
 
 const ReportsPage = () => {
   const { t } = useTranslation();
   const { user, isLoading: authLoading } = useAuthStore();
-  const [report, setReport] = useState(null);
+  const [report, setReport] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
 
@@ -86,7 +87,7 @@ const ReportsPage = () => {
   // Show loading only while auth is loading (not while fetching report)
   if (authLoading) {
     return (
-      <div className="min-h-screen main-bg">
+      <div className="min-h-screen">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-8 flex items-center justify-center">
           <div className="text-center">
@@ -101,7 +102,7 @@ const ReportsPage = () => {
   // If not authenticated after auth is loaded
   if (!authLoading && !user) {
     return (
-      <div className="min-h-screen main-bg">
+      <div className="min-h-screen">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-8 text-center">
           <FileText className="mx-auto mb-4 text-muted" size={64} />
@@ -115,7 +116,7 @@ const ReportsPage = () => {
   }
 
   return (
-    <div className="min-h-screen main-bg">
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -162,7 +163,6 @@ const ReportsPage = () => {
                         {(() => {
                           if (!report.uploadedAt) return 'Recently uploaded';
 
-                          // Handle Firestore Timestamp object format
                           if (report.uploadedAt.seconds !== undefined) {
                             const date = new Date(report.uploadedAt.seconds * 1000);
                             return date.toLocaleDateString('en-US', {
@@ -171,19 +171,7 @@ const ReportsPage = () => {
                               day: 'numeric',
                             });
                           }
-
-                          // Handle JavaScript Date or ISO string (from fresh upload)
-                          try {
-                            const date = new Date(report.uploadedAt);
-                            if (isNaN(date.getTime())) return 'Recently uploaded';
-                            return date.toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            });
-                          } catch (e) {
-                            return 'Recently uploaded';
-                          }
+                          return 'Recently uploaded';
                         })()}
                       </p>
                     </div>
@@ -198,7 +186,7 @@ const ReportsPage = () => {
                     </button>
                     <button
                       onClick={handleDeleteReport}
-                      className="w-full btn-outline flex items-center justify-center gap-2 text-danger hover:bg-danger hover:text-white"
+                      className="w-full btn-outline flex items-center justify-center gap-2"
                     >
                       <FileText size={18} />
                       Delete Report
@@ -222,7 +210,7 @@ const ReportsPage = () => {
             {/* Upload Component */}
             {showUpload && (
               <FileUpload
-                userId={user?.uid}
+                userId={user?.uid ?? ''}
                 onUploadComplete={(newReport) => {
                   setReport(newReport);
                   setShowUpload(false);

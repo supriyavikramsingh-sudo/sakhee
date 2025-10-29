@@ -389,13 +389,6 @@ const MealPlanGenerator = ({
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      {isTestAccount && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-sm text-yellow-800">
-            🧪 <strong>Test Account Mode:</strong> Usage limits bypassed
-          </p>
-        </div>
-      )}
       <h2 className="text-2xl font-bold text-primary mb-4">✨ Generate Your Meal Plan</h2>
       <p className="text-muted mb-6">
         Create a personalized, PCOS-friendly meal plan based on your preferences and health goals.

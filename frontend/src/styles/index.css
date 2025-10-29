@@ -10,13 +10,12 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  @apply bg-background text-gray-900 font-sans antialiased;
+.main-bg {
+  background: radial-gradient(circle,rgba(255, 229, 245, 1) 0%, rgba(255, 247, 251, 1) 50%, rgba(254, 225, 194, 1) 100%);
 }
 
-.main-bg {
-  background: #FFE5F5;
-  background: radial-gradient(circle,rgba(255, 229, 245, 1) 0%, rgba(255, 247, 251, 1) 50%, rgba(254, 225, 194, 1) 100%);
+body {
+  @apply main-bg text-gray-900 font-sans antialiased;
 }
 
 /* Custom scrollbar */
@@ -71,19 +70,15 @@ body {
 }
 
 .btn-primary {
-  @apply btn bg-primary text-white hover:bg-secondary;
+  @apply btn bg-primary text-white hover:bg-primaryDark;
 }
 
 .btn-outline {
-  @apply btn bg-white border border-primary text-primary hover:bg-accent hover:text-white;
+  @apply btn bg-white border border-primary text-primary hover:border-primaryDark hover:text-primaryDark;
 }
 
 .btn-secondary {
-  @apply btn bg-surface text-primary hover:bg-accent hover:text-white;
-}
-
-.btn-danger {
-  @apply btn bg-danger text-white hover:opacity-90;
+  @apply btn bg-surface text-primary hover:bg-primary hover:text-white;
 }
 
 /* Card styles */

@@ -1,7 +1,7 @@
 import './loading.css';
 
 export const LoadingSpinner = () => (
-  <div className="flex justify-center items-center h-screen main-bg">
+  <div className="flex justify-center items-center h-screen">
     <div
       aria-label="Orange and tan hamster running in a metal wheel"
       role="img"

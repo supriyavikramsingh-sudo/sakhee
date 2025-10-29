@@ -1,9 +1,10 @@
 import type { MenuProps } from 'antd';
 import { Dropdown, Space } from 'antd';
 import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import firestoreService from '../../services/firestoreService';
 import { useAuthStore } from '../../store/authStore';
 import Logo from '/images/logo.svg';
 
@@ -12,6 +13,16 @@ export const Navbar = () => {
   const pathName = window.location.pathname;
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signOut } = useAuthStore();
+  const [isTestAccount, setIsTestAccount] = useState(false);
+
+  useEffect(() => {
+    const checkIsTestUser = async () => {
+      if (!user?.email || !user?.uid) return;
+      const testAccount = firestoreService.isTestAccount(user.email);
+      setIsTestAccount(testAccount);
+    };
+    checkIsTestUser();
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -89,21 +100,30 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-4">
             {user ? (
-              <Dropdown menu={{ items }}>
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    <img
-                      src={user.photoURL ?? ''}
-                      alt={user.displayName ?? 'User Avatar'}
-                      className="w-8 h-8 rounded-full"
-                    />
-                    <span className="text-sm">{user.displayName}</span>
-                    <ChevronDown />
-                  </Space>
-                </a>
-              </Dropdown>
+              <>
+                <Dropdown menu={{ items }}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <img
+                        src={user.photoURL ?? ''}
+                        alt={user.displayName ?? 'User Avatar'}
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <span className="text-sm">{user.displayName}</span>
+                      <ChevronDown />
+                    </Space>
+                  </a>
+                </Dropdown>
+                {isTestAccount && (
+                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-sm text-yellow-800">
+                      🧪 <strong>Test User</strong>
+                    </p>
+                  </div>
+                )}
+              </>
             ) : (
               <Link to="/onboarding" className="btn-primary">
                 {t('nav.getStarted')}

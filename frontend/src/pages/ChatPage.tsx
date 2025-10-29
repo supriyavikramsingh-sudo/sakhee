@@ -28,7 +28,7 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="min-h-screen main-bg flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
       {!disclaimerAcknowledged ? (
@@ -39,7 +39,7 @@ const ChatPage = () => {
           }}
         />
       ) : (
-        <ChatInterface userProfile={userProfile} userId={user?.uid} />
+        <ChatInterface userProfile={userProfile} userId={user?.uid ?? ''} />
       )}
     </div>
   );

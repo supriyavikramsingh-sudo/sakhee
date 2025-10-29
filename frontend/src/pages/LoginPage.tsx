@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { AlertCircle, Cpu, Heart, Loader, ShieldCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { Loader, AlertCircle, Cpu, ShieldCheck, Heart } from 'lucide-react';
 import Logo from '/images/logo.svg';
 
 const LoginPage = () => {
@@ -78,7 +78,7 @@ const LoginPage = () => {
                     height="32px"
                     width="24px"
                   >
-                    <g fillRule="evenodd" fill="none" stroke-width="1" stroke="none">
+                    <g fillRule="evenodd" fill="none" strokeWidth="1" stroke="none">
                       <g fillRule="nonzero" transform="translate(3.000000, 2.000000)">
                         <path
                           fill="#4285F4"
