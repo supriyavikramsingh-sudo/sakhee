@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { CheckCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
-import { CheckCircle } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -122,7 +122,6 @@ const OnboardingPage = () => {
             onComplete={handleStepComplete}
             onBack={handleBack}
             loading={loading}
-            initialData={userData}
           />
         </div>
 

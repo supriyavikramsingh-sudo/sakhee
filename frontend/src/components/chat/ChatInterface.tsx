@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { ChevronUp, Loader, Plus, Send } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useChatStore } from '../../store';
 import apiClient from '../../services/apiClient';
+import { firestoreService } from '../../services/firestoreService';
+import { useChatStore } from '../../store';
+import { useAuthStore } from '../../store/authStore';
+import MealPlanRedirectCard from './MealPlanRedirectCard';
 import MessageBubble from './MessageBubble';
 import SourceCitations from './SourceCitations';
-import MealPlanRedirectCard from './MealPlanRedirectCard';
-import { Send, Plus, Loader, ChevronUp } from 'lucide-react';
-import { useAuthStore } from '../../store/authStore';
-import { firestoreService } from '../../services/firestoreService';
 
 const ChatInterface = ({ userProfile, userId }) => {
   const { t } = useTranslation();
@@ -26,7 +26,6 @@ const ChatInterface = ({ userProfile, userId }) => {
   const { user } = useAuthStore();
   const hasLoadedHistory = useRef(false);
   const isLoadingOlderMessages = useRef(false);
-  const [isLatestMessageFromLLM, setIsLatestMessageFromLLM] = useState(false);
 
   useEffect(() => {
     const loadChatHistory = async () => {
@@ -265,11 +264,7 @@ const ChatInterface = ({ userProfile, userId }) => {
                     <MealPlanRedirectCard data={msg.redirectData} />
                   ) : (
                     <>
-                      <MessageBubble
-                        message={msg}
-                        isLatestMessageFromLLM={isLatestMessageFromLLM}
-                        setIsLatestMessageFromLLM={setIsLatestMessageFromLLM}
-                      />
+                      <MessageBubble message={msg} />
                       {msg.sources && msg.sources.length > 0 && (
                         <SourceCitations sources={msg.sources} />
                       )}

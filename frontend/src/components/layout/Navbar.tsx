@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Menu, LogOut } from 'lucide-react';
+import type { MenuProps } from 'antd';
+import { Dropdown, Space } from 'antd';
+import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import Logo from '/images/logo.svg';
 
@@ -15,6 +17,27 @@ export const Navbar = () => {
     await signOut();
     window.location.href = '/login';
   };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Link to="/settings" className="text-blue-500">
+          {t('nav.settings')}
+        </Link>
+      ),
+      icon: <Settings size={20} />,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '2',
+      label: 'Logout',
+      onClick: handleSignOut,
+      icon: <LogOut size={20} />,
+    },
+  ];
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -68,30 +91,23 @@ export const Navbar = () => {
           {/* User Menu */}
           <div className="flex items-center space-x-4">
             {user ? (
-              <>
-                <Link to="/settings" className="text-gray-700 hover:text-primary transition">
-                  ⚙️ {t('nav.settings')}
-                </Link>
-              </>
+              <Dropdown menu={{ items }}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <img
+                      src={user.photoURL ?? ''}
+                      alt={user.displayName ?? 'User Avatar'}
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-sm">{user.displayName}</span>
+                    <ChevronDown />
+                  </Space>
+                </a>
+              </Dropdown>
             ) : (
               <Link to="/onboarding" className="btn-primary">
                 {t('nav.getStarted')}
               </Link>
-            )}
-
-            {/* User Section */}
-            {user && (
-              <div className="flex items-center gap-3">
-                <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full" />
-                <span className="text-sm">{user.displayName}</span>
-                <button
-                  onClick={handleSignOut}
-                  className="text-danger hover:text-opacity-70 transition flex items-center space-x-1"
-                >
-                  <LogOut size={20} />
-                  <span>{t('nav.logout')}</span>
-                </button>
-              </div>
             )}
           </div>
 

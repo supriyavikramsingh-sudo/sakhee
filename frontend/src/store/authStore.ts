@@ -1,7 +1,8 @@
+import type { DocumentData } from 'firebase/firestore';
 import { create } from 'zustand';
 import authService from '../services/authService';
 import firestoreService from '../services/firestoreService';
-import type { DocumentData } from 'firebase/firestore';
+import type { FirebaseUser } from '../types/firebase.type';
 
 interface AuthStoreState {
   isAuthenticated: boolean;
@@ -33,7 +34,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
   // Initialize auth listener
   initAuth: () => {
-    authService.onAuthStateChange(async (firebaseUser) => {
+    authService.onAuthStateChange(async (firebaseUser: FirebaseUser) => {
       if (firebaseUser) {
         // User is signed in
         console.log('🔐 User authenticated:', firebaseUser.email);

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { Alert } from 'antd';
+import { FileText, Upload } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store/authStore';
-import Navbar from '../components/layout/Navbar';
 import FileUpload from '../components/files/FileUpload';
-import ReportList from '../components/files/ReportList';
 import ReportAnalysis from '../components/files/ReportAnalysis';
-import { Upload, FileText, AlertCircle } from 'lucide-react';
+import Navbar from '../components/layout/Navbar';
+import { useAuthStore } from '../store/authStore';
 
 const ReportsPage = () => {
   const { t } = useTranslation();
@@ -128,19 +128,16 @@ const ReportsPage = () => {
         </div>
 
         {/* Medical Disclaimer */}
-        <div className="mb-8 p-6 bg-warning bg-opacity-10 border-l-4 border-warning rounded-lg">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="text-warning flex-shrink-0 mt-1" size={24} />
-            <div>
-              <h3 className="font-bold text-warning mb-2">⚠️ Important</h3>
-              <p className="text-sm text-gray-700">
-                This tool provides educational analysis only. Always discuss your lab results with a
+        <Alert
+          message="Important"
+          description="This tool provides educational analysis only. Always discuss your lab results with a
                 qualified healthcare professional. Do not make medical decisions based solely on
-                this analysis.
-              </p>
-            </div>
-          </div>
-        </div>
+                this analysis."
+          type="warning"
+          showIcon
+          closable
+          className="mb-8"
+        />
 
         {/* Show loading indicator while fetching report */}
         {loading && (

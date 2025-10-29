@@ -1,5 +1,5 @@
+import { ArrowRight, CheckCircle2, ChefHat, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { ChefHat, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { boldify } from '../../utils/helper';
 
 /**

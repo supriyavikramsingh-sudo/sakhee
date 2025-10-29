@@ -12,11 +12,12 @@ A complete medical report upload system where users can upload **one report at a
 ✅ Data persistence in Firestore  
 ✅ Text extraction from PDF, DOCX, images  
 ✅ Lab value parsing  
-✅ Health insights generation  
+✅ Health insights generation
 
 ## 📁 Files Created/Modified
 
 ### Backend
+
 ```
 server/src/
 ├── config/
@@ -28,6 +29,7 @@ server/src/
 ```
 
 ### Frontend
+
 ```
 client/src/
 ├── pages/
@@ -40,6 +42,7 @@ client/src/
 ```
 
 ### Documentation
+
 ```
 .
 ├── MEDICAL_REPORT_FEATURE.md            [NEW] Feature docs
@@ -52,21 +55,25 @@ client/src/
 ## 🔧 Quick Commands
 
 ### Start Everything
+
 ```bash
 ./start-medical-report-test.sh
 ```
 
 ### Stop Everything
+
 ```bash
 ./stop-services.sh
 ```
 
 ### Test Service Layer
+
 ```bash
 cd server && node src/scripts/testMedicalReportService.js
 ```
 
 ### Start Manually
+
 ```bash
 # Terminal 1 - Server
 cd server && npm run dev
@@ -77,12 +84,12 @@ cd client && npm run dev
 
 ## 🌐 API Endpoints
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/upload/report` | Upload/replace report |
-| GET | `/api/upload/user/:userId/report` | Get current report |
-| GET | `/api/upload/user/:userId/has-report` | Check if exists |
-| DELETE | `/api/upload/user/:userId/report` | Delete report |
+| Method | Endpoint                              | Purpose               |
+| ------ | ------------------------------------- | --------------------- |
+| POST   | `/api/upload/report`                  | Upload/replace report |
+| GET    | `/api/upload/user/:userId/report`     | Get current report    |
+| GET    | `/api/upload/user/:userId/has-report` | Check if exists       |
+| DELETE | `/api/upload/user/:userId/report`     | Delete report         |
 
 ## 📊 Database Structure
 
@@ -126,6 +133,7 @@ Document Fields:
 ## 🔑 Environment Variables
 
 ### Server (.env)
+
 ```env
 # Required for report analysis
 OPENAI_API_KEY=your_key
@@ -164,18 +172,21 @@ FIREBASE_APP_ID=your_app_id
 ## 🎨 UI Components
 
 ### Current Report Card
+
 - Shows filename
 - Shows upload date
 - "Replace Report" button
 - "Delete Report" button
 
 ### Upload Form
+
 - Drag & drop area
 - File type validation
 - Size validation (10MB max)
 - Progress indicator
 
 ### Analysis Display
+
 - Lab values table
 - Health insights
 - Recommendations
@@ -184,18 +195,21 @@ FIREBASE_APP_ID=your_app_id
 ## 🚨 Common Issues & Solutions
 
 ### Upload Fails
+
 - Check file size < 10MB
 - Verify file type is supported
 - Check OpenAI API key
 - Review server logs
 
 ### Data Not Persisting
+
 - Check Firebase configuration
 - Verify Firestore rules
 - Check browser console
 - Ensure user is authenticated
 
 ### Analysis Not Showing
+
 - Check OpenAI API quota
 - Verify report chain initialized
 - Review lab value parsing
@@ -229,7 +243,7 @@ FIREBASE_APP_ID=your_app_id
 ✅ New upload replaces old one  
 ✅ Delete removes all data  
 ✅ No console errors  
-✅ Firebase has correct data  
+✅ Firebase has correct data
 
 ## 📞 Need Help?
 

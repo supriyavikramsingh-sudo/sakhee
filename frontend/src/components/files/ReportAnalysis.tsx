@@ -1,18 +1,19 @@
+import { Alert } from 'antd';
 import {
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  TrendingUp,
   Activity,
   AlertCircle,
-  Heart,
-  Lightbulb,
+  AlertTriangle,
   Calendar,
+  CheckCircle,
   ChevronDown,
   ChevronUp,
+  Heart,
+  Info,
+  Lightbulb,
+  TrendingUp,
 } from 'lucide-react';
 import { useState } from 'react';
-import { formatLabName, groupLabValuesByCategory, CATEGORY_NAMES } from '../../utils/labFormatter';
+import { CATEGORY_NAMES, formatLabName, groupLabValuesByCategory } from '../../utils/labFormatter';
 
 const ReportAnalysis = ({ report }) => {
   if (!report) return null;
@@ -549,20 +550,18 @@ const ReportAnalysis = ({ report }) => {
       )}
 
       {/* Medical Disclaimer */}
-      <div className="p-6 bg-warning bg-opacity-10 border-l-4 border-warning rounded-lg">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="text-warning flex-shrink-0 mt-1" size={20} />
-          <div>
-            <p className="text-sm text-gray-700">
-              <strong>⚠️ Medical Disclaimer:</strong> This analysis is for educational purposes only
+      <Alert
+        message="Medical Disclaimer"
+        description="This analysis is for educational purposes only
               and does not replace professional medical advice. Always consult your healthcare
               provider for personalized recommendations and treatment decisions. Lab values should
               be interpreted by a qualified medical professional in the context of your complete
-              health history.
-            </p>
-          </div>
-        </div>
-      </div>
+              health history."
+        type="warning"
+        showIcon
+        closable
+        className="mt-12"
+      />
     </div>
   );
 };

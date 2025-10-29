@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
-import { LoadingSpinner } from '../components/layout/LoadingSpinner';
-import { useAuthStore } from '../store/authStore';
-import ProtectedRoute from '../components/auth/ProtectedRoute';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import OnboardingRoute from '../components/auth/OnboardingRoute';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 import ErrorBoundary from '../components/layout/ErrorBoundary';
+import { LoadingSpinner } from '../components/layout/LoadingSpinner';
 import ChatPage from '../pages/ChatPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import HomePage from '../pages/HomePage';
@@ -16,6 +15,7 @@ import OnboardingPage from '../pages/OnboardingPage';
 import ProgressPage from '../pages/ProgressPage';
 import ReportsPage from '../pages/ReportsPage';
 import SettingsPage from '../pages/SettingsPage';
+import { useAuthStore } from '../store/authStore';
 import i18n from '../utils/i18n';
 
 const LandingOrHome = () => {

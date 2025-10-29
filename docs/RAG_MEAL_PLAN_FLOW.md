@@ -3,6 +3,7 @@
 ## Overview
 
 Sakhee generates personalized PCOS-friendly meal plans using **RAG (Retrieval-Augmented Generation)**. The system combines:
+
 - 🧠 **LLM** (GPT-4o-mini) for intelligent meal generation
 - 🔍 **Vector Store** (HNSWLib) for semantic search
 - 📚 **Knowledge Base** (meal templates, nutrition guidelines, lab-specific guidance)
@@ -84,43 +85,47 @@ Example labValues structure:
 The system creates **4 separate RAG queries** to retrieve different types of knowledge:
 
 #### **Query A: Meal Templates**
+
 ```
-Query: "north india vegetarian breakfast lunch dinner PCOS meal templates 
+Query: "north india vegetarian breakfast lunch dinner PCOS meal templates
         hormone balance low glycemic index"
 
 Purpose: Find meal template examples similar to user's region/diet preferences
 ```
 
 #### **Query B: Nutrition Guidelines**
+
 ```
-Query: "PCOS nutrition guidelines weight loss hormone balance 
+Query: "PCOS nutrition guidelines weight loss hormone balance
         insulin resistance low glycemic index"
 
 Purpose: Retrieve evidence-based PCOS nutritional guidance
 ```
 
 #### **Query C: Lab-Specific Dietary Guidance** ⭐ (NEW)
+
 ```
 Query built from abnormal labs:
 
 IF user has high fasting glucose + high insulin:
-  Query: "LAB glucose fasting insulin fasting HOMA-IR SEVERITY 
+  Query: "LAB glucose fasting insulin fasting HOMA-IR SEVERITY
           dietary focus Indian ingredients substitutes PCOS"
 
 IF user has low Vitamin D:
-  Query: "LAB vitamin D SEVERITY dietary focus Indian ingredients 
+  Query: "LAB vitamin D SEVERITY dietary focus Indian ingredients
           substitutes PCOS"
 
 IF user has high testosterone:
-  Query: "LAB testosterone total SEVERITY dietary focus Indian 
+  Query: "LAB testosterone total SEVERITY dietary focus Indian
           ingredients substitutes PCOS"
 
 Purpose: Get specific food recommendations for their abnormal labs
 ```
 
 #### **Query D: Symptom-Specific Recommendations**
+
 ```
-Query: "PCOS dietary recommendations for irregular-periods acne 
+Query: "PCOS dietary recommendations for irregular-periods acne
         weight-changes management"
 
 Purpose: Include foods that address their specific symptoms
@@ -165,32 +170,32 @@ The system combines all retrieved knowledge into a comprehensive prompt:
 ```
 [SECTION A] MEAL TEMPLATES FROM KNOWLEDGE BASE
 ├─ Retrieved 8 meal templates (region/diet matched)
-├─ Example: "Besan Chilla with Vegetables - 15g protein, 45g carbs, 
+├─ Example: "Besan Chilla with Vegetables - 15g protein, 45g carbs,
 │           12g fats, 360 kcal, Low GI"
 └─ Purpose: Show LLM what good PCOS meals look like
 
 [SECTION B] PCOS NUTRITION GUIDELINES
 ├─ Retrieved 5 documents on nutrition
-├─ Example: "Low GI foods (GI < 55), anti-inflammatory spices 
-│           (turmeric, cinnamon), hormone-balancing seeds (flaxseeds), 
+├─ Example: "Low GI foods (GI < 55), anti-inflammatory spices
+│           (turmeric, cinnamon), hormone-balancing seeds (flaxseeds),
 │           adequate protein (15-20g per meal)"
 └─ Purpose: Ensure generated meals follow evidence-based guidelines
 
 [SECTION C] LAB-SPECIFIC DIETARY GUIDANCE ⭐
 ├─ Retrieved 10 lab-specific recommendations
-├─ Example for high glucose: 
-│           "Focus on low-GI foods: bajra, oats, brown rice, 
-│           lentils, chickpeas, leafy greens. Increase fiber 
-│           to slow glucose absorption. Avoid white rice, 
+├─ Example for high glucose:
+│           "Focus on low-GI foods: bajra, oats, brown rice,
+│           lentils, chickpeas, leafy greens. Increase fiber
+│           to slow glucose absorption. Avoid white rice,
 │           refined flour, sugary items."
 ├─ Example for low Vitamin D:
-│           "Include fortified milk, egg yolks, mushrooms, fatty 
+│           "Include fortified milk, egg yolks, mushrooms, fatty
 │           fish if non-veg. Sunlight exposure. Consider supplements."
 └─ Purpose: Personalize meals to address their specific lab abnormalities
 
 [SECTION D] SYMPTOM-SPECIFIC RECOMMENDATIONS
 ├─ Retrieved 3 documents
-├─ Example for irregular periods: "Include flaxseeds, sesame seeds, 
+├─ Example for irregular periods: "Include flaxseeds, sesame seeds,
 │           leafy greens, whole grains"
 └─ Purpose: Address their top symptoms
 
@@ -241,10 +246,10 @@ const response = await llm.invoke(comprehensivePrompt);
           "mealType": "Breakfast",
           "name": "Bajra Khichdi with Moong Dal & Spinach",
           "ingredients": [
-            "100g bajra", 
-            "50g moong dal", 
-            "150g spinach", 
-            "1 tsp ghee", 
+            "100g bajra",
+            "50g moong dal",
+            "150g spinach",
+            "1 tsp ghee",
             "salt, turmeric"
           ],
           "protein": 18,
@@ -264,6 +269,7 @@ const response = await llm.invoke(comprehensivePrompt);
 ```
 
 **Why GPT-4o-mini**:
+
 - Cheaper than GPT-4 (~$0.30 per meal plan generation vs $3+)
 - Still intelligent enough for meal planning
 - Supports JSON mode for structured output
@@ -284,7 +290,7 @@ The backend validates and adjusts the LLM output:
 // If calories are off, scale proportionally:
 if (dailyTotal < 1900 || dailyTotal > 2100) {
   scaleFactor = 2000 / dailyTotal;
-  
+
   day.meals.forEach(meal => {
     meal.protein = Math.round(meal.protein × scaleFactor);
     meal.carbs = Math.round(meal.carbs × scaleFactor);
@@ -303,7 +309,7 @@ if (dailyTotal < 1900 || dailyTotal > 2100) {
 ```javascript
 {
   "days": [ /* 7 days of meals */ ],
-  
+
   "ragMetadata": {
     "mealTemplatesUsed": 8,
     "nutritionGuidelinesUsed": 5,
@@ -335,7 +341,7 @@ Split into:
 ├─ Chunk 2: Days 4-6 (call RAG + LLM)
 └─ Chunk 3: Day 7   (call RAG + LLM)
 
-Why: 
+Why:
 - Prevents LLM token overload
 - Improves consistency (3-day chunk has higher quality)
 - Each chunk gets fresh RAG context
@@ -382,7 +388,7 @@ Maps to query terms:
 └─ "glucose fasting", "insulin fasting", "HOMA-IR insulin resistance"
 
 Retrieves from RAG:
-├─ "For high fasting glucose: Choose low-GI foods (GI < 55): 
+├─ "For high fasting glucose: Choose low-GI foods (GI < 55):
 │   bajra, oats, brown rice, whole wheat, lentils, chickpeas"
 ├─ "Increase soluble fiber to slow carb absorption"
 ├─ "Avoid white rice, refined flour, sugary fruits"
@@ -396,7 +402,7 @@ Injects into prompt:
     - [... full guidance ...]"
 
 LLM uses this in meal generation:
-└─ "Breakfast: Ragi Dosa (ragi flour, low-GI staple) 
+└─ "Breakfast: Ragi Dosa (ragi flour, low-GI staple)
           + Sambar (vegetable protein) instead of white-rice dosa"
 ```
 
@@ -409,10 +415,10 @@ Every meal plan includes transparency metrics:
 ```json
 {
   "personalizationSources": {
-    "onboarding": true,           // User data from signup
-    "medicalReport": true,        // Lab values from medical report
-    "userOverrides": false,       // Manual region/diet change
-    "ragQuality": "high",         // Retrieval quality score
+    "onboarding": true, // User data from signup
+    "medicalReport": true, // Lab values from medical report
+    "userOverrides": false, // Manual region/diet change
+    "ragQuality": "high", // Retrieval quality score
     "ragSources": {
       "mealTemplates": 8,
       "nutritionGuidelines": 5,
@@ -424,6 +430,7 @@ Every meal plan includes transparency metrics:
 ```
 
 **Quality Levels**:
+
 - **High**: 5+ templates, 5+ guidelines, 5+ lab-specific docs
 - **Medium**: 2-4 templates, 2-4 guidelines
 - **Low**: <2 templates, minimal context
@@ -435,25 +442,25 @@ Every meal plan includes transparency metrics:
 
 ### **Server-Side**
 
-| File | Key Function | Purpose |
-|------|---|---|
-| `mealPlanChain.js` | `generateWithRAG()` | Main RAG + LLM orchestration |
-| `mealPlanChain.js` | `buildLabGuidanceQuery()` | Create query for abnormal labs |
-| `mealPlanChain.js` | `categorizeLabs()` | Group labs by health domain |
-| `mealPlanChain.js` | `buildUserContextWithLabs()` | Detailed user context with lab interpretation |
-| `mealPlanChain.js` | `validateAndAdjustCalories()` | Ensure 2000 kcal daily total |
-| `retriever.js` | `retrieve()` | Semantic search in vector store |
-| `retriever.js` | `formatContextFromResults()` | Format RAG results for LLM |
-| `vectorStore.js` | `similaritySearch()` | HNSWLib similarity search |
+| File               | Key Function                  | Purpose                                       |
+| ------------------ | ----------------------------- | --------------------------------------------- |
+| `mealPlanChain.js` | `generateWithRAG()`           | Main RAG + LLM orchestration                  |
+| `mealPlanChain.js` | `buildLabGuidanceQuery()`     | Create query for abnormal labs                |
+| `mealPlanChain.js` | `categorizeLabs()`            | Group labs by health domain                   |
+| `mealPlanChain.js` | `buildUserContextWithLabs()`  | Detailed user context with lab interpretation |
+| `mealPlanChain.js` | `validateAndAdjustCalories()` | Ensure 2000 kcal daily total                  |
+| `retriever.js`     | `retrieve()`                  | Semantic search in vector store               |
+| `retriever.js`     | `formatContextFromResults()`  | Format RAG results for LLM                    |
+| `vectorStore.js`   | `similaritySearch()`          | HNSWLib similarity search                     |
 
 ### **Client-Side**
 
-| File | Component | Purpose |
-|------|---|---|
-| `MealPlanGenerator.jsx` | Form | Collect user preferences & fetch medical report |
-| `MealPlanDisplay.jsx` | Display | Show generated meals + RAG metadata |
-| `RAGMetadataDisplay.jsx` | Info card | Display retrieval quality & sources |
-| `MealCard.jsx` | Meal card | Show individual meal with nutrition |
+| File                     | Component | Purpose                                         |
+| ------------------------ | --------- | ----------------------------------------------- |
+| `MealPlanGenerator.jsx`  | Form      | Collect user preferences & fetch medical report |
+| `MealPlanDisplay.jsx`    | Display   | Show generated meals + RAG metadata             |
+| `RAGMetadataDisplay.jsx` | Info card | Display retrieval quality & sources             |
+| `MealCard.jsx`           | Meal card | Show individual meal with nutrition             |
 
 ---
 
@@ -562,9 +569,9 @@ Input:
     ▼          ▼          ▼          ▼
   DAY 1      DAY 2      DAY 3      DAY 4
    [+]        [+]        [+]        [+]
-   
+
    ... repeat for Chunks 2 & 3 ...
-   
+
          │
          ▼
     ┌──────────────────────────────────────┐
@@ -591,6 +598,7 @@ Input:
 ## Debugging & Monitoring
 
 Check RAG health:
+
 ```bash
 npm run vector:health
 # ✓ Vector Store Exists
@@ -601,12 +609,14 @@ npm run vector:health
 ```
 
 View RAG status:
+
 ```bash
 curl http://localhost:5000/api/rag/status
 # Returns: vector store size, templates indexed, health info
 ```
 
 Check meal plan logs:
+
 ```bash
 # Server logs show:
 # - RAG queries built
@@ -632,9 +642,9 @@ Check meal plan logs:
 8. ✅ Shows what sources influenced each plan (trust building)
 
 **Why this approach works**:
+
 - 🎯 **Personalization**: Lab values + symptoms + preferences all guide meal selection
 - 📚 **Evidence-based**: All recommendations come from curated knowledge base
 - 🧠 **Scalable**: RAG allows easy addition of new meal templates or guidelines
 - ⚡ **Reliable**: Chunking + validation + fallbacks ensure consistent output
 - 🔍 **Transparent**: Users see exactly what influenced their plan
-

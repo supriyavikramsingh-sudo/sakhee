@@ -1,43 +1,24 @@
-import { boldify } from '../../utils/helper';
-import { useAuthStore } from '../../store/authStore';
-import SakheeAvatar from '/images/sakheeai.svg';
-import Typewriter from './Typewriter';
 import { useState } from 'react';
+import { useAuthStore } from '../../store/authStore';
+import { boldify, formatTimestamp } from '../../utils/helper';
+import Typewriter from './Typewriter';
+import SakheeAvatar from '/images/sakheeai.svg';
 
-const formatTimestamp = (timestamp) => {
-  if (!timestamp) return '';
+interface MessageBubbleProps {
+  message: {
+    type: 'user' | 'bot' | 'error';
+    content: string;
+    timestamp: any;
+    requiresDoctor?: boolean;
+    severity?: 'normal' | 'critical';
+  };
+}
 
-  try {
-    // Handle Firestore Timestamp objects
-    if (timestamp?.toDate) {
-      return timestamp.toDate().toLocaleTimeString();
-    }
-
-    // Handle Firebase Timestamp with seconds
-    if (timestamp?.seconds) {
-      return new Date(timestamp.seconds * 1000).toLocaleTimeString();
-    }
-
-    // Handle ISO string or regular Date object
-    const date = new Date(timestamp);
-    if (!isNaN(date.getTime())) {
-      return date.toLocaleTimeString();
-    }
-
-    return '';
-  } catch (error) {
-    console.error('Error formatting timestamp:', error);
-    return '';
-  }
-};
-
-const MessageBubble = ({ message, isLatestMessageFromLLM, setIsLatestMessageFromLLM }) => {
+const MessageBubble = ({ message }: MessageBubbleProps) => {
   const isUser = message.type === 'user';
   const isError = message.type === 'error';
   const { user } = useAuthStore();
-  const [isGeneratedCompletly, setIsGeneratedCompletly] = useState(
-    !isLatestMessageFromLLM || isUser ? true : false
-  );
+  const [isGeneratedCompletly, setIsGeneratedCompletly] = useState(isUser ? true : false);
 
   return (
     <div className={`flex gap-1 ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -74,8 +55,8 @@ const MessageBubble = ({ message, isLatestMessageFromLLM, setIsLatestMessageFrom
       </div>
       {isUser && (
         <img
-          src={user.photoURL}
-          alt={user.displayName}
+          src={user?.photoURL ?? ''}
+          alt={user?.displayName ?? 'User Avatar'}
           className="w-8 h-8 rounded-full self-end -mb-4"
         />
       )}
