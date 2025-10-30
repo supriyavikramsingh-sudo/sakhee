@@ -475,6 +475,8 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   needsCommunityInsights(message) {
     const lowerMessage = message.toLowerCase();
+
+    // Enhanced trigger phrases that indicate user wants community experiences
     const triggers = [
       'reddit',
       'community',
@@ -488,26 +490,84 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'dealing with',
       'experiences',
       'stories',
+      'success stories',
+      'have successfully',
+      'successfully treated',
+      'worked for',
+      'anyone tried',
+      'real experiences',
+      'personal experiences',
     ];
 
-    for (const trigger of triggers) {
-      if (lowerMessage.includes(trigger)) {
-        const words = message.split(' ');
-        for (const word of words) {
-          if (
-            word.length > 4 &&
-            !['which', 'about', 'reddit', 'threads', 'women', 'dealing'].includes(
-              word.toLowerCase()
-            )
-          ) {
-            return word.toLowerCase();
-          }
-        }
-        return null;
+    // Check if any trigger is present
+    const hasTrigger = triggers.some((trigger) => lowerMessage.includes(trigger));
+
+    if (!hasTrigger) {
+      return null;
+    }
+
+    logger.info('🔍 Community insights needed, extracting keyword', { message });
+
+    // Enhanced keyword extraction - prioritize PCOS-related terms
+    const pcosKeywords = [
+      'acne',
+      'pimples',
+      'skin',
+      'hair loss',
+      'hirsutism',
+      'weight',
+      'period',
+      'irregular',
+      'fertility',
+      'pregnancy',
+      'insulin',
+      'metformin',
+      'ayurveda',
+      'natural',
+      'diet',
+      'exercise',
+      'supplements',
+      'inositol',
+      'spearmint',
+      'cinnamon',
+    ];
+
+    // First, try to find PCOS-specific keywords
+    for (const keyword of pcosKeywords) {
+      if (lowerMessage.includes(keyword)) {
+        logger.info(`✅ Reddit keyword extracted: "${keyword}"`);
+        return keyword;
       }
     }
 
-    return null;
+    // Fallback: extract meaningful words (length > 4, not common words)
+    const words = message.split(' ');
+    const stopWords = [
+      'which',
+      'about',
+      'reddit',
+      'threads',
+      'women',
+      'dealing',
+      'there',
+      'their',
+      'india',
+      'indian',
+      'methods',
+      'treated',
+    ];
+
+    for (const word of words) {
+      const cleanWord = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (cleanWord.length > 4 && !stopWords.includes(cleanWord)) {
+        logger.info(`✅ Reddit keyword extracted (fallback): "${cleanWord}"`);
+        return cleanWord;
+      }
+    }
+
+    // If no specific keyword found but trigger present, use "PCOS" as default
+    logger.info('ℹ️ No specific keyword found, using default "PCOS"');
+    return 'pcos';
   }
 
   /**
