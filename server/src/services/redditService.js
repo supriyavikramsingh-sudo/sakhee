@@ -13,13 +13,32 @@ class RedditService {
 
     // Subreddits to monitor (in order of priority) - PCOS-focused first
     this.targetSubreddits = [
+      // PRIMARY PCOS Communities
       'PCOS', // PRIMARY - Most relevant
       'PCOSIndia', // PRIMARY - India-specific
       'PCOS_Folks', // Secondary PCOS community
       'PCOSWeightLoss', // Specific PCOS topic
+      'PCOSloseit', // PCOS weight loss focused
+      'PCOS_CICO', // PCOS calories in/calories out
+      'PCOS_management', // PCOS management strategies
+      'PCOSandPregnant', // PCOS and pregnancy
+      'LeanPCOS', // Lean PCOS specific
+      'TTC_PCOS', // Trying to conceive with PCOS
+      'PcosIndia', // Alternative India PCOS community
+      
+      // FERTILITY & REPRODUCTIVE HEALTH
       'TryingForABaby', // Fertility-focused (include PCOS posts only)
       'infertility', // Fertility-focused (include PCOS posts only)
-      // Removed TwoXChromosomes and WomensHealth - too general
+      'obgyn', // OB/GYN medical discussions
+      
+      // SYMPTOM-SPECIFIC COMMUNITIES
+      'FemaleHairLoss', // Hair loss/hirsutism related
+      'SkincareAddiction', // Acne and skin issues
+      'acne', // Acne-specific community
+      'IndianSkincareAddicts', // Indian skincare community
+      
+      // LIFESTYLE & DIET
+      'keto', // Ketogenic diet (popular for PCOS)
     ];
 
     // Keywords to filter relevant posts - EXPANDED for better PCOS detection

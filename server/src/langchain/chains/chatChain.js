@@ -490,22 +490,74 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'stories',
     ];
 
-    for (const trigger of triggers) {
-      if (lowerMessage.includes(trigger)) {
-        const words = message.split(' ');
-        for (const word of words) {
-          if (
-            word.length > 4 &&
-            !['which', 'about', 'reddit', 'threads', 'women', 'dealing'].includes(
-              word.toLowerCase()
-            )
-          ) {
-            return word.toLowerCase();
-          }
-        }
-        return null;
+    // Check if message contains community insight triggers
+    const hasTrigger = triggers.some(trigger => lowerMessage.includes(trigger));
+    if (!hasTrigger) return null;
+
+    // Enhanced keyword extraction for PCOS context
+    const pcosKeywords = [
+      'pcos', 'polycystic', 'ovarian', 'syndrome', 'insulin', 'resistance',
+      'metformin', 'periods', 'irregular', 'cycles', 'ovulation', 'fertility',
+      'hirsutism', 'acne', 'weight', 'gain', 'loss', 'hair', 'thinning',
+      'mood', 'depression', 'anxiety', 'fatigue', 'cravings', 'bloating',
+      'hormones', 'testosterone', 'estrogen', 'progesterone', 'cortisol',
+      'diet', 'exercise', 'supplements', 'inositol', 'spearmint', 'cinnamon'
+    ];
+
+    const stopWords = new Set([
+      'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+      'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before',
+      'after', 'above', 'below', 'between', 'among', 'is', 'are', 'was',
+      'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does',
+      'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must',
+      'can', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she',
+      'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your',
+      'his', 'her', 'its', 'our', 'their', 'reddit', 'threads', 'community'
+    ]);
+
+    // Extract and score keywords
+    const words = message.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2 && !stopWords.has(word));
+
+    const keywordScores = {};
+    
+    words.forEach(word => {
+      let score = 1;
+      
+      // Boost PCOS-related keywords
+      if (pcosKeywords.includes(word)) {
+        score += 3;
       }
+      
+      // Boost longer, more specific words
+      if (word.length > 6) {
+        score += 1;
+      }
+      
+      // Boost medical/health terms
+      if (/^(symptom|treatment|medication|doctor|specialist|diagnosis)/.test(word)) {
+        score += 2;
+      }
+      
+      keywordScores[word] = (keywordScores[word] || 0) + score;
+    });
+
+    // Get top 3-5 keywords based on scores
+    const sortedKeywords = Object.entries(keywordScores)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5)
+      .map(([word]) => word);
+
+    // Return keywords array if found, otherwise fallback to generic PCOS terms
+    if (sortedKeywords.length > 0) {
+      return sortedKeywords;
     }
+
+    // Fallback to generic PCOS keywords if no specific keywords found
+    return ['pcos', 'symptoms'];
+  }
 
     return null;
   }
@@ -515,24 +567,73 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   async fetchRedditContext(userMessage) {
     try {
-      const keyword = this.needsCommunityInsights(userMessage);
-      if (!keyword) return null;
+      const keywords = this.needsCommunityInsights(userMessage);
+      if (!keywords || keywords.length === 0) return null;
 
-      const insights = await redditService.searchPosts(keyword);
+      // Try multiple search strategies with the extracted keywords
+      let allInsights = [];
+      
+      // Strategy 1: Search with primary keyword (highest scored)
+      const primaryKeyword = Array.isArray(keywords) ? keywords[0] : keywords;
+      const primaryResults = await redditService.searchPosts(primaryKeyword);
+      if (primaryResults && primaryResults.length > 0) {
+        allInsights.push(...primaryResults);
+      }
 
-      if (!insights || insights.length === 0) {
-        logger.info('No Reddit insights found');
+      // Strategy 2: If we have multiple keywords and need more results, try secondary keywords
+      if (Array.isArray(keywords) && keywords.length > 1 && allInsights.length < 5) {
+        for (let i = 1; i < Math.min(keywords.length, 3); i++) {
+          const secondaryResults = await redditService.searchPosts(keywords[i]);
+          if (secondaryResults && secondaryResults.length > 0) {
+            // Add results that aren't already included (avoid duplicates by URL)
+            const existingUrls = new Set(allInsights.map(post => post.url));
+            const newResults = secondaryResults.filter(post => !existingUrls.has(post.url));
+            allInsights.push(...newResults);
+            
+            if (allInsights.length >= 5) break;
+          }
+        }
+      }
+
+      // Strategy 3: If still need more results, try combined keyword search
+      if (Array.isArray(keywords) && keywords.length > 1 && allInsights.length < 3) {
+        const combinedKeyword = keywords.slice(0, 2).join(' ');
+        const combinedResults = await redditService.searchPosts(combinedKeyword);
+        if (combinedResults && combinedResults.length > 0) {
+          const existingUrls = new Set(allInsights.map(post => post.url));
+          const newResults = combinedResults.filter(post => !existingUrls.has(post.url));
+          allInsights.push(...newResults);
+        }
+      }
+
+      if (!allInsights || allInsights.length === 0) {
+        logger.info('No Reddit insights found for keywords:', keywords);
         return null;
       }
 
+      // Sort by relevance score (if available) and upvotes, then take top 5
+      const sortedInsights = allInsights
+        .sort((a, b) => {
+          // Primary sort by relevance score if available
+          if (a.relevanceScore !== undefined && b.relevanceScore !== undefined) {
+            if (a.relevanceScore !== b.relevanceScore) {
+              return b.relevanceScore - a.relevanceScore;
+            }
+          }
+          // Secondary sort by upvotes
+          return (b.score || 0) - (a.score || 0);
+        })
+        .slice(0, 5);
+
       let context = '🔥 REAL REDDIT COMMUNITY INSIGHTS:\n\n';
-      insights.slice(0, 5).forEach((post, index) => {
+      sortedInsights.forEach((post, index) => {
         context += `**Post ${index + 1}** (r/${post.subreddit}, ${post.score} upvotes):\n`;
         context += `Title: "${post.title}"\n`;
         context += `Content: ${post.content.substring(0, 300)}...\n`;
         context += `Link: ${post.url}\n\n`;
       });
 
+      logger.info(`Found ${sortedInsights.length} Reddit insights using keywords:`, keywords);
       return context;
     } catch (error) {
       logger.error('Reddit fetch failed', { error: error.message });
