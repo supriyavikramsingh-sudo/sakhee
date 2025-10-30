@@ -11,6 +11,7 @@ import mealPlanRoutes from './routes/mealPlan.js';
 import uploadRoutes from './routes/upload.js';
 import progressRoutes from './routes/progress.js';
 import ragStatusRoutes from './routes/ragStatus.js';
+import feedbackRoutes from './routes/feedback.js';
 import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
@@ -57,6 +58,7 @@ app.use('/api/meals', mealPlanRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/rag', ragStatusRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

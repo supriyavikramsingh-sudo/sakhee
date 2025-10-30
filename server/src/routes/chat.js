@@ -146,5 +146,95 @@ router.delete('/history/:userId', (req, res) => {
     });
   }
 });
+// Store for chat feedback (replace with DB in production)
+const chatFeedback = new Map();
+
+/**
+ * POST /api/chat/feedback
+ * Submit feedback for a chat message
+ */
+router.post('/feedback', async (req, res) => {
+  try {
+    const { userId, messageId, userPrompt, aiResponse, feedbackType } = req.body;
+
+    if (!userId || !messageId || !feedbackType) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'userId, messageId, and feedbackType are required' },
+      });
+    }
+
+    if (!['thumbs_up', 'thumbs_down'].includes(feedbackType)) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'feedbackType must be either thumbs_up or thumbs_down' },
+      });
+    }
+
+    const feedbackEntry = {
+      userId,
+      messageId,
+      userPrompt: userPrompt || '',
+      aiResponse: aiResponse || '',
+      feedbackType,
+      timestamp: new Date(),
+    };
+
+    // Store feedback (using messageId as key for easy retrieval)
+    chatFeedback.set(messageId, feedbackEntry);
+
+    logger.info('Chat feedback submitted', {
+      userId,
+      messageId,
+      feedbackType,
+    });
+
+    res.json({
+      success: true,
+      data: {
+        message: 'Feedback submitted successfully',
+        feedbackId: messageId,
+      },
+    });
+  } catch (error) {
+    logger.error('Submit chat feedback failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to submit feedback' },
+    });
+  }
+});
+
+/**
+ * GET /api/chat/feedback/:userId
+ * Get feedback history for a user (admin/analytics use)
+ */
+router.get('/feedback/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const userFeedback = [];
+
+    // Filter feedback by userId
+    for (const [messageId, feedback] of chatFeedback.entries()) {
+      if (feedback.userId === userId) {
+        userFeedback.push(feedback);
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        feedback: userFeedback,
+        count: userFeedback.length,
+      },
+    });
+  } catch (error) {
+    logger.error('Get chat feedback failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to retrieve feedback' },
+    });
+  }
+});
 
 export default router;

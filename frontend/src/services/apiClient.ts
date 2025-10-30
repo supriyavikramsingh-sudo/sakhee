@@ -167,18 +167,6 @@ export const apiClient = {
     }
   },
 
-  // ============================================
-  // PROGRESS TRACKING ENDPOINTS (Placeholder)
-  // ============================================
-  getProgress: async (userId: string): Promise<object> => {
-    try {
-      const response = await axiosInstance.get(`/progress/${userId}`);
-      return response;
-    } catch (error) {
-      console.error('Failed to get progress:', error);
-      throw error;
-    }
-  },
   updateProgress: async (userId: string, data): Promise<object> => {
     try {
       const response = await axiosInstance.put(`/progress/${userId}`, data);
@@ -302,6 +290,37 @@ export const apiClient = {
       return response;
     } catch (error) {
       console.error('Failed to set goals:', error);
+      throw error;
+    }
+  },
+
+  // ============================================
+  // FEEDBACK ENDPOINTS
+  // ============================================
+  submitFeedback: async (feedbackData: {
+    messageId: string;
+    userId: string;
+    userPrompt: string;
+    aiResponse: string;
+    feedback: string;
+  }): Promise<object> => {
+    try {
+      console.log('📤 ApiClient: Submitting feedback to /api/feedback', feedbackData);
+      const response = await axiosInstance.post('/feedback', feedbackData);
+      console.log('✅ ApiClient: Feedback response:', response);
+      return response;
+    } catch (error) {
+      console.error('❌ ApiClient: Failed to submit feedback:', error);
+      throw error;
+    }
+  },
+
+  getFeedbackHistory: async (userId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/feedback/${userId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get feedback history:', error);
       throw error;
     }
   },
