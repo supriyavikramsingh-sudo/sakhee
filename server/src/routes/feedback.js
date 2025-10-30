@@ -1,11 +1,13 @@
 import express from 'express';
+import { collection, addDoc, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
+import { db } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const router = express.Router();
 const logger = new Logger('FeedbackRoute');
 
-// Store feedback in memory for now (in production, this should be in a database)
-const feedbackStore = new Map();
+// Firestore collection name
+const FEEDBACK_COLLECTION = 'chatFeedback';
 
 /**
  * Submit feedback for a chat message
@@ -47,25 +49,24 @@ router.post('/', async (req, res) => {
       feedback,
       userPrompt: userPrompt || '',
       aiResponse: aiResponse || '',
-      timestamp: new Date().toISOString(),
-      id: `${userId}_${messageId}_${Date.now()}`,
+      timestamp: Timestamp.now(),
+      createdAt: new Date().toISOString(),
     };
 
-    // Store feedback
-    feedbackStore.set(feedbackEntry.id, feedbackEntry);
+    // Store feedback in Firestore
+    const docRef = await addDoc(collection(db, FEEDBACK_COLLECTION), feedbackEntry);
 
-    logger.info(`✅ Feedback stored successfully`, {
-      feedbackId: feedbackEntry.id,
+    logger.info(`✅ Feedback stored successfully in Firestore`, {
+      feedbackId: docRef.id,
       feedback,
       messageId,
       userId: userId.substring(0, 8) + '...',
-      totalFeedbackCount: feedbackStore.size,
     });
 
     res.json({
       success: true,
       data: {
-        id: feedbackEntry.id,
+        id: docRef.id,
         message: 'Feedback submitted successfully',
       },
     });
@@ -93,10 +94,28 @@ router.get('/:userId', async (req, res) => {
       });
     }
 
-    // Filter feedback by userId
-    const userFeedback = Array.from(feedbackStore.values())
-      .filter((feedback) => feedback.userId === userId)
-      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    // Query Firestore for user's feedback
+    const q = query(
+      collection(db, FEEDBACK_COLLECTION),
+      where('userId', '==', userId),
+      orderBy('timestamp', 'desc')
+    );
+
+    const querySnapshot = await getDocs(q);
+    const userFeedback = [];
+
+    querySnapshot.forEach((doc) => {
+      userFeedback.push({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp?.toDate?.()?.toISOString() || doc.data().createdAt,
+      });
+    });
+
+    logger.info('📊 User feedback retrieved', {
+      userId: userId.substring(0, 8) + '...',
+      count: userFeedback.length,
+    });
 
     res.json({
       success: true,
@@ -117,7 +136,13 @@ router.get('/:userId', async (req, res) => {
  */
 router.get('/stats/summary', async (req, res) => {
   try {
-    const allFeedback = Array.from(feedbackStore.values());
+    // Get all feedback from Firestore
+    const querySnapshot = await getDocs(collection(db, FEEDBACK_COLLECTION));
+    const allFeedback = [];
+
+    querySnapshot.forEach((doc) => {
+      allFeedback.push(doc.data());
+    });
 
     const stats = {
       total: allFeedback.length,
@@ -125,6 +150,8 @@ router.get('/stats/summary', async (req, res) => {
       thumbsDown: allFeedback.filter((f) => f.feedback === 'thumbs_down').length,
       uniqueUsers: new Set(allFeedback.map((f) => f.userId)).size,
     };
+
+    logger.info('📊 Feedback stats calculated', stats);
 
     res.json({
       success: true,
@@ -145,11 +172,20 @@ router.get('/stats/summary', async (req, res) => {
  */
 router.get('/debug/all', async (req, res) => {
   try {
-    const allFeedback = Array.from(feedbackStore.values());
+    // Get all feedback from Firestore
+    const querySnapshot = await getDocs(collection(db, FEEDBACK_COLLECTION));
+    const allFeedback = [];
 
-    logger.info('🔍 Debug: All feedback requested', {
+    querySnapshot.forEach((doc) => {
+      allFeedback.push({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp?.toDate?.()?.toISOString() || doc.data().createdAt,
+      });
+    });
+
+    logger.info('🔍 Debug: All feedback requested from Firestore', {
       count: allFeedback.length,
-      storeSize: feedbackStore.size,
     });
 
     res.json({
@@ -157,7 +193,8 @@ router.get('/debug/all', async (req, res) => {
       data: {
         feedback: allFeedback,
         count: allFeedback.length,
-        storeKeys: Array.from(feedbackStore.keys()),
+        source: 'Firestore',
+        collection: FEEDBACK_COLLECTION,
       },
     });
   } catch (error) {
