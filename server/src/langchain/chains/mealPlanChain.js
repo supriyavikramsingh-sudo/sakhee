@@ -83,9 +83,6 @@ class MealPlanChain {
       ingredientSubstitutes: ingredientSubstituteDocs.length,
     });
 
-    // ===== STEP 1: MULTI-STAGE RAG RETRIEVAL (ENHANCED) =====
-    logger.info('Performing multi-stage RAG retrieval');
-
     const mealTemplatesContext = retriever.formatContextFromResults(mealTemplates);
 
     // ===== STEP 2: RETRIEVE PCOS NUTRITION GUIDELINES =====
@@ -95,10 +92,6 @@ class MealPlanChain {
     const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
     const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
 
-    // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
-    // (Now handled by multi-stage retrieval above)
-
-    // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
     // ===== STEP 3: RETRIEVE SYMPTOM-SPECIFIC RECOMMENDATIONS =====
     // (Now handled by multi-stage retrieval above)
 
@@ -124,127 +117,89 @@ class MealPlanChain {
 
       enhancedContext += '� SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
       enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
-      // NEW: Add symptom-specific guidance
-      if (symptomGuidanceDocs.length > 0) {
-        const symptomContext = symptomGuidanceDocs
-          .map((doc) => doc.pageContent || doc.content)
-          .join('\n\n');
-
-        enhancedContext += '� SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
-        enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
-        enhancedContext += symptomContext + '\n\n';
-      }
-
-      // NEW: Add lab-specific guidance
-      if (labGuidanceDocs.length > 0) {
-        const labContext = labGuidanceDocs
-          .map((doc) => doc.pageContent || doc.content)
-          .join('\n\n');
-
-        enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
-        enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
-        enhancedContext += labContext + '\n\n';
-      }
-
-      // NEW: Add ingredient substitutes
-      if (ingredientSubstituteDocs.length > 0) {
-        const substituteContext = ingredientSubstituteDocs
-          .map((doc) => doc.pageContent || doc.content)
-          .join('\n\n');
-
-        enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
-        enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
-        enhancedContext += substituteContext + '\n\n';
-      }
-
-      // NEW: Add lab-specific guidance
-      if (labGuidanceDocs.length > 0) {
-        const labContext = labGuidanceDocs
-          .map((doc) => doc.pageContent || doc.content)
-          .join('\n\n');
-
-        enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
-        enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
-        enhancedContext += labContext + '\n\n';
-      }
-
-      // NEW: Add ingredient substitutes
-      if (ingredientSubstituteDocs.length > 0) {
-        const substituteContext = ingredientSubstituteDocs
-          .map((doc) => doc.pageContent || doc.content)
-          .join('\n\n');
-
-        enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
-        enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
-        enhancedContext += substituteContext + '\n\n';
-      }
-
-      if (!enhancedContext) {
-        enhancedContext = this.getFallbackGuidelines();
-      }
-
-      // ===== STEP 6: BUILD PROMPT WITH MULTI-CUISINE INSTRUCTIONS =====
-      const prompt = this.buildMealPlanPrompt(preferences, healthContext, enhancedContext);
-
-      // ===== STEP 7: INVOKE LLM =====
-      logger.info('Invoking LLM for meal plan generation', {
-        promptLength: prompt.length,
-        cuisineCount: cuisines.length,
-      });
-
-      const response = await this.structuredLLM.invoke(prompt);
-      const rawContent = response.content || response;
-
-      logger.info('LLM response received', { responseLength: rawContent.length });
-
-      // ===== STEP 8: PARSE AND VALIDATE =====
-      let parsed = this.parseJSON(rawContent);
-
-      if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
-        logger.warn('Invalid structure detected, attempting fix');
-        parsed = this.fixStructure(parsed, duration, mealsPerDay);
-      }
-
-      if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
-        logger.error('Structure validation failed after fixes');
-        throw new Error('Invalid meal plan structure');
-      }
-
-      // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
-      this.validateAndAdjustCalories(parsed);
-
-      // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
-      // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
-      const ragMetadata = {
-        mealTemplates: mealTemplates.length,
-        nutritionGuidelines: nutritionGuidelines.length,
-        symptomGuidance: symptomGuidanceDocs.length, // NEW
-        labGuidance: labGuidanceDocs.length, // NEW
-        ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
-        symptomRecommendations: symptomGuidanceDocs.length > 0,
-        symptomGuidance: symptomGuidanceDocs.length, // NEW
-        labGuidance: labGuidanceDocs.length, // NEW
-        ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
-        symptomRecommendations: symptomGuidanceDocs.length > 0,
-        retrievalQuality: this.assessRetrievalQuality(
-          mealTemplates,
-          nutritionGuidelines,
-          labGuidanceDocs
-        ),
-        cuisinesUsed: cuisines,
-        multiCuisine: cuisines.length > 1,
-      };
-
-      logger.info('Meal plan generated successfully with RAG', {
-        days: parsed.days.length,
-        ragMetadata,
-      });
-
-      return {
-        ...parsed,
-        ragMetadata,
-      };
+      enhancedContext += symptomContext + '\n\n';
     }
+
+    // NEW: Add lab-specific guidance
+    if (labGuidanceDocs.length > 0) {
+      const labContext = labGuidanceDocs.map((doc) => doc.pageContent || doc.content).join('\n\n');
+
+      enhancedContext += '🔬 LAB MARKER-SPECIFIC GUIDANCE:\n';
+      enhancedContext += '(Address these abnormal lab values through ingredient selection)\n\n';
+      enhancedContext += labContext + '\n\n';
+    }
+
+    // NEW: Add ingredient substitutes
+    if (ingredientSubstituteDocs.length > 0) {
+      const substituteContext = ingredientSubstituteDocs
+        .map((doc) => doc.pageContent || doc.content)
+        .join('\n\n');
+
+      enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
+      enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
+      enhancedContext += substituteContext + '\n\n';
+    }
+
+    if (!enhancedContext) {
+      enhancedContext = this.getFallbackGuidelines();
+    }
+
+    // ===== STEP 6: BUILD PROMPT WITH MULTI-CUISINE INSTRUCTIONS =====
+    const prompt = this.buildMealPlanPrompt(preferences, healthContext, enhancedContext);
+
+    // ===== STEP 7: INVOKE LLM =====
+    logger.info('Invoking LLM for meal plan generation', {
+      promptLength: prompt.length,
+      cuisineCount: cuisines.length,
+    });
+
+    const response = await this.structuredLLM.invoke(prompt);
+    const rawContent = response.content || response;
+
+    logger.info('LLM response received', { responseLength: rawContent.length });
+
+    // ===== STEP 8: PARSE AND VALIDATE =====
+    let parsed = this.parseJSON(rawContent);
+
+    if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
+      logger.warn('Invalid structure detected, attempting fix');
+      parsed = this.fixStructure(parsed, duration, mealsPerDay);
+    }
+
+    if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
+      logger.error('Structure validation failed after fixes');
+      throw new Error('Invalid meal plan structure');
+    }
+
+    // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
+    this.validateAndAdjustCalories(parsed);
+
+    // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
+    const ragMetadata = {
+      mealTemplates: mealTemplates.length,
+      nutritionGuidelines: nutritionGuidelines.length,
+      symptomGuidance: symptomGuidanceDocs.length, // NEW
+      labGuidance: labGuidanceDocs.length, // NEW
+      ingredientSubstitutes: ingredientSubstituteDocs.length, // NEW
+      symptomRecommendations: symptomGuidanceDocs.length > 0,
+      retrievalQuality: this.assessRetrievalQuality(
+        mealTemplates,
+        nutritionGuidelines,
+        labGuidanceDocs
+      ),
+      cuisinesUsed: cuisines,
+      multiCuisine: cuisines.length > 1,
+    };
+
+    logger.info('Meal plan generated successfully with RAG', {
+      days: parsed.days.length,
+      ragMetadata,
+    });
+
+    return {
+      ...parsed,
+      ragMetadata,
+    };
   }
 
   /**
