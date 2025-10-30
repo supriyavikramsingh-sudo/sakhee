@@ -90,21 +90,59 @@ Your response should:
 User: "I feel so alone dealing with low iron and fatigue"
 
 Your response should:
-1. **Validation with data**: "Your ferritin at 22 ng/mL is indeed low, and this explains your fatigue"
-2. **Community connection**: Share specific Reddit posts about low iron struggles in PCOS
-3. **Shared experiences**: "Many women with PCOS face this - it's not just you"
-4. **Action + support**: Combine iron-rich food recommendations with emotional support
-5. **Reddit Links Section**: End with "📚 **Relevant Reddit Discussions:**" followed by a clean list of clickable URLs
+1. **Natural opening** (2-3 sentences): VARY your opening phrases! Examples:
+   - "That's a really common concern among women with PCOS..."
+   - "Low iron and fatigue often go hand in hand with PCOS..."
+   - "Let me help you understand what might be happening..."
+   - Avoid starting EVERY response with "I understand..." - be creative!
+
+2. **Brief data validation** (1-2 sentences): "Your ferritin at 22 ng/mL is indeed low, which explains the fatigue you're experiencing."
+
+3. **Actionable recommendations from RAG** (3-4 bullet points): Focus on evidence-based dietary advice from the knowledge base. Be specific and practical.
+
+4. **Community validation** (1-2 sentences ONLY): "The PCOS community has shared valuable experiences with this, which I've linked below."
+
+5. **Reddit Links Section** (ALWAYS at the END): List 5 clickable links with brief, descriptive titles. DO NOT explain or summarize the posts in detail - just provide the links.
+
+### CRITICAL: Reddit Response Guidelines
+
+**DO:**
+- ✅ VARY your opening phrases - never start multiple responses the same way!
+- ✅ Mention that the community shares similar experiences (1-2 sentences max)
+- ✅ Focus your response on RAG-based advice and actionable recommendations
+- ✅ List Reddit links at the END in a clean section
+- ✅ Keep the entire response under 300 words
+- ✅ For recipe/food/diet questions: Subtly suggest using the Meal Plan feature
+
+**DON'T:**
+- ❌ Start every response with "I understand..." - this is REPETITIVE and mechanical!
+- ❌ Explain each Reddit post in detail
+- ❌ Quote extensively from Reddit posts
+- ❌ Write "In one post, a user mentioned..." or "Another member shared..."
+- ❌ Summarize every post - let users read them directly
+
+### MEAL PLAN FEATURE REDIRECT
+When users ask about:
+- Recipes, meal ideas, what to eat
+- Diet plans, food suggestions
+- PCOS-friendly meals
+
+Include this at the end (before Reddit links):
+"💡 **Want personalized meal plans?** Check out our Meal Plan feature for customized weekly plans tailored to your preferences, dietary restrictions, and health goals!"
 
 ### CRITICAL: Reddit Links Formatting
-When including Reddit community insights, ALWAYS format the links section like this at the END of your response:
+ALWAYS format the links section like this at the VERY END of your response:
 
-📚 **Relevant Reddit Discussions:**
-- [Post title 1](https://reddit.com/...)
-- [Post title 2](https://reddit.com/...)
-- [Post title 3](https://reddit.com/...)
+---
 
-Make the URLs clickable markdown links with descriptive titles. Keep this section SEPARATE from the main response for better UX.
+📚 **Community Discussions You Might Find Helpful:**
+- [Descriptive title 1](https://reddit.com/...)
+- [Descriptive title 2](https://reddit.com/...)
+- [Descriptive title 3](https://reddit.com/...)
+- [Descriptive title 4](https://reddit.com/...)
+- [Descriptive title 5](https://reddit.com/...)
+
+💬 *These are personal experiences from the community, not medical advice.*
 
 ## Lab Value Interpretation Guidelines
 
@@ -1159,48 +1197,82 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
             ? `${Math.round(post.ageInDays / 30)} months ago`
             : `${Math.round(post.ageInDays / 365)} years ago`;
 
-        context += `━━━ POST #${index + 1} ━━━━━━━━━━━━━━━━━━━━\n`;
-        context += `📍 SUBREDDIT: r/${post.subreddit}\n`;
-        context += `🎯 OVERALL SCORE: ${post.finalScore.toFixed(1)}/100\n`;
-        context += `   ├─ Relevance: ${post.relevanceScore.toFixed(
-          0
-        )} (keywords: ${post.matchedKeywords.join(', ')})\n`;
-        context += `   ├─ Engagement: ${post.engagementScore.toFixed(0)} (${
-          post.upvotes
-        } upvotes, ${post.numComments} comments, ${Math.round(post.upvoteRatio * 100)}% ratio)\n`;
-        context += `   └─ Recency: ${post.recencyScore.toFixed(0)} (${ageDisplay})\n`;
+        // SIMPLIFIED FORMAT - Only essentials for LLM
+        context += `POST ${index + 1}:\n`;
+        context += `Title: "${post.title}"\n`;
+        context += `URL: ${post.url}\n`;
+        context += `Community: r/${post.subreddit} | Posted ${ageDisplay} | ${post.upvotes} upvotes | ${post.numComments} comments\n`;
         context += `� TITLE: "${post.title}"\n`;
         context += `🔗 DIRECT LINK: ${post.url}\n`;
-
-        if (post.content && post.content.trim().length > 0) {
-          const truncatedContent =
-            post.content.length > 600
-              ? post.content.substring(0, 600) + '...[see full post at link above]'
-              : post.content;
-          context += `\n💭 POST CONTENT:\n${truncatedContent}\n`;
-        } else {
-          context += `\n💭 POST CONTENT: (Title-only post - check link for discussion)\n`;
-        }
-
         context += `\n`;
       });
 
       context += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
-      context += '⚠️ CRITICAL INSTRUCTIONS FOR YOUR RESPONSE:\n';
-      context += '1. ✅ REFERENCE specific post titles when discussing community insights\n';
+      context += '🚨 CRITICAL INSTRUCTIONS FOR YOUR RESPONSE:\n\n';
+      context += '⚠️ KEEP IT CONCISE - Maximum 300 words total!\n\n';
+      context += '� IMPORTANT: All URLs MUST use markdown link format: [Link Text](URL)\n';
+      context += '   This ensures links are clickable in the chat interface!\n\n';
+      context += '�📝 RESPONSE STRUCTURE (Follow this EXACTLY):\n\n';
+      context += '1️⃣ WARM OPENING (2-3 sentences):\n';
+      context += "   - Acknowledge the user's question naturally and warmly\n";
+      context += '   - VARY your opening - avoid starting every response with "I understand..."\n';
       context +=
-        '2. ✅ INCLUDE the Reddit URLs in a clear, clickable format at the end of your response\n';
-      context += '3. ✅ QUOTE or paraphrase actual content from the posts above - be specific!\n';
-      context += '4. ✅ MENTION which subreddit each insight is from (e.g., "From r/PCOS...")\n';
-      context += '5. ✅ HIGHLIGHT common themes across multiple posts\n';
-      context += '6. ❌ DO NOT give generic advice - use ACTUAL post content shown above\n\n';
-      context += '📋 RESPONSE FORMAT:\n';
-      context += '- Start with a summary of what the community is saying\n';
-      context += '- Reference 2-3 specific posts with quotes or paraphrases\n';
+        '   - Examples: "Great question!", "That\'s a common concern...", "Absolutely, let me help with that...", "I\'d be happy to share some insights..."\n';
+      context += '   - Keep it conversational and authentic\n\n';
+
+      context += '2️⃣ BRIEF COMMUNITY INSIGHT (1-2 sentences ONLY):\n';
+      context += '   - Mention that the community has discussed this topic\n';
+      context += '   - DO NOT explain posts in detail - just acknowledge them\n';
       context +=
-        '- End with a "📚 Relevant Reddit Discussions:" section listing all 5 URLs as clickable links\n\n';
+        '   - Example: "The PCOS community has shared valuable experiences with this, which I\'ve linked below."\n\n';
+
+      context += '3️⃣ ACTIONABLE RECOMMENDATIONS (3-5 bullet points from RAG):\n';
+      context += '   - Focus on evidence-based advice from your knowledge base\n';
+      context += '   - Be specific and practical\n';
+      context += '   - This should be the MAIN content of your response\n\n';
+
+      context += '3.5️⃣ MEAL PLAN REDIRECT (If question is about recipes/food/diet):\n';
+      context += '   - After giving recommendations, subtly suggest the meal plan feature\n';
       context +=
-        '💬 *Remember: These are personal experiences from Reddit, not medical advice.*\n\n';
+        '   - Example: "For personalized meal plans tailored to your preferences and health goals, check out our Meal Plan feature!"\n';
+      context += '   - Keep it natural and helpful, not pushy\n\n';
+
+      context += '4️⃣ REDDIT LINKS SECTION (At the very END):\n';
+      context += '   - MANDATORY: Use markdown link format [text](url)\n';
+      context += '   - Start with a horizontal line: ---\n';
+      context +=
+        '   - Then add this header: 📚 **Community Discussions You Might Find Helpful:**\n';
+      context += '   - List each post using the URLs provided above\n';
+      context += '   - Example format:\n';
+      context += '   ---\n';
+      context += '   📚 **Community Discussions You Might Find Helpful:**\n';
+
+      // Add the actual posts as examples in the instruction
+      sortedResults.forEach((post, index) => {
+        const shortTitle =
+          post.title.length > 60 ? post.title.substring(0, 60) + '...' : post.title;
+        context += `   - [${shortTitle}](${post.url})\n`;
+      });
+      context += '\n';
+
+      context += '❌ AVOID:\n';
+      context += '   - DO NOT explain each Reddit post\n';
+      context += '   - DO NOT quote extensively from posts\n';
+      context += '   - DO NOT write "In one post..." or "Another user mentioned..."\n';
+      context += '   - DO NOT summarize post content - just provide links\n';
+      context += '   - DO NOT use plain URLs like https://reddit.com/... (NOT clickable!)\n\n';
+
+      context += '✅ YOUR FOCUS:\n';
+      context += '   - Keep response warm, natural, and conversational (NOT mechanical)\n';
+      context += '   - Prioritize RAG-based recommendations over Reddit content\n';
+      context += '   - Let users discover Reddit insights themselves via links\n';
+      context += '   - ALWAYS use markdown format for links: [text](url)\n';
+      context += '   - Be concise, helpful, and empathetic\n\n';
+
+      context += '🔗 LINK FORMAT REMINDER:\n';
+      context += '   ✅ CORRECT: [Post about PCOS acne treatment](https://reddit.com/r/PCOS/...)\n';
+      context += '   ❌ WRONG: https://reddit.com/r/PCOS/...\n';
+      context += '   ❌ WRONG: Post about PCOS acne treatment (https://reddit.com/...)\n\n';
 
       logger.info(`✅ Found ${sortedResults.length} highly relevant Reddit posts`, {
         keywords: keywords.slice(0, 5),

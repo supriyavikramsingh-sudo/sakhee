@@ -2,11 +2,23 @@ export const boldify = (text: string) => {
   if (text === undefined) {
     return '';
   }
-  let boldText = text.replace(/\*\*(.*?)\*\*/g, (_, word) => `<strong>${word}</strong>`);
-  return boldText.replace(/\*(.*?)\*/g, (_, word) => `<strong>${word}</strong>`);
+  
+  // Convert markdown links [text](url) to HTML <a> tags
+  let processedText = text.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    (_, linkText, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-dark">${linkText}</a>`
+  );
+  
+  // Convert **bold** to <strong>
+  processedText = processedText.replace(/\*\*(.*?)\*\*/g, (_, word) => `<strong>${word}</strong>`);
+  
+  // Convert *italic* to <strong> (treating as bold for consistency)
+  processedText = processedText.replace(/\*(.*?)\*/g, (_, word) => `<strong>${word}</strong>`);
+  
+  return processedText;
 };
 
-export const formatTimestamp = (timestamp) => {
+export const formatTimestamp = (timestamp: any) => {
   if (!timestamp) return '';
 
   try {

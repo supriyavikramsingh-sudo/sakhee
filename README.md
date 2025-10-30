@@ -24,7 +24,9 @@ This README covers how to get the project running locally, available scripts, en
   - Plans are generated in chunks (3 days max per LLM call) for reliability
   - Structure validation ensures consistent JSON format
   - Fallback templates used if AI generation fails
-  - All plans stored in-memory (consider migrating to Firestore for persistence)Features
+  - All plans stored in-memory (consider migrating to Firestore for persistence)
+
+Features
 
 - **🤖 AI Chat Assistant** - Conversational AI powered by GPT-4o-mini with RAG (Retrieval-Augmented Generation) for PCOS-specific guidance
 - **🍽️ Personalized Meal Planning** - AI-generated meal plans tailored to Indian cuisine and PCOS dietary needs with:
@@ -40,6 +42,23 @@ This README covers how to get the project running locally, available scripts, en
 - **🔐 Firebase Authentication** - Secure Google OAuth login with Firestore for user profiles and data persistence
 - **🛡️ Safety & Privacy** - Content safety guards, rate limiting, and medical disclaimers
 - **🔄 Community Insights** - Reddit integration for anonymized community experiences (optional)
+
+Testing Community Insights & Clickable Links
+
+- Quick test: send a community-style question to the chat endpoint and look for a concise assistant reply that includes a final markdown-formatted links block (e.g. `[title](https://reddit.com/...)`). The frontend converts markdown links into clickable anchors.
+- Example curl payload to test the chat endpoint (replace `USER_ID` and `API_KEY` as needed):
+
+```bash
+curl -sS -X POST http://localhost:5000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"USER_ID","message":"Are there any women in India who treated PCOS acne with Ayurveda?"}'
+```
+
+- What to look for:
+  - Backend logs show `needsCommunityInsights()` triggered and `fetchRedditContext()` returned top posts.
+  - Assistant reply contains a short empathic opening, a 3–5 bullet set of RAG-backed recommendations, and a `📚 Community discussions` section with markdown links.
+  - Links in the frontend chat UI are clickable (open in a new tab). If links are plain URLs, see the Troubleshooting section about frontend markdown rendering.
+
 - **🎨 Modern UI** - Responsive design with Tailwind CSS, Lucide icons, and Recharts visualizations
 - **🔍 RAG System Status** - Real-time monitoring of RAG system health, vector store status, and template indexing
 
@@ -590,7 +609,7 @@ server/
 
 ---
 
-## � RAG System Architecture
+## RAG System Architecture
 
 ### Overview
 
@@ -709,7 +728,7 @@ Tip: Use brown rice idlis for extra fiber and lower GI
 
 ---
 
-## �🧪 Testing & Linting
+## 🧪 Testing & Linting
 
 ### Testing
 
