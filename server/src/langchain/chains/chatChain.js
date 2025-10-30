@@ -475,6 +475,8 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   needsCommunityInsights(message) {
     const lowerMessage = message.toLowerCase();
+
+    // Enhanced trigger phrases that indicate user wants community experiences
     const triggers = [
       'reddit',
       'community',
@@ -488,11 +490,20 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'dealing with',
       'experiences',
       'stories',
+      'success stories',
+      'have successfully',
+      'successfully treated',
+      'worked for',
+      'anyone tried',
+      'real experiences',
+      'personal experiences',
     ];
 
     // Check if message contains community insight triggers
     const hasTrigger = triggers.some(trigger => lowerMessage.includes(trigger));
     if (!hasTrigger) return null;
+
+    logger.info('🔍 Community insights needed, extracting keyword', { message });
 
     // Enhanced keyword extraction for PCOS context
     const pcosKeywords = [
@@ -501,9 +512,19 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'hirsutism', 'acne', 'weight', 'gain', 'loss', 'hair', 'thinning',
       'mood', 'depression', 'anxiety', 'fatigue', 'cravings', 'bloating',
       'hormones', 'testosterone', 'estrogen', 'progesterone', 'cortisol',
-      'diet', 'exercise', 'supplements', 'inositol', 'spearmint', 'cinnamon'
+      'diet', 'exercise', 'supplements', 'inositol', 'spearmint', 'cinnamon',
+      'pimples', 'skin', 'pregnancy', 'ayurveda', 'natural'
     ];
 
+    // First, try to find PCOS-specific keywords
+    for (const keyword of pcosKeywords) {
+      if (lowerMessage.includes(keyword)) {
+        logger.info(`✅ Reddit keyword extracted: "${keyword}"`);
+        return keyword;
+      }
+    }
+
+    // Enhanced fallback keyword extraction
     const stopWords = new Set([
       'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
       'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before',
@@ -512,7 +533,8 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must',
       'can', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she',
       'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your',
-      'his', 'her', 'its', 'our', 'their', 'reddit', 'threads', 'community'
+      'his', 'her', 'its', 'our', 'their', 'reddit', 'threads', 'community',
+      'which', 'women', 'dealing', 'there', 'india', 'indian', 'methods', 'treated'
     ]);
 
     // Extract and score keywords
@@ -525,11 +547,6 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
     
     words.forEach(word => {
       let score = 1;
-      
-      // Boost PCOS-related keywords
-      if (pcosKeywords.includes(word)) {
-        score += 3;
-      }
       
       // Boost longer, more specific words
       if (word.length > 6) {
@@ -544,22 +561,19 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       keywordScores[word] = (keywordScores[word] || 0) + score;
     });
 
-    // Get top 3-5 keywords based on scores
+    // Get top keyword based on scores
     const sortedKeywords = Object.entries(keywordScores)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 5)
-      .map(([word]) => word);
+      .sort(([,a], [,b]) => b - a);
 
-    // Return keywords array if found, otherwise fallback to generic PCOS terms
     if (sortedKeywords.length > 0) {
-      return sortedKeywords;
+      const topKeyword = sortedKeywords[0][0];
+      logger.info(`✅ Reddit keyword extracted (scored): "${topKeyword}"`);
+      return topKeyword;
     }
 
-    // Fallback to generic PCOS keywords if no specific keywords found
-    return ['pcos', 'symptoms'];
-  }
-
-    return null;
+    // Final fallback to generic PCOS term
+    logger.info('ℹ️ No specific keyword found, using default "PCOS"');
+    return 'pcos';
   }
 
   /**

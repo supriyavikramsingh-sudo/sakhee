@@ -265,13 +265,26 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
             )}
 
             {messages.map((msg, idx) => {
+              // Find the user prompt for AI messages (look at previous message)
+              let userPrompt = '';
+              if (msg.type === 'assistant' && idx > 0) {
+                const prevMsg = messages[idx - 1];
+                if (prevMsg.type === 'user') {
+                  userPrompt = prevMsg.content;
+                }
+              }
+
               return (
                 <div key={msg.id || idx}>
                   {msg.type === 'meal_plan_redirect' ? (
                     <MealPlanRedirectCard data={msg.redirectData} />
                   ) : (
                     <>
-                      <MessageBubble message={msg} />
+                      <MessageBubble 
+                        message={msg} 
+                        messageId={msg.id?.toString() || `msg-${idx}`}
+                        userPrompt={userPrompt}
+                      />
                       {msg.sources && msg.sources.length > 0 && (
                         <SourceCitations sources={msg.sources} />
                       )}
