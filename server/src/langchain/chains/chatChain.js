@@ -94,6 +94,17 @@ Your response should:
 2. **Community connection**: Share specific Reddit posts about low iron struggles in PCOS
 3. **Shared experiences**: "Many women with PCOS face this - it's not just you"
 4. **Action + support**: Combine iron-rich food recommendations with emotional support
+5. **Reddit Links Section**: End with "📚 **Relevant Reddit Discussions:**" followed by a clean list of clickable URLs
+
+### CRITICAL: Reddit Links Formatting
+When including Reddit community insights, ALWAYS format the links section like this at the END of your response:
+
+📚 **Relevant Reddit Discussions:**
+- [Post title 1](https://reddit.com/...)
+- [Post title 2](https://reddit.com/...)
+- [Post title 3](https://reddit.com/...)
+
+Make the URLs clickable markdown links with descriptive titles. Keep this section SEPARATE from the main response for better UX.
 
 ## Lab Value Interpretation Guidelines
 
@@ -471,7 +482,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
   }
 
   /**
-   * Check if message needs community insights
+   * Check if message needs community insights and extract ALL relevant keywords
    */
   needsCommunityInsights(message) {
     const lowerMessage = message.toLowerCase();
@@ -481,6 +492,11 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'reddit',
       'community',
       'other women',
+      'women like me',
+      ' experiences',
+      ' stories',
+      ' anyone',
+      'women',
       'anyone else',
       'has anyone',
       'do other',
@@ -497,100 +513,705 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'anyone tried',
       'real experiences',
       'personal experiences',
+      'any women',
+      'are there any',
+      'like me',
+      'similar experiences',
+      'find experiences',
+      'looking for experiences',
+      'want to hear from',
+      'share your story',
+      'share your experience',
+      'any advice from',
+      'tips from',
+      'suggestions from',
+      'recommendations from',
     ];
 
-    // Check if any trigger is present
+    // Check if message contains community insight triggers
     const hasTrigger = triggers.some((trigger) => lowerMessage.includes(trigger));
+    if (!hasTrigger) return null;
 
-    if (!hasTrigger) {
-      return null;
-    }
+    logger.info('🔍 Community insights needed, extracting ALL relevant keywords', { message });
 
-    logger.info('🔍 Community insights needed, extracting keyword', { message });
+    // Comprehensive PCOS-related keyword map with priorities
+    const pcosKeywordCategories = {
+      // Core PCOS terms (highest priority)
+      core: [
+        'pcos',
+        'pcod',
+        'polycystic',
+        'ovarian',
+        'syndrome',
+        'disorder',
+        'metabolic',
+        'insulin resistance',
+      ],
 
-    // Enhanced keyword extraction - prioritize PCOS-related terms
-    const pcosKeywords = [
-      'acne',
-      'pimples',
-      'skin',
+      // Geographic/cultural
+      geographic: [
+        'india',
+        'indian',
+        'desi',
+        'ayurveda',
+        'ayurvedic',
+        'home remedies',
+        'natural remedies',
+        'traditional medicine',
+        'holistic',
+        'dietary habits',
+      ],
+
+      // Symptoms (high priority)
+      symptoms: [
+        'acne',
+        'pimples',
+        'skin',
+        'breakouts',
+        'hair loss',
+        'thinning',
+        'shedding',
+        'hirsutism',
+        'facial hair',
+        'hair fall',
+        'facial hair growth',
+        'weight',
+        'obesity',
+        'overweight',
+        'weight loss',
+        'weight gain',
+        'body fat',
+        'irregular',
+        'periods',
+        'cycles',
+        'amenorrhea',
+        'spotting',
+        'menstruation',
+        'no periods',
+        'cycle length',
+        'fatigue',
+        'tired',
+        'exhausted',
+        'energy',
+        'lethargy',
+        'mood',
+        'depression',
+        'anxiety',
+        'emotional',
+        'irritability',
+        'mood swings',
+        'brain fog',
+        'concentration',
+        'memory',
+        'focus',
+        'sleep',
+        'insomnia',
+        'restless',
+        'sleep quality',
+        'sleep apnea',
+        'cramps',
+        'pain',
+        'pelvic pain',
+        'abdominal pain',
+        'bloating',
+        'inflammation',
+        'swelling',
+        'water retention',
+        'cravings',
+        'hunger',
+        'appetite',
+        'sugar cravings',
+      ],
+
+      // Treatments/interventions
+      treatments: [
+        'metformin',
+        'birth control',
+        'spironolactone',
+        'clomid',
+        'letrozole',
+        'inositol',
+        'spearmint',
+        'berberine',
+        'cinnamon',
+        'supplements',
+        'vitamins',
+        'herbs',
+        'natural',
+        'holistic',
+        'home remedies',
+        'minoxidil',
+        'accutane',
+        'isotretinoin',
+        'tretinoin',
+        'benzoyl peroxide',
+        'antibiotics',
+        'ozempic',
+        'sglt2 inhibitors',
+        'glp-1 agonists',
+        'glp1',
+        'insulin sensitizers',
+        'lifestyle changes',
+        'diet changes',
+        'exercise routine',
+        'keto',
+        'low carb',
+        'intermittent fasting',
+        'yoga',
+        'meditation',
+        'stress management',
+        'winlevi',
+        'clomiphene',
+        'spironolactone',
+        'flutamide',
+        'finasteride',
+        'dutasteride',
+        'laser hair removal',
+        'electrolysis',
+        'IUD',
+        'intrauterine device',
+        'N-acetylcysteine',
+        'NAC',
+        'orlistat',
+        'Yasmin',
+        'Diane-35',
+        'Cyproterone acetate',
+        'retinoids',
+        'adapalene',
+        'tazarotene',
+        'clindamycin',
+        'chemical peels',
+        'microdermabrasion',
+        'follical forte',
+        'ovoplus',
+        'fertility drugs',
+        'ovarian drilling',
+      ],
+
+      // Lifestyle
+      lifestyle: [
+        'diet',
+        'keto',
+        'low carb',
+        'fasting',
+        'intermittent fasting',
+        'exercise',
+        'workout',
+        'gym',
+        'yoga',
+        'cardio',
+        'weights',
+        'sleep',
+        'stress',
+        'meditation',
+        'strength training',
+        'lifestyle changes',
+        'healthy habits',
+        'wellness',
+        'pilates',
+        'walking',
+        'running',
+        'gluten free',
+        'dairy free',
+        'whole30',
+        'paleo',
+        'omad',
+        'plant based',
+        'vegan',
+        'mindfulness',
+        'self care',
+        'mental health',
+        'relaxation',
+        'breathing exercises',
+        'hydration',
+        'water intake',
+      ],
+
+      // Fertility
+      fertility: [
+        'pregnancy',
+        'pregnant',
+        'conceive',
+        'conception',
+        'ttc',
+        'trying to conceive',
+        'fertility',
+        'ovulation',
+        'ovulate',
+        'miscarriage',
+        'ivf',
+        'iui',
+        'baby',
+        'infertility',
+      ],
+
+      // Medical markers
+      medical: [
+        'insulin',
+        'resistance',
+        'glucose',
+        'diabetes',
+        'testosterone',
+        'hormones',
+        'estrogen',
+        'progesterone',
+        'thyroid',
+        'tsh',
+        'cortisol',
+        'lipid',
+        'cholesterol',
+        'triglycerides',
+        'vitamin d',
+        'b12',
+        'iron',
+        'ferritin',
+        'inflammation',
+        'crp',
+        'hba1c',
+        'homair',
+        'lh',
+        'fsh',
+        'amh',
+        'dheas',
+        'prolactin',
+        'cortisol',
+        'liver function',
+        'kidney function',
+        'metabolism',
+        'testosterone levels',
+        'LFT',
+        'KFT',
+        'blood sugar',
+        'fasting insulin',
+      ],
+    };
+
+    // Extract keywords from ALL categories
+    const foundKeywords = [];
+
+    Object.entries(pcosKeywordCategories).forEach(([category, keywords]) => {
+      keywords.forEach((keyword) => {
+        if (lowerMessage.includes(keyword)) {
+          foundKeywords.push({
+            keyword,
+            category,
+            // Assign priority scores
+            priority:
+              category === 'core'
+                ? 100
+                : category === 'symptoms'
+                ? 80
+                : category === 'geographic'
+                ? 70
+                : category === 'treatments'
+                ? 60
+                : category === 'medical'
+                ? 50
+                : category === 'fertility'
+                ? 40
+                : 30,
+          });
+        }
+      });
+    });
+
+    // Also extract multi-word phrases for compound queries
+    const multiWordPhrases = [
       'hair loss',
-      'hirsutism',
-      'weight',
-      'period',
-      'irregular',
-      'fertility',
-      'pregnancy',
-      'insulin',
-      'metformin',
-      'ayurveda',
-      'natural',
-      'diet',
-      'exercise',
-      'supplements',
-      'inositol',
-      'spearmint',
-      'cinnamon',
+      'facial hair',
+      'weight loss',
+      'weight gain',
+      'birth control',
+      'insulin resistance',
+      'irregular periods',
+      'natural methods',
+      'natural remedies',
+      'ayurvedic treatment',
+      'successfully treated',
+      'trying to conceive',
     ];
 
-    // First, try to find PCOS-specific keywords
-    for (const keyword of pcosKeywords) {
-      if (lowerMessage.includes(keyword)) {
-        logger.info(`✅ Reddit keyword extracted: "${keyword}"`);
-        return keyword;
+    multiWordPhrases.forEach((phrase) => {
+      if (lowerMessage.includes(phrase)) {
+        foundKeywords.push({
+          keyword: phrase,
+          category: 'phrase',
+          priority: 90, // High priority for exact phrases
+        });
       }
-    }
+    });
 
-    // Fallback: extract meaningful words (length > 4, not common words)
-    const words = message.split(' ');
-    const stopWords = [
-      'which',
+    // Enhanced fallback keyword extraction for words not in our predefined list
+    const stopWords = new Set([
+      'the',
+      'and',
+      'or',
+      'but',
+      'in',
+      'on',
+      'at',
+      'to',
+      'for',
+      'of',
+      'with',
+      'by',
+      'from',
+      'up',
       'about',
+      'into',
+      'through',
+      'during',
+      'before',
+      'after',
+      'above',
+      'below',
+      'between',
+      'among',
+      'is',
+      'are',
+      'was',
+      'were',
+      'be',
+      'been',
+      'being',
+      'have',
+      'has',
+      'had',
+      'do',
+      'does',
+      'did',
+      'will',
+      'would',
+      'could',
+      'should',
+      'may',
+      'might',
+      'must',
+      'can',
+      'this',
+      'that',
+      'these',
+      'those',
+      'i',
+      'you',
+      'he',
+      'she',
+      'it',
+      'we',
+      'they',
+      'me',
+      'him',
+      'her',
+      'us',
+      'them',
+      'my',
+      'your',
+      'his',
+      'her',
+      'its',
+      'our',
+      'their',
       'reddit',
       'threads',
+      'community',
+      'which',
       'women',
       'dealing',
       'there',
-      'their',
-      'india',
-      'indian',
       'methods',
-      'treated',
-    ];
+      'like',
+      'using',
+      'tried',
+      'any',
+      'some',
+      'all',
+      'who',
+      'what',
+      'when',
+      'where',
+      'why',
+      'how',
+    ]);
 
-    for (const word of words) {
-      const cleanWord = word.toLowerCase().replace(/[^a-z]/g, '');
-      if (cleanWord.length > 4 && !stopWords.includes(cleanWord)) {
-        logger.info(`✅ Reddit keyword extracted (fallback): "${cleanWord}"`);
-        return cleanWord;
+    // Extract additional meaningful words
+    const words = message
+      .toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter((word) => word.length > 3 && !stopWords.has(word));
+
+    words.forEach((word) => {
+      // Only add if not already in foundKeywords
+      if (!foundKeywords.some((k) => k.keyword === word)) {
+        foundKeywords.push({
+          keyword: word,
+          category: 'extracted',
+          priority: word.length > 6 ? 25 : 15, // Longer words get slight boost
+        });
       }
+    });
+
+    if (foundKeywords.length === 0) {
+      // Final fallback to generic PCOS term
+      logger.info('ℹ️ No specific keywords found, using default "PCOS"');
+      return ['pcos'];
     }
 
-    // If no specific keyword found but trigger present, use "PCOS" as default
-    logger.info('ℹ️ No specific keyword found, using default "PCOS"');
-    return 'pcos';
+    // Sort by priority (highest first) and deduplicate
+    const sortedKeywords = foundKeywords
+      .sort((a, b) => b.priority - a.priority)
+      .map((k) => k.keyword)
+      .filter((keyword, index, self) => self.indexOf(keyword) === index); // Remove duplicates
+
+    // Return top 5-7 keywords for best relevance matching
+    const topKeywords = sortedKeywords.slice(0, 7);
+
+    logger.info(`✅ Extracted ${topKeywords.length} keywords for Reddit search:`, topKeywords);
+
+    return topKeywords;
   }
 
   /**
-   * Fetch Reddit context
+   * Fetch Reddit context with enhanced multi-keyword relevance matching
    */
   async fetchRedditContext(userMessage) {
     try {
-      const keyword = this.needsCommunityInsights(userMessage);
-      if (!keyword) return null;
+      const keywords = this.needsCommunityInsights(userMessage);
+      if (!keywords || keywords.length === 0) return null;
 
-      const insights = await redditService.searchPosts(keyword);
+      logger.info('🔍 Fetching Reddit posts with keywords:', { keywords });
 
-      if (!insights || insights.length === 0) {
-        logger.info('No Reddit insights found');
+      // Build a comprehensive search query combining top keywords
+      // Format: "keyword1 keyword2 keyword3" for better Reddit search matching
+      const searchQuery = Array.isArray(keywords)
+        ? keywords.slice(0, 5).join(' ') // Use top 5 keywords
+        : keywords;
+
+      logger.info('🔍 Reddit search query built:', { searchQuery });
+
+      // Single optimized search with combined keywords
+      const searchResults = await redditService.searchPosts(searchQuery, 20);
+
+      if (!searchResults || searchResults.length === 0) {
+        logger.info('No Reddit insights found for query:', searchQuery);
         return null;
       }
 
-      let context = '🔥 REAL REDDIT COMMUNITY INSIGHTS:\n\n';
-      insights.slice(0, 5).forEach((post, index) => {
-        context += `**Post ${index + 1}** (r/${post.subreddit}, ${post.score} upvotes):\n`;
-        context += `Title: "${post.title}"\n`;
-        context += `Content: ${post.content.substring(0, 300)}...\n`;
-        context += `Link: ${post.url}\n\n`;
+      // FILTER: Remove posts older than 3 years (too outdated for health advice)
+      const now = new Date();
+      const threeYearsAgo = new Date(now.getTime() - 3 * 365 * 24 * 60 * 60 * 1000);
+
+      const recentPosts = searchResults.filter((post) => {
+        if (!post.createdAt) return true; // Keep posts without date (edge case)
+        const postDate = new Date(post.createdAt);
+        return postDate >= threeYearsAgo;
+      });
+
+      if (recentPosts.length === 0) {
+        logger.warn('All posts are older than 3 years, using original results');
+      } else {
+        logger.info(
+          `Filtered to ${recentPosts.length} posts from last 3 years (removed ${
+            searchResults.length - recentPosts.length
+          } old posts)`
+        );
+      }
+
+      const postsToScore = recentPosts.length > 0 ? recentPosts : searchResults;
+
+      // Calculate comprehensive score: relevance + recency + engagement
+      const scoredResults = postsToScore.map((post) => {
+        const titleLower = post.title.toLowerCase();
+        const contentLower = (post.content || '').toLowerCase();
+        const postText = `${titleLower} ${contentLower}`;
+
+        // === RELEVANCE SCORING (0-100 points) ===
+        let relevanceScore = 0;
+        let matchedKeywords = [];
+
+        // Score based on keyword matches
+        keywords.forEach((keyword, index) => {
+          const keywordLower = keyword.toLowerCase();
+
+          // Title matches (highest value)
+          if (titleLower.includes(keywordLower)) {
+            const baseScore = 20;
+            const positionBonus = Math.max(0, 10 - index); // Earlier keywords worth more
+            relevanceScore += baseScore + positionBonus;
+            matchedKeywords.push(keyword);
+          }
+
+          // Content matches (medium value)
+          if (contentLower.includes(keywordLower)) {
+            const baseScore = 8;
+            const positionBonus = Math.max(0, 5 - index);
+            relevanceScore += baseScore + positionBonus;
+            if (!matchedKeywords.includes(keyword)) {
+              matchedKeywords.push(keyword);
+            }
+          }
+        });
+
+        // Bonus for matching multiple keywords (compound relevance)
+        if (matchedKeywords.length >= 3) {
+          relevanceScore += matchedKeywords.length * 15; // Strong bonus for multi-keyword match
+        } else if (matchedKeywords.length === 2) {
+          relevanceScore += 10;
+        }
+
+        // Bonus for PCOS-specific subreddits
+        const pcosSubreddits = ['pcos', 'pcosindia', 'pcos_folks', 'pcosweightloss'];
+        if (pcosSubreddits.includes(post.subreddit.toLowerCase())) {
+          relevanceScore += 15;
+        }
+
+        // === ENGAGEMENT SCORING (0-50 points) ===
+        let engagementScore = 0;
+
+        // Upvotes scoring (0-25 points) - logarithmic scale
+        // 10 upvotes = 5pts, 100 upvotes = 10pts, 500 upvotes = 15pts, 1000+ upvotes = 20pts
+        const upvoteScore = Math.min(25, Math.log10(post.upvotes + 1) * 8);
+        engagementScore += upvoteScore;
+
+        // Comments scoring (0-15 points) - shows active discussion
+        // 5 comments = 5pts, 20 comments = 10pts, 50+ comments = 15pts
+        const commentScore = Math.min(15, Math.log10(post.numComments + 1) * 6);
+        engagementScore += commentScore;
+
+        // Upvote ratio bonus (0-10 points) - quality filter
+        // >90% ratio = 10pts, >80% = 7pts, >70% = 5pts
+        const ratioBonus =
+          post.upvoteRatio >= 0.9
+            ? 10
+            : post.upvoteRatio >= 0.8
+            ? 7
+            : post.upvoteRatio >= 0.7
+            ? 5
+            : 0;
+        engagementScore += ratioBonus;
+
+        // === RECENCY SCORING (0-100 points - increased range) ===
+        let recencyScore = 0;
+
+        // Calculate post age in days
+        const postDate = post.createdAt ? new Date(post.createdAt) : null;
+        const now = new Date();
+        const ageInDays = postDate ? (now - postDate) / (1000 * 60 * 60 * 24) : 9999;
+
+        // AGGRESSIVE recency scoring - heavily favor recent posts
+        // <7 days = 100pts, <30 days = 85pts, <90 days = 70pts, <180 days = 50pts, <365 days = 30pts
+        if (ageInDays <= 7) {
+          recencyScore = 100; // Brand new - maximum priority
+        } else if (ageInDays <= 30) {
+          recencyScore = 85; // Very recent - high priority
+        } else if (ageInDays <= 90) {
+          recencyScore = 70; // Recent - good priority
+        } else if (ageInDays <= 180) {
+          recencyScore = 50; // 3-6 months - moderate priority
+        } else if (ageInDays <= 365) {
+          recencyScore = 30; // 6-12 months - some priority
+        } else if (ageInDays <= 730) {
+          recencyScore = 15; // 1-2 years - low priority
+        } else if (ageInDays <= 1095) {
+          recencyScore = 5; // 2-3 years - minimal priority
+        } else {
+          recencyScore = 0; // 3+ years - no priority (too outdated)
+        }
+
+        // === CALCULATE FINAL COMPOSITE SCORE ===
+        // UPDATED Weighted formula: Relevance (45%) + Engagement (25%) + Recency (30%)
+        // Recency now has much more impact to prioritize fresh content
+        const finalScore = relevanceScore * 0.45 + engagementScore * 0.25 + recencyScore * 0.3;
+
+        return {
+          ...post,
+          relevanceScore,
+          engagementScore,
+          recencyScore,
+          finalScore,
+          matchedKeywords,
+          matchCount: matchedKeywords.length,
+          ageInDays: Math.round(ageInDays),
+        };
+      });
+
+      // Sort by final composite score (highest first)
+      const sortedResults = scoredResults.sort((a, b) => b.finalScore - a.finalScore).slice(0, 5); // Top 5 most relevant
+
+      // Build enhanced context with formatting for LLM
+      let context = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      context += '🔥 TOP 5 MOST RELEVANT & RECENT REDDIT COMMUNITY POSTS\n';
+      context += `📊 Query Keywords: ${keywords.slice(0, 5).join(', ')}\n`;
+      context += '📈 Ranked by: Relevance (45%) + Recency (30%) + Engagement (25%)\n';
+      context += '⏰ Prioritizing posts from the last 12 months\n';
+      context += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+      sortedResults.forEach((post, index) => {
+        // Format age display
+        const ageDisplay =
+          post.ageInDays < 1
+            ? 'today'
+            : post.ageInDays === 1
+            ? '1 day ago'
+            : post.ageInDays < 30
+            ? `${post.ageInDays} days ago`
+            : post.ageInDays < 365
+            ? `${Math.round(post.ageInDays / 30)} months ago`
+            : `${Math.round(post.ageInDays / 365)} years ago`;
+
+        context += `━━━ POST #${index + 1} ━━━━━━━━━━━━━━━━━━━━\n`;
+        context += `📍 SUBREDDIT: r/${post.subreddit}\n`;
+        context += `🎯 OVERALL SCORE: ${post.finalScore.toFixed(1)}/100\n`;
+        context += `   ├─ Relevance: ${post.relevanceScore.toFixed(
+          0
+        )} (keywords: ${post.matchedKeywords.join(', ')})\n`;
+        context += `   ├─ Engagement: ${post.engagementScore.toFixed(0)} (${
+          post.upvotes
+        } upvotes, ${post.numComments} comments, ${Math.round(post.upvoteRatio * 100)}% ratio)\n`;
+        context += `   └─ Recency: ${post.recencyScore.toFixed(0)} (${ageDisplay})\n`;
+        context += `� TITLE: "${post.title}"\n`;
+        context += `🔗 DIRECT LINK: ${post.url}\n`;
+
+        if (post.content && post.content.trim().length > 0) {
+          const truncatedContent =
+            post.content.length > 600
+              ? post.content.substring(0, 600) + '...[see full post at link above]'
+              : post.content;
+          context += `\n💭 POST CONTENT:\n${truncatedContent}\n`;
+        } else {
+          context += `\n💭 POST CONTENT: (Title-only post - check link for discussion)\n`;
+        }
+
+        context += `\n`;
+      });
+
+      context += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      context += '⚠️ CRITICAL INSTRUCTIONS FOR YOUR RESPONSE:\n';
+      context += '1. ✅ REFERENCE specific post titles when discussing community insights\n';
+      context +=
+        '2. ✅ INCLUDE the Reddit URLs in a clear, clickable format at the end of your response\n';
+      context += '3. ✅ QUOTE or paraphrase actual content from the posts above - be specific!\n';
+      context += '4. ✅ MENTION which subreddit each insight is from (e.g., "From r/PCOS...")\n';
+      context += '5. ✅ HIGHLIGHT common themes across multiple posts\n';
+      context += '6. ❌ DO NOT give generic advice - use ACTUAL post content shown above\n\n';
+      context += '📋 RESPONSE FORMAT:\n';
+      context += '- Start with a summary of what the community is saying\n';
+      context += '- Reference 2-3 specific posts with quotes or paraphrases\n';
+      context +=
+        '- End with a "📚 Relevant Reddit Discussions:" section listing all 5 URLs as clickable links\n\n';
+      context +=
+        '💬 *Remember: These are personal experiences from Reddit, not medical advice.*\n\n';
+
+      logger.info(`✅ Found ${sortedResults.length} highly relevant Reddit posts`, {
+        keywords: keywords.slice(0, 5),
+        topScores: sortedResults.map((r) => ({
+          title: r.title.substring(0, 50) + '...',
+          finalScore: r.finalScore.toFixed(1),
+          relevance: r.relevanceScore.toFixed(0),
+          engagement: r.engagementScore.toFixed(0),
+          recency: r.recencyScore.toFixed(0),
+          age: r.ageInDays + ' days',
+        })),
       });
 
       return context;
