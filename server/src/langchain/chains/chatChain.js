@@ -966,6 +966,46 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         'infertility',
       ],
 
+      // Social/Relationship impacts
+      social: [
+        'relationship',
+        'relationships',
+        'partner',
+        'husband',
+        'boyfriend',
+        'dating',
+        'romance',
+        'intimacy',
+        'sex',
+        'sexual',
+        'libido',
+        'marriage',
+        'married',
+        'spouse',
+        'love life',
+        'body image',
+        'self esteem',
+        'confidence',
+        'insecure',
+        'insecurity',
+        'embarrassed',
+        'shame',
+        'social life',
+        'friends',
+        'family',
+        'work life',
+        'career',
+        'job',
+        'workplace',
+        'colleagues',
+        'discrimination',
+        'stigma',
+        'judgment',
+        'support',
+        'understanding',
+        'acceptance',
+      ],
+
       // Medical markers
       medical: [
         'insulin',
@@ -1022,6 +1062,8 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
                 ? 100
                 : category === 'symptoms'
                 ? 80
+                : category === 'social'
+                ? 75
                 : category === 'geographic'
                 ? 70
                 : category === 'treatments'
@@ -1062,6 +1104,18 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'hormonal imbalance',
       'cycle length',
       'sleep apnea',
+      'relationship issues',
+      'relationship problems',
+      'relationship challenges',
+      'body image',
+      'self esteem',
+      'love life',
+      'sex life',
+      'libido issues',
+      'libido problems',
+      'low libido',
+      'sex drive',
+      'sexual desire',
     ];
 
     multiWordPhrases.forEach((phrase) => {
@@ -1226,41 +1280,176 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       logger.info('🔍 Fetching Reddit posts with keywords:', { keywords });
 
-      // Build a comprehensive search query with intelligent phrase construction
-      // Strategy: Use quoted phrases for multi-word keywords, combine with PCOS context
+      // Build a context-aware search query that preserves semantic relationships
+      // Strategy: Extract meaningful phrases from original message, not just individual keywords
       let searchQuery;
+      let contextFilters = [];
+
+      // === DETECT QUERY INTENT (moved outside to be accessible in scoring) ===
+      const messageLower = userMessage.toLowerCase();
+
+      // Detect if this is a partner/supporter query (asking how partners deal with PCOS issues)
+      const isPartnerQuery =
+        /\b(partner|partners|husband|spouse|boyfriend|supporter|family|loved ones?|caregiver).*\b(deal|dealing|cope|coping|handle|handling|support|help|advice)\b/i.test(
+          messageLower
+        ) ||
+        /\bhow (do|can|should).*\b(partner|partners|husband|spouse|boyfriend|supporter)\b/i.test(
+          messageLower
+        );
 
       if (Array.isArray(keywords)) {
-        const topKeywords = keywords.slice(0, 5);
+        const topKeywords = keywords.slice(0, 7);
 
-        // Separate multi-word phrases from single words
+        // === STEP 1: Extract context-preserving phrases from ORIGINAL message ===
+
+        // Detect key semantic patterns that should stay together
+        const semanticPatterns = [
+          // Partner context (when query is ABOUT partners/supporters dealing with PCOS)
+          {
+            pattern: /\bhow.*\b(partner|partners|husband|boyfriend|spouse|supporter|family)\b/i,
+            value: '"partner advice"',
+            filter: 'partner-query',
+          },
+          {
+            pattern:
+              /\b(partner|partners|husband|boyfriend|spouse).*\b(deal|dealing|cope|coping|handle|handling|support|supporting)\b/i,
+            value: '"partner support PCOS"',
+            filter: 'partner-query',
+          },
+          {
+            pattern: /\b(husband|boyfriend|partner).*\bwife|girlfriend|partner\b.*\bpcos\b/i,
+            value: '"partner perspective PCOS"',
+            filter: 'partner-query',
+          },
+          {
+            pattern: /\bsupport.*\bwomen.*\bpcos\b/i,
+            value: '"supporting women PCOS"',
+            filter: 'partner-query',
+          },
+
+          // Gender context (ONLY when NOT a partner query)
+          {
+            pattern: /women with pcos/i,
+            value: '"women with PCOS"',
+            filter: 'women',
+            skipIf: 'partner-query',
+          },
+          {
+            pattern: /women (who have|having|suffering from) pcos/i,
+            value: '"women PCOS"',
+            filter: 'women',
+            skipIf: 'partner-query',
+          },
+
+          // Symptom context (preserve relationships)
+          {
+            pattern: /low libido (issues|problems|in women)/i,
+            value: '"low libido"',
+            filter: 'symptom',
+          },
+          { pattern: /libido (issues|problems)/i, value: '"libido issues"', filter: 'symptom' },
+          {
+            pattern: /(body image|self esteem|confidence) (issues|problems)/i,
+            value: '"$1 issues"',
+            filter: 'symptom',
+          },
+          {
+            pattern: /relationship (issues|problems|challenges)/i,
+            value: '"relationship issues"',
+            filter: 'symptom',
+          },
+          {
+            pattern: /hair loss|facial hair|acne|weight (gain|loss)/i,
+            value: '"$&"',
+            filter: 'symptom',
+          },
+        ];
+
+        const extractedPhrases = [];
+        let hasPartnerContext = false;
+
+        semanticPatterns.forEach(({ pattern, value, filter, skipIf }) => {
+          const match = messageLower.match(pattern);
+          if (match) {
+            // Skip patterns that should be ignored for partner queries
+            if (skipIf === 'partner-query' && isPartnerQuery) {
+              return;
+            }
+
+            if (filter === 'partner-query') {
+              hasPartnerContext = true;
+              logger.info('🔍 Detected partner/supporter query - including partner perspectives');
+            }
+
+            if (value) {
+              const phrase = value.replace(/\$&/g, match[0]).replace(/\$1/g, match[1]);
+              extractedPhrases.push(phrase);
+              contextFilters.push(filter);
+            }
+          }
+        });
+
+        // === STEP 2: Separate multi-word phrases from single keywords ===
         const phrases = topKeywords.filter((k) => k.includes(' '));
         const singleWords = topKeywords.filter((k) => !k.includes(' '));
+        const nonPcosKeywords = singleWords.filter((w) => w.toLowerCase() !== 'pcos');
 
-        // Build query: quoted phrases + single words, always include PCOS for context
-        const quotedPhrases = phrases.map((p) => `"${p}"`).join(' ');
-        const remainingWords = singleWords
-          .filter((w) => w.toLowerCase() !== 'pcos')
-          .slice(0, 3)
-          .join(' ');
+        // === STEP 3: Combine extracted phrases with keyword phrases ===
+        const allPhrases = [...new Set([...extractedPhrases, ...phrases])]; // Deduplicate
+        const quotedPhrases = allPhrases.map((p) => (p.includes('"') ? p : `"${p}"`)).join(' ');
 
-        // Ensure PCOS is always included for context
+        // === STEP 4: Build query with context preservation ===
         const pcosIncluded = topKeywords.some((k) => k.toLowerCase() === 'pcos');
         const pcosPrefix = pcosIncluded ? '' : 'PCOS ';
 
-        // Priority: "exact phrases" + single words + PCOS context
-        if (quotedPhrases && remainingWords) {
-          searchQuery = `${pcosPrefix}${quotedPhrases} ${remainingWords}`;
-        } else if (quotedPhrases) {
-          searchQuery = `${pcosPrefix}${quotedPhrases}`;
+        // Special handling for partner queries - prioritize partner keywords
+        let importantKeywords;
+        if (isPartnerQuery) {
+          // For partner queries, prioritize partner-related keywords
+          const partnerKeywords = nonPcosKeywords.filter((k) =>
+            /partner|husband|boyfriend|spouse|support|advice|help|deal|cope/i.test(k)
+          );
+          const symptomKeywords = nonPcosKeywords.filter((k) => !partnerKeywords.includes(k));
+
+          // Combine: partner keywords first, then symptoms
+          importantKeywords = [...partnerKeywords.slice(0, 2), ...symptomKeywords.slice(0, 1)]
+            .filter(Boolean)
+            .join(' ');
+
+          // Add explicit partner terms if not already in keywords
+          if (!importantKeywords.includes('partner') && !importantKeywords.includes('husband')) {
+            importantKeywords = `partner ${importantKeywords}`.trim();
+          }
         } else {
-          // All single words - combine with PCOS
-          searchQuery = pcosIncluded
-            ? topKeywords.join(' ')
-            : `PCOS ${topKeywords.slice(0, 3).join(' ')}`;
+          // For non-partner queries, use top 2 most important keywords
+          importantKeywords = nonPcosKeywords.slice(0, 2).join(' ');
         }
+
+        if (quotedPhrases && importantKeywords) {
+          // Best case: context phrases + keywords
+          searchQuery = `${pcosPrefix}${quotedPhrases} ${importantKeywords}`;
+        } else if (quotedPhrases) {
+          // Only context phrases
+          searchQuery = `${pcosPrefix}${quotedPhrases}`;
+        } else if (importantKeywords) {
+          // Only keywords
+          searchQuery = `${pcosPrefix}${importantKeywords}`;
+        } else {
+          // Fallback
+          searchQuery = 'PCOS women';
+        }
+
+        // Log query building details
+        logger.info('🔍 Context-aware query built:', {
+          extractedPhrases: extractedPhrases.length > 0 ? extractedPhrases : 'none',
+          keywordPhrases: phrases.length > 0 ? phrases : 'none',
+          contextFilters: contextFilters.length > 0 ? contextFilters : 'none',
+          hasPartnerContext: hasPartnerContext,
+          finalQuery: searchQuery,
+        });
       } else {
         searchQuery = keywords;
+        contextFilters = [];
       }
 
       logger.info('🔍 Reddit search query built:', { searchQuery });
@@ -1341,6 +1530,48 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
           relevanceScore += 15;
         }
 
+        // === PARTNER PERSPECTIVE BOOST (for partner queries) ===
+        if (isPartnerQuery) {
+          // Detect if post is from partner/supporter perspective (not first-person woman)
+          const partnerIndicators = [
+            /\b(my wife|my girlfriend|my partner|my fianc[eé]e).*\bpcos\b/i,
+            /\b(husband|boyfriend|partner|spouse) here\b/i,
+            /\b(supporting|help|helping|advice for).*\b(wife|girlfriend|partner|her)\b/i,
+            /\bhow.*\b(help|support).*\b(wife|girlfriend|partner|her)\b.*\bpcos\b/i,
+            /\bpartner (has|have|dealing with|experiencing) pcos\b/i,
+            /\b(she has|her pcos|wife's pcos|girlfriend's pcos)\b/i,
+          ];
+
+          const isPartnerPerspective = partnerIndicators.some((pattern) => pattern.test(postText));
+
+          if (isPartnerPerspective) {
+            relevanceScore += 80; // HUGE boost for partner perspective posts
+            logger.info('✅ Partner perspective detected, boosting score:', {
+              title: post.title,
+              boost: 80,
+            });
+          }
+
+          // Detect first-person woman (should be deprioritized for partner queries)
+          const womenFirstPersonIndicators = [
+            /\b(i have|i am|i'm|i've been|my pcos)\b/i,
+            /\b(dealing with|struggling with|experiencing).*\bmy\b/i,
+            /\bdoes anyone else (have|experience)\b/i,
+          ];
+
+          const isWomenFirstPerson = womenFirstPersonIndicators.some((pattern) =>
+            pattern.test(postText)
+          );
+
+          if (isWomenFirstPerson && !isPartnerPerspective) {
+            relevanceScore -= 40; // Penalize women's first-person for partner queries
+            logger.info('⚠️ Women first-person detected in partner query, reducing score:', {
+              title: post.title,
+              penalty: -40,
+            });
+          }
+        }
+
         // === ENGAGEMENT SCORING (0-50 points) ===
         let engagementScore = 0;
 
@@ -1411,8 +1642,69 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         };
       });
 
+      // === GENDER CONTEXT FILTERING ===
+      // Filter out posts with opposite gender context ONLY when query is from woman's perspective
+      // NOT when query is asking about partner/supporter perspective
+      // (isPartnerQuery already defined at top of function)
+
+      // Detect if query is FROM woman's perspective (first-person or about women experiencing)
+      const isWomenFirstPerson =
+        /\b(i have|i am|i'm|my pcos|dealing with|experiencing|struggling with)\b/i.test(
+          messageLower
+        ) ||
+        /\b(women|woman) (with|who have|having|experiencing|suffering from) pcos\b/i.test(
+          messageLower
+        );
+
+      let filteredResults = scoredResults;
+
+      // Only apply gender filtering if:
+      // 1. Query is from woman's first-person perspective
+      // 2. Query is NOT asking about partner/supporter perspective
+      if (isWomenFirstPerson && !isPartnerQuery) {
+        logger.info('🔍 Applying gender context filter (women-focused query)');
+
+        // Exclude posts that are clearly about male perspective or partner trying for baby
+        const excludePatterns = [
+          /\b(my husband|my boyfriend|my partner|my spouse) (has|is experiencing|suffers from)\b/i,
+          /\b(husband|boyfriend|partner|spouse|male) (with pcos|has pcos|experiencing pcos)\b/i,
+          /\bmen (with|who have|experiencing) pcos\b/i,
+          /\b(trying|want|trying to get|hoping to get) (pregnant|baby|conceive)\b.*\b(husband|partner|male)\b/i,
+          /\b(husband|partner).*\blow libido\b/i,
+          /\bhis (libido|sex drive|testosterone)\b/i,
+          /\bmy (husband|partner|boyfriend).*\b(low libido|sex drive)\b/i,
+        ];
+
+        filteredResults = scoredResults.filter((post) => {
+          const postText = `${post.title} ${post.content || ''}`.toLowerCase();
+
+          // Check if post matches any exclude patterns
+          const hasExcludePattern = excludePatterns.some((pattern) => pattern.test(postText));
+
+          if (hasExcludePattern) {
+            logger.info('⚠️ Filtered out post with opposite gender context:', {
+              title: post.title,
+              reason: 'partner/male perspective detected',
+            });
+            return false;
+          }
+
+          return true;
+        });
+
+        if (filteredResults.length < scoredResults.length) {
+          logger.info(
+            `✅ Gender context filter removed ${
+              scoredResults.length - filteredResults.length
+            } posts with opposite gender perspective`
+          );
+        }
+      } else if (isPartnerQuery) {
+        logger.info('🔍 Partner query detected - NOT applying gender filter');
+      }
+
       // Sort by final composite score (highest first)
-      const sortedResults = scoredResults.sort((a, b) => b.finalScore - a.finalScore).slice(0, 5); // Top 5 most relevant
+      const sortedResults = filteredResults.sort((a, b) => b.finalScore - a.finalScore).slice(0, 5); // Top 5 most relevant
 
       // Build enhanced context with formatting for LLM
       let context = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
@@ -2054,7 +2346,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       '⚠️ *This is educational guidance only. Please consult a healthcare professional for personalized medical advice.*';
 
     const REDDIT_DISCLAIMER =
-      '💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
+      '💬 **Community insights are personal experiences shared on Reddit, not medical advice.**';
 
     // ========== INTELLIGENT ROUTING LOGIC ==========
 
