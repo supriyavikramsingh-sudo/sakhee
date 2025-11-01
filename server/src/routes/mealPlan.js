@@ -140,6 +140,10 @@ router.post('/generate', async (req, res) => {
       success: true,
       data: {
         planId,
+        regions,
+        cuisines,
+        dietType,
+        budget,
         plan: mealPlan,
         ragMetadata,
         personalizationSources: planData.personalizationSources,

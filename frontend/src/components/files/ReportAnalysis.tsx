@@ -13,9 +13,14 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useState } from 'react';
+import type { ReportData } from '../../types/report.type';
 import { CATEGORY_NAMES, formatLabName, groupLabValuesByCategory } from '../../utils/labFormatter';
 
-const ReportAnalysis = ({ report }) => {
+interface ReportAnalysisProps {
+  report: ReportData;
+}
+
+const ReportAnalysis = ({ report }: ReportAnalysisProps) => {
   if (!report) return null;
 
   const { labValues, analysis } = report;
@@ -102,7 +107,7 @@ const ReportAnalysis = ({ report }) => {
       case 'normal':
         return <CheckCircle className="text-success" size={20} />;
       case 'cycle-dependent':
-        return <Info className="text-info" size={20} />;
+        return <Info className="text-primary" size={20} />;
       default:
         return <Info className="text-muted" size={20} />;
     }
@@ -112,17 +117,17 @@ const ReportAnalysis = ({ report }) => {
     switch (severity) {
       case 'critical':
       case 'deficient':
-        return 'border-danger bg-danger';
+        return 'border-danger';
       case 'high':
       case 'elevated':
       case 'low':
-        return 'border-warning bg-warning';
+        return 'border-warning';
       case 'normal':
-        return 'border-success bg-success';
+        return 'border-success';
       case 'cycle-dependent':
-        return 'border-[#9d4edd] bg-[#9d4edd]';
+        return 'border-primary';
       default:
-        return 'border-muted bg-muted';
+        return 'border-muted';
     }
   };
 
@@ -229,7 +234,6 @@ const ReportAnalysis = ({ report }) => {
                     className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
                   >
                     <h4 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                      <Activity className="text-primary" size={18} />
                       {CATEGORY_NAMES[category] || category}
                       <span className="text-sm font-normal text-muted ml-2">
                         ({values.length} {values.length === 1 ? 'test' : 'tests'})
@@ -259,7 +263,7 @@ const ReportAnalysis = ({ report }) => {
                               key={key}
                               className={`border-l-4 ${getSeverityColor(
                                 displaySeverity
-                              )} bg-opacity-10 p-4 rounded transition-all hover:shadow-md`}
+                              )} bg-opacity-10 p-4 rounded transition-all shadow-md`}
                             >
                               <div className="flex items-start justify-between">
                                 <div className="flex-1">
@@ -270,7 +274,7 @@ const ReportAnalysis = ({ report }) => {
                                     </h4>
                                   </div>
                                   <p className="text-2xl font-bold text-gray-900">
-                                    {displayValue}{' '}
+                                    {displayValue}
                                     {displayUnit && (
                                       <span className="text-sm font-normal text-muted">
                                         {displayUnit}
@@ -285,7 +289,7 @@ const ReportAnalysis = ({ report }) => {
                                           displaySeverity === 'deficient'
                                         ? 'text-danger'
                                         : displaySeverity === 'cycle-dependent'
-                                        ? 'text-[#9d4edd]'
+                                        ? 'text-primary'
                                         : 'text-warning'
                                     }`}
                                   >

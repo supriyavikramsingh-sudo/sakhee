@@ -106,7 +106,7 @@ export const Navbar = () => {
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
                     {isTestAccount ? (
-                      <Badge count={'Test User'} offset={[-60, 2]} color="#52c41a">
+                      <Badge count={'⭐'} offset={[-35, 2]} color="#fbbc04">
                         <img
                           src={user.photoURL ?? ''}
                           alt={user.displayName ?? 'User Avatar'}
