@@ -873,6 +873,52 @@ cd server && rm -rf node_modules && npm install
 
 ## 🚀 Deployment
 
+### Chat Markdown Rendering (frontend)
+
+If chat responses contain raw markdown (for example: `## Header`, `- item`, `*italic*`) or you see duplicated bullets like `• • item`, the frontend's markdown post-processing helper may need adjustment. The project uses a lightweight helper to convert a small subset of markdown to HTML at `frontend/src/utils/helper.ts` (function `boldify`).
+
+Common issues and fixes:
+
+- Headers not rendered: ensure `boldify()` converts `#`, `##`, `###` and smaller header patterns before converting line breaks.
+- Double bullets (`• • item`): normalize leading bullets/dashes by stripping all leading `•`/`-` characters from the captured content and re-inserting a single bullet.
+- Missing bullets for indented lists: allow optional leading whitespace in the bullet regex (use `^\s*[-•]`).
+- Disclaimer formatting (⚠️ *text*): if the backend emits `⚠️ *This is educational guidance*` but you want it bold, either change the backend to use `**text**` or add a frontend special-case rule to convert `⚠️ *text*` to bold.
+
+Minimal example snippet (from `frontend/src/utils/helper.ts`):
+
+```ts
+// Normalize bullets: strip leading markers, add a single bullet
+processedText = processedText.replace(/^\s*[-•]\s*(.+?)$/gm, (_m, content) => {
+  const clean = content.replace(/^[•\-\s]+/, '').trim();
+  return `<div class="ml-4">• ${clean}</div>`;
+});
+
+// Header conversion (run before converting \n to <br />)
+processedText = processedText.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
+processedText = processedText.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
+
+// Convert bold/italic
+processedText = processedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+processedText = processedText.replace(/(?<!\*)\*(?!\*)(.+?)\*(?!\*)/g, '<em>$1</em>');
+
+// Convert remaining newlines to <br /> last
+processedText = processedText.replace(/\n/g, '<br />');
+```
+
+Testing and debugging:
+
+- Open browser devtools console. The chat UI logs the raw assistant text before processing (if debug enabled). Inspect the raw string to confirm the presence of leading bullets or stray characters.
+- Refresh the frontend after updating `helper.ts` and restart the dev server (if necessary):
+
+```bash
+# client/front-end
+cd frontend
+npm run dev
+```
+
+Remove any temporary `console.log` debug lines after confirming the fix.
+
+
 ### Prerequisites
 
 - Node.js 18+ hosting (e.g., Railway, Render, AWS, DigitalOcean)

@@ -20,16 +20,30 @@ class SERPService {
    */
   async searchNutrition(foodItem, location = 'India') {
     try {
+      // Check if API key is configured
+      if (!this.apiKey) {
+        logger.warn('SERP API key not configured - skipping nutrition fetch', { foodItem });
+        return {
+          foodItem,
+          found: false,
+          error: 'SERP API key not configured',
+          source: null,
+        };
+      }
+
       // Check cache first
       const cacheKey = `${foodItem.toLowerCase()}_${location}`;
       const cached = this.nutritionCache.get(cacheKey);
 
       if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
-        logger.info('Returning cached nutrition data', { foodItem });
+        logger.info('✅ Returning cached nutrition data', { foodItem });
         return cached.data;
       }
 
-      logger.info('Fetching nutrition data from SERP API', { foodItem });
+      logger.info('🔍 Fetching nutrition data from SERP API', {
+        foodItem,
+        hasApiKey: !!this.apiKey,
+      });
 
       const query = `${foodItem} nutrition facts calories protein carbs india`;
 
@@ -53,18 +67,27 @@ class SERPService {
         timestamp: Date.now(),
       });
 
+      logger.info('✅ Nutrition data fetched successfully', {
+        foodItem,
+        found: nutritionData.found,
+        hasSourceUrl: !!nutritionData.sourceUrl,
+      });
+
       return nutritionData;
     } catch (error) {
-      logger.error('SERP API nutrition search failed', {
+      logger.error('❌ SERP API nutrition search failed', {
         error: error.message,
+        errorResponse: error.response?.data,
+        statusCode: error.response?.status,
         foodItem,
+        hasApiKey: !!this.apiKey,
       });
 
       // Return fallback data structure
       return {
         foodItem,
         found: false,
-        error: 'Unable to fetch nutrition data',
+        error: `Unable to fetch nutrition data: ${error.message}`,
         source: null,
       };
     }

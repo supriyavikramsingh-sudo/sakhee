@@ -144,6 +144,190 @@ ALWAYS format the links section like this at the VERY END of your response:
 
 💬 *These are personal experiences from the community, not medical advice.*
 
+## CRITICAL: Nutrition Query Guidelines
+
+When users ask about nutritional information for ANY food/dish:
+
+### ALWAYS Provide PCOS-Friendly Analysis & Alternatives
+
+1. **Nutrition Facts First**: Provide the macros (calories, protein, carbs, fats, GI if known)
+
+2. **PCOS-Friendliness Assessment**: Evaluate the dish against PCOS dietary principles:
+   - ✅ **PCOS-Friendly**: High protein (>15g/serving), low GI, moderate healthy fats, fiber-rich
+   - ⚠️ **Needs Modification**: High carb, low protein, high refined carbs, fried/high saturated fat
+   - ❌ **Not Recommended**: Very high GI, mostly refined carbs, minimal protein, trans fats
+
+3. **MANDATORY: Ingredient Substitutions Section**
+
+⚠️ **CRITICAL**: If you receive "🔄 PCOS-FRIENDLY INGREDIENT SUBSTITUTES (from RAG)" in the context:
+- **ALWAYS reference and use those specific substitutes** instead of generic ones
+- The RAG data contains evidence-based, regionally-appropriate substitutes
+- Cite the specific substitute recommendations from the RAG knowledge base
+- If no RAG data provided, use the fallback guidelines below
+
+For ANY dish that isn't optimal for PCOS (high carb, low protein, high GI, fried, etc.), ALWAYS include:
+
+**🔄 PCOS-Friendly Modifications:**
+
+**To Reduce GI & Carbs:**
+- Replace white rice → brown rice, quinoa, or cauliflower rice (50% mix)
+  (Check RAG for regional alternatives like matta rice, foxtail millet, bajra)
+- Replace wheat flour/maida → chickpea flour (besan), almond flour, or multigrain atta
+  (Check RAG for regional flours like ragi, jowar, sattu)
+- Replace refined sugar → stevia, erythritol, or dates (minimal)
+- Replace oats/milk → Check RAG for PCOS-friendly alternatives and portion guidance
+- Add 1-2 tbsp ground flaxseed or chia seeds to dough for fiber
+
+**To Boost Protein:**
+- Add 50g paneer, tofu, or Greek yogurt to the meal
+- Include dal/lentils (1/2 cup) as a side
+- Add 1 boiled egg or sprinkle roasted chickpeas on top
+- Mix protein powder into batters/doughs (unflavored whey or pea protein)
+- Check RAG for specific protein recommendations for the dish
+
+**To Reduce Unhealthy Fats:**
+- Bake or air-fry instead of deep-frying
+- Use minimal ghee/oil (1-2 tsp max per serving)
+- Replace saturated fats → use olive oil, avocado oil, or mustard oil
+- Replace coconut milk/cream → Check RAG for lower-fat alternatives
+- Skip the tempering/tadka or reduce oil by half
+
+**Portion Control Tips:**
+- Pair with fiber-rich sides (salad, roasted veggies, raita)
+- Eat protein first, then carbs to slow glucose spike
+- Limit portion to 1 serving (specify grams/size)
+- Have it earlier in the day (breakfast/lunch) rather than dinner
+
+**REMEMBER**: When RAG provides ingredient substitute data, PRIORITIZE those recommendations over generic advice!
+
+4. **Example Enhanced Response Format:**
+
+EXAMPLE 1: For high-carb traditional dishes
+When user asks: "What are the nutritional breakdown of dal dhokli?"
+
+Include in your response:
+- Nutrition facts (calories, protein, carbs, fats, fibre, GI)
+- PCOS Analysis (Friendly / Needs Modification / Not Recommended)
+- Ingredient substitutions to reduce GI and boost protein
+- Better alternatives (e.g., use chickpea flour instead of refined flour)
+- Portion control tips
+- Meal Plan feature mention
+
+EXAMPLE 2: For fried/unhealthy foods
+When user asks: "nutritional info on samosa"
+
+Include in your response:
+- Nutrition facts showing LOW protein, HIGH carbs/fats, HIGH GI
+- PCOS Analysis: Not Recommended (explain why: deep-fried, refined flour, minimal protein)
+- Healthier alternatives (baked versions, paneer tikka, chickpea cutlets)
+- If they must eat it: modifications (bake/air-fry, whole wheat flour, protein-rich filling)
+- Better snack options for PCOS
+- Meal Plan feature mention
+
+EXAMPLE 3: For already PCOS-friendly dishes
+When user asks: "nutrition of grilled chicken salad"
+
+Include in your response:
+- Nutrition facts showing HIGH protein, LOW carbs, healthy fats
+- PCOS Analysis: Excellent Choice (explain benefits)
+- Optional enhancements (add nuts, seeds, Greek yogurt dressing for extra protein)
+- Portion suggestions
+- Similar PCOS-friendly meal ideas
+
+## MANDATORY SECTIONS for ALL Nutrition Queries:
+1. Nutrition Facts (macros)
+2. PCOS Analysis (Friendly/Needs Modification/Not Recommended)
+3. Modifications OR Alternatives (ALWAYS provide actionable substitutions)
+4. Portion tips
+5. Meal Plan feature mention
+
+## REMEMBER: EVERY nutrition query should include PCOS-friendly modifications - no exceptions!
+
+## CRITICAL: Nutrition Data Validation
+
+⚠️ **ALWAYS validate nutrition data for reasonableness before presenting it!**
+
+When you receive nutrition data from the database, CHECK if it makes sense:
+
+### Red Flags for INACCURATE Data:
+
+**Complex/Rich Dishes with Suspiciously Low Calories:**
+- Desserts, puddings, cakes showing <150 cal/100g (likely missing cream, sugar, butter)
+- Fried foods showing <200 cal/100g (likely missing oil/fat content)
+- Creamy dishes showing <100 cal/100g (likely missing dairy fat)
+
+**Common Examples of Problematic Foods:**
+- **Banana pudding**: Should be 200-300 cal/100g (has bananas, cream, cookies, sugar)
+  - If data shows <150 cal → DATA IS INCOMPLETE
+- **Gulab jamun**: Should be 300-400 cal/piece (deep-fried, sugar syrup)
+  - If data shows <200 cal → DATA IS INCOMPLETE
+- **Biryani**: Should be 250-350 cal/cup (rice, meat/paneer, oil, ghee)
+  - If data shows <150 cal → DATA IS INCOMPLETE
+
+### When Data Seems INACCURATE:
+
+**DO THIS:**
+1. **Acknowledge the limitation**: "The database nutrition data seems incomplete for [dish] as it doesn't account for all ingredients..."
+2. **Provide realistic estimate**: "A typical serving of [dish] would be approximately [realistic calories] calories because it contains [list key high-calorie ingredients]"
+3. **Break down components**: 
+   - Example for banana pudding: "Let's think about the components: 1 banana (~105 cal) + vanilla wafers (~140 cal) + custard/cream (~120 cal) + sugar (~50 cal) = ~415 calories for a typical serving"
+4. **Explain what's likely missing**: "The data I found likely only accounts for [component], not the complete dish with [missing components]"
+5. **Give practical portion guidance**: "A typical restaurant/homemade serving is about [amount], which would be approximately [realistic calories] calories"
+
+**DON'T DO THIS:**
+- ❌ Present obviously incorrect data without questioning it
+- ❌ Say "105 calories" for banana pudding without mentioning this seems low
+- ❌ Ignore the fact that the data doesn't account for cream, cookies, bananas, etc.
+
+### Validation Checklist:
+
+For **desserts/sweets** (puddings, cakes, mithai, ice cream):
+- ✅ Expect: 200-500 cal/100g
+- 🚨 If <150 cal/100g → VALIDATE: Does this account for sugar, cream, butter, ghee?
+
+For **fried foods** (samosa, pakora, bhujia, chips):
+- ✅ Expect: 300-500 cal/100g
+- 🚨 If <200 cal/100g → VALIDATE: Does this account for deep-frying oil?
+
+For **creamy curries** (korma, butter chicken, paneer makhani):
+- ✅ Expect: 150-250 cal/100g
+- 🚨 If <100 cal/100g → VALIDATE: Does this account for cream, butter, oil?
+
+For **rice dishes** (biryani, pulao, fried rice):
+- ✅ Expect: 150-200 cal/100g
+- 🚨 If <100 cal/100g → VALIDATE: Does this account for oil, ghee, meat/paneer?
+
+### Example of GOOD Response with Validation:
+
+User: "What are the macros for banana pudding?"
+
+❌ **BAD Response**: "Banana pudding has 105 calories per 100g with 2.8g protein..."
+
+✅ **GOOD Response**: 
+"I found some nutritional data, but it appears incomplete as it shows only 105 calories per 100g, which doesn't account for all the components of banana pudding.
+
+Let me give you a more realistic breakdown:
+
+**Typical Banana Pudding (1 cup/~200g serving):**
+- **Calories**: ~300-350 cal
+- **Protein**: ~6-8g
+- **Carbs**: ~45-55g (mostly from bananas, cookies, sugar)
+- **Fat**: ~10-15g (from cream/custard, butter in cookies)
+
+**Why is it higher?** Banana pudding contains:
+- Bananas (natural sugars, ~105 cal per medium banana)
+- Vanilla wafers/cookies (refined carbs, butter, ~140 cal per serving)
+- Custard or whipped cream (dairy fat, sugar, ~100-120 cal)
+- Added sugar in the recipe (~50-100 cal)
+
+**PCOS Analysis**: ⚠️ Needs Significant Modification
+- High refined carbs from cookies
+- High sugar content (spikes blood glucose)
+- Low protein (won't keep you satisfied)
+- Moderate fat (mostly saturated from cream)
+
+[... then provide PCOS modifications as usual ...]"
+
 ## Lab Value Interpretation Guidelines
 
 ### Priority Order (address in this sequence):
@@ -171,9 +355,8 @@ ALWAYS format the links section like this at the VERY END of your response:
   * Values in "critical" range
 
 ## Disclaimer Rules:
-- **Every health-related response** must end with: "⚠️ *This is educational guidance based on your lab values. Please consult your healthcare provider for personalized medical advice and treatment decisions.*"
-- **Reddit insights** must include: "💬 *Community insights are personal experiences shared on Reddit, not medical advice.*"
-- **Lab interpretation** must include: "📊 *Lab value interpretation is educational. Always discuss results with your doctor.*"
+- **DO NOT include disclaimers** in your response - they will be added automatically based on context
+- Focus on providing clear, actionable guidance without legal/medical disclaimers
 
 ## Tone: Warm, Knowledgeable, Empowering
 - Use simple language, avoid excessive medical jargon
@@ -327,7 +510,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
     context +=
       '3. Use RAG-retrieved dietary guidance to recommend foods for their specific abnormalities\n';
     context += '4. Be specific and personalized - avoid generic PCOS advice\n';
-    context += '5. Always include disclaimer about consulting healthcare provider\n\n';
+    context += '5. Focus on actionable guidance - disclaimers will be added automatically\n\n';
 
     return context;
   }
@@ -854,7 +1037,10 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
     });
 
     // Also extract multi-word phrases for compound queries
+    // These phrases should be searched as exact matches for better relevance
     const multiWordPhrases = [
+      'pcos mood swings',
+      'mood swings',
       'hair loss',
       'facial hair',
       'weight loss',
@@ -862,11 +1048,20 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'birth control',
       'insulin resistance',
       'irregular periods',
+      'brain fog',
+      'sugar cravings',
+      'sleep quality',
+      'pelvic pain',
+      'abdominal pain',
       'natural methods',
       'natural remedies',
       'ayurvedic treatment',
       'successfully treated',
       'trying to conceive',
+      'fertility treatment',
+      'hormonal imbalance',
+      'cycle length',
+      'sleep apnea',
     ];
 
     multiWordPhrases.forEach((phrase) => {
@@ -969,6 +1164,18 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'where',
       'why',
       'how',
+      'general', // Too generic, dilutes search results
+      'help',
+      'tips',
+      'advice',
+      'questions',
+      'anyone',
+      'someone',
+      'people',
+      'folks',
+      'deal',
+      'deals',
+      'dealt',
     ]);
 
     // Extract additional meaningful words
@@ -1019,11 +1226,42 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       logger.info('🔍 Fetching Reddit posts with keywords:', { keywords });
 
-      // Build a comprehensive search query combining top keywords
-      // Format: "keyword1 keyword2 keyword3" for better Reddit search matching
-      const searchQuery = Array.isArray(keywords)
-        ? keywords.slice(0, 5).join(' ') // Use top 5 keywords
-        : keywords;
+      // Build a comprehensive search query with intelligent phrase construction
+      // Strategy: Use quoted phrases for multi-word keywords, combine with PCOS context
+      let searchQuery;
+
+      if (Array.isArray(keywords)) {
+        const topKeywords = keywords.slice(0, 5);
+
+        // Separate multi-word phrases from single words
+        const phrases = topKeywords.filter((k) => k.includes(' '));
+        const singleWords = topKeywords.filter((k) => !k.includes(' '));
+
+        // Build query: quoted phrases + single words, always include PCOS for context
+        const quotedPhrases = phrases.map((p) => `"${p}"`).join(' ');
+        const remainingWords = singleWords
+          .filter((w) => w.toLowerCase() !== 'pcos')
+          .slice(0, 3)
+          .join(' ');
+
+        // Ensure PCOS is always included for context
+        const pcosIncluded = topKeywords.some((k) => k.toLowerCase() === 'pcos');
+        const pcosPrefix = pcosIncluded ? '' : 'PCOS ';
+
+        // Priority: "exact phrases" + single words + PCOS context
+        if (quotedPhrases && remainingWords) {
+          searchQuery = `${pcosPrefix}${quotedPhrases} ${remainingWords}`;
+        } else if (quotedPhrases) {
+          searchQuery = `${pcosPrefix}${quotedPhrases}`;
+        } else {
+          // All single words - combine with PCOS
+          searchQuery = pcosIncluded
+            ? topKeywords.join(' ')
+            : `PCOS ${topKeywords.slice(0, 3).join(' ')}`;
+        }
+      } else {
+        searchQuery = keywords;
+      }
 
       logger.info('🔍 Reddit search query built:', { searchQuery });
 
@@ -1299,17 +1537,183 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
   needsNutritionData(message) {
     const nutritionKeywords = [
       'calories',
+      'calorie',
       'nutrition',
+      'nutritional',
       'protein',
       'carbs',
+      'carb',
+      'carbohydrate',
       'fat',
+      'fats',
+      'macro',
       'macros',
       'nutrients',
+      'nutrient',
       'vitamin',
       'mineral',
+      'breakdown', // "macro breakdown", "nutritional breakdown"
+      'info', // "nutrition info"
+      'information', // "nutritional information"
+      'content', // "nutrition content"
+      'value', // "nutritional value"
+      'data', // "nutrition data"
+      'facts', // "nutrition facts"
     ];
 
-    return nutritionKeywords.some((keyword) => message.toLowerCase().includes(keyword));
+    const messageLower = message.toLowerCase();
+
+    // Check for nutrition keywords
+    const hasNutritionKeyword = nutritionKeywords.some((keyword) => messageLower.includes(keyword));
+
+    // Also trigger if asking about eating a specific food (likely wants nutrition info)
+    // e.g., "Should I eat ragi mudde with PCOS?" or "Can I eat samosa?"
+    const foodQuestionPattern =
+      /(should|can|is it (ok|okay|safe|good)|what about) (i |we )?(eat|have|consume)/i;
+    const isFoodQuestion = foodQuestionPattern.test(message);
+
+    if (hasNutritionKeyword || isFoodQuestion) {
+      logger.info('Nutrition data needed', {
+        hasNutritionKeyword,
+        isFoodQuestion,
+        query: message,
+      });
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Check if message needs ingredient substitutes (food/recipe/meal queries)
+   */
+  needsIngredientSubstitutes(message) {
+    const messageLower = message.toLowerCase();
+
+    // Recipe/cooking/meal keywords
+    const recipeKeywords = [
+      'recipe',
+      'recipes',
+      'cook',
+      'cooking',
+      'prepare',
+      'make',
+      'meal',
+      'dish',
+      'food',
+      'eat',
+      'eating',
+      'breakfast',
+      'lunch',
+      'dinner',
+      'snack',
+    ];
+
+    // Specific food items that commonly need substitutes
+    const foodItems = [
+      'rice',
+      'bread',
+      'pasta',
+      'noodles',
+      'chowmein',
+      'biryani',
+      'roti',
+      'paratha',
+      'idli',
+      'dosa',
+      'poha',
+      'upma',
+      'samosa',
+      'pakora',
+      'dal',
+      'curry',
+      'sabzi',
+      'khichdi',
+      'pulao',
+    ];
+
+    const hasRecipeKeyword = recipeKeywords.some((keyword) => messageLower.includes(keyword));
+    const hasFoodItem = foodItems.some((item) => messageLower.includes(item));
+
+    if (hasRecipeKeyword || hasFoodItem) {
+      logger.info('Ingredient substitutes needed', {
+        hasRecipeKeyword,
+        hasFoodItem,
+        query: message,
+      });
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Build query to retrieve ingredient substitutes from RAG
+   */
+  buildIngredientSubstituteQuery(userMessage) {
+    const query = userMessage.toLowerCase();
+
+    // Common problematic ingredients for PCOS
+    const ingredientKeywords = [
+      'rice',
+      'white rice',
+      'polished rice',
+      'maida',
+      'refined flour',
+      'all purpose flour',
+      'wheat flour',
+      'bread',
+      'white bread',
+      'sugar',
+      'refined sugar',
+      'oil',
+      'cooking oil',
+      'vegetable oil',
+      'potato',
+      'potatoes',
+      'pasta',
+      'noodles',
+      'oats',
+      'overnight oats',
+      'milk',
+      'dairy',
+      'cow milk',
+      'coconut milk',
+      'cream',
+      'cookie',
+      'biscuit',
+      'wafer',
+      'pudding',
+      'dessert',
+      'fried',
+      'deep fried',
+    ];
+
+    // Find mentioned ingredients
+    const mentionedIngredients = ingredientKeywords.filter((ingredient) =>
+      query.includes(ingredient)
+    );
+
+    // Build comprehensive search query
+    let searchQuery = 'PCOS friendly ingredient substitute alternative replacement ';
+
+    if (mentionedIngredients.length > 0) {
+      searchQuery += mentionedIngredients.join(' ') + ' ';
+    } else {
+      // Generic search if no specific ingredient detected
+      searchQuery += query + ' ';
+    }
+
+    // Add modification keywords
+    searchQuery += 'healthy modification low GI high protein fiber';
+
+    logger.info('Built ingredient substitute query', {
+      original: userMessage,
+      searchQuery,
+      ingredientsFound: mentionedIngredients,
+    });
+
+    return searchQuery;
   }
 
   /**
@@ -1321,11 +1725,208 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       if (!data) return null;
 
-      return `🥗 NUTRITIONAL DATA:\n${JSON.stringify(data, null, 2)}\n`;
+      // Add validation flags for suspicious/incomplete data
+      const validationWarnings = this.validateNutritionData(data, userMessage);
+
+      let context = `🥗 NUTRITIONAL DATA:\n${JSON.stringify(data, null, 2)}\n`;
+
+      if (validationWarnings.length > 0) {
+        context += `\n⚠️ DATA QUALITY WARNINGS:\n`;
+        validationWarnings.forEach((warning) => {
+          context += `- ${warning}\n`;
+        });
+        context += `\n🔍 IMPORTANT: This data may be incomplete. Validate and provide realistic estimates based on typical recipe components.\n`;
+      }
+
+      // Add formatted Google nutrition links for LLM to include in response
+      context += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      context += `📊 GOOGLE NUTRITION SOURCES:\n`;
+      context += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+      const nutritionLinks = [];
+
+      // Add primary source URL if available
+      if (data.sourceUrl) {
+        nutritionLinks.push({
+          title: data.source || 'Nutrition Facts',
+          url: data.sourceUrl,
+        });
+        context += `🔗 PRIMARY SOURCE: ${data.sourceUrl}\n`;
+        context += `   Title: "${data.source || 'Nutrition Facts'}"\n\n`;
+      }
+
+      // Add organic results if available
+      if (data.organicResults && Array.isArray(data.organicResults)) {
+        context += `🔗 ADDITIONAL SOURCES:\n`;
+        data.organicResults.slice(0, 3).forEach((result, index) => {
+          if (result.link) {
+            nutritionLinks.push({
+              title: result.title,
+              url: result.link,
+            });
+            context += `   ${index + 1}. URL: ${result.link}\n`;
+            context += `      Title: "${result.title}"\n`;
+            if (result.snippet) {
+              const shortSnippet =
+                result.snippet.length > 100
+                  ? result.snippet.substring(0, 100) + '...'
+                  : result.snippet;
+              context += `      Preview: ${shortSnippet}\n`;
+            }
+            context += `\n`;
+          }
+        });
+      }
+
+      // Add instructions for including links in response
+      if (nutritionLinks.length > 0) {
+        context += `\n🚨 CRITICAL INSTRUCTIONS - GOOGLE NUTRITION LINKS:\n\n`;
+        context += `⚠️ You MUST include these Google nutrition source links at the END of your response!\n\n`;
+        context += `📝 FORMAT (Use markdown links exactly like this):\n\n`;
+        context += `---\n`;
+        context += `📊 **Nutrition Data Sources:**\n`;
+
+        nutritionLinks.forEach((link) => {
+          const shortTitle =
+            link.title.length > 60 ? link.title.substring(0, 60) + '...' : link.title;
+          context += `- [${shortTitle}](${link.url})\n`;
+        });
+
+        context += `\n💬 *Nutritional information from Google's knowledge base.*\n\n`;
+
+        context += `🔗 LINK FORMAT REMINDER:\n`;
+        context += `   ✅ CORRECT: [Nutrition Facts for ${data.foodItem || 'food'}](${
+          nutritionLinks[0]?.url || 'URL'
+        })\n`;
+        context += `   ❌ WRONG: ${nutritionLinks[0]?.url || 'URL'}\n`;
+        context += `   ❌ WRONG: Nutrition Facts (${nutritionLinks[0]?.url || 'URL'})\n\n`;
+
+        context += `⚠️ Place these links AFTER your PCOS modifications section and BEFORE any Reddit links!\n\n`;
+      } else {
+        context += `\n⚠️ No direct source URLs available from Google.\n`;
+        context += `💡 You may mention that nutrition data is from Google's knowledge base without specific links.\n\n`;
+      }
+
+      return context;
     } catch (error) {
       logger.error('Nutrition fetch failed', { error: error.message });
       return null;
     }
+  }
+
+  /**
+   * Validate nutrition data for reasonableness
+   * Returns array of warning messages if data seems suspicious
+   */
+  validateNutritionData(data, userMessage) {
+    const warnings = [];
+
+    if (!data.found || !data.calories) {
+      return warnings; // No data to validate
+    }
+
+    const foodItem = data.foodItem?.toLowerCase() || userMessage.toLowerCase();
+    const calories = data.calories;
+    const protein = data.protein || 0;
+
+    // Define food categories with expected calorie ranges per 100g
+    const foodCategories = {
+      desserts: {
+        keywords: [
+          'pudding',
+          'cake',
+          'pie',
+          'ice cream',
+          'custard',
+          'mousse',
+          'tiramisu',
+          'cheesecake',
+          'brownie',
+          'cookie',
+          'gulab jamun',
+          'rasgulla',
+          'jalebi',
+          'barfi',
+          'halwa',
+          'kheer',
+          'payasam',
+        ],
+        minCalories: 200,
+        reason: 'typically contains sugar, cream, butter, or ghee',
+      },
+      fried: {
+        keywords: [
+          'fried',
+          'fry',
+          'samosa',
+          'pakora',
+          'bhajia',
+          'vada',
+          'bonda',
+          'cutlet',
+          'fritter',
+          'chips',
+          'fries',
+          'tempura',
+        ],
+        minCalories: 250,
+        reason: 'deep-fried foods absorb significant oil',
+      },
+      creamy: {
+        keywords: [
+          'cream',
+          'creamy',
+          'korma',
+          'makhani',
+          'butter chicken',
+          'paneer butter',
+          'malai',
+          'alfredo',
+          'carbonara',
+        ],
+        minCalories: 150,
+        reason: 'contains cream, butter, or coconut milk',
+      },
+      rice: {
+        keywords: ['biryani', 'pulao', 'fried rice', 'risotto'],
+        minCalories: 140,
+        reason: 'contains rice, oil/ghee, and protein sources',
+      },
+    };
+
+    // Check if food matches any category and violates calorie expectations
+    for (const [category, config] of Object.entries(foodCategories)) {
+      const matches = config.keywords.some((keyword) => foodItem.includes(keyword));
+
+      if (matches && calories < config.minCalories) {
+        warnings.push(
+          `${category.toUpperCase()} ALERT: ${calories} cal/100g seems too low for "${
+            data.foodItem
+          }". Expected ${config.minCalories}+ cal because it ${config.reason}.`
+        );
+      }
+    }
+
+    // Check for unrealistically low protein in dishes that should have protein
+    const proteinFoods = ['chicken', 'paneer', 'fish', 'egg', 'dal', 'lentil', 'tofu', 'meat'];
+    const shouldHaveProtein = proteinFoods.some((item) => foodItem.includes(item));
+
+    if (shouldHaveProtein && protein < 5) {
+      warnings.push(
+        `PROTEIN ALERT: ${protein}g protein seems too low for a dish containing ${proteinFoods.find(
+          (item) => foodItem.includes(item)
+        )}. Expected 10-20g protein per 100g.`
+      );
+    }
+
+    // Check for missing macros (incomplete data)
+    if (data.found && !data.protein && !data.carbs && !data.fat) {
+      warnings.push(
+        `INCOMPLETE DATA: Only calories provided, missing protein, carbs, and fat breakdown. Data likely incomplete.`
+      );
+    }
+
+    return warnings;
   }
 
   /**
@@ -1375,6 +1976,141 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
   }
 
   /**
+   * Intelligent disclaimer routing based on message type and context
+   * Returns an array of appropriate disclaimers to append
+   */
+  getAppropriateDisclaimers(response, userMessage, medicalData, redditContext) {
+    const disclaimers = [];
+
+    // Helper to check if text already contains a disclaimer (checks for variations)
+    const contains = (needle) => {
+      try {
+        const responseLower = response.toLowerCase();
+        // Check for the exact phrase
+        if (responseLower.includes(needle.toLowerCase())) {
+          return true;
+        }
+        // Also check for common disclaimer variations
+        const disclaimerPatterns = [
+          /⚠️.*educational.*guidance/i,
+          /⚠️.*consult.*healthcare/i,
+          /⚠️.*medical.*advice/i,
+          /this is educational/i,
+          /please consult.*healthcare/i,
+          /please consult.*doctor/i,
+        ];
+        return disclaimerPatterns.some((pattern) => pattern.test(response));
+      } catch (e) {
+        return false;
+      }
+    };
+
+    // Helper to check if response actually references lab values
+    const usesLabData = (text) => {
+      const labIndicators = [
+        'your lab',
+        'your result',
+        'your value',
+        'your insulin',
+        'your glucose',
+        'your testosterone',
+        'your vitamin',
+        'your ferritin',
+        'your tsh',
+        'your cholesterol',
+        'your triglyceride',
+        'your dhea',
+        'your amh',
+        'your lh',
+        'your fsh',
+        'looking at your',
+        'based on your lab',
+        'your test shows',
+        'your levels',
+        'your report',
+        'µIU/mL',
+        'ng/dL',
+        'ng/mL',
+        'nmol/L',
+        'mg/dL',
+        'mIU/L',
+        'elevated',
+        'deficient',
+        'optimal',
+        'abnormal',
+        'high range',
+        'low range',
+      ];
+
+      const textLower = text.toLowerCase();
+      return labIndicators.some((indicator) => textLower.includes(indicator));
+    };
+
+    // Define disclaimer text
+    const LAB_DISCLAIMER =
+      '⚠️ *This is educational guidance based on your lab values. Please consult your healthcare provider for personalized medical advice and treatment decisions.*';
+
+    const GENERAL_DISCLAIMER =
+      '⚠️ *This is educational guidance only. Please consult a healthcare professional for personalized medical advice.*';
+
+    const REDDIT_DISCLAIMER =
+      '💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
+
+    // ========== INTELLIGENT ROUTING LOGIC ==========
+
+    // Priority 1: Lab-specific disclaimer
+    // Show ONLY if:
+    // - User has medical data (lab values exist)
+    // - Response actually references their specific lab values
+    // - Lab disclaimer not already present
+    if (
+      medicalData &&
+      usesLabData(response) &&
+      !contains('this is educational guidance based on your lab values')
+    ) {
+      disclaimers.push(LAB_DISCLAIMER);
+      logger.info('Adding lab-specific disclaimer', {
+        reason: 'Response references user lab values',
+      });
+    }
+    // Priority 2: General health disclaimer
+    // Show ONLY if:
+    // - Lab disclaimer was NOT added (avoid duplication)
+    // - Message is health-related OR response contains health advice
+    // - General disclaimer not already present
+    else if (this.isHealthRelated(userMessage) && !contains('this is educational guidance')) {
+      disclaimers.push(GENERAL_DISCLAIMER);
+      logger.info('Adding general health disclaimer', {
+        reason: 'Health-related query without lab value usage',
+      });
+    }
+
+    // Priority 3: Reddit disclaimer
+    // Show if:
+    // - Reddit context was included in the response
+    // - Reddit disclaimer not already present
+    // This can be shown ALONGSIDE lab/general disclaimer
+    if (redditContext && !contains('community insights are personal experiences')) {
+      disclaimers.push(REDDIT_DISCLAIMER);
+      logger.info('Adding Reddit disclaimer', {
+        reason: 'Community insights included in response',
+      });
+    }
+
+    // Log final disclaimer decision
+    logger.info('Disclaimer routing complete', {
+      disclaimersAdded: disclaimers.length,
+      types: disclaimers.map((d) => {
+        if (d.includes('lab values')) return 'lab';
+        if (d.includes('Community insights')) return 'reddit';
+        return 'general';
+      }),
+    });
+
+    return disclaimers;
+  }
+
+  /**
    * Process user message with enhanced RAG + Lab Values
    */
   async processMessage(userMessage, userContext = {}) {
@@ -1400,8 +2136,35 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       }
 
       // Step 2: Retrieve from medical knowledge base
-      const medicalDocs = await retriever.retrieve(userMessage);
+      // Enhance nutrition queries to better match meal templates
+      let retrievalQuery = userMessage;
+
+      // If asking about nutrition/info for a specific dish, broaden the search
+      const nutritionQueryPattern =
+        /(nutrition|nutritional|macros?|calories?|protein|carbs|fats?)\s+(info|information|data|on|for|of)\s+(.+)/i;
+      const dishMatch = userMessage.match(nutritionQueryPattern);
+
+      if (dishMatch) {
+        const dishName = dishMatch[3];
+        // Expand query to include meal-related terms for better RAG matching
+        retrievalQuery = `${dishName} nutrition macros protein carbs fats calories meal recipe ingredients`;
+        logger.info('Enhanced nutrition query for RAG retrieval', {
+          original: userMessage,
+          enhanced: retrievalQuery,
+        });
+      }
+
+      const medicalDocs = await retriever.retrieve(retrievalQuery, { topK: 10 });
       const medicalContext = retriever.formatContextFromResults(medicalDocs);
+
+      if (medicalDocs && medicalDocs.length > 0) {
+        logger.info('RAG documents retrieved', {
+          count: medicalDocs.length,
+          query: retrievalQuery,
+        });
+      } else {
+        logger.warn('No RAG documents retrieved for query', { query: retrievalQuery });
+      }
 
       // Step 3: Retrieve lab-specific dietary guidance from RAG
       let labGuidanceDocs = [];
@@ -1436,6 +2199,36 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       if (this.needsNutritionData(userMessage)) {
         logger.info('Fetching nutritional data');
         nutritionContext = await this.fetchNutritionContext(userMessage);
+      }
+
+      // Step 5.5: Retrieve ingredient substitutes for nutrition AND food/recipe queries
+      let ingredientSubstituteContext = '';
+      if (this.needsNutritionData(userMessage) || this.needsIngredientSubstitutes(userMessage)) {
+        logger.info('🔍 Retrieving PCOS-friendly ingredient substitutes');
+
+        // Extract food items mentioned and search for substitutes
+        const ingredientQuery = this.buildIngredientSubstituteQuery(userMessage);
+        logger.info('📝 Ingredient substitute query:', { query: ingredientQuery });
+
+        const substituteDocs = await retriever.retrieve(ingredientQuery, { topK: 5 });
+
+        if (substituteDocs && substituteDocs.length > 0) {
+          ingredientSubstituteContext = '🔄 PCOS-FRIENDLY INGREDIENT SUBSTITUTES (from RAG):\n';
+          ingredientSubstituteContext +=
+            '(Reference these when recommending healthy modifications)\n\n';
+          ingredientSubstituteContext +=
+            retriever.formatContextFromResults(substituteDocs) + '\n\n';
+
+          logger.info('✅ Ingredient substitutes retrieved', {
+            docsRetrieved: substituteDocs.length,
+            query: ingredientQuery,
+          });
+        } else {
+          logger.warn('⚠️ No ingredient substitutes found in RAG', {
+            query: ingredientQuery,
+            hint: 'Run: npm run ingest:medical to load ingredient substitutes data',
+          });
+        }
       }
 
       // Step 6: Build comprehensive context
@@ -1473,6 +2266,11 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       // Add nutrition data
       if (nutritionContext) {
         enhancedContext += nutritionContext + '\n\n';
+      }
+
+      // Add ingredient substitutes from RAG
+      if (ingredientSubstituteContext) {
+        enhancedContext += ingredientSubstituteContext;
       }
 
       if (!enhancedContext) {
@@ -1516,42 +2314,20 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
         { output: response.content || response }
       );
 
-      // Step 12: Add appropriate disclaimers (only if not already present)
+      // Step 12: Add appropriate disclaimers using intelligent routing
       let finalResponse = response.content || response;
 
-      // Helper to safely check for an existing substring (case-insensitive)
-      const contains = (needle) => {
-        try {
-          return finalResponse.toLowerCase().includes(needle.toLowerCase());
-        } catch (e) {
-          return false;
-        }
-      };
+      // Add disclaimers based on context
+      const disclaimers = this.getAppropriateDisclaimers(
+        finalResponse,
+        userMessage,
+        medicalData,
+        redditContext
+      );
 
-      const generalDisclaimer =
-        '⚠️ *This is educational guidance based on your lab values. Please consult your healthcare provider for personalized medical advice and treatment decisions.*';
-      const labDisclaimer =
-        '📊 *Lab value interpretation is educational. Always discuss results with your doctor.*';
-      const redditDisclaimer =
-        '💬 *Community insights are personal experiences shared on Reddit, not medical advice.*';
-
-      if (this.isHealthRelated(userMessage) || medicalData) {
-        // Only append if similar guidance isn't already present in the model output
-        if (!contains('this is educational guidance based on your lab values')) {
-          finalResponse += '\n\n' + generalDisclaimer;
-        }
-      }
-
-      if (medicalData) {
-        if (!contains('lab value interpretation is educational')) {
-          finalResponse += '\n\n' + labDisclaimer;
-        }
-      }
-
-      if (redditContext) {
-        if (!contains('community insights are personal experiences')) {
-          finalResponse += '\n\n' + redditDisclaimer;
-        }
+      // Append disclaimers if not already present
+      if (disclaimers.length > 0) {
+        finalResponse += '\n\n' + disclaimers.join('\n\n');
       }
 
       // Step 11: Compile sources
@@ -1595,10 +2371,63 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
       }
 
       if (nutritionContext) {
-        sources.push({
-          type: 'nutrition',
-          provider: 'SERP API',
-        });
+        // Parse the nutrition data to extract actual links
+        try {
+          // Extract just the JSON part (stops at the first newline after the closing brace)
+          const nutritionDataMatch = nutritionContext.match(
+            /🥗 NUTRITIONAL DATA:\n(\{[\s\S]*?\n\})/
+          );
+          if (nutritionDataMatch) {
+            const nutritionData = JSON.parse(nutritionDataMatch[1]);
+
+            // Build sources array with actual URLs
+            const nutritionSources = [];
+
+            // Add primary source if available
+            if (nutritionData.sourceUrl) {
+              nutritionSources.push({
+                title: nutritionData.source || 'Nutrition Facts',
+                url: nutritionData.sourceUrl,
+                snippet: `Serving: ${nutritionData.servingSize || '100g'}, Calories: ${
+                  nutritionData.calories || 'N/A'
+                }, Protein: ${nutritionData.protein || 'N/A'}g`,
+              });
+            }
+
+            // Add organic results if available
+            if (nutritionData.organicResults && Array.isArray(nutritionData.organicResults)) {
+              nutritionData.organicResults.forEach((result) => {
+                if (result.link) {
+                  nutritionSources.push({
+                    title: result.title,
+                    url: result.link,
+                    snippet: result.snippet,
+                  });
+                }
+              });
+            }
+
+            if (nutritionSources.length > 0) {
+              sources.push({
+                type: 'nutrition',
+                provider: 'Google (SERP API)',
+                links: nutritionSources,
+              });
+            } else {
+              sources.push({
+                type: 'nutrition',
+                provider: 'Google (SERP API)',
+                message: 'Nutrition data found but no external links available',
+              });
+            }
+          }
+        } catch (parseError) {
+          logger.error('Failed to parse nutrition data for sources', { error: parseError.message });
+          sources.push({
+            type: 'nutrition',
+            provider: 'Google (SERP API)',
+          });
+        }
       }
 
       return {
