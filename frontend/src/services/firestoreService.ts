@@ -1,17 +1,17 @@
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
   setDoc,
   updateDoc,
-  deleteDoc,
-  query,
   where,
-  orderBy,
-  limit,
-  serverTimestamp,
-  addDoc,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
@@ -20,7 +20,7 @@ class FirestoreService {
   // USER PROFILE
   // ==========================================
 
-  async checkMealPlanLimit(userId) {
+  async checkMealPlanLimit(userId: string) {
     try {
       const usageRef = doc(db, 'users', userId, 'mealPlanUsage', 'counter');
 

@@ -1,5 +1,13 @@
 import { create } from 'zustand';
 
+interface MealStoreState {
+  currentMealPlan: any | null;
+  mealHistory: any[];
+
+  setMealPlan: (plan: any) => void;
+  addToHistory: (plan: any) => void;
+}
+
 export const useChatStore = create((set) => ({
   messages: [],
   allMessages: [], // Store all messages
@@ -48,7 +56,7 @@ export const useChatStore = create((set) => ({
     })),
 }));
 
-export const useMealStore = create((set) => ({
+export const useMealStore = create<MealStoreState>((set) => ({
   currentMealPlan: null,
   mealHistory: [],
 

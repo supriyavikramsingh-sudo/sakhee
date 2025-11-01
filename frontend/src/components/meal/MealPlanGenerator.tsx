@@ -1,15 +1,5 @@
-import { Alert } from 'antd';
-import {
-  AlertCircle,
-  CheckSquare,
-  Crown,
-  FileText,
-  Info,
-  Loader,
-  Sparkles,
-  Square,
-  Target,
-} from 'lucide-react';
+import { Alert, Slider } from 'antd';
+import { AlertCircle, Crown, Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
@@ -17,6 +7,8 @@ import { apiClient } from '../../services/apiClient';
 import firestoreService from '../../services/firestoreService';
 import { useMealStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
+import SelectInput from '../common/SelectInput';
+import MealInfoTipSection from './MealInfoTipSection';
 import RAGMetadataDisplay from './RAGMetadataDisplay';
 
 interface MealPlanGeneratorProps {
@@ -35,7 +27,6 @@ const MealPlanGenerator = ({
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { setMealPlan } = useMealStore();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -52,7 +43,13 @@ const MealPlanGenerator = ({
   const [userReport, setUserReport] = useState(null);
 
   // Available states based on selected regions
-  const [availableStates, setAvailableStates] = useState([]);
+  const [availableStates, setAvailableStates] = useState<
+    {
+      id: string;
+      label: string;
+      cuisine: string;
+    }[]
+  >([]);
 
   // Form data with new region/cuisine structure
   const [formData, setFormData] = useState({
@@ -153,53 +150,6 @@ const MealPlanGenerator = ({
     { value: 'vegan', label: 'Vegan' },
     { value: 'jain', label: 'Jain' },
   ];
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        name === 'budget' || name === 'mealsPerDay' || name === 'duration'
-          ? parseInt(value)
-          : value,
-    }));
-  };
-
-  // Handle region multi-select
-  const handleRegionToggle = (regionId) => {
-    setFormData((prev) => {
-      const currentRegions = prev.regions || [];
-      if (currentRegions.includes(regionId)) {
-        return {
-          ...prev,
-          regions: currentRegions.filter((id) => id !== regionId),
-        };
-      } else {
-        return {
-          ...prev,
-          regions: [...currentRegions, regionId],
-        };
-      }
-    });
-  };
-
-  // Handle cuisine/state multi-select
-  const handleStateToggle = (stateId) => {
-    setFormData((prev) => {
-      const currentStates = prev.cuisineStates || [];
-      if (currentStates.includes(stateId)) {
-        return {
-          ...prev,
-          cuisineStates: currentStates.filter((id) => id !== stateId),
-        };
-      } else {
-        return {
-          ...prev,
-          cuisineStates: [...currentStates, stateId],
-        };
-      }
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -390,11 +340,6 @@ const MealPlanGenerator = ({
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold text-primary mb-4">✨ Generate Your Meal Plan</h2>
-      <p className="text-muted mb-6">
-        Create a personalized, PCOS-friendly meal plan based on your preferences and health goals.
-      </p>
-
       {/* Error Display */}
       {error && (
         <div className="mb-4 p-4 bg-danger bg-opacity-10 border-l-4 border-danger rounded-lg">
@@ -405,115 +350,18 @@ const MealPlanGenerator = ({
         </div>
       )}
 
-      {/* Personalization Sources Display */}
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <div className="flex items-center gap-2 mb-3">
-          <Info className="text-info" size={20} />
-          <h3 className="text-sm font-bold text-gray-800">How is this personalized for you?</h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {/* Onboarding Profile */}
-          <div
-            key={`onboarding-${displayPersonalizationSources.onboarding}`}
-            className={`p-3 rounded-lg ${
-              displayPersonalizationSources.onboarding
-                ? 'bg-white border-2 border-primary'
-                : 'bg-gray-100 border-2 border-gray-300'
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles
-                className={
-                  displayPersonalizationSources.onboarding ? 'text-primary' : 'text-gray-400'
-                }
-                size={16}
-              />
-              <span
-                className={`text-xs font-semibold ${
-                  displayPersonalizationSources.onboarding ? 'text-primary' : 'text-gray-500'
-                }`}
-              >
-                ONBOARDING PROFILE
-              </span>
-            </div>
-            {displayPersonalizationSources.onboarding ? (
-              <ul className="text-xs text-gray-700 space-y-1">
-                {profileData?.allergies?.length > 0 && (
-                  <li>• Allergies: {profileData.allergies.join(', ')}</li>
-                )}
-                {profileData?.symptoms?.length > 0 && (
-                  <li>• Symptoms: {profileData.symptoms.slice(0, 2).join(', ')}</li>
-                )}
-                {profileData?.goals?.length > 0 && (
-                  <li>• Goals: {profileData.goals.slice(0, 2).join(', ')}</li>
-                )}
-                {profileData?.activityLevel && <li>• Activity: {profileData.activityLevel}</li>}
-                {profileData?.cuisines && (
-                  <li>• Cuisines: {profileData.cuisines.slice(0, 2).join(', ')}</li>
-                )}
-              </ul>
-            ) : (
-              <p className="text-xs text-gray-500">Complete onboarding to enable</p>
-            )}
-          </div>
-
-          {/* Medical Reports */}
-          <div
-            key={`medical-${!!userReport}`}
-            className={`p-3 rounded-lg ${
-              displayPersonalizationSources.medicalReport
-                ? 'bg-white border-2 border-primary'
-                : 'bg-gray-100 border-2 border-gray-300'
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <FileText
-                className={
-                  displayPersonalizationSources.medicalReport ? 'text-primary' : 'text-gray-400'
-                }
-                size={16}
-              />
-              <span
-                className={`text-xs font-semibold ${
-                  displayPersonalizationSources.medicalReport ? 'text-primary' : 'text-gray-500'
-                }`}
-              >
-                MEDICAL REPORTS
-              </span>
-            </div>
-            {displayPersonalizationSources.medicalReport ? (
-              <ul className="text-xs text-gray-700 space-y-1">
-                <li>✓ Latest report analyzed</li>
-                <li>• Lab values considered</li>
-                <li>• Nutritional needs adjusted</li>
-              </ul>
-            ) : (
-              <p className="text-xs text-gray-500">Upload reports for more precision</p>
-            )}
-          </div>
-
-          {/* RAG Knowledge Base */}
-          <div className="p-3 rounded-lg bg-white border-2 border-info">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="text-info" size={16} />
-              <span className="text-xs font-semibold text-info">PCOS KNOWLEDGE BASE</span>
-            </div>
-            <ul className="text-xs text-gray-700 space-y-1">
-              <li>✓ Evidence-based guidelines</li>
-              <li>✓ Regional meal templates</li>
-              <li>✓ PCOS-friendly ingredients</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-3 p-3 bg-white rounded-lg">
-          <p className="text-xs text-gray-600">
-            <strong>💡 Pro Tip:</strong> Customize regions and cuisines below to try different
-            options. Your selections take priority over onboarding data.
-          </p>
-        </div>
-      </div>
+      <Alert
+        showIcon
+        className="mb-6"
+        message="How is this personalized for you?"
+        description={
+          <MealInfoTipSection
+            displayPersonalizationSources={displayPersonalizationSources}
+            profileData={profileData}
+            userReport={userReport}
+          />
+        }
+      />
 
       {/* RAG Metadata Display */}
       {ragMetadata && personalizationSources && (
@@ -525,114 +373,62 @@ const MealPlanGenerator = ({
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Region Selection - Multi-select */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Preferred Regions <span className="text-xs text-muted">(Optional - Multi-select)</span>
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {regionalCuisineConfig.regions.map((region) => {
-              const isSelected = formData.regions.includes(region.id);
-              return (
-                <button
-                  key={region.id}
-                  type="button"
-                  onClick={() => handleRegionToggle(region.id)}
-                  className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition ${
-                    isSelected
-                      ? 'border-primary bg-primary/10'
-                      : 'border-surface hover:border-primary'
-                  }`}
-                >
-                  {isSelected ? (
-                    <CheckSquare className="text-primary" size={18} />
-                  ) : (
-                    <Square className="text-muted" size={18} />
-                  )}
-                  <span className="text-sm">{region.label}</span>
-                </button>
-              );
-            })}
-          </div>
-          <p className="text-xs text-gray-500 mt-1">
-            {formData.regions.length === 0
-              ? `Will use your onboarding preference${
-                  profileData.cuisines ? `: ${profileData.cuisines.slice(0, 2).join(', ')}` : ''
-                }`
-              : `${formData.regions.length} region${
-                  formData.regions.length > 1 ? 's' : ''
-                } selected`}
-          </p>
-        </div>
-
-        {/* Cuisine/State Selection - Multi-select */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Preferred Cuisines/States{' '}
-            <span className="text-xs text-muted">(Optional - Multi-select)</span>
-          </label>
-          {formData.regions.length === 0 ? (
-            <div className="w-full px-4 py-3 border border-surface rounded-lg bg-gray-50 text-gray-500 text-sm">
-              Please select regions first to see available cuisines
-            </div>
-          ) : availableStates.length === 0 ? (
-            <div className="w-full px-4 py-3 border border-surface rounded-lg bg-gray-50 text-gray-500 text-sm">
-              No cuisines available for selected regions
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-80 overflow-y-auto p-2 border border-surface rounded-lg">
-              {availableStates.map((state) => {
-                const isSelected = formData.cuisineStates.includes(state.id);
-                return (
-                  <button
-                    key={state.id}
-                    type="button"
-                    onClick={() => handleStateToggle(state.id)}
-                    className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition text-sm ${
-                      isSelected
-                        ? 'border-primary bg-primary/10'
-                        : 'border-surface hover:border-primary'
-                    }`}
-                  >
-                    {isSelected ? (
-                      <CheckSquare className="text-primary" size={16} />
-                    ) : (
-                      <Square className="text-muted" size={16} />
-                    )}
-                    <span>{state.label}</span>
-                  </button>
-                );
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <SelectInput
+              label={'Preferred Regions (Optional - Multi-select)'}
+              defaultValue={formData.regions}
+              options={regionalCuisineConfig.regions.map((regions) => {
+                return { value: regions.id, label: regions.label };
               })}
-            </div>
-          )}
-          <p className="text-xs text-gray-500 mt-1">
-            {formData.cuisineStates.length === 0
-              ? `Will use your onboarding cuisines${
-                  profileData.cuisines ? `: ${profileData.cuisines.join(', ')}` : ''
-                }`
-              : `${formData.cuisineStates.length} cuisine${
-                  formData.cuisineStates.length > 1 ? 's' : ''
-                } selected`}
-          </p>
+              handleInputChange={(value) => {
+                setFormData((prev) => ({ ...prev, regions: value }));
+              }}
+              mode="multiple"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {formData.regions.length === 0
+                ? `Will use your onboarding preference${
+                    profileData.cuisines ? `: ${profileData.cuisines.slice(0, 2).join(', ')}` : ''
+                  }`
+                : `${formData.regions.length} region${
+                    formData.regions.length > 1 ? 's' : ''
+                  } selected`}
+            </p>
+          </div>
+          <div>
+            <SelectInput
+              disable={formData.regions.length === 0}
+              label={'Preferred Cuisines/States (Optional - Multi-select)'}
+              options={availableStates.map((state) => {
+                return { value: state.id, label: state.label };
+              })}
+              handleInputChange={(value) => {
+                setFormData((prev) => ({ ...prev, cuisineStates: value }));
+              }}
+              mode="multiple"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {formData.cuisineStates.length === 0
+                ? `Will use your onboarding cuisines${
+                    profileData.cuisines ? `: ${profileData.cuisines.join(', ')}` : ''
+                  }`
+                : `${formData.cuisineStates.length} cuisine${
+                    formData.cuisineStates.length > 1 ? 's' : ''
+                  } selected`}
+            </p>
+          </div>
         </div>
-
         <div className="grid md:grid-cols-2 gap-6">
           {/* Diet Type - Optional */}
           <div>
-            <label className="block text-sm font-medium mb-2">Diet Type (Optional)</label>
-            <select
-              name="dietType"
-              value={formData.dietType}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
-            >
-              {dietTypes.map((diet) => (
-                <option key={diet.value} value={diet.value}>
-                  {diet.label}
-                  {!diet.value && profileData?.dietType ? ` (${profileData.dietType})` : ''}
-                </option>
-              ))}
-            </select>
+            <SelectInput
+              label={'Diet Type (Optional)'}
+              options={dietTypes.map((diet) => {
+                return { value: diet.value, label: diet.label };
+              })}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: val }))}
+            />
             <p className="text-xs text-gray-500 mt-1">
               Override your onboarding diet type if needed
             </p>
@@ -640,65 +436,53 @@ const MealPlanGenerator = ({
 
           {/* Meals Per Day - Required */}
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Meals Per Day <span className="text-danger">*</span>
-            </label>
-            <select
-              name="mealsPerDay"
-              value={formData.mealsPerDay}
-              onChange={handleInputChange}
+            <SelectInput
               required
-              className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
-            >
-              <option value={2}>2 Meals</option>
-              <option value={3}>3 Meals</option>
-              <option value={4}>4 Meals (with snack)</option>
-            </select>
+              label={'Meals Per Day'}
+              options={[
+                { value: '2', label: '2 Meals' },
+                { value: '3', label: '3 Meals' },
+                { value: '4', label: '4 Meals (with snack)' },
+              ]}
+              defaultValue={'3'}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: val }))}
+            />
           </div>
 
-          {/* Duration - Required */}
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Duration <span className="text-danger">*</span>
-            </label>
-            <select
-              name="duration"
-              value={formData.duration}
-              onChange={handleInputChange}
+            <SelectInput
               required
-              className="w-full px-4 py-2 border border-surface rounded-lg focus:outline-none focus:border-primary"
-            >
-              <option value={3}>3 Days</option>
-              <option value={5}>5 Days</option>
-              <option value={7}>7 Days (1 Week)</option>
-            </select>
+              label={'Duration'}
+              defaultValue={3}
+              options={[
+                { value: '3', label: '3 Days' },
+                { value: '5', label: '5 Days' },
+                { value: '7', label: '7 Days (1 Week)' },
+              ]}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, duration: val }))}
+            />
           </div>
         </div>
-
         {/* Daily Budget */}
         <div>
           <label className="block text-sm font-medium mb-2">Daily Budget: ₹{formData.budget}</label>
-          <input
-            type="range"
-            name="budget"
-            min="100"
-            max="500"
-            step="50"
+          <Slider
+            min={100}
+            max={500}
+            step={50}
             value={formData.budget}
-            onChange={handleInputChange}
-            className="w-full accent-primary"
+            onChange={(val) => setFormData((prev) => ({ ...prev, budget: val }))}
           />
           <div className="flex justify-between text-xs text-muted mt-1">
             <span>₹100</span>
             <span>₹500</span>
           </div>
         </div>
-
         {/* Submit */}
         <button
           type="submit"
           disabled={loading || (!canGenerate && !isTestAccount)}
-          className="w-full btn-primary !py-3 disabled:opacity-50"
+          className="w-full btn-primary !py-3 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {loading && <Loader className="animate-spin" size={20} />}
           {loading

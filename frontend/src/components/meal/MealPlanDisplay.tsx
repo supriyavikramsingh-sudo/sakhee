@@ -1,24 +1,27 @@
-import { jsPDF } from 'jspdf';
 import { AlertCircle, Calendar, Download, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import firestoreService from '../../services/firestoreService';
 import { useAuthStore } from '../../store/authStore';
+import type { PlanData } from '../../types/meal.type';
+import { downloadPDFHelper } from '../../utils/pdfHelper';
 import MealCard from './MealCard';
 
-const MealPlanDisplay = ({ plan }) => {
+interface MealPlanDisplayProps {
+  plan: PlanData;
+}
+
+const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
   const [selectedDay, setSelectedDay] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const [canGenerateMore, setCanGenerateMore] = useState(false);
-  const [isTestAccount, setIsTestAccount] = useState(false);
 
   useEffect(() => {
     const checkLimits = async () => {
       if (!user?.email || !user?.uid) return;
       const testAccount = firestoreService.isTestAccount(user.email);
-      setIsTestAccount(testAccount);
       if (testAccount) {
         setCanGenerateMore(true);
         return;
@@ -35,130 +38,7 @@ const MealPlanDisplay = ({ plan }) => {
     if (isDownloading) return;
     setIsDownloading(true);
     try {
-      const pdf = new jsPDF('p', 'pt', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 40;
-      const maxWidth = pageWidth - 2 * margin;
-      let yPos = margin;
-
-      // Helper to add new page if needed
-      const checkPageBreak = (requiredSpace) => {
-        if (yPos + requiredSpace > pageHeight - margin) {
-          pdf.addPage();
-          yPos = margin;
-          return true;
-        }
-        return false;
-      };
-
-      // Title
-      pdf.setFontSize(24);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Meal Plan', margin, yPos);
-      yPos += 30;
-
-      // Summary Info
-      pdf.setFontSize(12);
-      pdf.setFont('helvetica', 'normal');
-      pdf.text(`Duration: ${days.length} Days`, margin, yPos);
-      yPos += 20;
-      pdf.text(`Daily Budget: Rs${plan.budget || '200'}`, margin, yPos);
-      yPos += 20;
-      pdf.text(`Diet Type: ${plan.dietType || 'Vegetarian'}`, margin, yPos);
-      yPos += 20;
-      pdf.text(`Region: ${(plan.region || 'Indian').replace('-', ' ')}`, margin, yPos);
-      yPos += 30;
-
-      // Loop through all days
-      days.forEach((day, dayIndex) => {
-        if (!day) return;
-
-        checkPageBreak(40);
-        pdf.setFontSize(18);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(`Day ${dayIndex + 1} Meals`, margin, yPos);
-        yPos += 30;
-
-        // Render each meal
-        if (day.meals && day.meals.length > 0) {
-          day.meals.forEach((meal, idx) => {
-            checkPageBreak(80);
-
-            // Meal type header
-            pdf.setFontSize(14);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(meal.type || `Meal ${idx + 1}`, margin, yPos);
-            yPos += 20;
-
-            // Meal name
-            if (meal.name) {
-              pdf.setFontSize(12);
-              pdf.setFont('helvetica', 'italic');
-              const nameLines = pdf.splitTextToSize(meal.name, maxWidth);
-              pdf.text(nameLines, margin, yPos);
-              yPos += nameLines.length * 15;
-            }
-
-            // Ingredients
-            if (meal.ingredients && meal.ingredients.length > 0) {
-              checkPageBreak(20 + meal.ingredients.length * 15);
-              pdf.setFontSize(11);
-              pdf.setFont('helvetica', 'bold');
-              pdf.text('Ingredients:', margin, yPos);
-              yPos += 15;
-              pdf.setFont('helvetica', 'normal');
-              meal.ingredients.forEach((ingredient) => {
-                const ingLines = pdf.splitTextToSize(`• ${ingredient}`, maxWidth - 10);
-                pdf.text(ingLines, margin + 10, yPos);
-                yPos += ingLines.length * 14;
-              });
-              yPos += 5;
-            }
-
-            // Recipe/Instructions
-            if (meal.recipe) {
-              checkPageBreak(40);
-              pdf.setFontSize(11);
-              pdf.setFont('helvetica', 'bold');
-              pdf.text('Recipe:', margin, yPos);
-              yPos += 15;
-              pdf.setFont('helvetica', 'normal');
-              const recipeLines = pdf.splitTextToSize(meal.recipe, maxWidth - 10);
-              recipeLines.forEach((line) => {
-                checkPageBreak(14);
-                pdf.text(line, margin + 10, yPos);
-                yPos += 14;
-              });
-              yPos += 5;
-            }
-
-            // Nutrition info
-            if (meal.nutrition) {
-              checkPageBreak(40);
-              pdf.setFontSize(11);
-              pdf.setFont('helvetica', 'bold');
-              pdf.text('Nutrition:', margin, yPos);
-              yPos += 15;
-              pdf.setFont('helvetica', 'normal');
-              const nutritionText = Object.entries(meal.nutrition)
-                .map(([key, value]) => `${key}: ${value}`)
-                .join(', ');
-              const nutritionLines = pdf.splitTextToSize(nutritionText, maxWidth - 10);
-              pdf.text(nutritionLines, margin + 10, yPos);
-              yPos += nutritionLines.length * 14 + 5;
-            }
-
-            yPos += 15; // Space between meals
-          });
-        }
-
-        // Add extra space between days
-        yPos += 20;
-      });
-
-      const filename = `meal-plan-all-days.pdf`;
-      pdf.save(filename);
+      downloadPDFHelper(plan.plan.days, plan);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('PDF generation failed', err);
@@ -180,32 +60,6 @@ const MealPlanDisplay = ({ plan }) => {
   // Handle both parsed and raw plans
   let parsedPlan = plan.plan;
   let isFallback = false;
-
-  // Check if it's a raw plan that failed to parse
-  if (parsedPlan.rawPlan || parsedPlan.error) {
-    // Use fallback display
-    return (
-      <div className="space-y-6">
-        <div className="bg-warning bg-opacity-10 border-l-4 border-warning p-6 rounded-lg">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="text-warning flex-shrink-0" size={24} />
-            <div>
-              <h3 className="font-bold text-warning mb-2">
-                Meal Plan Generated (Formatting Issue)
-              </h3>
-              <p className="text-sm text-gray-700 mb-4">
-                The AI generated your meal plan, but we're having trouble displaying it in the
-                structured format. We've created a template-based plan for you instead.
-              </p>
-              <button onClick={() => window.location.reload()} className="btn-primary text-sm">
-                Try Generating Again
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // Check if using fallback
   if (parsedPlan.fallback) {
@@ -261,7 +115,7 @@ const MealPlanDisplay = ({ plan }) => {
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Region</p>
           <p className="text-lg font-bold capitalize">
-            {(plan.region || 'Indian').replace('-', ' ')}
+            {plan.regions.map((region) => region.replace('-', ' ')).join() || 'Indian'}
           </p>
         </div>
       </div>
@@ -284,8 +138,7 @@ const MealPlanDisplay = ({ plan }) => {
           <div>
             <h2 className="text-2xl font-bold text-primary mb-2">Your Meal Plan</h2>
             <p className="text-sm text-muted">
-              {plan.duration || days.length} days • {plan.dietType || 'Custom'} • ₹
-              {plan.budget || 'N/A'}/day
+              {days.length} days • {plan.dietType || 'Custom'} • ₹{plan.budget || 'N/A'}/day
             </p>
           </div>
 
@@ -320,15 +173,6 @@ const MealPlanDisplay = ({ plan }) => {
             </div>
           </div>
         </div>
-
-        {/* 🆕 NEW: Test Account Badge */}
-        {isTestAccount && (
-          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
-              🧪 <strong>Test Account:</strong> Unlimited meal plan generation enabled
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Day Selector */}

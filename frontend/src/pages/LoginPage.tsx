@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader className="animate-spin text-primary" size={40} />
       </div>
     );

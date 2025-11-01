@@ -1,19 +1,24 @@
 import { ChefHat, Clock, TrendingDown } from 'lucide-react';
+import { useState } from 'react';
+import type { Meal } from '../../types/meal.type';
 
-const MealCard = ({ meal }) => {
-  // Handle both old and new formats
-  const macros = meal.macros || {
+interface MealCardProps {
+  meal: Meal;
+}
+
+const MealCard = ({ meal }: MealCardProps) => {
+  const [showAllIngredients, setShowAllIngredients] = useState(false);
+  const macros = {
     protein: meal.protein || 0,
     carbs: meal.carbs || 0,
     fats: meal.fats || 0,
   };
 
-  // Calculate calories if not provided: (protein × 4) + (carbs × 4) + (fats × 9)
   const calories =
     meal.calories || Math.round(macros.protein * 4 + macros.carbs * 4 + macros.fats * 9);
 
-  const glycemicIndex = meal.glycemicIndex || meal.gi || 'Low';
-  const cookingTime = meal.cookingTime || meal.time || '20 mins';
+  const glycemicIndex = meal.gi || 'Low';
+  const cookingTime = meal.time || '20 mins';
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
@@ -43,21 +48,34 @@ const MealCard = ({ meal }) => {
         <div className="mb-4">
           <p className="text-sm font-medium text-gray-700 mb-2">Ingredients:</p>
           <ul className="text-sm text-muted space-y-1">
-            {meal.ingredients.slice(0, 5).map((ingredient, idx) => {
-              // Handle both string and object formats
-              const ingredientText =
-                typeof ingredient === 'string'
-                  ? ingredient
-                  : ingredient.item
-                  ? `${ingredient.item}${ingredient.quantity ? ` - ${ingredient.quantity}` : ''}${
-                      ingredient.unit ? ` ${ingredient.unit}` : ''
-                    }`
-                  : JSON.stringify(ingredient);
+            {meal.ingredients
+              .slice(0, showAllIngredients ? meal.ingredients.length : 5)
+              .map((ingredient, idx) => {
+                // Handle both string and object formats
+                const ingredientText =
+                  typeof ingredient === 'string'
+                    ? ingredient
+                    : ingredient.item
+                    ? `${ingredient.item}${ingredient.quantity ? ` - ${ingredient.quantity}` : ''}${
+                        ingredient.unit ? ` ${ingredient.unit}` : ''
+                      }`
+                    : JSON.stringify(ingredient);
 
-              return <li key={idx}>• {ingredientText}</li>;
-            })}
+                return <li key={idx}>• {ingredientText}</li>;
+              })}
             {meal.ingredients.length > 5 && (
-              <li className="text-primary font-medium">+ {meal.ingredients.length - 5} more</li>
+              <li
+                className="text-primary font-medium cursor-pointer"
+                onClick={
+                  showAllIngredients
+                    ? () => setShowAllIngredients(false)
+                    : () => setShowAllIngredients(true)
+                }
+              >
+                {showAllIngredients
+                  ? `show ${meal.ingredients.length - 5} less`
+                  : `show ${meal.ingredients.length - 5} more`}
+              </li>
             )}
           </ul>
         </div>
