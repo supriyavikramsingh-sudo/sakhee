@@ -120,7 +120,7 @@ class SERPService {
           : [],
       });
 
-      // PRIORITY 1: Try organic results FIRST (Nutritionix has better per-serving data)
+      // PRIORITY 1: Try organic results FIRST (prefer per-serving trusted sources)
       logger.info('🔍 Checking organic results first for per-serving data');
       const organicData = this.parseOrganicResults(serpResults.organic_results, foodItem);
 
@@ -229,19 +229,13 @@ class SERPService {
         foodItem,
         found: false,
         message: 'Nutrition data not found in structured format',
-        organicResults: serpResults.organic_results?.slice(0, 3).map((r) => ({
-          title: r.title,
-          snippet: r.snippet,
-          link: r.link,
-        })),
+        organicResults: serpResults.organic_results
+          ?.slice(0, 3)
+          .map((r) => ({ title: r.title, snippet: r.snippet, link: r.link })),
       };
     } catch (error) {
       logger.error('Failed to extract nutrition data', { error: error.message });
-      return {
-        foodItem,
-        found: false,
-        error: 'Data extraction failed',
-      };
+      return { foodItem, found: false, error: 'Data extraction failed' };
     }
   }
 
@@ -267,9 +261,7 @@ class SERPService {
         if (fallbackObj[key] !== undefined && fallbackObj[key] !== null) {
           const extracted = this.parseNutritionValue(fallbackObj[key]);
           if (extracted !== null) {
-            logger.debug(`Found ${key} in fallback: ${extracted}`, {
-              rawValue: fallbackObj[key],
-            });
+            logger.debug(`Found ${key} in fallback: ${extracted}`, { rawValue: fallbackObj[key] });
             return extracted;
           }
         }
@@ -325,129 +317,118 @@ class SERPService {
 
   /**
    * Parse organic search results for nutrition info
+   * Prioritize a single trusted source in deterministic order (Nutritionix, USDA FDC, MyFitnessPal, etc.)
    */
   parseOrganicResults(results, foodItem) {
     if (!results || results.length === 0) {
       return { foodItem, found: false };
     }
 
-    // Look for trusted nutrition sources (prioritized order)
-    const trustedDomains = [
+    // Deterministic trusted source ranking (higher index = lower priority)
+    const trustedDomainsPriority = [
       'nutritionix.com',
       'fdc.nal.usda.gov',
-      'healthline.com',
-      'webmd.com',
       'myfitnesspal.com',
       'calorieking.com',
+      'healthline.com',
+      'webmd.com',
     ];
 
-    for (const result of results) {
-      const domain = new URL(result.link).hostname;
+    // Normalize results with domain information
+    const normalizedResults = results.map((result) => {
+      let domain = '';
+      try {
+        domain = new URL(result.link).hostname;
+      } catch (e) {
+        domain = '';
+      }
+      return { ...result, domain, title: result.title || '', snippet: result.snippet || '' };
+    });
 
-      if (trustedDomains.some((trusted) => domain.includes(trusted))) {
-        // Extract numbers from snippet with improved regex patterns
-        const snippet = result.snippet || '';
-        const title = result.title || '';
-        const fullText = `${title} ${snippet}`.toLowerCase();
+    // Try each trusted domain in order and pick the first one that contains valid per-serving nutrition data
+    for (const trusted of trustedDomainsPriority) {
+      const candidate = normalizedResults.find((r) => r.domain.includes(trusted));
+      if (!candidate) continue;
 
-        // Extract serving size FIRST (most important!)
-        // Patterns: "1 cookie (57g)", "serving size: 100g", "per 100g", "1 cup (240ml)"
-        // IMPORTANT: Avoid matching "1g grams" (nutrients), only match serving descriptions
-        const servingSizeMatch =
-          fullText.match(/serving size:?\s*([^.]+?)(?:\n|$|calories)/i) ||
-          fullText.match(
-            /amount per serving.*?(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz)(?:\s*\(\d+g\))?)/i
-          ) ||
-          fullText.match(
-            /(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz)(?:\s*\(\d+\s*g\))?)\s*\(\d+g\)/i
-          ) ||
-          fullText.match(/per\s+(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz))/i);
+      const snippet = `${candidate.title} ${candidate.snippet}`.toLowerCase();
 
-        let servingSize = servingSizeMatch ? servingSizeMatch[1].trim() : '100g';
+      // Extract serving size FIRST (most important)
+      const servingSizeMatch =
+        snippet.match(/serving size:?\s*([^.]+?)(?:\n|$|calories)/i) ||
+        snippet.match(
+          /amount per serving.*?(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz)(?:\s*\(\d+g\))?)/i
+        ) ||
+        snippet.match(
+          /(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz)(?:\s*\(\d+\s*g\))?)\s*\(\d+g\)/i
+        ) ||
+        snippet.match(/per\s+(\d+\s*(?:cookie|piece|cup|bowl|slice|tbsp|oz))/i);
 
-        // Clean up serving size (remove trailing punctuation)
-        servingSize = servingSize.replace(/[,.]$/, '');
+      let servingSize = servingSizeMatch ? servingSizeMatch[1].trim() : '100g';
+      servingSize = servingSize.replace(/[,.]$/, '');
 
-        // More comprehensive patterns to catch various formats
-        // IMPORTANT: Match "Calories 240" but NOT "2000 calorie diet"
-        // Patterns for: "240 calories", "Calories 240", "240 cal", "240 kcal"
-        const caloriesMatch =
-          snippet.match(/calories\s*:?\s*(\d+)(?!\s*calorie)/i) || // "Calories: 240" but not "2000 calorie"
-          snippet.match(/(\d+)\s*cal(?:ories)?(?:\s|$)/i) || // "240 calories"
-          snippet.match(/amount per serving.*?(\d{2,3})\s*cal/i); // "Amount Per Serving: 240 cal"
+      // Extract calories and macros using safer patterns (avoid false matches)
+      const caloriesMatch =
+        snippet.match(/calories\s*:?\s*(\d{2,3})(?!\s*calorie)/i) ||
+        snippet.match(/(\d{2,3})\s*cal(?:ories)?(?:\s|$)/i) ||
+        snippet.match(/amount per serving.*?(\d{2,3})\s*cal/i);
 
-        // Patterns for protein: "3g protein", "Protein 3g", "Protein: 3g"
-        // Match "Protein 3g" but not "Protein 3g grams"
-        const protein =
-          snippet.match(/protein[\s:]+(\d+\.?\d*)g/i) || snippet.match(/(\d+\.?\d*)g\s+protein/i);
+      const protein =
+        snippet.match(/protein[\s:]+(\d+\.?\d*)g/i) || snippet.match(/(\d+\.?\d*)g\s+protein/i);
+      const carbs =
+        snippet.match(/(?:total\s+)?carbohydrate[s]?[\s:]+(\d+\.?\d*)g/i) ||
+        snippet.match(/(\d+\.?\d*)g\s+(?:total\s+)?carb/i);
+      const fat =
+        snippet.match(/(?:total\s+)?fat[\s:]+(\d+\.?\d*)g/i) ||
+        snippet.match(/(\d+\.?\d*)g\s+(?:total\s+)?fat/i);
 
-        // Patterns for carbs: "35g carbs", "Carbohydrates: 35g", "Total Carbohydrate 35g"
-        // Match numbers followed by 'g' and carb-related words
-        const carbs =
-          snippet.match(/(?:total\s+)?carbohydrate[s]?[\s:]+(\d+\.?\d*)g/i) ||
-          snippet.match(/(\d+\.?\d*)g\s+(?:total\s+)?carb/i);
+      const caloriesValue = caloriesMatch ? parseFloat(caloriesMatch[1]) : null;
+      const proteinValue = protein ? parseFloat(protein[1]) : null;
+      const carbsValue = carbs ? parseFloat(carbs[1]) : null;
+      const fatValue = fat ? parseFloat(fat[1]) : null;
 
-        // Patterns for fat: "9g fat", "Fat: 9g", "Total Fat 9g"
-        const fat =
-          snippet.match(/(?:total\s+)?fat[\s:]+(\d+\.?\d*)g/i) ||
-          snippet.match(/(\d+\.?\d*)g\s+(?:total\s+)?fat/i);
+      const hasValidData = caloriesValue && (proteinValue || carbsValue || fatValue);
+      const isReasonableCalories = caloriesValue && caloriesValue < 1000;
 
-        // IMPORTANT: Only use organic results if we have REAL nutrition data
-        // Must have calories AND at least 2 macros (protein, carbs, fat)
-        // This avoids false matches like "2000 calorie diet" text
-        const caloriesValue = caloriesMatch ? parseFloat(caloriesMatch[1]) : null;
-        const proteinValue = protein ? parseFloat(protein[1]) : null;
-        const carbsValue = carbs ? parseFloat(carbs[1]) : null;
-        const fatValue = fat ? parseFloat(fat[1]) : null;
+      if (hasValidData && isReasonableCalories) {
+        const extractedData = {
+          foodItem,
+          found: true,
+          servingSize,
+          calories: caloriesValue,
+          protein: proteinValue,
+          carbs: carbsValue,
+          fat: fatValue,
+          source: candidate.title || trusted,
+          sourceUrl: candidate.link,
+          organicResults: normalizedResults
+            .slice(0, 3)
+            .map((r) => ({ title: r.title, snippet: r.snippet, link: r.link })),
+        };
 
-        const hasValidData = caloriesValue && (proteinValue || carbsValue || fatValue);
+        logger.info('✅ Extracted nutrition from trusted organic result', {
+          foodItem,
+          trustedDomain: trusted,
+          servingSize: extractedData.servingSize,
+          calories: extractedData.calories,
+          protein: extractedData.protein,
+          carbs: extractedData.carbs,
+          fat: extractedData.fat,
+          sourceUrl: extractedData.sourceUrl,
+        });
 
-        // Sanity check: calories should be reasonable (< 1000 per serving for most foods)
-        const isReasonableCalories = caloriesValue && caloriesValue < 1000;
-
-        if (hasValidData && isReasonableCalories) {
-          const extractedData = {
-            foodItem,
-            found: true,
-            servingSize, // Use extracted serving size
-            calories: caloriesValue,
-            protein: proteinValue,
-            carbs: carbsValue,
-            fat: fatValue,
-            source: result.title,
-            sourceUrl: result.link,
-            organicResults: results.slice(0, 3).map((r) => ({
-              title: r.title,
-              snippet: r.snippet,
-              link: r.link,
-            })),
-          };
-
-          logger.info('✅ Extracted nutrition from organic results', {
-            foodItem,
-            domain,
-            servingSize: extractedData.servingSize,
-            calories: extractedData.calories,
-            protein: extractedData.protein,
-            carbs: extractedData.carbs,
-            fat: extractedData.fat,
-            snippetPreview: snippet.substring(0, 150),
-          });
-
-          return extractedData;
-        }
+        return extractedData;
       }
     }
 
-    logger.warn('⚠️ No nutrition data found in organic results', { foodItem });
+    logger.warn('⚠️ No trustworthy per-serving nutrition data found in organic results', {
+      foodItem,
+    });
     return {
       foodItem,
       found: false,
-      organicResults: results.slice(0, 3).map((r) => ({
-        title: r.title,
-        snippet: r.snippet,
-        link: r.link,
-      })),
+      organicResults: normalizedResults
+        .slice(0, 3)
+        .map((r) => ({ title: r.title, snippet: r.snippet, link: r.link })),
     };
   }
 
@@ -532,7 +513,7 @@ class SERPService {
           domain: new URL(result.link).hostname,
           isMedicalSource: medicalDomains.some((domain) => result.link.includes(domain)),
         }))
-        .sort((a, b) => b.isMedicalSource - a.isMedicalSource) // Prioritize medical sources
+        .sort((a, b) => b.isMedicalSource - a.isMedicalSource)
         .slice(0, 5);
     }
 
@@ -602,11 +583,7 @@ class SERPService {
           domain: new URL(result.link).hostname,
         })) || [];
 
-      return {
-        dishName,
-        recipes,
-        count: recipes.length,
-      };
+      return { dishName, recipes, count: recipes.length };
     } catch (error) {
       logger.error('Recipe search failed', { error: error.message });
       return { dishName, recipes: [], count: 0 };
@@ -626,10 +603,7 @@ class SERPService {
    * Get cache statistics
    */
   getCacheStats() {
-    return {
-      size: this.nutritionCache.size,
-      entries: Array.from(this.nutritionCache.keys()),
-    };
+    return { size: this.nutritionCache.size, entries: Array.from(this.nutritionCache.keys()) };
   }
 }
 
