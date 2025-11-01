@@ -36,8 +36,100 @@ class ChatChain {
       : defaultPrompt;
   }
 
+  /**
+   * Content Safety Filter - Blocks NSFW, adult, and inappropriate content requests
+   * @param {string} message - User message to check
+   * @returns {Object} - { isBlocked: boolean, reason: string }
+   */
+  checkContentSafety(message) {
+    const messageLower = message.toLowerCase();
+
+    // NSFW/Adult content patterns
+    const nsfwPatterns = [
+      // Explicit sexual content
+      /\b(porn|pornography|pornographic|xxx|nsfw|18\+)\b/i,
+      /\b(sex video|sex tape|nude|nudes|naked)\b/i,
+      /\b(erotic|sexual content|adult content)\b/i,
+
+      // Explicit body parts (non-medical context)
+      /\b(boobs|tits|ass|dick|cock|pussy|vagina|penis)\b(?!.*\b(health|medical|doctor|pain|infection|discharge|symptoms)\b)/i,
+
+      // Dating/hookup apps with sexual intent
+      /\b(tinder|bumble|dating app).*\b(sex|hookup|casual|one night)\b/i,
+      /\b(hookup|one night stand|friends with benefits|fwb)\b/i,
+
+      // Fetish/kink content
+      /\b(fetish|kink|bdsm|bondage)\b/i,
+
+      // Adult industry
+      /\b(onlyfans|cam girl|stripper|escort|prostitut)\b/i,
+    ];
+
+    // Violence/harm patterns
+    const violencePatterns = [
+      /\b(kill myself|suicide|self harm|cut myself)\b/i,
+      /\b(how to die|ways to die|end my life)\b/i,
+      /\b(hurt someone|harm someone|kill someone)\b/i,
+    ];
+
+    // Illegal activity patterns
+    const illegalPatterns = [
+      /\b(buy drugs|sell drugs|drug dealer)\b/i,
+      /\b(illegal|contraband|smuggle|trafficking)\b/i,
+      /\b(hack|hacking|steal|theft)\b/i,
+    ];
+
+    // Check NSFW patterns
+    for (const pattern of nsfwPatterns) {
+      if (pattern.test(messageLower)) {
+        logger.warn('🚫 NSFW content detected:', { message: message.substring(0, 100) });
+        return {
+          isBlocked: true,
+          reason: 'nsfw',
+          message:
+            "I'm sorry, but I cannot provide NSFW or adult content. I'm here to help with PCOS health and wellness questions in a safe, educational environment. Please ask me about PCOS symptoms, lifestyle management, nutrition, or other health-related topics.",
+        };
+      }
+    }
+
+    // Check violence/harm patterns
+    for (const pattern of violencePatterns) {
+      if (pattern.test(messageLower)) {
+        logger.warn('🚫 Self-harm/violence content detected:', {
+          message: message.substring(0, 100),
+        });
+        return {
+          isBlocked: true,
+          reason: 'violence',
+          message:
+            "I'm concerned about your message. If you're experiencing thoughts of self-harm or suicide, please reach out to:\n\n🆘 **Suicide Prevention Helpline (India)**: 9152987821\n🆘 **AASRA**: 91-9820466726\n🆘 **Vandrevala Foundation**: 1860-2662-345\n\nYour life matters. Please talk to a mental health professional who can provide proper support.",
+        };
+      }
+    }
+
+    // Check illegal activity patterns
+    for (const pattern of illegalPatterns) {
+      if (pattern.test(messageLower)) {
+        logger.warn('🚫 Illegal activity content detected:', {
+          message: message.substring(0, 100),
+        });
+        return {
+          isBlocked: true,
+          reason: 'illegal',
+          message:
+            "I cannot provide assistance with illegal activities. I'm designed to help with PCOS health and wellness in a safe, legal, and ethical manner. Please ask me about PCOS symptoms, lifestyle management, or other health-related topics.",
+        };
+      }
+    }
+
+    // Content is safe
+    return { isBlocked: false, reason: null, message: null };
+  }
+
   buildEnhancedSystemPrompt() {
     return `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women.
+
+⚠️ CRITICAL RULE: When the RETRIEVED CONTEXT below contains instructions marked as "MANDATORY", "CRITICAL", or "YOU MUST", you MUST follow them exactly. Failure to follow these instructions results in an incomplete response.
 
 ## Your Core Role
 - Provide evidence-based, educational guidance on PCOS symptoms and lifestyle management
@@ -1275,6 +1367,15 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   async fetchRedditContext(userMessage) {
     try {
+      // Content safety check for Reddit queries
+      const safetyCheck = this.checkContentSafety(userMessage);
+      if (safetyCheck.isBlocked) {
+        logger.warn('🚫 Reddit query blocked by content safety filter', {
+          reason: safetyCheck.reason,
+        });
+        return null; // Don't fetch Reddit content for unsafe queries
+      }
+
       const keywords = this.needsCommunityInsights(userMessage);
       if (!keywords || keywords.length === 0) return null;
 
@@ -1922,6 +2023,28 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'sabzi',
       'khichdi',
       'pulao',
+      'cookie',
+      'cookies',
+      'biscuit',
+      'biscuits',
+      'cake',
+      'pastry',
+      'dessert',
+      'pudding',
+      'chocolate',
+      'chips',
+      'fries',
+      'pizza',
+      'burger',
+      'sandwich',
+      'wafer',
+      'mithai',
+      'sweet',
+      'ladoo',
+      'barfi',
+      'halwa',
+      'jalebi',
+      'gulab jamun',
     ];
 
     const hasRecipeKeyword = recipeKeywords.some((keyword) => messageLower.includes(keyword));
@@ -1945,7 +2068,23 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
   buildIngredientSubstituteQuery(userMessage) {
     const query = userMessage.toLowerCase();
 
-    // Common problematic ingredients for PCOS
+    // PCOS-friendly foods that DON'T need main ingredient substitution
+    const pcosFriendlyFoods = [
+      'quinoa',
+      'brown rice',
+      'oats',
+      'salad',
+      'vegetables',
+      'grilled',
+      'baked',
+      'steamed',
+      'boiled',
+    ];
+
+    // Check if the main food item is already PCOS-friendly
+    const isPcosFriendly = pcosFriendlyFoods.some((friendly) => query.includes(friendly));
+
+    // Common problematic ingredients for PCOS with their specific substitutes
     const ingredientKeywords = [
       'rice',
       'white rice',
@@ -1973,36 +2112,68 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       'coconut milk',
       'cream',
       'cookie',
+      'cookies',
       'biscuit',
+      'biscuits',
       'wafer',
       'pudding',
       'dessert',
       'fried',
       'deep fried',
+      'chocolate',
+      'choco',
+      'chip',
     ];
 
-    // Find mentioned ingredients
-    const mentionedIngredients = ingredientKeywords.filter((ingredient) =>
-      query.includes(ingredient)
-    );
+    // Extract food item from query (remove words like "nutritional", "info", "share", etc.)
+    const cleanQuery = query
+      .replace(
+        /\b(nutritional|nutrition|info|information|share|give|tell|about|on|of|for|the)\b/gi,
+        ''
+      )
+      .trim();
 
-    // Build comprehensive search query
-    let searchQuery = 'PCOS friendly ingredient substitute alternative replacement ';
+    // Build targeted search query
+    let searchQuery = '';
 
-    if (mentionedIngredients.length > 0) {
-      searchQuery += mentionedIngredients.join(' ') + ' ';
+    if (isPcosFriendly) {
+      // For PCOS-friendly foods (like quinoa salad), focus on potential add-ons/toppings that might be problematic
+      console.log(
+        `[buildIngredientSubstituteQuery] Food is PCOS-friendly, searching for healthier add-on alternatives`
+      );
+      searchQuery = `PCOS friendly substitute for salad dressing mayonnaise cheese cream croutons toppings sauces alternative replacement`;
     } else {
-      // Generic search if no specific ingredient detected
-      searchQuery += query + ' ';
+      // For non-PCOS-friendly foods, find mentioned problematic ingredients
+      const mentionedIngredients = ingredientKeywords.filter((ingredient) =>
+        query.includes(ingredient)
+      );
+
+      if (mentionedIngredients.length > 0) {
+        // For specific ingredients, search for their substitutes directly
+        console.log(
+          `[buildIngredientSubstituteQuery] Found problematic ingredients: ${mentionedIngredients.join(
+            ', '
+          )}`
+        );
+        searchQuery = `PCOS friendly substitute for ${mentionedIngredients.join(
+          ' '
+        )} alternative replacement healthy option`;
+      } else {
+        // Extract main food item and search for substitutes
+        const foodItem = cleanQuery.split(' ').slice(0, 3).join(' '); // Take first 3 words as food item
+        console.log(`[buildIngredientSubstituteQuery] Searching for substitutes for: ${foodItem}`);
+        searchQuery = `PCOS friendly ingredient substitute for ${foodItem} alternative replacement healthy modification`;
+      }
     }
 
-    // Add modification keywords
-    searchQuery += 'healthy modification low GI high protein fiber';
+    // Add PCOS-specific keywords
+    searchQuery += ' low GI high protein fiber insulin resistance';
 
-    logger.info('Built ingredient substitute query', {
+    logger.info('🔍 Built ingredient substitute query', {
       original: userMessage,
+      cleanQuery,
+      isPcosFriendly,
       searchQuery,
-      ingredientsFound: mentionedIngredients,
     });
 
     return searchQuery;
@@ -2021,6 +2192,36 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       const validationWarnings = this.validateNutritionData(data, userMessage);
 
       let context = `🥗 NUTRITIONAL DATA:\n${JSON.stringify(data, null, 2)}\n`;
+
+      // Add CRITICAL instructions for using exact values
+      context += `\n🚨 CRITICAL NUTRITION FORMATTING INSTRUCTIONS:\n`;
+      context += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      context += `⚠️ YOU MUST USE EXACT VALUES IN GRAMS FROM THE DATA ABOVE!\n\n`;
+      context += `✅ REQUIRED FORMAT (Use exact numbers from JSON above):\n`;
+      context += `   • Serving Size: [value from servingSize]\n`;
+      context += `   • Calories: [value from calories] cal\n`;
+      context += `   • Protein: [value from protein]g\n`;
+      context += `   • Carbohydrates: [value from carbs]g\n`;
+      context += `   • Fat: [value from fat]g\n`;
+      context += `   • Fiber: [value from fiber]g (if available)\n\n`;
+      context += `❌ DO NOT:\n`;
+      context += `   ✗ Convert to percentages (e.g., "60% of calories")\n`;
+      context += `   ✗ Use approximations (e.g., "Approximately X%")\n`;
+      context += `   ✗ Say "around", "roughly", "about" for macro values\n`;
+      context += `   ✗ Calculate percentages unless specifically asked\n\n`;
+      context += `✅ CORRECT EXAMPLES:\n`;
+      context += `   ✓ "Carbohydrates: 35g"\n`;
+      context += `   ✓ "Protein: 3g"\n`;
+      context += `   ✓ "Fat: 9g"\n\n`;
+      context += `❌ INCORRECT EXAMPLES:\n`;
+      context += `   ✗ "Carbohydrates: Approximately 60% of the calories"\n`;
+      context += `   ✗ "Fat: Around 35% of the calories"\n`;
+      context += `   ✗ "Protein: Roughly 5% of total calories"\n`;
+      context += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+      context += `⚠️ REMINDER: Your response MUST include:\n`;
+      context += `1. Exact nutrition values in grams (from JSON above)\n`;
+      context += `2. PCOS-friendly ingredient substitutes (if provided below)\n`;
+      context += `3. Google nutrition disclaimer with source links (shown below)\n\n`;
 
       if (validationWarnings.length > 0) {
         context += `\n⚠️ DATA QUALITY WARNINGS:\n`;
@@ -2072,10 +2273,9 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       // Add instructions for including links in response
       if (nutritionLinks.length > 0) {
-        context += `\n🚨 CRITICAL INSTRUCTIONS - GOOGLE NUTRITION LINKS:\n\n`;
-        context += `⚠️ You MUST include these Google nutrition source links at the END of your response!\n\n`;
-        context += `📝 FORMAT (Use markdown links exactly like this):\n\n`;
-        context += `---\n`;
+        context += `\n🚨 MANDATORY REQUIREMENT - GOOGLE NUTRITION DISCLAIMER:\n\n`;
+        context += `⛔️ YOU MUST INCLUDE THIS EXACT TEXT AT THE END OF YOUR RESPONSE:\n\n`;
+        context += `---\n\n`;
         context += `📊 **Nutrition Data Sources:**\n`;
 
         nutritionLinks.forEach((link) => {
@@ -2084,7 +2284,9 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
           context += `- [${shortTitle}](${link.url})\n`;
         });
 
-        context += `\n💬 *Nutritional information from Google's knowledge base.*\n\n`;
+        context += `\n💬 **Nutritional information from Google's knowledge base.**\n\n`;
+        context += `⛔️ THIS DISCLAIMER IS MANDATORY - DO NOT OMIT IT!\n\n`;
+        context += `⚠️ FORMATTING RULE: Do NOT use bold (**) for ingredient names in the response body. Only use bold for section headers and disclaimers.\n\n`;
 
         context += `🔗 LINK FORMAT REMINDER:\n`;
         context += `   ✅ CORRECT: [Nutrition Facts for ${data.foodItem || 'food'}](${
@@ -2216,6 +2418,26 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       warnings.push(
         `INCOMPLETE DATA: Only calories provided, missing protein, carbs, and fat breakdown. Data likely incomplete.`
       );
+    }
+
+    // Check for duplicate macro values (API parsing error)
+    if (data.carbohydrates && data.fat && data.protein) {
+      const carbsValue = parseFloat(String(data.carbohydrates).replace(/[^\d.]/g, ''));
+      const fatValue = parseFloat(String(data.fat).replace(/[^\d.]/g, ''));
+      const proteinValue = parseFloat(String(data.protein).replace(/[^\d.]/g, ''));
+
+      if (
+        !isNaN(carbsValue) &&
+        !isNaN(fatValue) &&
+        !isNaN(proteinValue) &&
+        carbsValue === fatValue &&
+        fatValue === proteinValue &&
+        carbsValue > 0
+      ) {
+        warnings.push(
+          `DUPLICATE VALUES: All macros show ${carbsValue}g (carbs, fat, protein) - likely API parsing error. Data unreliable.`
+        );
+      }
     }
 
     return warnings;
@@ -2412,6 +2634,23 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         userId: userContext.userId,
       });
 
+      // Step 0: Content Safety Check - Block NSFW/inappropriate content
+      const safetyCheck = this.checkContentSafety(userMessage);
+      if (safetyCheck.isBlocked) {
+        logger.warn('🚫 Message blocked by content safety filter', {
+          reason: safetyCheck.reason,
+          userId: userContext.userId,
+        });
+        return {
+          message: { response: safetyCheck.message },
+          sources: [],
+          contextUsed: {
+            blocked: true,
+            reason: safetyCheck.reason,
+          },
+        };
+      }
+
       // Step 1: Fetch user's lab values from medical report
       let medicalData = null;
       let labContext = '';
@@ -2514,6 +2753,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
           logger.info('✅ Ingredient substitutes retrieved', {
             docsRetrieved: substituteDocs.length,
             query: ingredientQuery,
+            contextPreview: ingredientSubstituteContext.substring(0, 300),
           });
         } else {
           logger.warn('⚠️ No ingredient substitutes found in RAG', {
@@ -2562,7 +2802,41 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       // Add ingredient substitutes from RAG
       if (ingredientSubstituteContext) {
+        logger.info('➕ Adding ingredient substitute context to prompt', {
+          contextLength: ingredientSubstituteContext.length,
+        });
+
+        enhancedContext += '\n\n';
+        enhancedContext += '═══════════════════════════════════════════════════════════\n';
+        enhancedContext += '🚨 MANDATORY: PCOS-FRIENDLY INGREDIENT SUBSTITUTES 🚨\n';
+        enhancedContext += '═══════════════════════════════════════════════════════════\n\n';
+        enhancedContext +=
+          '⛔️ YOU MUST INCLUDE A SECTION TITLED "PCOS-Friendly Modifications" IN YOUR RESPONSE!\n\n';
+        enhancedContext += '🎯 RULES:\n';
+        enhancedContext +=
+          '1. Use ONLY the substitutes from the data below (DO NOT make up alternatives)\n';
+        enhancedContext +=
+          '2. Provide INGREDIENT-LEVEL substitutes (NOT whole meal alternatives)\n';
+        enhancedContext += '3. Use this EXACT format for EACH substitute:\n';
+        enhancedContext +=
+          '   "Instead of [ingredient], use [substitute] because [PCOS benefit]"\n\n';
+        enhancedContext += '✅ CORRECT FORMAT:\n';
+        enhancedContext += '   Instead of refined flour (maida), use almond flour because it has\n';
+        enhancedContext += "   lower carbs and won't spike blood sugar.\n\n";
+        enhancedContext += '   Instead of white sugar, use stevia or erythritol because they are\n';
+        enhancedContext += "   zero-calorie sweeteners that don't affect insulin.\n\n";
+        enhancedContext += '   Instead of milk chocolate chips, use dark chocolate (85%+ cacao)\n';
+        enhancedContext += '   because it has less sugar and beneficial antioxidants.\n\n';
+        enhancedContext += '❌ UNACCEPTABLE (TOO GENERIC):\n';
+        enhancedContext += '   ✗ "Make healthier cookie choices"\n';
+        enhancedContext += '   ✗ "Opt for low-GI snacks"\n';
+        enhancedContext += '   ✗ "Eat fruit instead"\n\n';
+        enhancedContext += '📋 SUBSTITUTE DATA (USE THESE IN YOUR RESPONSE):\n';
+        enhancedContext += '─────────────────────────────────────────────────────────\n';
         enhancedContext += ingredientSubstituteContext;
+        enhancedContext += '─────────────────────────────────────────────────────────\n\n';
+        enhancedContext += '⚠️ FAILURE TO INCLUDE SPECIFIC SUBSTITUTES = INCOMPLETE RESPONSE!\n';
+        enhancedContext += '═══════════════════════════════════════════════════════════\n\n';
       }
 
       if (!enhancedContext) {
