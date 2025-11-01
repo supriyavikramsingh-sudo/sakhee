@@ -160,7 +160,7 @@ npm run ingest:meals
 
 The server will work without this step but will use fallback templates instead of RAG retrieval.
 
-4. **Start development servers**
+  4. **Start development servers**
 
 ```bash
 npm run dev
@@ -265,6 +265,37 @@ Notes & recent fixes
   5. npm run vector:health
 
 If you want this automated in CI, consider adding a guarded task that runs the backup + ingest + health-check and fails loudly if the health check does not return expected counts.
+
+## 🥗 Nutrition & Ingredient Substitutes (recent fixes)
+
+This project includes targeted logic for extracting nutrition facts from web search results and for recommending PCOS-aware ingredient substitutes. Recent fixes (Oct 2025) improve accuracy and relevance:
+
+- SERP query cleaning: user queries like "nutrition info on quinoa salad" are cleaned to the actual food item ("quinoa salad") before web search. This reduces cases where the SERP returned generic "quinoa (grain)" pages instead of the prepared dish.
+- Organic-result prioritization: when possible the system prefers organic/nutrition snippets that report per-serving values (not per-100g) to provide realistic serving nutrition values.
+- Improved regex extraction: calorie/macro extraction patterns were tightened (negative lookaheads and serving-size-aware patterns) to avoid false matches like "2000 calorie diet".
+- Validation rules: calories sanity checks (per-serving < 1000), duplicate-macro detection, and category-based minimum calorie thresholds to catch parsing errors.
+- Context-aware substitutes: the RAG query builder now detects if a dish is already PCOS-friendly (e.g., "quinoa salad") and, in that case, searches for healthier add-on/topping alternatives (dressings, cheese, croutons) instead of suggesting irrelevant substitutes like "maida" or plain white rice.
+- Mandatory LLM instructions: the chat chain now injects CRITICAL/MANDATORY instructions requiring exact gram values in responses and a dedicated "PCOS-Friendly Modifications" section with a strict response format.
+
+Quick test cases and what to expect:
+
+- Query: `nutrition info on quinoa salad`
+  - SERP should be called with `quinoa salad` (cleaned); logs show `cleanQuery: "quinoa salad"`.
+  - Substitutes should target toppings/dressings (e.g., "Instead of mayonnaise, use Greek yogurt-based dressing because..."), not rice/maida.
+
+- Query: `nutrition info on white rice biryani`
+  - System should detect rice as the problematic main ingredient and the substitutes should include whole-grain or lower-GI options (quinoa, brown rice, cauliflower rice).
+
+- Query: `nutrition info on magnolia bakery banana pudding cookies confetti`
+  - Response should include exact gram values from the parsed nutrition JSON, a `PCOS-Friendly Modifications` section with ingredient-level substitutes (3–4 items), and the mandatory Google disclaimer + source links.
+
+Where to look in the code:
+
+- `server/src/services/serpService.js` — query sanitization and nutrition extraction logic
+- `server/src/langchain/chains/chatChain.js` — building the substitute RAG query, mandatory instructions for the LLM, and validation helpers
+- `server/src/langchain/initializeRAG.js` and `server/src/langchain/vectorStore.js` — RAG initialization and vector store
+
+If you want more conservative or aggressive substitution rules (for example, always preferring plant-based alternatives), we can add configuration flags in `server/src/config/appConfig.js` to tune the behavior.
 | `npm run ingest:meals` | Index meal templates into vector store for RAG |
 | `npm run ingest:all` | Index all data sources (meals, medical, nutritional) |
 | `npm run test` | Run server tests with Vitest |
@@ -589,6 +620,13 @@ server/
 
 ### Content Safety
 
+- **Automated Content Filtering** - Blocks NSFW, adult, violent, and illegal content requests
+  - NSFW/pornographic content detection
+  - Self-harm/violence detection with crisis helpline resources
+  - Illegal activity blocking
+  - Medical context exceptions (allows legitimate health queries)
+  - Applies to both chat messages and Reddit queries
+  - See `docs/CONTENT_SAFETY_FILTER.md` for details
 - **Safety guards middleware** filters harmful/inappropriate content
 - **Rate limiting** prevents abuse (100 requests per 15 minutes)
 - **Medical disclaimers** prominently displayed in chat
@@ -872,6 +910,52 @@ cd server && rm -rf node_modules && npm install
 ```
 
 ## 🚀 Deployment
+
+### Chat Markdown Rendering (frontend)
+
+If chat responses contain raw markdown (for example: `## Header`, `- item`, `*italic*`) or you see duplicated bullets like `• • item`, the frontend's markdown post-processing helper may need adjustment. The project uses a lightweight helper to convert a small subset of markdown to HTML at `frontend/src/utils/helper.ts` (function `boldify`).
+
+Common issues and fixes:
+
+- Headers not rendered: ensure `boldify()` converts `#`, `##`, `###` and smaller header patterns before converting line breaks.
+- Double bullets (`• • item`): normalize leading bullets/dashes by stripping all leading `•`/`-` characters from the captured content and re-inserting a single bullet.
+- Missing bullets for indented lists: allow optional leading whitespace in the bullet regex (use `^\s*[-•]`).
+- Disclaimer formatting (⚠️ *text*): if the backend emits `⚠️ *This is educational guidance*` but you want it bold, either change the backend to use `**text**` or add a frontend special-case rule to convert `⚠️ *text*` to bold.
+
+Minimal example snippet (from `frontend/src/utils/helper.ts`):
+
+```ts
+// Normalize bullets: strip leading markers, add a single bullet
+processedText = processedText.replace(/^\s*[-•]\s*(.+?)$/gm, (_m, content) => {
+  const clean = content.replace(/^[•\-\s]+/, '').trim();
+  return `<div class="ml-4">• ${clean}</div>`;
+});
+
+// Header conversion (run before converting \n to <br />)
+processedText = processedText.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
+processedText = processedText.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
+
+// Convert bold/italic
+processedText = processedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+processedText = processedText.replace(/(?<!\*)\*(?!\*)(.+?)\*(?!\*)/g, '<em>$1</em>');
+
+// Convert remaining newlines to <br /> last
+processedText = processedText.replace(/\n/g, '<br />');
+```
+
+Testing and debugging:
+
+- Open browser devtools console. The chat UI logs the raw assistant text before processing (if debug enabled). Inspect the raw string to confirm the presence of leading bullets or stray characters.
+- Refresh the frontend after updating `helper.ts` and restart the dev server (if necessary):
+
+```bash
+# client/front-end
+cd frontend
+npm run dev
+```
+
+Remove any temporary `console.log` debug lines after confirming the fix.
+
 
 ### Prerequisites
 
