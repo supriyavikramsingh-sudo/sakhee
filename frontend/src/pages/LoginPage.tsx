@@ -38,8 +38,10 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-[url(/images/login-bg.png)] bg-left bg-contain px-4">
       <div className="max-w-2xl w-full bg-white/80 rounded-lg backdrop-blur-sm shadow-lg p-8">
         {/* Logo & Title */}
-        <div className="text-center flex flex-col gap-4 mb-8">
-          <img className="h-16" src={Logo} />
+        <div className="text-center flex flex-col items-center gap-4 mb-8">
+          <a href="/" className="w-fit">
+            <img className="h-16" src={Logo} />
+          </a>
           <div className="flex flex-col gap-2">
             <h2 className="text-3xl font-bold text-primary">Start your journey with Sakhee</h2>
             <p className="text-muted">Your personalised AI companion for PCOS management</p>
