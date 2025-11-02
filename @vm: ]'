@@ -1,0 +1,19 @@
+[33mcommit 92bd817300f3c0b382c86176a126aa0be9306c6a[m
+Author: nonbios <nonbios@example.com>
+Date:   Thu Oct 30 09:38:13 2025 +0000
+
+    feat: Update Reddit communities and add test script
+    
+    - Updated targetSubreddits array in redditService.js to include comprehensive PCOS-related communities
+    - Added PCOS-specific subreddits: r/PCOS_Folks, r/PCOSloseit, r/PCOS_CICO, etc.
+    - Added fertility-related subreddits: r/PCOSandPregnant, r/TTC_PCOS, r/infertility
+    - Added symptom-specific subreddits: r/FemaleHairLoss, r/acne, r/SkincareAddiction
+    - Added lifestyle subreddits: r/keto, r/LeanPCOS
+    - Added regional subreddits: r/PcosIndia, r/IndianSkincareAddicts
+    - Added test script for Reddit service functionality
+    - Updated package-lock.json after dependency installation
+
+package-lock.json
+server/src/langchain/chains/chatChain.js
+server/src/services/redditService.js
+test_reddit_service.js
