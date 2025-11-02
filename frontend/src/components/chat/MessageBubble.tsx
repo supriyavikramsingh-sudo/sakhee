@@ -1,8 +1,8 @@
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useState } from 'react';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { feedbackService } from '../../services/feedbackService';
 import { useAuthStore } from '../../store/authStore';
 import { boldify, formatTimestamp } from '../../utils/helper';
-import { feedbackService } from '../../services/feedbackService';
 import Typewriter from './Typewriter';
 import SakheeAvatar from '/images/sakheeai.svg';
 interface MessageBubbleProps {
@@ -16,7 +16,6 @@ interface MessageBubbleProps {
   };
   userPrompt?: string;
 }
-
 
 const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
   const isUser = message.type === 'user';
@@ -35,7 +34,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
       hasUserPrompt: !!userPrompt,
       isSubmitting: isSubmittingFeedback,
       messageId: message.id,
-      userId: user?.uid
+      userId: user?.uid,
     });
 
     if (!user?.uid || !message.id || !userPrompt || isSubmittingFeedback) {
@@ -43,7 +42,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
         missingUserId: !user?.uid,
         missingMessageId: !message.id,
         missingUserPrompt: !userPrompt,
-        alreadySubmitting: isSubmittingFeedback
+        alreadySubmitting: isSubmittingFeedback,
       });
       return;
     }
@@ -55,7 +54,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
         userId: user.uid,
         feedback,
         promptLength: userPrompt.length,
-        responseLength: message.content.length
+        responseLength: message.content.length,
       });
 
       const result = await feedbackService.submitFeedback({
@@ -63,7 +62,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
         userId: user.uid,
         userPrompt,
         aiResponse: message.content,
-        feedback
+        feedback,
       });
 
       console.log('📥 Feedback submission result:', result);
@@ -87,7 +86,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
       <div
         className={`px-4 py-3 rounded-lg ${
           isError
-            ? 'bg-danger bg-opacity-10 text-danger'
+            ? 'bg-white text-gray-900 rounded-bl-none border border-gray-200'
             : isUser
             ? 'bg-primary text-white rounded-br-none'
             : 'bg-surface text-gray-900 rounded-bl-none'
@@ -113,7 +112,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
         )}
 
         <span className="text-xs opacity-70 mt-1 block">{formatTimestamp(message.timestamp)}</span>
-        
+
         {/* Feedback buttons for AI messages */}
         {isAI && isGeneratedCompletly && (
           <div className="flex items-center gap-2 mt-2 pt-2 border-t border-opacity-20 border-current">
@@ -142,9 +141,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
             >
               <ThumbsDown size={14} />
             </button>
-            {isSubmittingFeedback && (
-              <span className="text-xs opacity-70">Submitting...</span>
-            )}
+            {isSubmittingFeedback && <span className="text-xs opacity-70">Submitting...</span>}
           </div>
         )}
       </div>
