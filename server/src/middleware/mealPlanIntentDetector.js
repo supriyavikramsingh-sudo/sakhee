@@ -42,6 +42,37 @@ export const mealPlanIntentDetector = (req, res, next) => {
       });
     }
 
+    // Helper: Normalize repeated characters (fooooood -> food)
+    const normalizeRepeatedChars = (text) => {
+      return text.replace(/(.)\1{2,}/g, '$1$1');
+    };
+
+    // Helper: Normalize leet speak and number substitutions
+    const normalizeLeetSpeak = (text) => {
+      return text
+        .replace(/[0]/g, 'o')
+        .replace(/[1]/g, 'i')
+        .replace(/[3]/g, 'e')
+        .replace(/[4]/g, 'a')
+        .replace(/[5]/g, 's')
+        .replace(/[7]/g, 't')
+        .replace(/[8]/g, 'b');
+    };
+
+    // Helper: Fix common typos used to bypass detection
+    const fixCommonTypos = (text) => {
+      return text
+        .replace(/\bweak\b/gi, 'week') // weak -> week
+        .replace(/\bmeel\b/gi, 'meal') // meel -> meal
+        .replace(/\bdiet\b/gi, 'diet') // di3t -> diet (after leet normalization)
+        .replace(/\bfoood\b/gi, 'food'); // foood -> food (after repeated char normalization)
+    };
+
+    // Apply additional normalization
+    const hyperNormalizedMessage = fixCommonTypos(
+      normalizeLeetSpeak(normalizeRepeatedChars(deobfuscatedMessage))
+    );
+
     // STEP 2: Normalize text to remove obfuscation for pattern matching
     const deobfuscatedMessage = normalizeObfuscatedText(message);
 
@@ -113,6 +144,32 @@ export const mealPlanIntentDetector = (req, res, next) => {
         /low.*gi.*meal.*plan/i,
         /low.*glycemic.*meal/i,
       ],
+
+      // Time-based meal requests (morning/afternoon/night + food)
+      timeBased: [
+        /(morning|afternoon|evening|night).*food/i,
+        /food.*(morning|afternoon|evening|night)/i,
+        /(breakfast|lunch|dinner).*food/i,
+        /food.*(breakfast|lunch|dinner)/i,
+        /(morning|afternoon|night).*eat/i,
+        /eat.*(morning|afternoon|night)/i,
+      ],
+
+      // "Want food" type requests with time indicators
+      desireFood: [
+        /want.*food.*(morning|afternoon|night|day|week)/i,
+        /need.*food.*(morning|afternoon|night|day|week)/i,
+        /desire.*food/i,
+        /crave.*food/i,
+        /looking\s+for.*food/i,
+      ],
+
+      // Multi-time meal requests (mentions 2+ meal times)
+      multiTime: [
+        /(morning|breakfast).*(?:and|&).*(afternoon|lunch|evening|dinner|night)/i,
+        /(morning|breakfast).*(afternoon|lunch).*(evening|dinner|night)/i,
+        /(lunch|afternoon).*(dinner|evening|night)/i,
+      ],
     };
 
     // Check all pattern categories on BOTH normalized and deobfuscated text
@@ -120,9 +177,12 @@ export const mealPlanIntentDetector = (req, res, next) => {
     let detectedCategory = null;
 
     for (const [category, patterns] of Object.entries(mealPlanPatterns)) {
-      // Test against both original normalized message and deobfuscated version
+      // Test against all normalized versions
       const matchesPattern = patterns.some(
-        (pattern) => pattern.test(normalizedMessage) || pattern.test(deobfuscatedMessage)
+        (pattern) =>
+          pattern.test(normalizedMessage) ||
+          pattern.test(deobfuscatedMessage) ||
+          pattern.test(hyperNormalizedMessage)
       );
 
       if (matchesPattern) {
@@ -134,12 +194,30 @@ export const mealPlanIntentDetector = (req, res, next) => {
 
     // Additional context-based detection (phrases that indicate meal planning need)
     const contextualIndicators = [
+      // Mentions breakfast AND lunch/dinner
       normalizedMessage.includes('breakfast') &&
         (normalizedMessage.includes('lunch') || normalizedMessage.includes('dinner')),
       normalizedMessage.includes('menu') && normalizedMessage.length < 100,
+      // Diet + follow/start (starting a diet plan)
       normalizedMessage.includes('diet') &&
         (normalizedMessage.includes('follow') || normalizedMessage.includes('start')),
+      // Eating schedule
       normalizedMessage.includes('eating') && normalizedMessage.includes('schedule'),
+
+      // Food + multiple time periods (morning, afternoon, night)
+      (normalizedMessage.includes('food') || hyperNormalizedMessage.includes('food')) &&
+        [
+          normalizedMessage.includes('morning') || hyperNormalizedMessage.includes('morning'),
+          normalizedMessage.includes('afternoon') || hyperNormalizedMessage.includes('afternoon'),
+          normalizedMessage.includes('night') || hyperNormalizedMessage.includes('night'),
+          normalizedMessage.includes('day') || hyperNormalizedMessage.includes('day'),
+        ].filter(Boolean).length >= 2, // At least 2 time periods mentioned
+
+      // Want/need + food + duration/time
+      /want|need|desire/i.test(normalizedMessage) &&
+        (normalizedMessage.includes('food') || hyperNormalizedMessage.includes('food')) &&
+        (/week|day|morning|afternoon|night/i.test(normalizedMessage) ||
+          /week|day|morning|afternoon|night/i.test(hyperNormalizedMessage)),
     ];
 
     if (contextualIndicators.some((indicator) => indicator)) {

@@ -37,7 +37,8 @@ pids/
 # Temp files
 /server/src/storage/tmpUploads/*
 !/server/src/storage/tmpUploads/.gitkeep
-src/storage/localCache/vectordb/*
+src/storage/*
+backups/*
 
 # Testing
 coverage/
