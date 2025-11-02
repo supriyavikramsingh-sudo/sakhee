@@ -2,7 +2,7 @@ const LOG_LEVELS = {
   DEBUG: 'DEBUG',
   INFO: 'INFO',
   WARN: 'WARN',
-  ERROR: 'ERROR'
+  ERROR: 'ERROR',
 };
 
 export class Logger {
@@ -13,7 +13,7 @@ export class Logger {
   log(level, message, data = {}) {
     const timestamp = new Date().toISOString();
     const prefix = `[${timestamp}] [${level}] [${this.name}]`;
-    
+
     if (data && Object.keys(data).length > 0) {
       console.log(`${prefix} ${message}`, data);
     } else {
