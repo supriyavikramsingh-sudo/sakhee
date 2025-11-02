@@ -18,6 +18,31 @@ export const mealPlanIntentDetector = (req, res, next) => {
 
     const normalizedMessage = message.toLowerCase().trim();
 
+    // STEP 0: FIRST check whitelist for nutrition/macro queries (highest priority)
+    // This must come BEFORE obfuscation check to allow "nutrition info on X" queries
+    const nutritionQueryWhitelist = [
+      /nutrition\s*(info|information|facts?|data|details?)\s+(on|for|about|of)/i, // "nutrition info on dal makhani"
+      /macro\s*(breakdown|split|info|information|details?)\s+(on|for|about|of)/i, // "macro breakdown of paneer"
+      /calorie\s*(count|info|information|details?)\s+(on|for|about|of)/i, // "calorie info on roti"
+      /calories?\s+in\s+/i, // "calories in dal makhani"
+      /protein\s+in\s+/i, // "protein in paneer"
+      /carbs?\s+in\s+/i, // "carbs in rice"
+      /fat\s+in\s+/i, // "fat in ghee"
+      /nutritional\s+(value|content|profile)\s+of/i, // "nutritional value of almonds"
+      /how\s+many\s+(calories?|carbs?|protein|fat)/i, // "how many calories in..."
+      /what\s+(is|are)\s+the\s+(nutrition|macro|calorie)/i, // "what is the nutrition in..."
+    ];
+
+    // Check if this is a whitelisted nutrition query - if so, allow it through immediately
+    const isNutritionQuery = nutritionQueryWhitelist.some((pattern) => pattern.test(message));
+
+    if (isNutritionQuery) {
+      logger.info('Nutrition query whitelisted - allowing through to chat', {
+        message: message.substring(0, 100),
+      });
+      return next(); // Allow this query to proceed to chat
+    }
+
     // STEP 1: Check for obfuscated meal plan keywords (e.g., m*al, m**l, m-e-a-l)
     const obfuscationCheck = checkForObfuscatedMealPlan(message);
     if (obfuscationCheck.isMealPlan) {
@@ -68,13 +93,13 @@ export const mealPlanIntentDetector = (req, res, next) => {
         .replace(/\bfoood\b/gi, 'food'); // foood -> food (after repeated char normalization)
     };
 
+    // STEP 2: Normalize text to remove obfuscation for pattern matching
+    const deobfuscatedMessage = normalizeObfuscatedText(message);
+
     // Apply additional normalization
     const hyperNormalizedMessage = fixCommonTypos(
       normalizeLeetSpeak(normalizeRepeatedChars(deobfuscatedMessage))
     );
-
-    // STEP 2: Normalize text to remove obfuscation for pattern matching
-    const deobfuscatedMessage = normalizeObfuscatedText(message);
 
     // Comprehensive meal plan intent patterns
     const mealPlanPatterns = {
@@ -84,7 +109,7 @@ export const mealPlanIntentDetector = (req, res, next) => {
         /diet\s*plan/i,
         /food\s*plan/i,
         /eating\s*plan/i,
-        /nutrition\s*plan/i,
+        /nutrition\s*plan/i, // Only "nutrition PLAN", not "nutrition info"
         /weekly\s*meal/i,
         /daily\s*meal/i,
         /7\s*day\s*meal/i,
