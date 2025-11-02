@@ -8,6 +8,8 @@ interface SelectInputProps {
   handleInputChange: (value: string | string[] | [] | never[] | number) => void;
   mode?: 'multiple' | 'tags';
   disable?: boolean;
+  placeholder?: string;
+  maxSelections?: number;
 }
 
 const SelectInput = ({
@@ -18,6 +20,8 @@ const SelectInput = ({
   handleInputChange,
   mode,
   disable = false,
+  placeholder,
+  maxSelections,
 }: SelectInputProps) => {
   return (
     <>
@@ -26,9 +30,11 @@ const SelectInput = ({
       </label>
       <Select
         mode={mode}
+        maxCount={maxSelections}
+        placeholder={placeholder}
         disabled={disable}
         defaultValue={defaultValue ?? options[0]?.value}
-        style={{ width: 400, height: mode === 'multiple' ? 'auto' : 40 }}
+        style={{ width: 400, height: mode !== 'multiple' ? 40 : 'auto' }}
         onChange={handleInputChange}
         options={options}
       />

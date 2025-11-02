@@ -2,16 +2,30 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
+import type { OnboardingData, OnboardingQuestionnaire } from '../../types/onboarding.type';
 import QuestionField from './QuestionField';
 
-const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
+interface OnboardingFormProps {
+  step: number;
+  onComplete: (data: Record<string, any>) => void;
+  onBack: () => void;
+  loading: boolean;
+}
+
+const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormProps) => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({});
-  const [availableStates, setAvailableStates] = useState([]);
+  const [formData, setFormData] = useState<OnboardingData>({} as OnboardingData);
+  const [availableStates, setAvailableStates] = useState<
+    {
+      id: string;
+      label: string;
+      cuisine: string;
+    }[]
+  >([]);
 
   // Update available states when regions change
   useEffect(() => {
-    if (step === 4 && formData.regions && formData.regions.length > 0) {
+    if (step === 4 && formData && formData.regions && formData.regions.length > 0) {
       const states = regionalCuisineConfig.getStatesForRegions(formData.regions);
       setAvailableStates(states);
 
@@ -31,9 +45,9 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
     } else {
       setAvailableStates([]);
     }
-  }, [formData.regions, step]);
+  }, [formData?.regions, step]);
 
-  const questions = {
+  const questions: OnboardingQuestionnaire = {
     0: [
       {
         key: 'email',
@@ -79,7 +93,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
       },
       {
         key: 'symptoms',
-        type: 'checkbox',
+        type: 'multiselect',
         label: t('onboarding.symptoms'),
         required: true,
         options: [
@@ -108,7 +122,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
       },
       {
         key: 'allergies',
-        type: 'checkbox',
+        type: 'multiselect',
         label: t('onboarding.allergies'),
         required: false,
         options: [
@@ -134,7 +148,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
     3: [
       {
         key: 'goals',
-        type: 'checkbox',
+        type: 'multiselect',
         label: t('onboarding.primaryGoals'),
         required: true,
         maxSelections: 2,
@@ -196,14 +210,14 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
           label: state.label,
         })),
         helperText: 'Select cuisines based on your preferred regions',
-        disabled: !formData.regions || formData.regions.length === 0,
+        disabled: !formData?.regions || formData.regions.length === 0,
       },
     ],
   };
 
   const currentQuestions = questions[step] || [];
 
-  const handleFieldChange = (key, value) => {
+  const handleFieldChange = (key: string, value: any) => {
     setFormData((prev) => {
       const newData = {
         ...prev,
@@ -224,7 +238,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
 
     // For step 4, convert cuisineStates to cuisines array before submitting
     if (step === 4) {
-      const cuisines = regionalCuisineConfig.getCuisinesFromStates(formData.cuisineStates || []);
+      const cuisines = regionalCuisineConfig.getCuisinesFromStates(formData?.cuisineStates || []);
       const finalData = {
         ...formData,
         cuisines, // Array of cuisine names like ['Gujarati', 'Uttar Pradesh']
@@ -240,12 +254,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
   const isValid = currentQuestions
     .filter((q) => q.required)
     .every((q) => {
-      const value = formData[q.key];
-      // For checkbox fields, ensure at least one is selected
-      if (q.type === 'checkbox' && q.required) {
-        return Array.isArray(value) && value.length > 0;
+      const value = formData?.[q.key];
+      if (q.type === 'email') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
       }
-      // For multiselect fields
+
       if (q.type === 'multiselect' && q.required) {
         return Array.isArray(value) && value.length > 0;
       }
@@ -254,14 +268,14 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {currentQuestions.map((question) => (
-        <QuestionField
-          key={question.key}
-          {...question}
-          value={formData[question.key]}
-          onChange={(value) => handleFieldChange(question.key, value)}
-        />
-      ))}
+      <div className="grid grid-cols-2 gap-y-4">
+        {currentQuestions.map((question) => (
+          <QuestionField
+            {...question}
+            onChange={(value) => handleFieldChange(question.key, value)}
+          />
+        ))}
+      </div>
 
       {/* Action Buttons */}
       <div className="flex gap-4 pt-8 border-t">

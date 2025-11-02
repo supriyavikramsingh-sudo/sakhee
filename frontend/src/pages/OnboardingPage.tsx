@@ -1,4 +1,4 @@
-import { CheckCircle } from 'lucide-react';
+import { Alert, Steps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,6 @@ const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
-
-  console.log('User Profile:', userProfile, user);
 
   // Redirect if already onboarded
   useEffect(() => {
@@ -81,39 +79,9 @@ const OnboardingPage = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Progress Bar */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            {steps.map((_, idx) => (
-              <div key={idx} className="flex items-center flex-1">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                    idx < currentStep
-                      ? 'bg-success text-white'
-                      : idx === currentStep
-                      ? 'bg-primary text-white'
-                      : 'bg-surface text-textSecondary'
-                  }`}
-                >
-                  {idx < currentStep ? <CheckCircle size={20} /> : idx + 1}
-                </div>
-                {idx < steps.length - 1 && (
-                  <div
-                    className={`h-1 flex-1 mx-2 transition-all ${
-                      idx < currentStep ? 'bg-success' : 'bg-surface'
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-textPrimary mb-2">{steps[currentStep].title}</h2>
-            <p className="text-textSecondary">{steps[currentStep].description}</p>
-          </div>
-        </div>
+        <Steps current={currentStep} size="small" items={steps} className="my-6" />
 
         {/* Onboarding Form */}
         <div className="bg-white rounded-xl shadow-md p-8">
@@ -125,10 +93,10 @@ const OnboardingPage = () => {
           />
         </div>
 
-        {/* Medical Disclaimer */}
-        <div className="mt-8 p-4 bg-warning/10 border-l-4 border-warning rounded">
-          <p className="text-sm text-textSecondary">⚠️ {t('common.disclaimerText')}</p>
-        </div>
+        {/* Disclaimer Alert */}
+        {currentStep === 0 && (
+          <Alert type="warning" className="mt-6" showIcon message={t('common.disclaimerText')} />
+        )}
       </div>
     </div>
   );
