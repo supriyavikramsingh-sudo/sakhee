@@ -1,5 +1,6 @@
 // server/src/middleware/mealPlanIntentDetector.js
 import { Logger } from '../utils/logger.js';
+import { checkForObfuscatedMealPlan, normalizeObfuscatedText } from '../utils/textNormalizer.js';
 
 const logger = new Logger('MealPlanIntentDetector');
 
@@ -16,6 +17,33 @@ export const mealPlanIntentDetector = (req, res, next) => {
     }
 
     const normalizedMessage = message.toLowerCase().trim();
+
+    // STEP 1: Check for obfuscated meal plan keywords (e.g., m*al, m**l, m-e-a-l)
+    const obfuscationCheck = checkForObfuscatedMealPlan(message);
+    if (obfuscationCheck.isMealPlan) {
+      logger.warn('Obfuscated meal plan keyword detected', {
+        originalMessage: message.substring(0, 100),
+        matchedKeyword: obfuscationCheck.matchedKeyword,
+      });
+
+      return res.json({
+        success: true,
+        data: {
+          type: 'MEAL_PLAN_REDIRECT',
+          message: "I'd love to help you with meal planning! 🍽️",
+          redirectMessage:
+            'For personalized meal plans tailored to your PCOS needs, dietary preferences, and lifestyle, please use our dedicated <strong>Meal Plan Generator</strong>. It creates complete 7-day plans with recipes, nutrition info, and grocery lists!',
+          actionText: 'Go to Meal Plan Generator',
+          actionUrl: '/meals',
+          detectedIntent: 'obfuscated_keyword',
+          helpText:
+            "I'm here to answer questions about PCOS, symptoms, lifestyle tips, and general nutrition advice through chat. For complete meal plans, the Meal Plan Generator is your best option!",
+        },
+      });
+    }
+
+    // STEP 2: Normalize text to remove obfuscation for pattern matching
+    const deobfuscatedMessage = normalizeObfuscatedText(message);
 
     // Comprehensive meal plan intent patterns
     const mealPlanPatterns = {
@@ -87,12 +115,17 @@ export const mealPlanIntentDetector = (req, res, next) => {
       ],
     };
 
-    // Check all pattern categories
+    // Check all pattern categories on BOTH normalized and deobfuscated text
     let detectedIntent = false;
     let detectedCategory = null;
 
     for (const [category, patterns] of Object.entries(mealPlanPatterns)) {
-      if (patterns.some((pattern) => pattern.test(normalizedMessage))) {
+      // Test against both original normalized message and deobfuscated version
+      const matchesPattern = patterns.some(
+        (pattern) => pattern.test(normalizedMessage) || pattern.test(deobfuscatedMessage)
+      );
+
+      if (matchesPattern) {
         detectedIntent = true;
         detectedCategory = category;
         break;
