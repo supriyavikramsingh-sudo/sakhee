@@ -38,27 +38,59 @@ class ChatChain {
 
   /**
    * Content Safety Filter - Blocks NSFW, adult, and inappropriate content requests
-   * NOTE: This is a BACKUP filter. Primary filtering happens in middleware (safetyGuards.js)
-   * This should only catch edge cases that slip through middleware.
    * @param {string} message - User message to check
    * @returns {Object} - { isBlocked: boolean, reason: string }
    */
   checkContentSafety(message) {
     const messageLower = message.toLowerCase();
 
-    // Violence/harm patterns (these bypass middleware and need chain-level handling)
+    // NSFW/Adult content patterns
+    const nsfwPatterns = [
+      // Explicit sexual content
+      /\b(porn|pornography|pornographic|xxx|nsfw|18\+)\b/i,
+      /\b(sex video|sex tape|nude|nudes|naked)\b/i,
+      /\b(erotic|sexual content|adult content)\b/i,
+
+      // Explicit body parts (non-medical context)
+      /\b(boobs|tits|ass|dick|cock|pussy|vagina|penis)\b(?!.*\b(health|medical|doctor|pain|infection|discharge|symptoms)\b)/i,
+
+      // Dating/hookup apps with sexual intent
+      /\b(tinder|bumble|dating app).*\b(sex|hookup|casual|one night)\b/i,
+      /\b(hookup|one night stand|friends with benefits|fwb)\b/i,
+
+      // Fetish/kink content
+      /\b(fetish|kink|bdsm|bondage)\b/i,
+
+      // Adult industry
+      /\b(onlyfans|cam girl|stripper|escort|prostitut)\b/i,
+    ];
+
+    // Violence/harm patterns
     const violencePatterns = [
       /\b(kill myself|suicide|self harm|cut myself)\b/i,
       /\b(how to die|ways to die|end my life)\b/i,
       /\b(hurt someone|harm someone|kill someone)\b/i,
     ];
 
-    // Illegal activity patterns (these bypass middleware and need chain-level handling)
+    // Illegal activity patterns
     const illegalPatterns = [
       /\b(buy drugs|sell drugs|drug dealer)\b/i,
       /\b(illegal|contraband|smuggle|trafficking)\b/i,
       /\b(hack|hacking|steal|theft)\b/i,
     ];
+
+    // Check NSFW patterns
+    for (const pattern of nsfwPatterns) {
+      if (pattern.test(messageLower)) {
+        logger.warn('🚫 NSFW content detected:', { message: message.substring(0, 100) });
+        return {
+          isBlocked: true,
+          reason: 'nsfw',
+          message:
+            "I'm sorry, but I cannot provide NSFW or adult content. I'm here to help with PCOS health and wellness questions in a safe, educational environment. Please ask me about PCOS symptoms, lifestyle management, nutrition, or other health-related topics.",
+        };
+      }
+    }
 
     // Check violence/harm patterns
     for (const pattern of violencePatterns) {
@@ -90,7 +122,7 @@ class ChatChain {
       }
     }
 
-    // Content is safe (NSFW filtering is handled by middleware)
+    // Content is safe
     return { isBlocked: false, reason: null, message: null };
   }
 

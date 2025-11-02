@@ -434,20 +434,12 @@ server/
 │   │   ├── rateLimit.js               # Rate limiting
 │   │   ├── requestLogger.js           # Request logging
 │   │   └── safetyGuards.js            # Content safety checks
-│   ├── controllers/                   # MVC Controllers (Business Logic)
-│   │   ├── chatController.js          # Chat message processing & history
-│   │   ├── medicalReportController.js # Medical report management
-│   │   ├── mealPlanController.js      # Meal plan generation & management
-│   │   ├── progressController.js      # User progress tracking & analytics
-│   │   ├── feedbackController.js      # Feedback collection & statistics
-│   │   └── onboardingController.js    # User onboarding workflow
-│   ├── routes/                        # Express Routes (MVC Pattern)
-│   │   ├── chat.js                    # Chat endpoints (uses ChatController)
-│   │   ├── mealPlan.js                # Meal planning endpoints (uses MealPlanController)
-│   │   ├── upload.js                  # File upload endpoints (uses MedicalReportController)
-│   │   ├── progress.js                # Progress tracking endpoints (uses ProgressController)
-│   │   ├── feedback.js                # Feedback endpoints (uses FeedbackController)
-│   │   ├── onboarding.js              # Onboarding endpoints (uses OnboardingController)
+│   ├── routes/
+│   │   ├── chat.js                    # Chat endpoints
+│   │   ├── mealPlan.js                # Meal planning endpoints (with personalization tracking)
+│   │   ├── upload.js                  # File upload endpoints
+│   │   ├── progress.js                # Progress tracking endpoints
+│   │   ├── onboarding.js              # Onboarding endpoints
 │   │   └── ragStatus.js               # RAG system status endpoints
 │   ├── services/
 │   │   ├── ocrService.js              # OCR for images (Tesseract.js)

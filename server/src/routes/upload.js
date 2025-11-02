@@ -5,14 +5,13 @@ import fs from 'fs';
 import { ocrService } from '../services/ocrService.js';
 import { parserService } from '../services/parserService.js';
 import { reportChain } from '../langchain/chains/reportChain.js';
-import { MedicalReportController } from '../controllers/medicalReportController.js';
+import { medicalReportService } from '../services/medicalReportService.js';
 import { Logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
 
 const router = express.Router();
 const logger = new Logger('UploadRoutes');
 
-const medicalReportController = new MedicalReportController();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -112,7 +111,7 @@ router.post('/report', upload.single('file'), async (req, res) => {
     // Try to save to Firestore (non-blocking - won't fail the request)
     logger.info('Saving report to Firestore...', { userId });
     try {
-      const saveResult = await medicalReportController.saveReport(req, res, userId, {
+      const saveResult = await medicalReportService.saveReport(userId, {
         filename: req.file.originalname,
         reportType,
         extractedText,
@@ -175,7 +174,7 @@ router.get('/user/:userId/report', async (req, res) => {
 
     logger.info('Fetching report for user', { userId });
 
-    const result = await medicalReportController.getUserReport(req, res, userId);
+    const result = await medicalReportService.getUserReport(userId);
 
     // If Firestore fails, return 404 (no report) instead of error
     if (!result.success) {
@@ -218,7 +217,7 @@ router.get('/user/:userId/report', async (req, res) => {
 router.get('/user/:userId/has-report', async (req, res) => {
   try {
     const { userId } = req.params;
-    const result = await medicalReportController.checkReportExists(req, res, userId);
+    const result = await medicalReportService.hasReport(userId);
 
     res.json({
       success: true,
@@ -240,7 +239,7 @@ router.get('/user/:userId/has-report', async (req, res) => {
 router.delete('/user/:userId/report', async (req, res) => {
   try {
     const { userId } = req.params;
-    const result = await medicalReportController.deleteReport(req, res, userId);
+    const result = await medicalReportService.deleteReport(userId);
 
     if (!result.success) {
       return res.status(500).json({

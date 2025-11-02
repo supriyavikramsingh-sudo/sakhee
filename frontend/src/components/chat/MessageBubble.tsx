@@ -87,7 +87,7 @@ const MessageBubble = ({ message, userPrompt }: MessageBubbleProps) => {
       <div
         className={`px-4 py-3 rounded-lg ${
           isError
-            ? 'bg-white text-gray-900 rounded-bl-none border border-gray-200'
+            ? 'bg-danger bg-opacity-10 text-danger'
             : isUser
             ? 'bg-primary text-white rounded-br-none'
             : 'bg-surface text-gray-900 rounded-bl-none'

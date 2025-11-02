@@ -26,20 +26,10 @@ axiosInstance.interceptors.response.use(
     console.log('Axios interceptor - response.data:', response.data);
     return response.data;
   },
-  (error: any) => {
-    const errorData = error.response?.data;
-    const message = errorData?.error?.message || error.message;
-    const details = errorData?.error?.details;
-    
-    console.error('API Error:', { message, details, status: error.response?.status });
-    
-    // Create a custom error object that preserves all error information
-    const customError: any = new Error(message);
-    customError.details = details;
-    customError.status = error.response?.status;
-    customError.response = errorData;
-    
-    return Promise.reject(customError);
+  (error) => {
+    const message = error.response?.data?.error?.message || error.message;
+    console.error('API Error:', message);
+    return Promise.reject(new Error(message));
   }
 );
 
