@@ -2,7 +2,7 @@ const LOG_LEVELS = {
   DEBUG: 'DEBUG',
   INFO: 'INFO',
   WARN: 'WARN',
-  ERROR: 'ERROR'
+  ERROR: 'ERROR',
 };
 
 export class Logger {
@@ -14,7 +14,7 @@ export class Logger {
   log(level, message, data = {}) {
     const timestamp = new Date().toISOString();
     const prefix = `[${timestamp}] [${level}] [${this.name}]`;
-    
+
     if (data && Object.keys(data).length > 0) {
       console.log(`${prefix} ${message}`, data);
     } else {
@@ -43,15 +43,15 @@ export class Logger {
   startRequest(requestId, method, url, userAgent = null) {
     const startTime = Date.now();
     this.requestMap.set(requestId, { startTime, method, url });
-    
+
     this.info(`REQUEST_START`, {
       requestId,
       method,
       url,
       userAgent,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-    
+
     return requestId;
   }
 
@@ -72,7 +72,7 @@ export class Logger {
       statusCode,
       duration: `${duration}ms`,
       responseSize,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -82,7 +82,7 @@ export class Logger {
       functionName,
       params,
       requestId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -91,7 +91,7 @@ export class Logger {
       functionName,
       result: result ? 'success' : 'completed',
       requestId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -101,7 +101,7 @@ export class Logger {
       operation,
       duration: `${duration}ms`,
       ...metadata,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -111,7 +111,7 @@ export class Logger {
       query: query.substring(0, 100) + (query.length > 100 ? '...' : ''),
       params,
       requestId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -121,10 +121,9 @@ export class Logger {
       resultCount,
       duration: `${duration}ms`,
       requestId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 }
 
-export default Logger;
 export default Logger;

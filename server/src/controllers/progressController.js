@@ -1,5 +1,5 @@
-const { db } = require('../config/firebase');
-const Logger = require('../utils/logger');
+import { db } from '../config/firebase.js';
+import { Logger } from '../utils/logger.js';
 
 class ProgressController {
   constructor() {
@@ -29,34 +29,33 @@ class ProgressController {
         exercise: exercise || null,
         notes: notes || '',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
 
       // Use date as document ID to ensure one entry per day
       const progressRef = db.collection('progress').doc(`${userId}_${date}`);
       await progressRef.set(progressData, { merge: true });
 
-      this.logger.info('Progress logged successfully', { 
-        requestId, 
-        userId, 
+      this.logger.info('Progress logged successfully', {
+        requestId,
+        userId,
         date,
         hasWeight: !!weight,
         symptomsCount: symptoms?.length || 0,
         hasMood: !!mood,
-        hasEnergy: !!energy
+        hasEnergy: !!energy,
       });
 
       res.json({
         success: true,
         message: 'Progress logged successfully',
-        data: progressData
+        data: progressData,
       });
-
     } catch (error) {
-      this.logger.error('Error logging progress', { 
-        requestId, 
+      this.logger.error('Error logging progress', {
+        requestId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to log progress' });
     }
@@ -66,7 +65,7 @@ class ProgressController {
     const requestId = req.requestId;
     const { userId } = req.params;
     const { startDate, endDate, limit } = req.query;
-    
+
     this.logger.info('Retrieving user progress', { requestId, userId, startDate, endDate, limit });
 
     try {
@@ -75,9 +74,7 @@ class ProgressController {
         return res.status(400).json({ error: 'User ID is required' });
       }
 
-      let query = db.collection('progress')
-        .where('userId', '==', userId)
-        .orderBy('date', 'desc');
+      let query = db.collection('progress').where('userId', '==', userId).orderBy('date', 'desc');
 
       // Apply date filters if provided
       if (startDate) {
@@ -95,28 +92,27 @@ class ProgressController {
       const progressSnapshot = await query.get();
 
       const progressEntries = [];
-      progressSnapshot.forEach(doc => {
+      progressSnapshot.forEach((doc) => {
         progressEntries.push({ id: doc.id, ...doc.data() });
       });
 
-      this.logger.info('User progress retrieved successfully', { 
-        requestId, 
+      this.logger.info('User progress retrieved successfully', {
+        requestId,
         userId,
         count: progressEntries.length,
-        dateRange: startDate && endDate ? `${startDate} to ${endDate}` : 'all'
+        dateRange: startDate && endDate ? `${startDate} to ${endDate}` : 'all',
       });
 
       res.json({
         success: true,
-        data: progressEntries
+        data: progressEntries,
       });
-
     } catch (error) {
-      this.logger.error('Error retrieving user progress', { 
-        requestId, 
+      this.logger.error('Error retrieving user progress', {
+        requestId,
         userId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to retrieve progress' });
     }
@@ -125,7 +121,7 @@ class ProgressController {
   async updateProgress(req, res) {
     const requestId = req.requestId;
     const { progressId } = req.params;
-    
+
     this.logger.info('Updating progress entry', { requestId, progressId });
 
     try {
@@ -136,11 +132,11 @@ class ProgressController {
 
       const updateData = {
         ...req.body,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
 
       // Remove undefined fields
-      Object.keys(updateData).forEach(key => {
+      Object.keys(updateData).forEach((key) => {
         if (updateData[key] === undefined) {
           delete updateData[key];
         }
@@ -148,23 +144,22 @@ class ProgressController {
 
       await db.collection('progress').doc(progressId).update(updateData);
 
-      this.logger.info('Progress entry updated successfully', { 
-        requestId, 
+      this.logger.info('Progress entry updated successfully', {
+        requestId,
         progressId,
-        updatedFields: Object.keys(updateData)
+        updatedFields: Object.keys(updateData),
       });
 
       res.json({
         success: true,
-        message: 'Progress updated successfully'
+        message: 'Progress updated successfully',
       });
-
     } catch (error) {
-      this.logger.error('Error updating progress', { 
-        requestId, 
+      this.logger.error('Error updating progress', {
+        requestId,
         progressId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to update progress' });
     }
@@ -173,7 +168,7 @@ class ProgressController {
   async deleteProgress(req, res) {
     const requestId = req.requestId;
     const { progressId } = req.params;
-    
+
     this.logger.info('Deleting progress entry', { requestId, progressId });
 
     try {
@@ -191,23 +186,22 @@ class ProgressController {
 
       await db.collection('progress').doc(progressId).delete();
 
-      this.logger.info('Progress entry deleted successfully', { 
-        requestId, 
+      this.logger.info('Progress entry deleted successfully', {
+        requestId,
         progressId,
-        userId: progressDoc.data().userId
+        userId: progressDoc.data().userId,
       });
 
       res.json({
         success: true,
-        message: 'Progress entry deleted successfully'
+        message: 'Progress entry deleted successfully',
       });
-
     } catch (error) {
-      this.logger.error('Error deleting progress', { 
-        requestId, 
+      this.logger.error('Error deleting progress', {
+        requestId,
         progressId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to delete progress' });
     }
@@ -229,28 +223,27 @@ class ProgressController {
         userId,
         goals,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
 
       await db.collection('goals').doc(userId).set(goalData, { merge: true });
 
-      this.logger.info('Goals set successfully', { 
-        requestId, 
+      this.logger.info('Goals set successfully', {
+        requestId,
         userId,
-        goalsCount: Object.keys(goals).length
+        goalsCount: Object.keys(goals).length,
       });
 
       res.json({
         success: true,
         message: 'Goals set successfully',
-        data: goalData
+        data: goalData,
       });
-
     } catch (error) {
-      this.logger.error('Error setting goals', { 
-        requestId, 
+      this.logger.error('Error setting goals', {
+        requestId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to set goals' });
     }
@@ -260,7 +253,7 @@ class ProgressController {
     const requestId = req.requestId;
     const { userId } = req.params;
     const { period } = req.query; // week, month, year
-    
+
     this.logger.info('Calculating progress analytics', { requestId, userId, period });
 
     try {
@@ -272,7 +265,7 @@ class ProgressController {
       // Calculate date range based on period
       const endDate = new Date();
       const startDate = new Date();
-      
+
       switch (period) {
         case 'week':
           startDate.setDate(endDate.getDate() - 7);
@@ -290,7 +283,8 @@ class ProgressController {
       const startDateStr = startDate.toISOString().split('T')[0];
       const endDateStr = endDate.toISOString().split('T')[0];
 
-      const progressSnapshot = await db.collection('progress')
+      const progressSnapshot = await db
+        .collection('progress')
         .where('userId', '==', userId)
         .where('date', '>=', startDateStr)
         .where('date', '<=', endDateStr)
@@ -298,7 +292,7 @@ class ProgressController {
         .get();
 
       const entries = [];
-      progressSnapshot.forEach(doc => {
+      progressSnapshot.forEach((doc) => {
         entries.push(doc.data());
       });
 
@@ -311,53 +305,58 @@ class ProgressController {
         averageEnergy: null,
         averageSleep: null,
         commonSymptoms: {},
-        exerciseFrequency: 0
+        exerciseFrequency: 0,
       };
 
       if (entries.length > 0) {
         // Weight analytics
-        const weightEntries = entries.filter(e => e.weight);
+        const weightEntries = entries.filter((e) => e.weight);
         if (weightEntries.length > 0) {
-          analytics.averageWeight = weightEntries.reduce((sum, e) => sum + e.weight, 0) / weightEntries.length;
+          analytics.averageWeight =
+            weightEntries.reduce((sum, e) => sum + e.weight, 0) / weightEntries.length;
           if (weightEntries.length > 1) {
-            analytics.weightTrend = weightEntries[weightEntries.length - 1].weight - weightEntries[0].weight;
+            analytics.weightTrend =
+              weightEntries[weightEntries.length - 1].weight - weightEntries[0].weight;
           }
         }
 
         // Mood, energy, sleep analytics
-        const moodEntries = entries.filter(e => e.mood);
+        const moodEntries = entries.filter((e) => e.mood);
         if (moodEntries.length > 0) {
-          analytics.averageMood = moodEntries.reduce((sum, e) => sum + e.mood, 0) / moodEntries.length;
+          analytics.averageMood =
+            moodEntries.reduce((sum, e) => sum + e.mood, 0) / moodEntries.length;
         }
 
-        const energyEntries = entries.filter(e => e.energy);
+        const energyEntries = entries.filter((e) => e.energy);
         if (energyEntries.length > 0) {
-          analytics.averageEnergy = energyEntries.reduce((sum, e) => sum + e.energy, 0) / energyEntries.length;
+          analytics.averageEnergy =
+            energyEntries.reduce((sum, e) => sum + e.energy, 0) / energyEntries.length;
         }
 
-        const sleepEntries = entries.filter(e => e.sleep);
+        const sleepEntries = entries.filter((e) => e.sleep);
         if (sleepEntries.length > 0) {
-          analytics.averageSleep = sleepEntries.reduce((sum, e) => sum + e.sleep, 0) / sleepEntries.length;
+          analytics.averageSleep =
+            sleepEntries.reduce((sum, e) => sum + e.sleep, 0) / sleepEntries.length;
         }
 
         // Symptom frequency
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.symptoms && Array.isArray(entry.symptoms)) {
-            entry.symptoms.forEach(symptom => {
+            entry.symptoms.forEach((symptom) => {
               analytics.commonSymptoms[symptom] = (analytics.commonSymptoms[symptom] || 0) + 1;
             });
           }
         });
 
         // Exercise frequency
-        analytics.exerciseFrequency = entries.filter(e => e.exercise && e.exercise > 0).length;
+        analytics.exerciseFrequency = entries.filter((e) => e.exercise && e.exercise > 0).length;
       }
 
-      this.logger.info('Progress analytics calculated successfully', { 
-        requestId, 
+      this.logger.info('Progress analytics calculated successfully', {
+        requestId,
         userId,
         period,
-        totalEntries: analytics.totalEntries
+        totalEntries: analytics.totalEntries,
       });
 
       res.json({
@@ -365,20 +364,19 @@ class ProgressController {
         data: {
           period,
           dateRange: { startDate: startDateStr, endDate: endDateStr },
-          analytics
-        }
+          analytics,
+        },
       });
-
     } catch (error) {
-      this.logger.error('Error calculating analytics', { 
-        requestId, 
+      this.logger.error('Error calculating analytics', {
+        requestId,
         userId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack,
       });
       res.status(500).json({ error: 'Failed to calculate analytics' });
     }
   }
 }
 
-module.exports = new ProgressController();
+export default new ProgressController();

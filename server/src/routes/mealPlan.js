@@ -1,8 +1,7 @@
 // server/src/routes/mealPlan.js
-const express = require('express');
-const mealPlanController = require('../controllers/mealPlanController');
-const { mealPlanChain } = require('../langchain/chains/mealPlanChain.js');
-const Logger = require('../utils/logger');
+import express from 'express';
+import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
+import { Logger } from '../utils/logger.js';
 
 const router = express.Router();
 const logger = new Logger('MealPlanRoutes');
@@ -17,7 +16,7 @@ const mealPlans = new Map();
 router.post('/generate', async (req, res) => {
   const requestId = req.requestId || `req_${Date.now()}`;
   req.requestId = requestId;
-  
+
   try {
     const {
       userId,
@@ -179,7 +178,7 @@ router.post('/generate', async (req, res) => {
 router.get('/:planId', (req, res) => {
   const requestId = req.requestId || `req_${Date.now()}`;
   req.requestId = requestId;
-  
+
   try {
     const { planId } = req.params;
 
@@ -221,7 +220,7 @@ router.get('/:planId', (req, res) => {
 router.get('/user/:userId', (req, res) => {
   const requestId = req.requestId || `req_${Date.now()}`;
   req.requestId = requestId;
-  
+
   try {
     const { userId } = req.params;
 
@@ -259,7 +258,7 @@ router.get('/user/:userId', (req, res) => {
 router.delete('/:planId', (req, res) => {
   const requestId = req.requestId || `req_${Date.now()}`;
   req.requestId = requestId;
-  
+
   try {
     const { planId } = req.params;
 
@@ -294,4 +293,4 @@ router.delete('/:planId', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

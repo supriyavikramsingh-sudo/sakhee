@@ -1,5 +1,5 @@
-const express = require('express');
-const progressController = require('../controllers/progressController');
+import express from 'express';
+import progressController from '../controllers/progressController.js';
 
 const router = express.Router();
 
@@ -39,5 +39,4 @@ router.post('/:userId/goals', progressController.setGoals);
  */
 router.get('/:userId/analytics', progressController.getAnalytics);
 
-module.exports = router;
-export default router
+export default router;
