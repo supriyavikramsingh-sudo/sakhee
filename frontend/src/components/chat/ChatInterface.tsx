@@ -174,13 +174,25 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
         id: assistantTimestamp,
         ...assistantMessageData,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send message:', error);
       console.error('Error details:', error.message, error.stack);
+      
+      // Check if this is an inappropriate content error (status 400)
+      let errorMessage = t('chat.errorMessage');
+      
+      if (error.status === 400 && error.details) {
+        // Show the specific error message from the server for inappropriate content
+        errorMessage = `${error.message}\n\n${error.details}`;
+      } else if (error.message) {
+        // Show the error message if available
+        errorMessage = error.message;
+      }
+      
       addMessage({
         id: Date.now(),
         type: 'error',
-        content: t('chat.errorMessage'),
+        content: errorMessage,
         timestamp: Date.now(),
       });
     } finally {
