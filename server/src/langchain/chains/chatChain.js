@@ -94,6 +94,84 @@ class ChatChain {
     return { isBlocked: false, reason: null, message: null };
   }
 
+  /**
+   * Meal Plan Request Detection - Backup filter to catch requests that bypass middleware
+   * Uses aggressive normalization to catch obfuscated attempts
+   * @param {string} message - User message to check
+   * @returns {Object} - { isMealPlan: boolean, category: string }
+   */
+  detectMealPlanRequest(message) {
+    const messageLower = message.toLowerCase();
+
+    // Normalize repeated characters (fooooood -> food)
+    const normalizeRepeatedChars = (text) => text.replace(/(.)\1{2,}/g, '$1$1');
+
+    // Normalize leet speak and number substitutions
+    const normalizeLeetSpeak = (text) =>
+      text
+        .replace(/[0]/g, 'o')
+        .replace(/[1]/g, 'i')
+        .replace(/[3]/g, 'e')
+        .replace(/[4]/g, 'a')
+        .replace(/[5]/g, 's')
+        .replace(/[7]/g, 't')
+        .replace(/[8]/g, 'b');
+
+    // Fix common typos
+    const fixCommonTypos = (text) =>
+      text
+        .replace(/\bweak\b/gi, 'week')
+        .replace(/\bmeel\b/gi, 'meal')
+        .replace(/\bfoood\b/gi, 'food');
+
+    const normalized = fixCommonTypos(normalizeLeetSpeak(normalizeRepeatedChars(messageLower)));
+
+    // Pattern categories
+    const patterns = {
+      explicit: [
+        /meal\s*plan/i,
+        /diet\s*plan/i,
+        /food\s*plan/i,
+        /eating\s*plan/i,
+        /weekly\s*meal/i,
+      ],
+      multiTime: [
+        /(morning|breakfast).*(afternoon|lunch).*(evening|dinner|night)/i,
+        /(morning|breakfast).*(lunch|dinner|night)/i,
+      ],
+      foodWithDuration: [
+        /food.*(week|day)/i,
+        /(want|need|desire).*food.*(morning|afternoon|night)/i,
+      ],
+    };
+
+    // Check all patterns
+    for (const [category, patternList] of Object.entries(patterns)) {
+      for (const pattern of patternList) {
+        if (pattern.test(normalized) || pattern.test(messageLower)) {
+          return { isMealPlan: true, category };
+        }
+      }
+    }
+
+    // Contextual check: food + multiple time periods
+    const containsFood = normalized.includes('food');
+    const timePeriods = ['morning', 'afternoon', 'night', 'breakfast', 'lunch', 'dinner'].filter(
+      (t) => normalized.includes(t)
+    ).length;
+
+    if (containsFood && timePeriods >= 2) {
+      return { isMealPlan: true, category: 'contextual_multi_time' };
+    }
+
+    // Check: food + week/day duration
+    if (containsFood && (normalized.includes('week') || /\d+\s*day/i.test(normalized))) {
+      return { isMealPlan: true, category: 'contextual_duration' };
+    }
+
+    return { isMealPlan: false, category: null };
+  }
+
   buildEnhancedSystemPrompt() {
     return `You are Sakhee, an empathetic, non-judgmental AI health companion specializing in PCOS/PCOD management for Indian women.
 
@@ -2615,6 +2693,28 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
           contextUsed: {
             blocked: true,
             reason: safetyCheck.reason,
+          },
+        };
+      }
+
+      // Step 0.5: BACKUP Meal Plan Detection - Catch any meal plan requests that bypassed middleware
+      const mealPlanCheck = this.detectMealPlanRequest(userMessage);
+      if (mealPlanCheck.isMealPlan) {
+        logger.warn('🍽️ Meal plan request detected in chatChain (backup filter)', {
+          category: mealPlanCheck.category,
+          userId: userContext.userId,
+          message: userMessage.substring(0, 100),
+        });
+        return {
+          message: {
+            response:
+              "I'd love to help you with meal planning! 🍽️\n\nFor personalized meal plans tailored to your PCOS needs, dietary preferences, and lifestyle, please use our dedicated **Meal Plan Generator**. It creates complete 7-day plans with recipes, nutrition info, and grocery lists!\n\nI'm here to answer questions about PCOS, symptoms, lifestyle tips, and general nutrition advice through chat. For complete meal plans, the Meal Plan Generator is your best option!",
+          },
+          sources: [],
+          contextUsed: {
+            redirected: true,
+            reason: 'meal_plan_request',
+            category: mealPlanCheck.category,
           },
         };
       }
