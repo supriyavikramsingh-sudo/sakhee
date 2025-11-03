@@ -28,7 +28,7 @@ export const mealPlanIntentDetector = (req, res, next) => {
       /protein\s+in\s+/i, // "protein in paneer"
       /carbs?\s+in\s+/i, // "carbs in rice"
       /fat\s+in\s+/i, // "fat in ghee"
-      /nutritional\s+(value|content|profile)\s+of/i, // "nutritional value of almonds"
+      /nutritional\s+(value|content|profile|information|facts| breakdown)\s+of/i, // "nutritional value of almonds"
       /how\s+many\s+(calories?|carbs?|protein|fat)/i, // "how many calories in..."
       /what\s+(is|are)\s+the\s+(nutrition|macro|calorie)/i, // "what is the nutrition in..."
     ];
