@@ -1,5 +1,7 @@
 // server/src/routes/mealPlan.js
 import express from 'express';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../config/firebase.js';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
 
@@ -28,6 +30,38 @@ router.post('/generate', async (req, res) => {
       healthContext,
       userOverrides,
     } = req.body;
+
+    // Fetch user profile to get personalized calorie requirements
+    let userCalories = 2000; // Default fallback
+    let weightGoal = 'maintain'; // Default
+
+    if (userId) {
+      try {
+        const userRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          // Use calculated daily_calorie_requirement if available
+          if (userData.daily_calorie_requirement) {
+            userCalories = userData.daily_calorie_requirement;
+            logger.info('Using personalized calorie requirement', {
+              userId,
+              calories: userCalories,
+            });
+          }
+
+          // Get weight goal for context
+          if (userData.profileData?.weight_goal) {
+            weightGoal = userData.profileData.weight_goal;
+          }
+        }
+      } catch (error) {
+        logger.warn('Failed to fetch user profile, using default calories', {
+          error: error.message,
+        });
+      }
+    }
 
     logger.info('Generating RAG-enhanced meal plan with multiple cuisines', {
       userId,
@@ -80,6 +114,8 @@ router.post('/generate', async (req, res) => {
       mealsPerDay: mealsPerDay || 3,
       healthContext: healthContext || {},
       userOverrides: userOverrides || {},
+      userCalories, // NEW: Pass personalized calorie requirement
+      weightGoal, // NEW: Pass weight goal for context
     });
 
     // Extract RAG metadata
