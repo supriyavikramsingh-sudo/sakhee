@@ -12,6 +12,7 @@ export interface Question {
   maxSelections?: number;
   helperText?: string;
   disabled?: boolean;
+  value?: any;
   // For number input
   maxDecimals?: number;
   min?: number;

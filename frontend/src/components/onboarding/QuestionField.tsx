@@ -18,6 +18,7 @@ interface QuestionFieldProps {
   max?: number; // For number input
   error?: string; // Validation error
   defaultValue?: any; // Default value for fields
+  value?: any; // Current value for fields
 }
 
 const QuestionField = ({
@@ -35,6 +36,7 @@ const QuestionField = ({
   max,
   error,
   defaultValue,
+  value,
 }: QuestionFieldProps) => {
   switch (type) {
     case 'text':
@@ -42,7 +44,9 @@ const QuestionField = ({
       return (
         <div>
           <TextInput
+            defaultValue={defaultValue}
             disable={disabled}
+            value={value}
             label={label}
             handleInputChange={onChange}
             required={required}
@@ -57,6 +61,7 @@ const QuestionField = ({
         <div>
           <NumberInput
             disable={disabled}
+            value={value}
             label={label}
             handleInputChange={onChange}
             required={required}
@@ -77,6 +82,7 @@ const QuestionField = ({
           <RadioInput
             disable={disabled}
             label={label}
+            value={value}
             options={options as { value: string; label: string }[]}
             handleInputChange={onChange}
             required={required}
@@ -91,9 +97,10 @@ const QuestionField = ({
         <div>
           <SelectInput
             disable={disabled}
+            value={value}
+            defaultValue={defaultValue}
             label={label}
             maxSelections={maxSelections}
-            defaultValue={''}
             placeholder={placeholder}
             required={required}
             options={options}
@@ -109,8 +116,9 @@ const QuestionField = ({
           <SelectInput
             disable={disabled}
             label={label}
+            value={value}
             required={required}
-            defaultValue={[]}
+            defaultValue={defaultValue}
             placeholder={placeholder}
             maxSelections={maxSelections}
             options={options}

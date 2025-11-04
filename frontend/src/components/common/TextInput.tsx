@@ -3,6 +3,7 @@ import { Input } from 'antd';
 interface TextInputProps {
   label: string;
   defaultValue?: string | number;
+  value?: string | number;
   required?: boolean;
   handleInputChange: (value: string | number) => void;
   disable?: boolean;
@@ -16,6 +17,7 @@ const TextInput = ({
   handleInputChange,
   disable = false,
   placeholder,
+  value,
 }: TextInputProps) => {
   return (
     <>
@@ -25,6 +27,7 @@ const TextInput = ({
       <Input
         placeholder={placeholder}
         defaultValue={defaultValue}
+        value={value}
         disabled={disable}
         style={{ width: 400, height: 40 }}
         onChange={(e) => handleInputChange(e.target.value)}

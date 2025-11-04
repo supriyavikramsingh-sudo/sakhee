@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
 import { useAuthStore } from '../store/authStore';
+import type { OnboardingData } from '../types/onboarding.type';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user, userProfile, completeOnboarding } = useAuthStore();
   const [currentStep, setCurrentStep] = useState(0);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<OnboardingData>({} as OnboardingData);
   const [loading, setLoading] = useState(false);
 
   // Redirect if already onboarded
@@ -86,6 +87,8 @@ const OnboardingPage = () => {
         {/* Onboarding Form */}
         <div className="bg-white rounded-xl shadow-md p-8">
           <OnboardingForm
+            userData={userData}
+            setUserData={setUserData}
             step={currentStep}
             onComplete={handleStepComplete}
             onBack={handleBack}
