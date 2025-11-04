@@ -99,6 +99,54 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
         </div>
       )}
 
+      {/* Keto Diet Notice */}
+      {plan.isKeto && (
+        <div className="bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-300 rounded-lg p-5">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-lg font-bold">⚡</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+                🔥 Ketogenic Diet Meal Plan
+                <span className="px-2 py-0.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs rounded-full">
+                  {plan.dietType === 'vegan' ? 'Vegan Keto' : 
+                   plan.dietType === 'jain' ? 'Jain Keto' : 
+                   plan.dietType === 'vegetarian' ? 'Veg Keto' : 
+                   'Non-Veg Keto'}
+                </span>
+              </h3>
+              <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-700">
+                <div className="bg-white rounded-lg p-3">
+                  <p className="font-semibold text-pink-600 mb-1">Macro Targets</p>
+                  <p className="text-xs">• Fat: 70% of calories</p>
+                  <p className="text-xs">• Protein: 25%</p>
+                  <p className="text-xs">• Carbs: 5% (20-50g/day)</p>
+                </div>
+                <div className="bg-white rounded-lg p-3">
+                  <p className="font-semibold text-purple-600 mb-1">Key Substitutions</p>
+                  <p className="text-xs">• Rice → Cauliflower rice</p>
+                  <p className="text-xs">• Roti → Almond flour roti</p>
+                  <p className="text-xs">• Potato → Cauliflower</p>
+                </div>
+                <div className="bg-white rounded-lg p-3">
+                  <p className="font-semibold text-indigo-600 mb-1">PCOS Benefits</p>
+                  <p className="text-xs">• Improved insulin sensitivity</p>
+                  <p className="text-xs">• Better hormone balance</p>
+                  <p className="text-xs">• Stable blood sugar</p>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 mt-3 flex items-start gap-1">
+                <AlertCircle className="flex-shrink-0 mt-0.5" size={14} />
+                <span>
+                  <strong>Medical Note:</strong> Stay well-hydrated and increase salt intake. Initial 1-2 weeks may have "keto flu" symptoms. Consult your healthcare provider for monitoring.
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="grid md:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg p-4 shadow">
@@ -111,7 +159,14 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Diet Type</p>
-          <p className="text-lg font-bold capitalize">{plan.dietType || 'Vegetarian'}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="text-lg font-bold capitalize">{plan.dietType || 'Vegetarian'}</p>
+            {plan.isKeto && (
+              <span className="px-2 py-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-full flex items-center gap-1">
+                ⚡ Keto
+              </span>
+            )}
+          </div>
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-muted mb-1">Region</p>

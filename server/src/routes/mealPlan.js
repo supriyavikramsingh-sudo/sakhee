@@ -29,6 +29,7 @@ router.post('/generate', async (req, res) => {
       duration,
       healthContext,
       userOverrides,
+      isKeto, // NEW: Keto diet modifier flag
     } = req.body;
 
     // Fetch user profile to get personalized calorie requirements
@@ -69,6 +70,7 @@ router.post('/generate', async (req, res) => {
       cuisines: cuisines?.length || 0,
       cuisineList: cuisines,
       dietType,
+      isKeto: isKeto || false, // NEW: Log keto flag
       restrictions: restrictions?.length || 0,
       hasHealthContext: !!healthContext,
       hasMedicalData: !!healthContext?.medicalData,
@@ -94,12 +96,14 @@ router.post('/generate', async (req, res) => {
     // Use defaults if regions not provided
     const finalRegions = regions && regions.length > 0 ? regions : ['north-indian'];
     const finalDietType = dietType || 'vegetarian';
+    const finalIsKeto = isKeto === true; // NEW: Ensure boolean type
 
     logger.info('Meal plan generation parameters', {
       finalRegions,
       cuisines,
       cuisineCount: cuisines.length,
       finalDietType,
+      isKeto: finalIsKeto, // NEW: Log keto flag
       duration,
     });
 
@@ -109,6 +113,7 @@ router.post('/generate', async (req, res) => {
       regions: finalRegions,
       cuisines, // Now an array of cuisine names
       dietType: finalDietType,
+      isKeto: finalIsKeto, // NEW: Pass keto flag to meal generation chain
       budget,
       restrictions: restrictions || [],
       mealsPerDay: mealsPerDay || 3,
@@ -131,6 +136,7 @@ router.post('/generate', async (req, res) => {
       regions: finalRegions,
       cuisines, // Store array of cuisines
       dietType: finalDietType,
+      isKeto: finalIsKeto, // NEW: Store keto flag in plan metadata
       budget,
       goals: goals || [],
       duration: duration || 7,
@@ -166,6 +172,7 @@ router.post('/generate', async (req, res) => {
       userId,
       daysGenerated: mealPlan.days?.length || 0,
       cuisinesUsed: cuisines,
+      isKeto: finalIsKeto, // NEW: Log keto status
       ragQuality: ragMetadata?.retrievalQuality,
       personalizationSources: Object.keys(planData.personalizationSources).filter(
         (k) => planData.personalizationSources[k]
@@ -179,6 +186,7 @@ router.post('/generate', async (req, res) => {
         regions,
         cuisines,
         dietType,
+        isKeto: finalIsKeto, // NEW: Return keto flag in response
         budget,
         plan: mealPlan,
         ragMetadata,

@@ -100,6 +100,29 @@ class MealPlanChain {
 
     if (mealTemplatesContext) {
       enhancedContext += '📋 MEAL TEMPLATES FROM KNOWLEDGE BASE:\n';
+
+      // ⭐ KETO MODE: Add special instructions for adapting high-carb meals
+      if (preferences.isKeto) {
+        const mealsNeedingAdaptation = mealTemplates.filter(
+          (doc) => doc.metadata?.needsKetoAdaptation === true
+        );
+
+        if (mealsNeedingAdaptation.length > 0) {
+          enhancedContext += '⚡ KETO ADAPTATION REQUIRED:\n';
+          enhancedContext += `${mealsNeedingAdaptation.length} meals below contain high-carb ingredients (rice, dal, wheat, potato).\n`;
+          enhancedContext += 'YOU MUST adapt them for keto by:\n';
+          enhancedContext +=
+            '  1. REPLACE rice → cauliflower rice (pulse raw cauliflower in food processor)\n';
+          enhancedContext +=
+            '  2. REPLACE dal/lentils → high-fat protein (paneer, chicken, fish, eggs)\n';
+          enhancedContext += '  3. REPLACE roti/bread → almond flour roti or coconut flour bread\n';
+          enhancedContext += '  4. REPLACE potato → cauliflower, zucchini, turnip\n';
+          enhancedContext += '  5. ADD extra fat (2-3 tbsp ghee, coconut oil, butter per meal)\n';
+          enhancedContext += '  6. KEEP the cooking method, spices, and flavors authentic\n';
+          enhancedContext += '  7. VERIFY final meal has <20g net carbs, >70% fat\n\n';
+        }
+      }
+
       enhancedContext += '(Use these as inspiration and adapt to user preferences)\n\n';
       enhancedContext += mealTemplatesContext + '\n\n';
     }
@@ -460,10 +483,18 @@ class MealPlanChain {
     try {
       const cuisines = preferences.cuisines || [];
       const dietType = preferences.dietType || 'vegetarian';
+      const restrictions = preferences.restrictions || [];
 
       // ===== STAGE 1: Retrieve meal templates =====
       logger.info('Stage 1: Retrieving meal templates');
       if (cuisines.length > 0) {
+        // ⚠️ CRITICAL FIX: DO NOT add "keto" to meal template queries!
+        // Problem: Adding "keto low-carb" causes vector search to return ONLY keto docs
+        //          But most regional cuisines (Bengali, South Indian) have NO keto-specific docs
+        //          Result: Vector search returns 0 relevant docs or docs from wrong cuisines
+        // Solution: Retrieve traditional regional meals → Filter by cuisine → LLM adapts for keto
+        // The keto keywords ARE used in Stage 5 (keto substitutes) which is the right place
+
         const templateQueries = cuisines.flatMap((cuisine) => [
           // Enhanced queries with more specific keywords for better RAG retrieval
           `${cuisine} breakfast meals dishes regional ${dietType}`,
@@ -477,7 +508,7 @@ class MealPlanChain {
         for (const query of templateQueries) {
           const results = await retriever.retrieve(query, { topK: 25 }); // Increased to 25 for better coverage
 
-          // ⭐ FILTER: By cuisine/region AND diet type
+          // ⭐ FILTER: By cuisine/region AND diet type AND keto/allergens
           const filteredResults = results.filter((doc) => {
             const content = doc.pageContent || doc.content || '';
             const contentLower = content.toLowerCase();
@@ -502,7 +533,125 @@ class MealPlanChain {
             // If no cuisine match, skip this document
             if (!cuisineMatch) return false;
 
-            // 🔍 SECOND: Filter by diet type
+            // 🔍 SECOND: Filter by ALLERGENS (if any restrictions)
+            // ⭐ CRITICAL: Check for user's allergies/intolerances BEFORE diet type
+            if (restrictions && restrictions.length > 0) {
+              // Check ingredients section for allergens
+              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
+              const ingredientsText = ingredientsMatch
+                ? ingredientsMatch[1].toLowerCase()
+                : contentLower;
+
+              // Allergen keywords
+              const allergenMap = {
+                dairy: [
+                  'milk',
+                  'paneer',
+                  'cheese',
+                  'curd',
+                  'yogurt',
+                  'ghee',
+                  'butter',
+                  'cream',
+                  'khoya',
+                  'malai',
+                ],
+                gluten: ['wheat', 'maida', 'atta', 'roti', 'chapati', 'paratha', 'bread'],
+                nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'peanut', 'hazelnut', 'pecan'],
+                eggs: ['egg', 'omelette'],
+              };
+
+              // Check each restriction
+              for (const restriction of restrictions) {
+                const normalizedRestriction = restriction.toLowerCase().trim();
+                const allergens = allergenMap[normalizedRestriction];
+
+                if (allergens) {
+                  const hasAllergen = allergens.some((allergen) =>
+                    ingredientsText.includes(allergen)
+                  );
+
+                  if (hasAllergen) {
+                    logger.info(
+                      `  ❌ Filtered out "${
+                        metadata.mealName || 'Unknown'
+                      }" - contains ${normalizedRestriction} allergen`
+                    );
+                    return false; // Reject this meal template
+                  }
+                }
+              }
+            }
+
+            // 🔍 THIRD: Filter by KETO requirements (if isKeto=true)
+            // ⚠️ IMPORTANT: In KETO mode, we DON'T reject high-carb meals at retrieval stage
+            // Instead, we RETRIEVE them as examples and let the LLM ADAPT them using keto substitutes
+            // Reason: Many regional cuisines (Bengali, South Indian) are rice/dal-heavy
+            //         Rejecting all of them = 0 templates = LLM has no cuisine examples
+            // Strategy: Retrieve traditional meals → LLM replaces rice with cauliflower rice, etc.
+
+            if (preferences.isKeto) {
+              // Check ingredients for high-carb items
+              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
+              const ingredientsText = ingredientsMatch
+                ? ingredientsMatch[1].toLowerCase()
+                : contentLower;
+
+              // High-carb keywords to identify (but NOT reject yet)
+              const highCarbKeywords = [
+                'rice',
+                'ragi',
+                'jowar',
+                'bajra',
+                'wheat',
+                'roti',
+                'chapati',
+                'bread',
+                'idli',
+                'dosa',
+                'upma',
+                'poha',
+                'puttu',
+                'appam',
+                'dal',
+                'lentil',
+                'chickpea',
+                'chana',
+                'moong',
+                'masoor',
+                'toor',
+                'urad',
+                'potato',
+                'sweet potato',
+                'corn',
+                'peas',
+              ];
+
+              const hasHighCarb = highCarbKeywords.some((keyword) =>
+                ingredientsText.includes(keyword)
+              );
+
+              if (hasHighCarb) {
+                // ⭐ NEW STRATEGY: Mark this meal as "needs keto adaptation" but ACCEPT it
+                // Add metadata flag so we know it needs substitution
+                doc.metadata = doc.metadata || {};
+                doc.metadata.needsKetoAdaptation = true;
+                doc.metadata.highCarbIngredients = highCarbKeywords.filter((k) =>
+                  ingredientsText.includes(k)
+                );
+
+                logger.info(
+                  `  ⚡ Accepting for keto adaptation: "${
+                    metadata.mealName || 'Unknown'
+                  }" - contains ${doc.metadata.highCarbIngredients.join(
+                    ', '
+                  )} (will be substituted by LLM)`
+                );
+                // Don't reject - let it through for LLM adaptation
+              }
+            }
+
+            // 🔍 FOURTH: Filter by diet type
             // ⭐ IMPROVED: Check the Type: field in content FIRST (most reliable)
             // Note: RAG content uses "Type: Vegetarian" format (not markdown **Type:**)
             const hasVegetarianTag = /Type:\s*Vegetarian/i.test(content);
@@ -529,34 +678,18 @@ class MealPlanChain {
               ];
               return !jainProhibited.some((keyword) => ingredientsText.includes(keyword));
             } else if (dietType === 'vegan') {
-              // Vegan: Must be vegetarian AND no dairy
-              if (!hasVegetarianTag || hasNonVegTag) return false;
+              // ⭐ VEGAN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
+              // The LLM will adapt them using ingredient substitutes from RAG
+              // This gives more variety and allows adaptation of popular non-veg dishes
 
-              // Check for dairy in ingredients section only
-              // Note: RAG format uses "Ingredients: ..." (not markdown **Ingredients:**)
-              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n|$)/);
-              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
-
-              const nonVeganKeywords = [
-                'paneer',
-                'cheese',
-                'milk',
-                'curd',
-                'yogurt',
-                'ghee',
-                'butter',
-                'cream',
-              ];
-              const hasNonVeganIngredient = nonVeganKeywords.some((keyword) =>
-                ingredientsText.includes(keyword)
+              // Accept ALL templates (veg and non-veg) - LLM will substitute
+              // We don't filter by dairy here because LLM will substitute paneer→tofu, milk→almond milk, etc.
+              logger.info(
+                `    ✅ Vegan mode: Accepting template "${
+                  metadata.mealName || 'Unknown'
+                }" for LLM adaptation`
               );
-
-              if (hasNonVeganIngredient) {
-                logger.info(
-                  `    ❌ Filtered out vegan: ${metadata.mealName || 'Unknown'} - contains dairy`
-                );
-              }
-              return !hasNonVeganIngredient;
+              return true; // Accept all templates for vegan adaptation
             } else if (dietType === 'vegetarian') {
               // Vegetarian: Just check the Type: tag
               if (hasVegetarianTag && !hasNonVegTag) {
@@ -568,14 +701,57 @@ class MealPlanChain {
                 logger.info(`    ⚠️  No diet type tag found: ${metadata.mealName || 'Unknown'}`);
               }
               return false;
+            } else if (dietType === 'non-vegetarian') {
+              // ⭐ NON-VEG MODE: More lenient filtering
+              // Strategy: Accept if has Non-Veg tag OR if NO tag found (assume it's fine)
+              // Reason: Many RAG docs don't have Type tags, especially regional cuisines
+
+              if (hasNonVegTag) {
+                // Explicitly tagged as non-veg - definitely accept
+                return true;
+              }
+
+              if (hasVegetarianTag) {
+                // Explicitly tagged as vegetarian - reject for non-veg users
+                logger.info(
+                  `    ❌ Filtered out "${
+                    metadata.mealName || 'Unknown'
+                  }" - vegetarian meal for non-veg user`
+                );
+                return false;
+              }
+
+              // No tag found - ACCEPT IT (assume it can be adapted)
+              // Many regional dishes don't have tags but can work for non-veg
+              logger.info(
+                `    ✅ Accepting "${
+                  metadata.mealName || 'Unknown'
+                }" - no diet tag, assuming adaptable`
+              );
+              return true;
             }
 
-            return true; // Allow all for non-veg
+            return true; // Allow all for other diet types
           });
 
-          logger.info(
-            `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals`
-          );
+          // ⭐ Enhanced logging for keto mode
+          if (preferences.isKeto) {
+            const ketoCompatibleCount = filteredResults.filter((doc) => {
+              const content = (doc.pageContent || doc.content || '').toLowerCase();
+              return !['rice', 'ragi', 'jowar', 'bajra', 'wheat', 'dal', 'potato'].some((k) =>
+                content.includes(k)
+              );
+            }).length;
+
+            logger.info(
+              `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals (${ketoCompatibleCount} keto-compatible)`
+            );
+          } else {
+            logger.info(
+              `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals`
+            );
+          }
+
           retrievalResults.mealTemplates.push(...filteredResults);
         }
       }
@@ -803,12 +979,291 @@ class MealPlanChain {
 
       logger.info(`Total substitute docs: ${retrievalResults.ingredientSubstitutes.length}`);
 
-      // ===== FINAL SUMMARY =====
+      // ===== STAGE 5: Retrieve KETO substitutes (if isKeto enabled) =====
+      if (preferences.isKeto) {
+        logger.info('Stage 5: Retrieving KETO substitutes (isKeto=true)');
+
+        // Comprehensive keto substitute queries covering all food categories
+        const ketoSubstituteQueries = [
+          // General keto substitutes
+          `keto substitutes grain alternatives cauliflower rice almond flour`,
+          `ketogenic diet low carb substitutes Indian cuisine`,
+
+          // Grain replacements (most important for Indian cuisine)
+          `rice substitute keto cauliflower rice low carb`,
+          `roti chapati bread substitute keto almond flour coconut flour`,
+          `wheat flour substitute keto baking almond coconut`,
+
+          // Vegetable replacements
+          `potato substitute keto cauliflower zucchini turnip`,
+          `starchy vegetables keto substitute low carb`,
+
+          // Diet-specific keto queries
+          ...(dietType === 'vegan'
+            ? [
+                `vegan keto protein substitutes tofu tempeh nuts seeds`,
+                `vegan keto dairy substitute coconut almond milk`,
+                `plant-based keto high fat low carb`,
+              ]
+            : []),
+
+          ...(dietType === 'jain'
+            ? [
+                `jain keto diet no root vegetables cauliflower`,
+                `jain ketogenic diet paneer nuts low carb`,
+              ]
+            : []),
+
+          ...(dietType === 'vegetarian'
+            ? [
+                `vegetarian keto paneer cheese eggs low carb`,
+                `vegetarian ketogenic diet Indian high fat`,
+              ]
+            : []),
+
+          ...(dietType === 'non-vegetarian'
+            ? [
+                `keto non-vegetarian fatty fish chicken thighs`,
+                `ketogenic meat protein high fat low carb`,
+              ]
+            : []),
+
+          // Sweetener and condiment replacements
+          `sugar substitute keto stevia erythritol monk fruit`,
+          `keto condiments sauces low carb Indian`,
+
+          // Fat sources
+          `keto healthy fats ghee coconut oil MCT butter`,
+          `high fat low carb Indian keto`,
+        ];
+
+        for (const query of ketoSubstituteQueries) {
+          logger.info(`  Querying keto substitutes: "${query}"`);
+
+          const results = await retriever.retrieve(query, { topK: 5 });
+
+          // Log what we got
+          const types = results.map((r) => r.metadata?.type).filter(Boolean);
+          logger.info(`  Retrieved types: ${types.join(', ')}`);
+
+          // Filter to get keto substitute docs
+          const ketoSubstituteDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+            // Exclude meal templates (we want substitutes, not recipes)
+            if (type === 'meal_template') return false;
+
+            // Accept substitute and nutritional guidance
+            // Also check content for "keto" keyword to ensure relevance
+            const isSubstituteDoc =
+              type === 'ingredient_substitute' ||
+              type === 'medical_info' ||
+              type === 'nutritional_data' ||
+              type === 'medical_knowledge';
+
+            const hasKetoContent =
+              content.includes('keto') ||
+              content.includes('ketogenic') ||
+              content.includes('low carb') ||
+              content.includes('cauliflower rice') ||
+              content.includes('almond flour');
+
+            return isSubstituteDoc && hasKetoContent;
+          });
+
+          logger.info(`  Filtered to ${ketoSubstituteDocs.length} keto substitute docs`);
+          retrievalResults.ingredientSubstitutes.push(...ketoSubstituteDocs);
+        }
+
+        logger.info(
+          `Total keto substitute docs retrieved: ${retrievalResults.ingredientSubstitutes.length}`
+        );
+      } else {
+        logger.info('Stage 5: Skipping keto substitutes (isKeto=false)');
+      }
+
+      // ===== STAGE 6: ALLERGY & INTOLERANCE SUBSTITUTES =====
+      if (restrictions && restrictions.length > 0) {
+        logger.info(
+          `Stage 6: Retrieving allergy substitutes for ${restrictions.length} restrictions`
+        );
+
+        // Map restriction names to query terms
+        // ONLY 4 SUPPORTED ALLERGIES: dairy, gluten, nuts, eggs
+        const allergyQueries = {
+          dairy: [
+            'dairy-free milk substitute coconut almond',
+            'paneer substitute tofu tempeh dairy-free',
+            'dairy-free yogurt coconut cashew',
+            'ghee substitute coconut oil vegan',
+          ],
+          gluten: [
+            'gluten-free flour besan ragi jowar',
+            'gluten-free roti millet alternatives',
+            'celiac disease gluten substitute',
+          ],
+          nuts: [
+            'nut-free substitutes seeds sunflower pumpkin',
+            'nut allergy nut-free fat sources',
+            'nut-free protein sources seeds',
+          ],
+          eggs: [
+            'egg substitute flax chia egg-free',
+            'egg-free binding baking alternatives',
+            'egg allergy protein substitute',
+          ],
+        };
+
+        // Supported allergies list
+        const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
+
+        for (const restriction of restrictions) {
+          const normalizedRestriction = restriction.toLowerCase().trim();
+
+          // Only process if it's one of the 4 supported allergies
+          if (!supportedAllergies.includes(normalizedRestriction)) {
+            logger.warn(
+              `  Skipping unsupported allergy: "${restriction}" (only dairy, gluten, nuts, eggs supported)`
+            );
+            continue;
+          }
+
+          const queries = allergyQueries[normalizedRestriction];
+          logger.info(`  Querying allergy substitutes for: "${restriction}"`);
+
+          for (const query of queries) {
+            const results = await retriever.retrieve(query, { topK: 5 });
+
+            const types = results.map((r) => r.metadata?.type).filter(Boolean);
+            logger.info(`  Retrieved types for "${restriction}": ${types.join(', ')}`);
+
+            // Filter to get allergy substitute docs
+            const allergySubstituteDocs = results.filter((doc) => {
+              const type = doc.metadata?.type;
+              const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+              // Exclude meal templates
+              if (type === 'meal_template') return false;
+
+              // Accept substitute and medical docs
+              const isRelevantType =
+                type === 'ingredient_substitute' ||
+                type === 'medical_info' ||
+                type === 'medical_knowledge';
+
+              // Check if content is relevant to the allergy
+              const hasAllergyContent =
+                content.includes(normalizedRestriction) ||
+                content.includes('allergy') ||
+                content.includes('free') ||
+                content.includes('substitute') ||
+                content.includes('alternative');
+
+              return isRelevantType && hasAllergyContent;
+            });
+
+            logger.info(`  Filtered to ${allergySubstituteDocs.length} allergy substitute docs`);
+            retrievalResults.ingredientSubstitutes.push(...allergySubstituteDocs);
+          }
+        }
+
+        logger.info(
+          `Total allergy substitute docs retrieved: ${retrievalResults.ingredientSubstitutes.length}`
+        );
+      } else {
+        logger.info('Stage 6: No dietary restrictions specified, skipping allergy substitutes');
+      }
+
+      // ===== FINAL VALIDATION & SUMMARY =====
+
+      // ⭐ KETO MODE: Log meals that need adaptation (but don't remove them!)
+      // NEW STRATEGY: We KEEP high-carb meals as examples and let LLM adapt them
+      if (preferences.isKeto && retrievalResults.mealTemplates.length > 0) {
+        const mealsNeedingAdaptation = retrievalResults.mealTemplates.filter(
+          (doc) => doc.metadata?.needsKetoAdaptation === true
+        );
+
+        const alreadyKetoFriendly =
+          retrievalResults.mealTemplates.length - mealsNeedingAdaptation.length;
+
+        if (mealsNeedingAdaptation.length > 0) {
+          logger.info(`📋 KETO MEAL TEMPLATES SUMMARY:`, {
+            total: retrievalResults.mealTemplates.length,
+            alreadyKetoFriendly: alreadyKetoFriendly,
+            needsAdaptation: mealsNeedingAdaptation.length,
+            examples: mealsNeedingAdaptation.slice(0, 3).map((m) => ({
+              name: m.metadata?.mealName || 'Unknown',
+              highCarb: m.metadata?.highCarbIngredients || [],
+            })),
+          });
+
+          logger.info(
+            `✅ Strategy: LLM will adapt ${mealsNeedingAdaptation.length} high-carb meals using keto substitutes from RAG`
+          );
+        } else {
+          logger.info(
+            `✅ KETO VALIDATION: All ${retrievalResults.mealTemplates.length} meal templates are naturally keto-friendly`
+          );
+        }
+      }
+
+      // ⭐ ALLERGEN MODE: Final validation to ensure NO allergen-containing meals slipped through
+      if (restrictions && restrictions.length > 0 && retrievalResults.mealTemplates.length > 0) {
+        const allergenMap = {
+          dairy: ['milk', 'paneer', 'cheese', 'curd', 'yogurt', 'ghee', 'butter', 'cream'],
+          gluten: ['wheat', 'maida', 'atta', 'roti', 'bread'],
+          nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'peanut'],
+          eggs: ['egg', 'omelette'],
+        };
+
+        const violatingMeals = retrievalResults.mealTemplates.filter((doc) => {
+          const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+          return restrictions.some((restriction) => {
+            const normalizedRestriction = restriction.toLowerCase().trim();
+            const allergens = allergenMap[normalizedRestriction];
+            return allergens && allergens.some((allergen) => content.includes(allergen));
+          });
+        });
+
+        if (violatingMeals.length > 0) {
+          logger.warn(
+            `⚠️  ALLERGEN VALIDATION: Found ${violatingMeals.length} meals with allergens that should have been filtered`,
+            {
+              restrictions: restrictions,
+              examples: violatingMeals.slice(0, 3).map((m) => m.metadata?.mealName || 'Unknown'),
+            }
+          );
+
+          // Remove them
+          retrievalResults.mealTemplates = retrievalResults.mealTemplates.filter((doc) => {
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+            return !restrictions.some((restriction) => {
+              const normalizedRestriction = restriction.toLowerCase().trim();
+              const allergens = allergenMap[normalizedRestriction];
+              return allergens && allergens.some((allergen) => content.includes(allergen));
+            });
+          });
+
+          logger.info(
+            `✅ Removed ${violatingMeals.length} allergen-containing meals. Safe meals remaining: ${retrievalResults.mealTemplates.length}`
+          );
+        } else {
+          logger.info(
+            `✅ ALLERGEN VALIDATION PASSED: All ${retrievalResults.mealTemplates.length} meal templates are allergen-free`
+          );
+        }
+      }
+
       logger.info('Multi-stage retrieval complete', {
         mealTemplates: retrievalResults.mealTemplates.length,
         symptomGuidance: retrievalResults.symptomGuidance.length,
         labGuidance: retrievalResults.labGuidance.length,
         ingredientSubstitutes: retrievalResults.ingredientSubstitutes.length,
+        allergyRestrictions: restrictions.length,
+        isKeto: preferences.isKeto || false,
       });
 
       return retrievalResults;
@@ -1028,13 +1483,53 @@ class MealPlanChain {
     context += `Daily Budget: ₹${preferences.budget || 300}\n`;
     context += `Duration: ${preferences.duration || 7} days\n\n`;
 
-    // Restrictions
+    // Restrictions (STRONG ENFORCEMENT) - ONLY 4 SUPPORTED: dairy, gluten, nuts, eggs
     if (preferences.restrictions && preferences.restrictions.length > 0) {
-      context += `⚠️ DIETARY RESTRICTIONS:\n`;
-      preferences.restrictions.forEach((r) => {
-        context += `  - Avoid ${r}\n`;
+      context += `\n🚨🚨🚨 ALLERGY & INTOLERANCE RESTRICTIONS (ABSOLUTE MUST - HIGHEST PRIORITY):\n`;
+      context += `The user has the following allergies/intolerances. You MUST completely ELIMINATE these ingredients:\n\n`;
+
+      // Filter to only supported allergies
+      const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
+      const validRestrictions = preferences.restrictions.filter((r) =>
+        supportedAllergies.includes(r.toLowerCase().trim())
+      );
+
+      validRestrictions.forEach((r) => {
+        const normalizedRestriction = r.toLowerCase().trim();
+
+        // Add detailed guidance for each restriction type
+        if (normalizedRestriction === 'dairy') {
+          context += `❌ DAIRY ALLERGY/INTOLERANCE - ELIMINATE ALL:\n`;
+          context += `   - NO milk, paneer, cheese, curd, yogurt, ghee, butter, cream, khoya, malai, condensed milk\n`;
+          context += `   - REPLACE WITH: Coconut milk, almond milk, tofu, coconut yogurt, coconut oil\n`;
+          context += `   - CHECK RAG "DAIRY-FREE SUBSTITUTES" section for complete alternatives\n\n`;
+        } else if (normalizedRestriction === 'gluten') {
+          context += `❌ GLUTEN INTOLERANCE/CELIAC - ELIMINATE ALL:\n`;
+          context += `   - NO wheat, barley, rye, maida, atta, semolina (sooji), regular roti, paratha, bread, pasta\n`;
+          context += `   - REPLACE WITH: Besan (chickpea flour), ragi flour, jowar flour, bajra flour, rice flour, quinoa\n`;
+          context += `   - CHECK RAG "GLUTEN-FREE SUBSTITUTES" section for complete alternatives\n\n`;
+        } else if (normalizedRestriction === 'nuts') {
+          context += `❌ NUT ALLERGY - ELIMINATE ALL TYPES OF NUTS:\n`;
+          context += `   - NO almonds, cashews, walnuts, pistachios, peanuts, hazelnuts, pecans, macadamia, brazil nuts\n`;
+          context += `   - NO almond flour, almond milk, cashew cream, nut butters, any nut-based products\n`;
+          context += `   - REPLACE WITH: Seeds (sunflower, pumpkin, chia, flax, hemp, sesame), coconut products\n`;
+          context += `   - NOTE: Coconut is botanically a FRUIT (not a nut) and is SAFE for nut allergies\n`;
+          context += `   - CHECK RAG "NUT-FREE SUBSTITUTES" section for complete alternatives\n\n`;
+        } else if (normalizedRestriction === 'eggs') {
+          context += `❌ EGG ALLERGY - ELIMINATE ALL:\n`;
+          context += `   - NO eggs in any form (whole eggs, egg yolk, egg white, egg powder)\n`;
+          context += `   - REPLACE WITH: Flax egg (1 tbsp ground flaxseed + 3 tbsp water), chia egg, mashed banana, tofu\n`;
+          context += `   - CHECK RAG "EGG-FREE SUBSTITUTES" section for complete alternatives\n\n`;
+        }
       });
-      context += '\n';
+
+      context += `⚠️ CRITICAL REMINDERS:\n`;
+      context += `   - These are allergies/intolerances - NOT preferences. NEVER include restricted ingredients.\n`;
+      context += `   - Check EVERY ingredient in EVERY meal to ensure it doesn't contain allergens\n`;
+      context += `   - Use the RAG "ALLERGY & INTOLERANCE SUBSTITUTES" section for detailed alternatives\n`;
+      context += `   - If a traditional dish contains allergens, YOU MUST adapt it using substitutes\n`;
+      context += `   - For NUT ALLERGY: Eliminate ALL types of nuts (we don't specify which nuts - ALL are forbidden)\n`;
+      context += `   - Allergies take ABSOLUTE PRIORITY over all other requirements (including keto, taste, cost)\n\n`;
     }
 
     // Health data
@@ -1112,8 +1607,204 @@ class MealPlanChain {
       preferences.budget || 300
     }/day using affordable, locally available ingredients.\n\n`;
 
-    // ⭐ Declare dietType early so it can be used in task section
+    // ⭐ Declare common variables early so they can be reused throughout
     const dietType = preferences.dietType || 'vegetarian';
+    const targetCalories = preferences.userCalories || 2000;
+    const mealsCount = preferences.mealsPerDay || 3;
+
+    // ⭐⭐⭐ KETO INSTRUCTIONS AT TOP (HIGHEST PRIORITY)
+    if (preferences.isKeto) {
+      prompt += `\n🔥🔥🔥 ============================================\n`;
+      prompt += `🔥🔥🔥 KETOGENIC DIET MODE ACTIVATED (ABSOLUTE PRIORITY)\n`;
+      prompt += `🔥🔥🔥 ============================================\n\n`;
+
+      prompt += `⚡ THIS IS A KETO MEAL PLAN - STANDARD PCOS RULES ARE OVERRIDDEN:\n\n`;
+
+      prompt += `⚡ KETO MACRO TARGETS (NON-NEGOTIABLE):\n`;
+      prompt += `- Fat: 70% of calories (approximately ${Math.round(
+        (targetCalories * 0.7) / 9
+      )}g fat per day)\n`;
+      prompt += `- Protein: 25% of calories (approximately ${Math.round(
+        (targetCalories * 0.25) / 4
+      )}g protein per day)\n`;
+      prompt += `- Carbs: 5% of calories (approximately ${Math.round(
+        (targetCalories * 0.05) / 4
+      )}g NET carbs per day)\n`;
+      prompt += `- NET CARBS: Maximum 20-50g per day (total carbs minus fiber)\n`;
+      prompt += `- Fiber: 25-30g per day (doesn't count toward net carbs)\n\n`;
+
+      prompt += `🚨 KETO FOOD ELIMINATIONS (ABSOLUTE MUST - NO EXCEPTIONS):\n`;
+      prompt += `❌ ZERO GRAINS ALLOWED:\n`;
+      prompt += `   - NO rice (white, brown, red, ANY type)\n`;
+      prompt += `   - NO wheat (roti, chapati, paratha, bread, atta)\n`;
+      prompt += `   - NO millets (bajra, jowar, ragi, foxtail, finger millet)\n`;
+      prompt += `   - NO oats, quinoa, or any grain\n`;
+      prompt += `   - BANNED MEALS: Ragi Idli, Ragi Dosa, Jowar Roti, Bajra Khichdi, ANY grain-based meal\n\n`;
+
+      prompt += `❌ ZERO STARCHY VEGETABLES:\n`;
+      prompt += `   - NO potato, sweet potato, yam, taro\n`;
+      prompt += `   - NO corn, peas\n\n`;
+
+      prompt += `❌ ZERO LEGUMES/DALS (TOO HIGH IN CARBS):\n`;
+      prompt += `   - NO lentils (dal, masoor, moong, toor, urad)\n`;
+      prompt += `   - NO chickpeas, rajma, chole, besan\n`;
+      prompt += `   - BANNED MEALS: Moong Dal Chilla, Dal Tadka, Chole, Rajma, ANY dal-based meal\n\n`;
+
+      prompt += `❌ ZERO SUGAR:\n`;
+      prompt += `   - NO sugar, jaggery, honey\n`;
+      prompt += `   - Use stevia, erythritol, monk fruit ONLY\n\n`;
+
+      prompt += `✅ KETO GRAIN REPLACEMENTS (MANDATORY - USE THESE INSTEAD):\n`;
+      prompt += `   - Rice → CAULIFLOWER RICE (pulse raw cauliflower in food processor)\n`;
+      prompt += `   - Roti/Chapati → ALMOND FLOUR ROTI, coconut flour roti, cheese wraps\n`;
+      prompt += `   - Upma → Cauliflower upma\n`;
+      prompt += `   - Poha → Cauliflower poha\n`;
+      prompt += `   - Idli/Dosa → Coconut flour dosa, egg dosa\n`;
+      prompt += `   - Biryani → Cauliflower rice biryani\n\n`;
+
+      prompt += `✅ KETO FAT SOURCES (ADD TO EVERY MEAL):\n`;
+      prompt += `   - Cook in: Ghee, coconut oil, butter (2-3 tbsp per serving)\n`;
+      prompt += `   - Add: Coconut cream, heavy cream to curries\n`;
+      prompt += `   - Include: Almonds, walnuts (1/4 cup per meal)\n`;
+      prompt += `   - Drizzle: Olive oil, ghee on vegetables\n\n`;
+
+      prompt += `✅ KETO VEGETABLES (EMPHASIZE THESE):\n`;
+      prompt += `   - Leafy greens: spinach, methi, kale (unlimited)\n`;
+      prompt += `   - Cauliflower, broccoli, zucchini, bell peppers\n`;
+      prompt += `   - Cucumber, mushrooms, cabbage\n\n`;
+
+      // Diet-specific keto
+      if (dietType === 'vegan') {
+        prompt += `🌿 VEGAN KETO: NO dairy, use coconut (oil, cream, milk), tofu, tempeh, nuts, seeds\n\n`;
+      } else if (dietType === 'jain') {
+        prompt += `🙏 JAIN KETO: NO root vegetables (potato, onion, garlic), NO grains. Use cauliflower, paneer, nuts, above-ground vegetables only\n\n`;
+      } else if (dietType === 'vegetarian') {
+        prompt += `🌱 VEGETARIAN KETO: Emphasize paneer, cheese, eggs, ghee, butter, nuts\n\n`;
+      } else {
+        prompt += `🍖 NON-VEG KETO: Fatty fish (salmon), chicken thighs (not breast), eggs, ghee\n\n`;
+      }
+
+      prompt += `�🚨🚨 CRITICAL KETO RULES - MUST FOLLOW EXACTLY:\n`;
+      prompt += `1. CALCULATE NET CARBS: Every meal must show NET carbs (total carbs - fiber)\n`;
+      prompt += `2. DAILY NET CARBS LIMIT: Maximum 20-50g per day (divide by ${mealsCount} meals = ~${Math.round(
+        50 / mealsCount
+      )}g net carbs per meal MAX)\n`;
+      prompt += `3. REJECT HIGH-CARB RAG TEMPLATES: If RAG suggests "Ragi Idli" or "Moong Dal Chilla" - IGNORE IT\n`;
+      prompt += `4. ONLY USE KETO-COMPATIBLE RAG TEMPLATES: Paneer dishes, vegetable curries, non-veg dishes\n`;
+      prompt += `5. IF NO KETO TEMPLATE FOUND: CREATE from scratch using keto ingredients\n\n`;
+
+      prompt += `🌍 CUISINE-SPECIFIC KETO ADAPTATIONS (RESPECT REGIONAL AUTHENTICITY):\n`;
+      prompt += `⚠️ WARNING: DO NOT mix cuisines incorrectly!\n`;
+      prompt += `   - Uttar Pradesh/Uttarakhand: Use paneer, aloo gobi (cauliflower instead of aloo), kadhi (coconut flour pakoras)\n`;
+      prompt += `   - Rajasthani: Use paneer lababdar, gatte (almond flour), dal baati (skip baati, make cauliflower curry)\n`;
+      prompt += `   - Delhi: Use butter chicken (coconut cream), chole bhature (skip bhature, make paneer)\n`;
+      prompt += `   - Goan: Use fish curry, prawn dishes, coconut-based curries\n`;
+      prompt += `   - South Indian: ONLY if cuisine selected - coconut flour dosa, egg dosa, vegetable stir-fry\n`;
+      prompt += `   ❌ DO NOT recommend Idli/Dosa for North Indian cuisines (Uttar Pradesh, Rajasthani, Delhi)\n`;
+      prompt += `   ❌ DO NOT recommend Paneer dishes for Goan cuisine (use fish/coconut)\n\n`;
+
+      prompt += `📊 KETO RECIPE ADAPTATION PROCESS (CRITICAL FOR REGIONAL CUISINES):\n`;
+      prompt += `   ⚠️ IMPORTANT: Many RAG templates contain rice/dal (especially Bengali, South Indian, East Indian)\n`;
+      prompt += `   ⚠️ YOU MUST adapt these traditional meals to be keto-compatible while preserving authenticity\n\n`;
+      prompt += `   STEP 1: Find cuisine-appropriate dish from RAG (even if it contains high-carb ingredients)\n`;
+      prompt += `   STEP 2: Check if it contains grains, dals, or starchy vegetables\n`;
+      prompt += `   STEP 3: If YES → Apply these MANDATORY substitutions (ROTATE for variety!):\n`;
+      prompt += `      • Rice → OPTIONS (rotate these):\n`;
+      prompt += `        - Cauliflower rice (most common, budget-friendly)\n`;
+      prompt += `        - Cabbage rice (shredded cabbage, similar texture)\n`;
+      prompt += `        - Zucchini noodles/spirals (different texture)\n`;
+      prompt += `        - Shirataki rice (konjac rice, very low carb)\n`;
+      prompt += `      • Dal/Lentils → Paneer curry, chicken curry, fish curry, or egg curry (use same spices)\n`;
+      prompt += `      • Roti/Chapati → OPTIONS (rotate these):\n`;
+      prompt += `        - Almond flour roti (most authentic texture)\n`;
+      prompt += `        - Coconut flour roti (budget option)\n`;
+      prompt += `        - Flaxseed meal roti (omega-3 rich)\n`;
+      prompt += `        - Cheese wraps (for wraps/rolls)\n`;
+      prompt += `        - Lettuce wraps (for light meals)\n`;
+      prompt += `      • Potato → OPTIONS (rotate these):\n`;
+      prompt += `        - Cauliflower (most versatile)\n`;
+      prompt += `        - Zucchini (for fries/chips)\n`;
+      prompt += `        - Turnip (for stews)\n`;
+      prompt += `        - Radish (for roasting)\n`;
+      prompt += `      • Keep ALL other ingredients: spices, cooking method, garnishes\n`;
+      prompt += `   ⚠️ VARIETY RULE: Don't use cauliflower rice in EVERY meal! Rotate substitutes!\n`;
+      prompt += `   STEP 4: TRIPLE the fat content (add 2-3 tbsp ghee/coconut oil per serving)\n`;
+      prompt += `   STEP 5: Calculate macros using RAG nutrition data\n`;
+      prompt += `   STEP 6: Verify NET carbs < ${Math.round(
+        50 / mealsCount
+      )}g per meal, Fat > 70%, Protein ~25%\n`;
+      prompt += `   \n`;
+      prompt += `   Example Adaptations:\n`;
+      prompt += `   • "Bengali Fish Curry with Rice" → "Bengali Fish Curry with Cauliflower Rice (Keto)"\n`;
+      prompt += `   • "Dal Tadka with Roti" → "Paneer Tikka Masala with Almond Flour Roti (Keto)"\n`;
+      prompt += `   • "Chicken Biryani" → "Chicken Cauliflower Rice Biryani (Keto)" with extra ghee\n`;
+      prompt += `   • "Manipuri Fish Rice" → "Manipuri Fish with Cauliflower Rice (Keto)"\n\n`;
+
+      prompt += `� KETO MACRO CALCULATION INSTRUCTIONS (CRITICAL - USE RAG MACROS):\n`;
+      prompt += `   - The RAG context contains DETAILED macros (carbs, protein, fat, calories) for ALL keto ingredients per 100g\n`;
+      prompt += `   - USE these macros to calculate ACCURATE nutrition for each meal\n`;
+      prompt += `   - Example calculation for "Palak Paneer with Cauliflower Rice":\n`;
+      prompt += `     • 200g spinach (cooked): Carbs 8g (Fiber 4g, Net 4g), Protein 6g, Fat 1g, Calories 46\n`;
+      prompt += `     • 150g paneer: Carbs 4.5g, Protein 27g, Fat 33g, Calories 398\n`;
+      prompt += `     • 150g cauliflower rice: Carbs 7.5g (Fiber 3g, Net 4.5g), Protein 3g, Fat 1g, Calories 44\n`;
+      prompt += `     • 2 tbsp ghee (30g): Carbs 0g, Protein 0g, Fat 30g, Calories 270\n`;
+      prompt += `     TOTAL: Net Carbs 8.5g, Protein 36g, Fat 65g, Calories 758\n`;
+      prompt += `     MACROS CHECK: 8.5g carbs (4.5%), 36g protein (19%), 65g fat (77%) ✅ KETO!\n`;
+      prompt += `   - ALWAYS verify meal macros match 70% fat, 25% protein, 5% carbs\n`;
+      prompt += `   - If macros are off, ADJUST portions (add more ghee for fat, reduce carbs)\n\n`;
+
+      prompt += `💰 KETO BUDGET STRATEGY (OPTIMIZE COSTS WITH HOMEMADE OPTIONS):\n`;
+      prompt += `   - PRIORITIZE HOMEMADE KETO SUBSTITUTES:\n`;
+      prompt += `     • Cauliflower rice (₹8-10/meal) vs packaged alternatives (₹50-100/meal)\n`;
+      prompt += `     • Homemade flax flour: Buy flax seeds (₹200-300/kg), grind fresh = SAVE ₹300-400/kg\n`;
+      prompt += `     • Homemade chia flour: Buy chia seeds (₹400-500/kg), grind fresh = SAVE ₹100-200/kg\n`;
+      prompt += `     • Egg dosa (3 eggs = ₹20) instead of expensive almond flour dosa (₹60+)\n`;
+      prompt += `   - AFFORDABLE KETO FLOUR STRATEGY (per 6-day supply for 2 meals/day):\n`;
+      prompt += `     • Coconut flour: ₹745/kg = ₹124/day (GOOD value, high fiber)\n`;
+      prompt += `     • Flaxseed meal: ₹600-700/kg = ₹100-117/day (AFFORDABLE, omega-3)\n`;
+      prompt += `     • Almond flour: ₹750-2000/kg = ₹125-333/day (choose budget brand)\n`;
+      prompt += `     • Chia flour: ₹600-700/kg = ₹100-117/day (BUDGET-FRIENDLY)\n`;
+      prompt += `     • AVOID lupin flour (₹2000/kg = ₹333/day) unless special occasion\n`;
+      prompt += `   - MIX FLOURS TO REDUCE COST:\n`;
+      prompt += `     • 50% flaxseed meal + 50% coconut flour = ₹672/kg average = CHEAPEST rotis!\n`;
+      prompt += `     • Use cauliflower rice for 1 meal, keto flour roti for 1 meal = ₹40-50/day total\n`;
+      prompt += `   - FOR TIGHT BUDGETS (₹250/day):\n`;
+      prompt += `     • Use cauliflower rice for BOTH meals = ₹20/day\n`;
+      prompt += `     • Make homemade flax flour (grind seeds) = ₹10-15/day\n`;
+      prompt += `     • Use egg dosas occasionally (PROTEIN + carb substitute) = ₹20/meal\n`;
+      prompt += `     • Total carb substitutes: ₹40-50/day, leaving ₹200/day for protein/vegetables/fats\n\n`;
+
+      prompt += `🎯 CALORIE REQUIREMENT PRIORITY (ABSOLUTE NON-NEGOTIABLE):\n`;
+      prompt += `   - Daily calorie target: ${targetCalories} kcal (this is FIXED and CRITICAL)\n`;
+      prompt += `   - EVEN IN KETO, you MUST meet this calorie target using high-fat foods\n`;
+      prompt += `   - If a meal is low in calories, ADD MORE FAT:\n`;
+      prompt += `     • Add 1 extra tbsp ghee = +135 calories\n`;
+      prompt += `     • Add 1/4 cup nuts = +170-200 calories\n`;
+      prompt += `     • Add coconut cream to curry = +100-150 calories\n`;
+      prompt += `   - At end of day calculation, SUM all meal calories - MUST equal ${targetCalories} ±3%\n`;
+      prompt += `   - If total is below ${
+        targetCalories - Math.round(targetCalories * 0.03)
+      }, INCREASE fat portions immediately\n`;
+      prompt += `   - If total is above ${
+        targetCalories + Math.round(targetCalories * 0.03)
+      }, REDUCE portions slightly\n\n`;
+
+      prompt += `�🔥🔥🔥 REMEMBER: This is KETO - NO GRAINS, NO STARCHY VEGETABLES, HIGH FAT!\n`;
+      prompt += `🔥🔥🔥 MACROS: Use RAG macro data for accurate calculations\n`;
+      prompt += `🔥🔥🔥 CALORIES: MUST meet ${targetCalories} kcal target using high-fat foods\n`;
+      prompt += `🔥🔥🔥 BUDGET: Prioritize homemade cauliflower rice, flax flour, eggs\n`;
+      prompt += `\n📋 FINAL KETO VALIDATION (CHECK EVERY MEAL BEFORE FINALIZING):\n`;
+      prompt += `✅ 1. NO GRAINS: Not rice, roti, idli, dosa, upma, poha, ragi, jowar, bajra\n`;
+      prompt += `✅ 2. NO DALS: Not moong dal, toor dal, chana dal, masoor dal, besan, chickpeas\n`;
+      prompt += `✅ 3. NO STARCHY VEG: Not potato, sweet potato, corn, peas\n`;
+      prompt += `✅ 4. NET CARBS < ${Math.round(
+        50 / mealsCount
+      )}g per meal (calculate: total carbs - fiber)\n`;
+      prompt += `✅ 5. FAT > 70%: Must have 2-3 tbsp ghee/coconut oil per meal\n`;
+      prompt += `✅ 6. CUISINE MATCH: Respect regional authenticity (no South Indian for North cuisines)\n`;
+      prompt += `❌ IF MEAL FAILS → REJECT and create keto alternative!\n`;
+      prompt += `🔥🔥🔥 ============================================\n\n`;
+    }
 
     prompt += `⚠️ IMPORTANT: You need ${
       parseInt(preferences.duration) * parseInt(preferences.mealsPerDay)
@@ -1272,9 +1963,7 @@ class MealPlanChain {
       } cuisine throughout the meal plan\n`;
     }
 
-    // Use personalized calorie target from user profile
-    const targetCalories = preferences.userCalories || 2000;
-    const mealsCount = preferences.mealsPerDay || 3;
+    // Use personalized calorie target from user profile (already declared at top)
     const avgCaloriesPerMeal = Math.round(targetCalories / mealsCount);
     const weightGoalContext = preferences.weightGoal
       ? `The user wants to ${preferences.weightGoal} weight.`
@@ -1304,10 +1993,23 @@ class MealPlanChain {
     }
     prompt += `   - 🎯 After calculating ALL macros for ALL meals, SUM THE DAY'S CALORIES and verify it's within range!\n`;
     prompt += `   - If day total is outside ${minAcceptableCalories}-${maxAcceptableCalories}, ADJUST portion sizes immediately!\n\n`;
-    prompt += `5. Focus on low-GI foods, high fiber, lean protein, healthy fats\n`;
-    prompt += `6. ⭐ BUDGET: Strictly stay within ₹${
-      preferences.budget || 300
-    }/day. Choose affordable ingredients like seasonal vegetables, whole grains, lentils, local proteins.\n`;
+
+    // Conditional nutritional priorities based on isKeto
+    if (preferences.isKeto) {
+      prompt += `5. 🔥 KETOGENIC PRIORITIES: High-fat, moderate-protein, very low-carb foods. NO grains, NO starchy vegetables.\n`;
+      prompt += `6. ⭐ BUDGET: Target ₹${preferences.budget || 300}/day. For keto, prioritize:\n`;
+      prompt += `   - AFFORDABLE keto staples: Eggs (₹6-8/egg), cauliflower (₹30-40/kg), leafy greens (₹20-40/kg), paneer (₹300-400/kg), ghee (₹500/kg but lasts long)\n`;
+      prompt += `   - USE coconut oil (₹150-200/L) or refined oil (₹120/L) for cooking instead of expensive MCT oil\n`;
+      prompt += `   - LIMIT expensive ingredients: Almond flour (₹600/kg) - use sparingly, coconut flour (₹400/kg) - use moderately\n`;
+      prompt += `   - STRATEGY: Use cauliflower rice (cheap) for most meals, reserve almond/coconut flour for 1 meal/day\n`;
+      prompt += `   - If budget is tight, emphasize eggs, paneer, vegetables, ghee over expensive nut flours\n`;
+    } else {
+      prompt += `5. Focus on low-GI foods, high fiber, lean protein, healthy fats\n`;
+      prompt += `6. ⭐ BUDGET: Strictly stay within ₹${
+        preferences.budget || 300
+      }/day. Choose affordable ingredients like seasonal vegetables, whole grains, lentils, local proteins.\n`;
+    }
+
     prompt += `7. 🚨🚨🚨 MEAL TEMPLATES - ONLY USE DISHES FROM RAG CONTEXT (ABSOLUTE RULE):\n`;
     prompt += `   - The RAG context above contains ${preferences.cuisines?.join(
       '/'
@@ -1328,6 +2030,33 @@ class MealPlanChain {
     prompt += `     • Add complementary ingredients for PCOS benefits\n`;
     prompt += `     • Add seasonings and garnishes mentioned in the template\n`;
     prompt += `8. 🚨🚨🚨 VARIETY REQUIREMENT (ABSOLUTELY CRITICAL - NO EXCEPTIONS):\n`;
+    prompt += `   ⚡ INGREDIENT DIVERSITY RULE (HIGHEST PRIORITY):\n`;
+    prompt += `   - DO NOT use the SAME PRIMARY INGREDIENT in multiple meals within a day\n`;
+    prompt += `   - PRIMARY INGREDIENT = the main protein/base of the dish (dal, rice, paneer, vegetables, etc.)\n`;
+    prompt += `   - ❌ WRONG Example: Day 1 - Chana Dal Pancake (breakfast), Chana Dal with Rice (lunch), Lauki Chana Dal (dinner)\n`;
+    prompt += `   - ✅ CORRECT Example: Day 1 - Chana Dal Pancake (breakfast), Vegetable Biryani (lunch), Mixed Veg Curry (dinner)\n`;
+    prompt += `   - CRITICAL: Track which ingredients you've used in each day and AVOID repeating them\n`;
+
+    if (preferences.isKeto) {
+      prompt += `   ⚡ KETO-SPECIFIC VARIETY RULES (CRITICAL!):\n`;
+      prompt += `   - DO NOT use cauliflower rice in EVERY meal! Maximum 1-2 times per day\n`;
+      prompt += `   - ROTATE LOW-CARB BASES:\n`;
+      prompt += `     • Cauliflower rice (use 1x per day max)\n`;
+      prompt += `     • Cabbage rice/noodles (shredded, stir-fried)\n`;
+      prompt += `     • Zucchini noodles/spirals\n`;
+      prompt += `     • Shirataki noodles/rice\n`;
+      prompt += `     • Lettuce wraps (no grain base needed)\n`;
+      prompt += `   - ROTATE PROTEINS: Don't use chicken/paneer in every meal!\n`;
+      prompt += `     • Fish → Chicken → Paneer → Eggs → Pork → Mutton (cycle through)\n`;
+      prompt += `   - ROTATE VEGETABLES: Don't use cauliflower in everything!\n`;
+      prompt += `     • Spinach, zucchini, cabbage, broccoli, bell peppers, mushrooms, eggplant, etc.\n`;
+      prompt += `   - ROTATE KETO FLOURS (for rotis/breads):\n`;
+      prompt += `     • Almond flour → Coconut flour → Flaxseed meal → Cheese wraps → Lettuce\n\n`;
+    } else {
+      prompt += `   - DAL VARIETY: If using dal, rotate between: moong dal, toor dal, masoor dal, urad dal, chana dal (1 type per day MAX)\n`;
+      prompt += `   - VEG VARIETY: Rotate vegetables: spinach, cauliflower, bottle gourd, pumpkin, beans, okra, eggplant, etc.\n`;
+      prompt += `   - PROTEIN VARIETY: Rotate proteins: paneer, tofu, tempeh, chickpeas, rajma, various dals, soy (not same one)\n\n`;
+    }
     prompt += `   - ZERO REPETITION ALLOWED: Each meal across ALL ${preferences.duration} days must be 100% UNIQUE\n`;
     prompt += `   - CRITICAL STEP: Before generating the meal plan, COUNT how many unique ${preferences.cuisines?.[0]} ${dietType} dishes are in the RAG context\n`;
     prompt += `   - REQUIRED: You need ${
@@ -1339,12 +2068,26 @@ class MealPlanChain {
     prompt += `     • Example: "Prawn Balchão" (non-veg) → "Jackfruit Balchão (Vegan Version)" using substitution guide\n`;
     prompt += `     • Example: "Chicken Cafreal" (non-veg) → "Paneer Cafreal (Vegetarian Version)" using substitution guide\n`;
     prompt += `     • CHECK the "🔧 INGREDIENT SUBSTITUTION GUIDE" section in RAG context for appropriate replacements\n`;
-    prompt += `     🚨 STRATEGY 2: Create variations by changing preparation methods\n`;
-    prompt += `     • Example: "Veg Xacuti Bowl (Lite)" → "Veg Xacuti with Red Rice Idli" (different accompaniment)\n`;
-    prompt += `     • Example: "Alsande Tonak with Brown Rice" → "Alsande Usal with Pav" (different style)\n`;
-    prompt += `     • Example: "Ragi Pulao Bowl" → "Ragi Upma" (different cooking method)\n`;
-    prompt += `     🚨 STRATEGY 3: Vary portion sizes and accompaniments significantly\n`;
-    prompt += `     • Example: "Sol Kadhi with Millet Khichdi" vs "Sol Kadhi with Cucumber Salad" (different sides)\n`;
+
+    // Conditional variety strategies based on keto
+    if (preferences.isKeto) {
+      prompt += `     🚨 STRATEGY 2 (KETO-SPECIFIC): Create variations with different vegetables/proteins\n`;
+      prompt += `     • Example: "Palak Paneer with Cauliflower Rice" → "Methi Paneer with Zucchini Noodles" (different vegetables)\n`;
+      prompt += `     • Example: "Chicken Curry with Cauliflower Rice" → "Egg Curry with Cauliflower Rice" (different protein)\n`;
+      prompt += `     • Example: "Paneer Tikka with Cucumber Salad" → "Tofu Tikka with Spinach Salad (Vegan Keto)" (different protein + sides)\n`;
+      prompt += `     • IMPORTANT: ALL variations MUST still use cauliflower rice/almond flour instead of grains\n`;
+      prompt += `     🚨 STRATEGY 3 (KETO): Vary cooking methods and fat sources\n`;
+      prompt += `     • Example: "Palak Paneer (ghee-based)" → "Palak Paneer (coconut oil-based)" (different fat)\n`;
+      prompt += `     • Example: "Grilled Paneer" → "Pan-fried Paneer in butter" (different cooking method)\n`;
+    } else {
+      prompt += `     🚨 STRATEGY 2: Create variations by changing preparation methods\n`;
+      prompt += `     • Example: "Veg Xacuti Bowl (Lite)" → "Veg Xacuti with Red Rice Idli" (different accompaniment)\n`;
+      prompt += `     • Example: "Alsande Tonak with Brown Rice" → "Alsande Usal with Pav" (different style)\n`;
+      prompt += `     • Example: "Ragi Pulao Bowl" → "Ragi Upma" (different cooking method)\n`;
+      prompt += `     🚨 STRATEGY 3: Vary portion sizes and accompaniments significantly\n`;
+      prompt += `     • Example: "Sol Kadhi with Millet Khichdi" vs "Sol Kadhi with Cucumber Salad" (different sides)\n`;
+    }
+
     prompt += `   - Example WRONG approach (DO NOT DO THIS):\n`;
     prompt += `     ❌ Day 1 Breakfast: Ragi Pulao Bowl\n`;
     prompt += `     ❌ Day 2 Breakfast: Ragi Pulao Bowl (EXACT REPETITION - NOT ALLOWED!)\n`;
@@ -1354,17 +2097,50 @@ class MealPlanChain {
     prompt += `     ✅ Day 2 Breakfast: Veg Xacuti with Red Rice Idli (DIFFERENT dish)\n`;
     prompt += `     ✅ Day 3 Breakfast: Alsande Usal with Pav (DIFFERENT dish)\n`;
     prompt += `   - Before adding any meal, CHECK if that EXACT dish name already appears in previous days\n`;
-    prompt += `   - If you've already used a dish, you MUST choose or create a variation\n`;
+    prompt += `   - If you've already used a dish, you MUST choose or create a variation\n\n`;
+    prompt += `   📋 INGREDIENT TRACKING CHECKLIST (Use this for EVERY day):\n`;
+    prompt += `   Before finalizing Day 1, list ingredients used:\n`;
+    prompt += `   - Breakfast: [ingredient A]\n`;
+    prompt += `   - Lunch: [ingredient B] (MUST be different from A)\n`;
+    prompt += `   - Snack (if applicable): [ingredient C] (MUST be different from A and B)\n`;
+    prompt += `   - Dinner: [ingredient D] (MUST be different from A, B, C)\n`;
+    prompt += `   ✅ VERIFY: No ingredient appears more than ONCE in the same day\n`;
+    prompt += `   ✅ ACROSS DAYS: Try to minimize repetition of the same ingredient across different days too\n`;
+    prompt += `   Example CORRECT ingredient distribution:\n`;
+    prompt += `   - Day 1: Moong dal (breakfast), Rice + mixed veg (lunch), Bottle gourd curry (snack), Paneer (dinner)\n`;
+    prompt += `   - Day 2: Chickpeas (breakfast), Jowar roti + eggplant (lunch), Peanut chaat (snack), Tofu stir-fry (dinner)\n`;
+    prompt += `   - Day 3: Urad dal (breakfast), Bajra + spinach (lunch), Roasted chana (snack), Rajma curry (dinner)\n\n`;
+
+    // Add critical constraint intersection reminder
+    if (preferences.isKeto) {
+      prompt += `   ⚠️ CRITICAL REMINDER - ALL constraints must work together:\n`;
+      prompt += `     ✅ MUST BE from ${preferences.cuisines?.join('/')} cuisine (RAG templates)\n`;
+      prompt += `     ✅ MUST BE ${dietType}-friendly (no prohibited ingredients)\n`;
+      prompt += `     ✅ MUST BE keto-adapted (replace ALL grains with cauliflower rice/almond flour, NO starchy vegetables, HIGH fat)\n`;
+      prompt += `     ✅ MUST BE unique (no repetition across ${preferences.duration} days)\n`;
+      prompt += `     ✅ EXAMPLE: "Fish Recheado" → "Tofu Recheado with Cauliflower Rice (Vegan Keto)" satisfies ALL constraints\n\n`;
+    } else {
+      prompt += `   ⚠️ CRITICAL REMINDER - ALL constraints must work together:\n`;
+      prompt += `     ✅ MUST BE from ${preferences.cuisines?.join('/')} cuisine (RAG templates)\n`;
+      prompt += `     ✅ MUST BE ${dietType}-friendly (no prohibited ingredients)\n`;
+      prompt += `     ✅ MUST BE unique (no repetition across ${preferences.duration} days)\n\n`;
+    }
+
     prompt += `9. Include variety in ingredients, preparation methods, and flavor profiles\n`;
     prompt += `10. Consider Indian meal timing and portion sizes\n`;
     prompt += `11. Use regional, seasonal, and easily available ingredients\n\n`;
 
-    prompt += `PCOS NUTRITIONAL PRIORITIES:\n`;
-    prompt += `- Protein: 25-30% of calories\n`;
-    prompt += `- Complex carbs: 40-45% (low-GI only)\n`;
-    prompt += `- Healthy fats: 25-30%\n`;
-    prompt += `- Fiber: 25-30g per day\n`;
-    prompt += `- Avoid: refined sugar, white rice, maida, processed foods\n\n`;
+    // ⭐ KETO BLOCK ALREADY ADDED AT TOP - Skip duplicate
+
+    // Standard PCOS priorities (apply when NOT keto)
+    if (!preferences.isKeto) {
+      prompt += `PCOS NUTRITIONAL PRIORITIES:\n`;
+      prompt += `- Protein: 25-30% of calories\n`;
+      prompt += `- Complex carbs: 40-45% (low-GI only)\n`;
+      prompt += `- Healthy fats: 25-30%\n`;
+      prompt += `- Fiber: 25-30g per day\n`;
+      prompt += `- Avoid: refined sugar, white rice, maida, processed foods\n\n`;
+    }
 
     // JSON structure
     prompt += `OUTPUT FORMAT (strict JSON):\n`;

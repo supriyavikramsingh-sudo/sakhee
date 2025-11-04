@@ -125,7 +125,103 @@ Tip: ${tip}
       });
     });
 
+    // ===== VALIDATION: Check metadata completeness =====
+    this.validateMealTemplates(docs, filename);
+
     return docs;
+  }
+
+  /**
+   * Validate meal template metadata completeness
+   * Warns about missing required fields and logs statistics
+   */
+  validateMealTemplates(docs, filename) {
+    const stats = {
+      total: docs.length,
+      missingState: 0,
+      missingType: 0,
+      missingIngredients: 0,
+      byDietType: {
+        Vegetarian: 0,
+        'Non-Vegetarian': 0,
+        Vegan: 0,
+        Jain: 0,
+        Eggetarian: 0,
+        Unknown: 0,
+      },
+      byState: {},
+    };
+
+    docs.forEach((doc, idx) => {
+      const metadata = doc.metadata || {};
+      const content = doc.content || '';
+
+      // Check for missing State
+      if (!metadata.state || metadata.state === 'Unknown') {
+        stats.missingState++;
+        logger.warn(`  ⚠️  Meal #${idx + 1} missing State: ${metadata.mealName || 'Unknown'}`);
+      } else {
+        stats.byState[metadata.state] = (stats.byState[metadata.state] || 0) + 1;
+      }
+
+      // Check for missing Type
+      if (!metadata.dietType || metadata.dietType === 'Unknown') {
+        stats.missingType++;
+        logger.warn(`  ⚠️  Meal #${idx + 1} missing Type: ${metadata.mealName || 'Unknown'}`);
+      } else {
+        const dietType = metadata.dietType;
+        if (stats.byDietType.hasOwnProperty(dietType)) {
+          stats.byDietType[dietType]++;
+        } else {
+          stats.byDietType['Unknown']++;
+        }
+      }
+
+      // Check for missing Ingredients
+      if (!metadata.ingredients || metadata.ingredients.length === 0) {
+        stats.missingIngredients++;
+        logger.warn(
+          `  ⚠️  Meal #${idx + 1} missing Ingredients: ${metadata.mealName || 'Unknown'}`
+        );
+      }
+
+      // Verify content has Type: field (for RAG filtering)
+      if (!/Type:\s*\w+/.test(content)) {
+        logger.warn(
+          `  ⚠️  Meal #${idx + 1} content missing 'Type:' field: ${metadata.mealName || 'Unknown'}`
+        );
+      }
+    });
+
+    // Log validation summary
+    logger.info(`\n  ✅ Validation Summary for ${filename}:`);
+    logger.info(`     Total meals: ${stats.total}`);
+    logger.info(`     Missing State: ${stats.missingState}`);
+    logger.info(`     Missing Type: ${stats.missingType}`);
+    logger.info(`     Missing Ingredients: ${stats.missingIngredients}`);
+    logger.info(`\n     Diet Type Distribution:`);
+    Object.entries(stats.byDietType).forEach(([type, count]) => {
+      if (count > 0) {
+        logger.info(`       - ${type}: ${count}`);
+      }
+    });
+    logger.info(`\n     State Distribution:`);
+    Object.entries(stats.byState)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 10)
+      .forEach(([state, count]) => {
+        logger.info(`       - ${state}: ${count}`);
+      });
+
+    if (stats.missingState > 0 || stats.missingType > 0 || stats.missingIngredients > 0) {
+      logger.warn(
+        `\n  ⚠️  Found ${
+          stats.missingState + stats.missingType + stats.missingIngredients
+        } metadata issues in ${filename}`
+      );
+    } else {
+      logger.info(`\n  ✨ All meals in ${filename} have complete metadata!`);
+    }
   }
 
   /**
@@ -248,17 +344,20 @@ Tip: ${tip}
 
   // Extraction helpers for meal templates
   extractState(content) {
-    const match = content.match(/- State: (.+)/);
+    // Match both "- State:" and "- **State:**" formats (strips markdown)
+    const match = content.match(/-\s*\*?\*?State:\*?\*?\s*(.+?)[\s\n]/);
     return match ? match[1].trim() : '';
   }
 
   extractDietType(content) {
-    const match = content.match(/- Type: (.+)/);
+    // Match both "- Type:" and "- **Type:**" formats (strips markdown)
+    const match = content.match(/-\s*\*?\*?Type:\*?\*?\s*(.+?)[\s\n]/);
     return match ? match[1].trim() : 'Vegetarian';
   }
 
   extractIngredients(content) {
-    const match = content.match(/- Ingredients?: (.+)/);
+    // Match both "- Ingredients:" and "- **Ingredients:**" formats (strips markdown)
+    const match = content.match(/-\s*\*?\*?Ingredients?:\*?\*?\s*(.+?)[\s\n]/);
     return match ? match[1].trim() : '';
   }
 
