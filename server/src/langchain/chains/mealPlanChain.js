@@ -172,7 +172,8 @@ class MealPlanChain {
     }
 
     // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
-    this.validateAndAdjustCalories(parsed);
+    const targetCalories = preferences.userCalories || 2000;
+    this.validateAndAdjustCalories(parsed, targetCalories);
 
     // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
     const ragMetadata = {
@@ -464,28 +465,79 @@ class MealPlanChain {
       logger.info('Stage 1: Retrieving meal templates');
       if (cuisines.length > 0) {
         const templateQueries = cuisines.flatMap((cuisine) => [
-          `${cuisine} traditional authentic breakfast regional ${dietType}`,
-          `${cuisine} traditional authentic lunch regional ${dietType}`,
-          `${cuisine} traditional authentic dinner regional ${dietType}`,
-          `${cuisine} traditional authentic snacks regional ${dietType}`,
+          // Enhanced queries with more specific keywords for better RAG retrieval
+          `${cuisine} breakfast meals dishes regional ${dietType}`,
+          `${cuisine} lunch traditional recipes authentic ${dietType}`,
+          `${cuisine} dinner evening meal main course ${dietType}`, // Improved: added "evening" and "main course"
+          `${cuisine} snacks traditional dishes ${dietType}`,
+          // Also include cuisine-specific context (helps with unique regional terms)
+          `${cuisine} cuisine traditional regional specialties`,
         ]);
 
         for (const query of templateQueries) {
-          const results = await retriever.retrieve(query, 5);
+          const results = await retriever.retrieve(query, { topK: 25 }); // Increased to 25 for better coverage
 
-          // ⭐ FILTER: For vegan/vegetarian, exclude non-veg dishes
+          // ⭐ FILTER: By cuisine/region AND diet type
           const filteredResults = results.filter((doc) => {
-            const content = (doc.pageContent || doc.content || '').toLowerCase();
+            const content = doc.pageContent || doc.content || '';
+            const contentLower = content.toLowerCase();
+            const metadata = doc.metadata || {};
 
-            if (dietType === 'vegan') {
-              // Exclude meat, dairy, eggs
+            // 🔍 FIRST: Filter by cuisine/region match
+            // Check if document matches the requested cuisine(s)
+            const cuisineMatch = cuisines.some((cuisine) => {
+              const cuisineLower = cuisine.toLowerCase();
+              // Check metadata fields (IMPROVED: More precise matching)
+              const regionMatch = (metadata.regionalSection || '')
+                .toLowerCase()
+                .includes(cuisineLower);
+              const stateMatch = (metadata.state || '').toLowerCase() === cuisineLower;
+              const mealNameMatch = (metadata.mealName || '').toLowerCase().includes(cuisineLower);
+              // Check content
+              const contentMatch = contentLower.includes(cuisineLower);
+
+              return regionMatch || stateMatch || mealNameMatch || contentMatch;
+            });
+
+            // If no cuisine match, skip this document
+            if (!cuisineMatch) return false;
+
+            // 🔍 SECOND: Filter by diet type
+            // ⭐ IMPROVED: Check the Type: field in content FIRST (most reliable)
+            // Note: RAG content uses "Type: Vegetarian" format (not markdown **Type:**)
+            const hasVegetarianTag = /Type:\s*Vegetarian/i.test(content);
+            const hasNonVegTag = /Type:\s*Non-Vegetarian/i.test(content);
+
+            if (dietType === 'jain') {
+              // Jain: Must be vegetarian AND no root vegetables
+              if (!hasVegetarianTag || hasNonVegTag) return false;
+
+              // Check for root vegetables in ingredients section only
+              // Note: RAG format uses "Ingredients: ..." (not markdown **Ingredients:**)
+              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n|$)/);
+              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
+
+              const jainProhibited = [
+                'potato',
+                'onion',
+                'garlic',
+                'carrot',
+                'radish',
+                'beetroot',
+                'turnip',
+                'ginger',
+              ];
+              return !jainProhibited.some((keyword) => ingredientsText.includes(keyword));
+            } else if (dietType === 'vegan') {
+              // Vegan: Must be vegetarian AND no dairy
+              if (!hasVegetarianTag || hasNonVegTag) return false;
+
+              // Check for dairy in ingredients section only
+              // Note: RAG format uses "Ingredients: ..." (not markdown **Ingredients:**)
+              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n|$)/);
+              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
+
               const nonVeganKeywords = [
-                'chicken',
-                'mutton',
-                'pork',
-                'fish',
-                'egg',
-                'meat',
                 'paneer',
                 'cheese',
                 'milk',
@@ -495,19 +547,27 @@ class MealPlanChain {
                 'butter',
                 'cream',
               ];
-              return !nonVeganKeywords.some((keyword) => content.includes(keyword));
+              const hasNonVeganIngredient = nonVeganKeywords.some((keyword) =>
+                ingredientsText.includes(keyword)
+              );
+
+              if (hasNonVeganIngredient) {
+                logger.info(
+                  `    ❌ Filtered out vegan: ${metadata.mealName || 'Unknown'} - contains dairy`
+                );
+              }
+              return !hasNonVeganIngredient;
             } else if (dietType === 'vegetarian') {
-              // Exclude meat, fish, eggs
-              const nonVegKeywords = [
-                'chicken',
-                'mutton',
-                'pork',
-                'fish',
-                'egg',
-                'meat',
-                'non-vegetarian',
-              ];
-              return !nonVegKeywords.some((keyword) => content.includes(keyword));
+              // Vegetarian: Just check the Type: tag
+              if (hasVegetarianTag && !hasNonVegTag) {
+                return true;
+              }
+
+              // Fallback: If no tag found, log warning and skip
+              if (!hasVegetarianTag && !hasNonVegTag) {
+                logger.info(`    ⚠️  No diet type tag found: ${metadata.mealName || 'Unknown'}`);
+              }
+              return false;
             }
 
             return true; // Allow all for non-veg
@@ -649,36 +709,44 @@ class MealPlanChain {
       }
 
       // ===== STAGE 4: Retrieve ingredient substitutes =====
-      logger.info('Stage 4: Identifying problematic ingredients and retrieving substitutes');
-      const problematicIngredients = this.identifyProblematicIngredients(
-        retrievalResults.mealTemplates
-      );
+      logger.info('Stage 4: Retrieving ingredient substitutes');
 
-      if (problematicIngredients.length > 0) {
-        logger.info(`Found ${problematicIngredients.length} problematic ingredients`);
+      // ⭐ NEW: For vegan/vegetarian/jain diets, ALWAYS retrieve animal protein substitutes
+      // This enables the LLM to adapt non-veg dishes to the requested diet
+      const needsProteinSubstitutes = ['vegan', 'vegetarian', 'jain'].includes(dietType);
 
-        // Limit to top 8 most important
-        const topIngredients = problematicIngredients.slice(0, 8);
+      if (needsProteinSubstitutes) {
+        logger.info(
+          `Diet type '${dietType}' requires protein substitutes - retrieving animal protein alternatives`
+        );
 
-        for (const ingredient of topIngredients) {
-          // ⭐ IMPROVED: More specific query targeting substitutes
-          const query = `${ingredient} PCOS substitute alternative ${dietType}`;
-          logger.info(`  Querying substitute: "${query}"`);
+        // Retrieve comprehensive animal protein substitutes for diet adaptation
+        const proteinSubstituteQueries = [
+          `fish tofu paneer substitute ${dietType} PCOS`,
+          `chicken paneer soy substitute ${dietType} PCOS`,
+          `prawn seafood vegetarian substitute ${dietType}`,
+          `egg tofu besan substitute ${dietType} PCOS`,
+          `meat mutton jackfruit soy substitute ${dietType}`,
+          `animal protein plant-based substitute ${dietType} PCOS`,
+        ];
 
-          const results = await retriever.retrieve(query, 5);
+        for (const query of proteinSubstituteQueries) {
+          logger.info(`  Querying protein substitutes: "${query}"`);
+
+          const results = await retriever.retrieve(query, { topK: 5 });
 
           // Log what we got
           const types = results.map((r) => r.metadata?.type).filter(Boolean);
           logger.info(`  Retrieved types: ${types.join(', ')}`);
 
-          // ⭐ FIX: More lenient filtering for substitutes - accept multiple types
+          // Filter to get substitute-related docs
           const substituteDocs = results.filter((doc) => {
             const type = doc.metadata?.type;
 
-            // Exclude meal templates
+            // Exclude meal templates (we want substitutes, not recipes)
             if (type === 'meal_template') return false;
 
-            // Accept any medical/nutritional content
+            // Accept substitute and nutritional guidance
             return (
               type === 'ingredient_substitute' ||
               type === 'medical_info' ||
@@ -691,8 +759,49 @@ class MealPlanChain {
           retrievalResults.ingredientSubstitutes.push(...substituteDocs);
         }
 
-        logger.info(`Total substitute docs: ${retrievalResults.ingredientSubstitutes.length}`);
+        logger.info(
+          `Total protein substitute docs retrieved: ${retrievalResults.ingredientSubstitutes.length}`
+        );
       }
+
+      // Also check for PCOS-problematic ingredients in retrieved meals
+      const problematicIngredients = this.identifyProblematicIngredients(
+        retrievalResults.mealTemplates
+      );
+
+      if (problematicIngredients.length > 0) {
+        logger.info(
+          `Found ${
+            problematicIngredients.length
+          } PCOS-problematic ingredients: ${problematicIngredients.join(', ')}`
+        );
+
+        // Limit to top 5 most important
+        const topIngredients = problematicIngredients.slice(0, 5);
+
+        for (const ingredient of topIngredients) {
+          // Query for PCOS-friendly substitutes
+          const query = `${ingredient} PCOS substitute alternative healthy`;
+          logger.info(`  Querying PCOS substitute: "${query}"`);
+
+          const results = await retriever.retrieve(query, { topK: 3 });
+
+          // Filter to substitute docs
+          const substituteDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            return (
+              type === 'ingredient_substitute' ||
+              type === 'nutritional_data' ||
+              type === 'medical_knowledge'
+            );
+          });
+
+          logger.info(`  Retrieved ${substituteDocs.length} PCOS substitute docs`);
+          retrievalResults.ingredientSubstitutes.push(...substituteDocs);
+        }
+      }
+
+      logger.info(`Total substitute docs: ${retrievalResults.ingredientSubstitutes.length}`);
 
       // ===== FINAL SUMMARY =====
       logger.info('Multi-stage retrieval complete', {
@@ -1001,13 +1110,26 @@ class MealPlanChain {
     prompt += `Generate a ${preferences.duration}-day PCOS-friendly meal plan with ${preferences.mealsPerDay} meals per day.\n`;
     prompt += `💰 BUDGET CONSTRAINT: Keep total daily cost within ₹${
       preferences.budget || 300
-    }/day using affordable, locally available ingredients.\n`;
+    }/day using affordable, locally available ingredients.\n\n`;
+
+    // ⭐ Declare dietType early so it can be used in task section
+    const dietType = preferences.dietType || 'vegetarian';
+
+    prompt += `⚠️ IMPORTANT: You need ${
+      parseInt(preferences.duration) * parseInt(preferences.mealsPerDay)
+    } UNIQUE dishes total (${preferences.duration} days × ${preferences.mealsPerDay} meals).\n`;
+    prompt += `Check the RAG context above - count how many ${
+      preferences.cuisines?.[0] || 'selected cuisine'
+    } ${dietType} dishes are available.\n`;
+    prompt += `If there are fewer dishes than needed, you MUST create meaningful variations (see VARIETY REQUIREMENT section below).\n\n`;
 
     // ⭐ Add exclusion list if this is a continuation chunk
     if (preferences.excludeMeals && preferences.excludeMeals.length > 0) {
-      prompt += `\n🚫 DO NOT USE THESE MEALS (already used in previous days):\n`;
-      prompt += preferences.excludeMeals.map((m) => `- ${m}`).join('\n');
-      prompt += `\n\n`;
+      prompt += `\n�🚨🚨 MEALS ALREADY USED - DO NOT REPEAT THESE:\n`;
+      prompt += `The following ${preferences.excludeMeals.length} meals were used in previous days.\n`;
+      prompt += `You MUST NOT use any of these meals again:\n`;
+      prompt += preferences.excludeMeals.map((m, i) => `${i + 1}. ❌ ${m} (SKIP THIS)`).join('\n');
+      prompt += `\n\n⚠️ REMEMBER: Choose COMPLETELY DIFFERENT dishes from the RAG templates!\n\n`;
     }
 
     // ⭐ IMPORTANT: Specify WHICH meals based on mealsPerDay
@@ -1037,18 +1159,30 @@ class MealPlanChain {
 
     // ⭐ NEW: Add regional authenticity requirement
     if (preferences.cuisines && preferences.cuisines.length > 0) {
-      prompt += `2. ⭐⭐⭐ REGIONAL AUTHENTICITY (CRITICAL):\n`;
-      prompt += `   - ONLY use dishes that are AUTHENTIC to ${preferences.cuisines.join(
+      prompt += `2. 🚨🚨🚨 REGIONAL AUTHENTICITY (ABSOLUTELY NON-NEGOTIABLE):\n`;
+      prompt += `   - You are ONLY allowed to use dishes from ${preferences.cuisines.join(
         ' and '
       )} cuisine\n`;
-      prompt += `   - DO NOT use generic pan-Indian dishes like Poha, Upma, Idli, Dosa, or Chilla UNLESS they are explicitly mentioned in the RAG meal templates for this cuisine\n`;
-      prompt += `   - Use the EXACT dish names from the RAG meal templates provided above\n`;
-      prompt += `   - If you see dishes like "Dhuska", "Rugra Bhurji", "Thekua", "Sattu", "Handia" in the templates, USE THOSE instead of generic alternatives\n`;
-      prompt += `   - Each cuisine has unique traditional dishes - honor them!\n\n`;
+      prompt += `   - The RAG meal templates above contain ONLY ${preferences.cuisines.join(
+        ' and '
+      )} dishes\n`;
+      prompt += `   - You MUST use EXACT dish names from those templates - DO NOT make up dishes\n`;
+      prompt += `   - DO NOT use dishes from other regions:\n`;
+      prompt += `     ❌ NO Jharkhand/Bihar dishes (Rugra Bhurji, Dhuska, Thekua, Sattu)\n`;
+      prompt += `     ❌ NO North Indian dishes (Paneer Tikka, Chole, Rajma, Aloo Paratha)\n`;
+      prompt += `     ❌ NO generic dishes (plain Biryani, plain Dal) unless ${preferences.cuisines.join(
+        '/'
+      )}-specific\n`;
+      prompt += `   - If RAG context has limited options due to diet restrictions, REPEAT ${preferences.cuisines.join(
+        '/'
+      )} dishes rather than inventing non-${preferences.cuisines.join('/')} dishes\n`;
+      prompt += `   - Better to repeat an authentic ${preferences.cuisines.join(
+        '/'
+      )} dish than use a non-${preferences.cuisines.join('/')} dish!\n\n`;
     }
 
     // ⭐ NEW: Add strict diet type enforcement
-    const dietType = preferences.dietType || 'vegetarian';
+    // Note: dietType is already declared earlier in the function
     if (dietType === 'vegan') {
       prompt += `2b. 🚨🚨🚨 VEGAN DIET REQUIREMENT (ABSOLUTE MUST):\n`;
       prompt += `   - The user is STRICTLY VEGAN - this is NON-NEGOTIABLE\n`;
@@ -1059,8 +1193,20 @@ class MealPlanChain {
       prompt += `     ❌ NO dairy (milk, paneer, cheese, curd, yogurt, ghee, butter, cream)\n`;
       prompt += `     ❌ NO honey\n`;
       prompt += `   - Use ONLY plant-based ingredients: vegetables, fruits, grains, legumes, nuts, seeds, plant-based oils\n`;
+      prompt += `\n`;
+      prompt += `   🔧 ADAPTING NON-VEGAN DISHES TO VEGAN:\n`;
       prompt += `   - If a traditional dish contains animal products, you MUST adapt it to be 100% vegan\n`;
-      prompt += `   - Example: Naga pork dishes → use tofu/mushrooms/jackfruit instead\n`;
+      prompt += `   - REFER TO the "🔧 INGREDIENT SUBSTITUTION GUIDE" in the RAG context above\n`;
+      prompt += `   - Look for vegan substitutes for: fish, meat, eggs, dairy, honey\n`;
+      prompt += `   - Examples (use substitution guide for more options):\n`;
+      prompt += `     • "Goan Fish Curry" → "Goan Tofu Curry" or "Goan Banana Curry" (check substitution guide)\n`;
+      prompt += `     • "Fish Recheado" → "Tofu Recheado" or "Mushroom Recheado" (check substitution guide)\n`;
+      prompt += `     • "Prawn Balchão" → "Jackfruit Balchão" or "Mixed Vegetable Balchão" (check substitution guide)\n`;
+      prompt += `     • Paneer → Tofu (firm, pressed)\n`;
+      prompt += `     • Dairy milk → Coconut milk, almond milk, soy milk\n`;
+      prompt += `     • Ghee → Coconut oil, vegetable oil\n`;
+      prompt += `     • Eggs → Flax eggs (1 tbsp ground flaxseed + 3 tbsp water)\n`;
+      prompt += `   - Keep the dish name authentic but add "(Vegan Version)" to clarify\n`;
       prompt += `   - THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE IT!\n\n`;
     } else if (dietType === 'vegetarian') {
       prompt += `2b. 🚨 VEGETARIAN DIET REQUIREMENT (STRICT):\n`;
@@ -1068,12 +1214,52 @@ class MealPlanChain {
       prompt += `   - ABSOLUTELY NO meat, fish, or eggs:\n`;
       prompt += `     ❌ NO chicken, mutton, pork, beef, lamb, fish, seafood, eggs\n`;
       prompt += `   - Dairy is ALLOWED: paneer, milk, curd, ghee, butter, cheese\n`;
-      prompt += `   - If a traditional dish contains meat/fish/eggs, you MUST adapt it to be vegetarian\n\n`;
+      prompt += `\n`;
+      prompt += `   🔧 ADAPTING NON-VEGETARIAN DISHES TO VEGETARIAN:\n`;
+      prompt += `   - If a traditional dish contains meat/fish/eggs, you MUST adapt it to be vegetarian\n`;
+      prompt += `   - REFER TO the "🔧 INGREDIENT SUBSTITUTION GUIDE" in the RAG context above\n`;
+      prompt += `   - Look for vegetarian substitutes for: fish, meat, chicken, eggs\n`;
+      prompt += `   - Examples (use substitution guide for more options):\n`;
+      prompt += `     • "Goan Fish Curry" → "Goan Paneer Curry" or "Goan Mixed Vegetable Curry" (check substitution guide)\n`;
+      prompt += `     • "Chicken Cafreal" → "Paneer Cafreal" or "Mushroom Cafreal" (check substitution guide)\n`;
+      prompt += `     • "Prawn Balchão" → "Paneer Balchão" or "Potato Balchão" (check substitution guide)\n`;
+      prompt += `     • Fish → Paneer cubes, tofu, or mixed vegetables\n`;
+      prompt += `     • Chicken → Paneer, soy chunks, or legumes\n`;
+      prompt += `     • Eggs → Can be omitted or replaced with paneer scramble\n`;
+      prompt += `   - Keep the dish name authentic but add "(Vegetarian Version)" to clarify\n\n`;
     } else if (dietType === 'eggetarian') {
       prompt += `2b. EGGETARIAN DIET:\n`;
       prompt += `   - Eggs are ALLOWED\n`;
       prompt += `   - NO meat, fish, or poultry\n`;
       prompt += `   - Dairy is ALLOWED\n\n`;
+    } else if (dietType === 'jain') {
+      prompt += `2b. 🚨🚨🚨 JAIN DIET REQUIREMENT (ABSOLUTE MUST - STRICTEST DIET):\n`;
+      prompt += `   - The user follows JAIN dietary principles - this is NON-NEGOTIABLE\n`;
+      prompt += `   - ABSOLUTELY NO animal products of any kind:\n`;
+      prompt += `     ❌ NO meat (chicken, mutton, pork, beef, lamb)\n`;
+      prompt += `     ❌ NO fish or seafood (tuna, prawns, crab, any sea food)\n`;
+      prompt += `     ❌ NO eggs\n`;
+      prompt += `   - ABSOLUTELY NO root vegetables or underground items:\n`;
+      prompt += `     ❌ NO potato, onion, garlic, ginger\n`;
+      prompt += `     ❌ NO carrot, radish, beetroot, turnip, sweet potato\n`;
+      prompt += `     ❌ NO underground tubers of any kind\n`;
+      prompt += `   - ALLOWED: Above-ground vegetables, fruits, grains, legumes, nuts, seeds, dairy\n`;
+      prompt += `   - Examples of ALLOWED vegetables: spinach, tomato, cucumber, beans, peas, capsicum, cauliflower, cabbage, broccoli, bottle gourd, pumpkin\n`;
+      prompt += `\n`;
+      prompt += `   🔧 ADAPTING NON-JAIN DISHES TO JAIN:\n`;
+      prompt += `   - If a traditional dish contains prohibited items, you MUST adapt it\n`;
+      prompt += `   - REFER TO the "🔧 INGREDIENT SUBSTITUTION GUIDE" in the RAG context above\n`;
+      prompt += `   - Look for Jain-friendly substitutes for: fish, meat, eggs, root vegetables, onion, garlic\n`;
+      prompt += `   - Examples (use substitution guide for more options):\n`;
+      prompt += `     • "Goan Fish Curry" → "Goan Paneer Curry (Jain)" or "Goan Mixed Vegetable Curry (Jain)" (check substitution guide)\n`;
+      prompt += `     • "Fish Recheado" → "Paneer Recheado (Jain)" - no onion/garlic, use hing for flavor (check substitution guide)\n`;
+      prompt += `     • "Tendli Batata Bhaji" → "Tendli Pumpkin Bhaji (Jain)" - replace potato with pumpkin (check substitution guide)\n`;
+      prompt += `     • Fish/Meat → Paneer, tofu, legumes, or above-ground vegetables\n`;
+      prompt += `     • Potato → Pumpkin, bottle gourd, raw banana (plantain), yam (if considered above-ground)\n`;
+      prompt += `     • Onion/Garlic → Asafoetida (hing) for flavor, use more tomatoes, green chilies\n`;
+      prompt += `     • Ginger → Can sometimes be replaced with dry ginger powder (check Jain preferences)\n`;
+      prompt += `   - Keep the dish name authentic but add "(Jain Version)" to clarify\n`;
+      prompt += `   - THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE JAIN PRINCIPLES!\n\n`;
     }
 
     if (preferences.cuisines && preferences.cuisines.length > 1) {
@@ -1086,19 +1272,90 @@ class MealPlanChain {
       } cuisine throughout the meal plan\n`;
     }
 
-    prompt += `4. Target ~2000 kcal per day total (adjust based on activity level)\n`;
+    // Use personalized calorie target from user profile
+    const targetCalories = preferences.userCalories || 2000;
+    const mealsCount = preferences.mealsPerDay || 3;
+    const avgCaloriesPerMeal = Math.round(targetCalories / mealsCount);
+    const weightGoalContext = preferences.weightGoal
+      ? `The user wants to ${preferences.weightGoal} weight.`
+      : '';
+
+    const calorieToleranceValue = Math.round(targetCalories * 0.03);
+    const minAcceptableCalories = targetCalories - calorieToleranceValue;
+    const maxAcceptableCalories = targetCalories + calorieToleranceValue;
+
+    prompt += `4. 🚨🚨🚨 CRITICAL CALORIE REQUIREMENT (ABSOLUTELY NON-NEGOTIABLE):\n`;
+    prompt += `   - Target: ${targetCalories} kcal per day${
+      weightGoalContext ? ` (${weightGoalContext})` : ''
+    }\n`;
+    prompt += `   - MANDATORY RANGE: ${minAcceptableCalories}-${maxAcceptableCalories} kcal per day (±3% strict tolerance)\n`;
+    prompt += `   - Distribution: ~${avgCaloriesPerMeal} kcal per meal × ${mealsCount} meals\n`;
+    prompt += `   - ⚠️ WARNING: Meals below 1500 kcal/day are DANGEROUS for health - DO NOT UNDER-CALCULATE!\n`;
+    prompt += `   - Each meal breakdown example for ${targetCalories} kcal:\n`;
+    if (mealsCount === 3) {
+      prompt += `     • Breakfast: ~${Math.round(targetCalories * 0.25)} kcal\n`;
+      prompt += `     • Lunch: ~${Math.round(targetCalories * 0.4)} kcal\n`;
+      prompt += `     • Dinner: ~${Math.round(targetCalories * 0.35)} kcal\n`;
+    } else if (mealsCount === 4) {
+      prompt += `     • Breakfast: ~${Math.round(targetCalories * 0.25)} kcal\n`;
+      prompt += `     • Snack: ~${Math.round(targetCalories * 0.1)} kcal\n`;
+      prompt += `     • Lunch: ~${Math.round(targetCalories * 0.35)} kcal\n`;
+      prompt += `     • Dinner: ~${Math.round(targetCalories * 0.3)} kcal\n`;
+    }
+    prompt += `   - 🎯 After calculating ALL macros for ALL meals, SUM THE DAY'S CALORIES and verify it's within range!\n`;
+    prompt += `   - If day total is outside ${minAcceptableCalories}-${maxAcceptableCalories}, ADJUST portion sizes immediately!\n\n`;
     prompt += `5. Focus on low-GI foods, high fiber, lean protein, healthy fats\n`;
     prompt += `6. ⭐ BUDGET: Strictly stay within ₹${
       preferences.budget || 300
     }/day. Choose affordable ingredients like seasonal vegetables, whole grains, lentils, local proteins.\n`;
-    prompt += `7. ⭐ MEAL TEMPLATES: Use the meal templates from RAG context as your BASE, but ENHANCE them:\n`;
-    prompt += `   - Start with the dish name and core ingredients from the template\n`;
-    prompt += `   - ADD complementary ingredients to make it more nutritious and PCOS-friendly\n`;
-    prompt += `   - Use the ingredient substitute guidance to swap any problematic ingredients\n`;
-    prompt += `   - Add seasonings, garnishes, and side dishes that are authentic to the cuisine\n`;
-    prompt += `   - Example: If template says "Poha" with basic ingredients, add curry leaves, peanuts, vegetables, lemon\n`;
-    prompt += `8. ⭐ VARIETY: Each meal must be UNIQUE. Do NOT repeat the same dish across different days. Use different recipes for each day.\n`;
-    prompt += `9. Include variety in ingredients and preparation methods\n`;
+    prompt += `7. 🚨🚨🚨 MEAL TEMPLATES - ONLY USE DISHES FROM RAG CONTEXT (ABSOLUTE RULE):\n`;
+    prompt += `   - The RAG context above contains ${preferences.cuisines?.join(
+      '/'
+    )} meal templates ONLY\n`;
+    prompt += `   - CRITICAL: You can ONLY use dishes that appear in that RAG context\n`;
+    prompt += `   - DO NOT use any dish that doesn't appear in the RAG templates above\n`;
+    prompt += `   - Look for sections marked "## ${preferences.cuisines?.[0].toUpperCase()}"\n`;
+    prompt += `   - RULE: If a dish name doesn't appear in RAG context, you CANNOT use it\n`;
+    prompt += `   - Example ENFORCEMENT:\n`;
+    prompt += `     ✅ IF "Coconut Rice" appears in RAG → You CAN use it\n`;
+    prompt += `     ✅ IF "Maskateri" appears in RAG → You CAN use it (adapt for Jain if needed)\n`;
+    prompt += `     ❌ IF "Dhuska" appears in RAG but it's JHARKHAND cuisine → You CANNOT use it for ${preferences.cuisines?.[0]}\n`;
+    prompt += `     ❌ IF "Rugra Bhurji" doesn't appear in ${preferences.cuisines?.[0]} section → You CANNOT use it\n`;
+    prompt += `   - When adapting dishes for ${dietType} diet:\n`;
+    prompt += `     🔧 CRITICAL: Use the "INGREDIENT SUBSTITUTION GUIDE" from RAG context above\n`;
+    prompt += `     • Check the substitution guide for appropriate replacements\n`;
+    prompt += `     • Adjust portion sizes to match calorie targets\n`;
+    prompt += `     • Add complementary ingredients for PCOS benefits\n`;
+    prompt += `     • Add seasonings and garnishes mentioned in the template\n`;
+    prompt += `8. 🚨🚨🚨 VARIETY REQUIREMENT (ABSOLUTELY CRITICAL - NO EXCEPTIONS):\n`;
+    prompt += `   - ZERO REPETITION ALLOWED: Each meal across ALL ${preferences.duration} days must be 100% UNIQUE\n`;
+    prompt += `   - CRITICAL STEP: Before generating the meal plan, COUNT how many unique ${preferences.cuisines?.[0]} ${dietType} dishes are in the RAG context\n`;
+    prompt += `   - REQUIRED: You need ${
+      parseInt(preferences.duration) * parseInt(preferences.mealsPerDay)
+    } UNIQUE dishes for ${preferences.duration} days × ${preferences.mealsPerDay} meals/day\n`;
+    prompt += `   - IF the RAG context has fewer dishes than needed:\n`;
+    prompt += `     🚨 STRATEGY 1 (PREFERRED): Adapt non-${dietType} dishes to ${dietType} using INGREDIENT SUBSTITUTION GUIDE\n`;
+    prompt += `     • Example: "Goan Fish Curry" (non-veg) → "Goan Tofu Curry (Vegan Version)" using substitution guide\n`;
+    prompt += `     • Example: "Prawn Balchão" (non-veg) → "Jackfruit Balchão (Vegan Version)" using substitution guide\n`;
+    prompt += `     • Example: "Chicken Cafreal" (non-veg) → "Paneer Cafreal (Vegetarian Version)" using substitution guide\n`;
+    prompt += `     • CHECK the "🔧 INGREDIENT SUBSTITUTION GUIDE" section in RAG context for appropriate replacements\n`;
+    prompt += `     🚨 STRATEGY 2: Create variations by changing preparation methods\n`;
+    prompt += `     • Example: "Veg Xacuti Bowl (Lite)" → "Veg Xacuti with Red Rice Idli" (different accompaniment)\n`;
+    prompt += `     • Example: "Alsande Tonak with Brown Rice" → "Alsande Usal with Pav" (different style)\n`;
+    prompt += `     • Example: "Ragi Pulao Bowl" → "Ragi Upma" (different cooking method)\n`;
+    prompt += `     🚨 STRATEGY 3: Vary portion sizes and accompaniments significantly\n`;
+    prompt += `     • Example: "Sol Kadhi with Millet Khichdi" vs "Sol Kadhi with Cucumber Salad" (different sides)\n`;
+    prompt += `   - Example WRONG approach (DO NOT DO THIS):\n`;
+    prompt += `     ❌ Day 1 Breakfast: Ragi Pulao Bowl\n`;
+    prompt += `     ❌ Day 2 Breakfast: Ragi Pulao Bowl (EXACT REPETITION - NOT ALLOWED!)\n`;
+    prompt += `     ❌ Day 3 Breakfast: Ragi Pulao Bowl (EXACT REPETITION - NOT ALLOWED!)\n`;
+    prompt += `   - Example CORRECT approach:\n`;
+    prompt += `     ✅ Day 1 Breakfast: Ragi Pulao Bowl\n`;
+    prompt += `     ✅ Day 2 Breakfast: Veg Xacuti with Red Rice Idli (DIFFERENT dish)\n`;
+    prompt += `     ✅ Day 3 Breakfast: Alsande Usal with Pav (DIFFERENT dish)\n`;
+    prompt += `   - Before adding any meal, CHECK if that EXACT dish name already appears in previous days\n`;
+    prompt += `   - If you've already used a dish, you MUST choose or create a variation\n`;
+    prompt += `9. Include variety in ingredients, preparation methods, and flavor profiles\n`;
     prompt += `10. Consider Indian meal timing and portion sizes\n`;
     prompt += `11. Use regional, seasonal, and easily available ingredients\n\n`;
 
@@ -1327,17 +1584,24 @@ class MealPlanChain {
   }
 
   /**
-   * Validate and adjust daily calories to ~2000 kcal
+   * Validate and adjust daily calories to user's target
    */
-  validateAndAdjustCalories(mealPlan) {
-    const target = 2000;
-    const tolerance = 200;
+  validateAndAdjustCalories(mealPlan, targetCalories = 2000) {
+    const target = targetCalories;
+    // Use proportional tolerance: 3% of target (strict precision for health goals)
+    // For 1709 kcal: ±51 kcal tolerance (1658-1760 kcal acceptable)
+    // For 2000 kcal: ±60 kcal tolerance (1940-2060 kcal acceptable)
+    const tolerance = Math.round(target * 0.03);
 
     mealPlan.days.forEach((day, dayIndex) => {
       let dailyTotal = day.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
 
       if (Math.abs(dailyTotal - target) > tolerance) {
-        logger.warn(`Day ${dayIndex + 1} calories out of range: ${dailyTotal} kcal`);
+        logger.warn(
+          `Day ${
+            dayIndex + 1
+          } calories out of range: ${dailyTotal} kcal (target: ${target}, tolerance: ±${tolerance})`
+        );
 
         const difference = target - dailyTotal;
         const adjustmentPerMeal = Math.round(difference / day.meals.length);
@@ -1362,9 +1626,32 @@ class MealPlanChain {
         }
 
         logger.info(`Day ${dayIndex + 1} adjusted total: ${dailyTotal} kcal`);
+      } else {
+        // Log when calories are within tolerance (for monitoring)
+        logger.info(
+          `Day ${
+            dayIndex + 1
+          } calories acceptable: ${dailyTotal} kcal (target: ${target}, tolerance: ±${tolerance})`
+        );
       }
 
       day.totalCalories = dailyTotal;
+    });
+
+    // Log overall calorie distribution
+    const avgCalories = Math.round(
+      mealPlan.days.reduce((sum, day) => sum + day.totalCalories, 0) / mealPlan.days.length
+    );
+    const minCalories = Math.min(...mealPlan.days.map((day) => day.totalCalories));
+    const maxCalories = Math.max(...mealPlan.days.map((day) => day.totalCalories));
+
+    logger.info('Meal plan calorie summary', {
+      target: target,
+      tolerance: tolerance,
+      average: avgCalories,
+      min: minCalories,
+      max: maxCalories,
+      variance: maxCalories - minCalories,
     });
   }
 

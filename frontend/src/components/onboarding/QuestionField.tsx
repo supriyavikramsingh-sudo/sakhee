@@ -1,3 +1,5 @@
+import NumberInput from '../common/NumberInput';
+import RadioInput from '../common/RadioInput';
 import SelectInput from '../common/SelectInput';
 import TextInput from '../common/TextInput';
 
@@ -11,6 +13,11 @@ interface QuestionFieldProps {
   helperText?: string;
   maxSelections?: number;
   disabled?: boolean;
+  maxDecimals?: number; // For number input
+  min?: number; // For number input
+  max?: number; // For number input
+  error?: string; // Validation error
+  defaultValue?: any; // Default value for fields
 }
 
 const QuestionField = ({
@@ -23,6 +30,11 @@ const QuestionField = ({
   helperText,
   maxSelections,
   disabled,
+  maxDecimals,
+  min,
+  max,
+  error,
+  defaultValue,
 }: QuestionFieldProps) => {
   switch (type) {
     case 'text':
@@ -37,6 +49,40 @@ const QuestionField = ({
             placeholder={placeholder}
           />
           {helperText && <p className="text-xs text-gray-500 mt-1">{helperText}</p>}
+        </div>
+      );
+
+    case 'number':
+      return (
+        <div>
+          <NumberInput
+            disable={disabled}
+            label={label}
+            handleInputChange={onChange}
+            required={required}
+            placeholder={placeholder}
+            maxDecimals={maxDecimals}
+            min={min}
+            max={max}
+            error={error}
+            defaultValue={defaultValue}
+          />
+          {helperText && <p className="text-xs text-gray-500 mt-1">{helperText}</p>}
+        </div>
+      );
+
+    case 'radio':
+      return (
+        <div>
+          <RadioInput
+            disable={disabled}
+            label={label}
+            options={options as { value: string; label: string }[]}
+            handleInputChange={onChange}
+            required={required}
+            defaultValue={defaultValue}
+            helperText={helperText}
+          />
         </div>
       );
 

@@ -2,7 +2,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
-import type { OnboardingData, OnboardingQuestionnaire } from '../../types/onboarding.type';
+import type { OnboardingData, OnboardingQuestionnaire, Question } from '../../types/onboarding.type';
+import { calculateBMI, validateBMI } from '../../utils/calorieCalculations';
 import QuestionField from './QuestionField';
 
 interface OnboardingFormProps {
@@ -22,6 +23,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       cuisine: string;
     }[]
   >([]);
+  const [targetWeightError, setTargetWeightError] = useState<string>('');
 
   // Update available states when regions change
   useEffect(() => {
@@ -109,6 +111,28 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
     ],
     2: [
       {
+        key: 'height_cm',
+        type: 'number',
+        label: 'Height (cm)',
+        required: true,
+        placeholder: 'Enter height in cm (e.g., 165.5)',
+        maxDecimals: 1,
+        min: 100,
+        max: 250,
+        helperText: 'Enter your height in centimeters',
+      },
+      {
+        key: 'current_weight_kg',
+        type: 'number',
+        label: 'Current Weight (kg)',
+        required: true,
+        placeholder: 'Enter weight in kg (e.g., 56.5)',
+        maxDecimals: 1,
+        min: 30,
+        max: 200,
+        helperText: 'Enter your current weight in kilograms',
+      },
+      {
         key: 'dietType',
         type: 'select',
         label: t('onboarding.dietType'),
@@ -138,11 +162,12 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
         label: t('onboarding.activityLevel'),
         required: true,
         options: [
-          { value: 'sedentary', label: 'Sedentary' },
-          { value: 'light', label: 'Lightly active' },
-          { value: 'moderate', label: 'Moderately active' },
-          { value: 'very', label: 'Very active' },
+          { value: 'sedentary', label: 'Sedentary (little to no exercise)' },
+          { value: 'light', label: 'Lightly active (1-3 days/week)' },
+          { value: 'moderate', label: 'Moderately active (4-5 days/week)' },
+          { value: 'very', label: 'Very active (6-7 days/week)' },
         ],
+        helperText: 'Select based on your typical weekly exercise routine',
       },
     ],
     3: [
@@ -215,11 +240,53 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
     ],
   };
 
+  // Build current questions with conditional logic
   const currentQuestions = questions[step] || [];
+  
+  // Add conditional weight goal fields for Step 3
+  const questionsWithConditional = [...currentQuestions];
+  
+  if (step === 3) {
+    // Show weight goal field if "weight-management" is selected
+    const hasWeightGoal = formData?.goals?.includes('weight-management');
+    
+    if (hasWeightGoal) {
+      questionsWithConditional.push({
+        key: 'weight_goal',
+        type: 'radio',
+        label: 'Weight Goal',
+        required: true,
+        options: [
+          { value: 'maintain', label: 'Maintain Weight' },
+          { value: 'lose', label: 'Lose Weight' },
+          { value: 'gain', label: 'Gain Weight' },
+        ],
+        helperText: 'Select your weight management goal',
+      });
+      
+      // Show target weight field if lose or gain is selected
+      const needsTargetWeight = formData?.weight_goal === 'lose' || formData?.weight_goal === 'gain';
+      
+      if (needsTargetWeight) {
+        questionsWithConditional.push({
+          key: 'target_weight_kg',
+          type: 'number',
+          label: 'Target Weight (kg)',
+          required: true,
+          placeholder: 'Enter target weight in kg',
+          maxDecimals: 1,
+          min: 30,
+          max: 200,
+          helperText: 'Enter your target weight (must result in healthy BMI)',
+          error: targetWeightError,
+        });
+      }
+    }
+  }
 
   const handleFieldChange = (key: string, value: any) => {
-    setFormData((prev) => {
-      const newData = {
+    setFormData((prev: OnboardingData) => {
+      const newData: OnboardingData = {
         ...prev,
         [key]: value,
       };
@@ -227,6 +294,31 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       // Reset cuisineStates when regions change
       if (key === 'regions') {
         newData.cuisineStates = [];
+      }
+      
+      // Reset weight_goal when goals change and weight-management is deselected
+      if (key === 'goals' && !value?.includes('weight-management')) {
+        delete newData.weight_goal;
+        delete newData.target_weight_kg;
+        setTargetWeightError('');
+      }
+      
+      // Reset target_weight_kg when weight_goal changes to maintain
+      if (key === 'weight_goal' && value === 'maintain') {
+        delete newData.target_weight_kg;
+        setTargetWeightError('');
+      }
+      
+      // Validate target weight BMI
+      if (key === 'target_weight_kg' && newData.height_cm) {
+        const bmi = calculateBMI(value, newData.height_cm);
+        const validation = validateBMI(bmi);
+        
+        if (!validation.isHealthy) {
+          setTargetWeightError(validation.message);
+        } else {
+          setTargetWeightError('');
+        }
       }
 
       return newData;
@@ -251,7 +343,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
   };
 
   // Validation
-  const isValid = currentQuestions
+  const isValid = questionsWithConditional
     .filter((q) => q.required)
     .every((q) => {
       const value = formData?.[q.key];
@@ -263,15 +355,22 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       if (q.type === 'multiselect' && q.required) {
         return Array.isArray(value) && value.length > 0;
       }
-      return value;
-    });
+      
+      if (q.type === 'number' && q.required) {
+        return value !== undefined && value !== null && !isNaN(value);
+      }
+      
+      return value !== undefined && value !== null && value !== '';
+    }) && !targetWeightError; // Block submission if target weight has BMI error
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-y-4">
-        {currentQuestions.map((question) => (
+        {questionsWithConditional.map((question) => (
           <QuestionField
+            key={question.key}
             {...question}
+            defaultValue={formData?.[question.key]}
             onChange={(value) => handleFieldChange(question.key, value)}
           />
         ))}

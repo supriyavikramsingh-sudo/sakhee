@@ -1016,5 +1016,173 @@ RAG USAGE NOTES FOR LLM:
 12. TRANSPARENCY: When making substitutions, explain briefly why (e.g., "Using brown rice instead of white rice to lower the glycemic impact and improve insulin sensitivity")
 
 ================================================================================
+
+### SECTION 17: ANIMAL PROTEIN SUBSTITUTES (FOR VEGETARIAN/VEGAN/JAIN ADAPTATIONS) ###
+
+--- FISH (ALL TYPES) ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Paneer (vegetarian), Tofu (vegan), or Mixed vegetables (Jain)
+REGIONAL ALTERNATIVES BY CUISINE:
+  - North India: Paneer cubes/chunks marinated similarly to fish
+  - South India: Jackfruit (young, green) for texture; raw banana (plaintain)
+  - East India: Tofu, mushrooms, or cauliflower florets
+  - West India: Raw banana, jackfruit, or firm tofu
+  - Coastal Cuisines (Goan, Kerala, Bengali): Banana stem, raw banana, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - FIRM FISH (like salmon, tuna): Firm tofu (pressed), paneer slabs, portobello mushrooms
+  - FLAKY FISH (like tilapia, cod): Crumbled paneer, jackfruit, hearts of palm
+  - SEAFOOD CURRY: Mixed vegetables (cauliflower, beans, carrots) with coconut milk
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Paneer (best texture match), cottage cheese, firm tofu
+  - Vegan: Firm tofu (pressed 30 min), tempeh, jackfruit (young green), banana blossoms
+  - Jain: Paneer (if dairy allowed), pumpkin chunks, bottle gourd chunks, raw banana
+
+MARINADE ADJUSTMENTS: Keep same spices/marinades; fish marinades work perfectly for tofu/paneer
+COOKING TIP: For tofu - press 30 min, cut into cubes, shallow fry until golden before adding to curry; For paneer - lightly pan-fry to prevent crumbling
+
+SPECIFIC DISH EXAMPLES:
+  - "Goan Fish Curry" → "Goan Tofu Curry" OR "Goan Paneer Curry" OR "Goan Raw Banana Curry"
+  - "Fish Recheado" → "Tofu Recheado" OR "Paneer Recheado" OR "Mushroom Recheado"
+  - "Bengali Fish Jhol" → "Bengali Paneer Jhol" OR "Bengali Mixed Vegetable Jhol"
+  - "Macher Jhol" → "Paneer Jhol" OR "Fulkopi Jhol" (Cauliflower Jhol)
+
+--- PRAWNS/SHRIMP ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Baby corn pieces (vegetarian/vegan), small paneer cubes (vegetarian)
+REGIONAL ALTERNATIVES:
+  - Coastal: Hearts of palm, baby corn, water chestnuts
+  - All regions: Diced paneer, button mushrooms, jackfruit pieces
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Small paneer cubes, baby corn
+  - Vegan: Baby corn, hearts of palm, water chestnuts, young jackfruit pieces
+  - Jain: Baby corn, pumpkin pieces (cut small), paneer cubes
+
+TEXTURE TIP: Baby corn has similar bite and sweetness to prawns
+COOKING TIP: Marinate baby corn/paneer in same prawn marinade (turmeric, chili, lime)
+
+SPECIFIC DISH EXAMPLES:
+  - "Prawn Balchão" → "Baby Corn Balchão" OR "Paneer Balchão" OR "Jackfruit Balchão"
+  - "Prawn Curry" → "Baby Corn Curry" OR "Paneer Curry" OR "Mixed Vegetable Curry"
+
+--- CHICKEN ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Paneer chunks (vegetarian), Soy chunks/Tofu (vegan), Mixed legumes (Jain)
+REGIONAL ALTERNATIVES:
+  - North India: Paneer tikka, soy chunks, mushrooms (large pieces)
+  - South India: Firm tofu, jackfruit chunks, soy chunks
+  - East India: Paneer, mushrooms, firm vegetables
+  - West India: Paneer, soy chunks, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - CHICKEN BREAST (firm): Large paneer slabs, firm tofu blocks, portobello mushrooms
+  - CHICKEN CHUNKS (curries): Paneer cubes, soy chunks (rehydrated), jackfruit pieces
+  - MINCED CHICKEN: Crumbled paneer, crumbled tofu, soya granules, mashed legumes
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Paneer (best), soy chunks, large mushrooms (portobello, king oyster)
+  - Vegan: Firm tofu, tempeh, soy chunks, seitan, jackfruit, large mushrooms
+  - Jain: Paneer, large beans (rajma pieces), firm pumpkin chunks
+
+MARINADE TIP: Chicken marinades work perfectly for paneer/tofu; yogurt-based marinades use coconut yogurt for vegan
+COOKING TIP: For soy chunks - boil 5 min, squeeze out water, then marinate; For tofu - press 30 min before marinating
+
+SPECIFIC DISH EXAMPLES:
+  - "Chicken Tikka" → "Paneer Tikka" OR "Tofu Tikka" OR "Mushroom Tikka"
+  - "Chicken Curry" → "Paneer Curry" OR "Tofu Curry" OR "Mixed Dal Curry"
+  - "Chicken Cafreal" → "Paneer Cafreal" OR "Tofu Cafreal" OR "Mushroom Cafreal"
+  - "Chicken Biryani" → "Paneer Biryani" OR "Vegetable Biryani" OR "Soy Chunk Biryani"
+
+--- MUTTON/LAMB ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Soy chunks (large), jackfruit chunks, large legumes (rajma, chole)
+REGIONAL ALTERNATIVES:
+  - North India: Large soy chunks, jackfruit, rajma (kidney beans)
+  - South India: Jackfruit chunks, black chickpeas
+  - East India: Large mushrooms, firm vegetables
+  - West India: Soy chunks, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - MUTTON CHUNKS: Large soy chunks (rehydrated), jackfruit pieces, rajma (whole kidney beans)
+  - MINCED MUTTON: Soya granules, crumbled tofu, mashed black chickpeas
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Large soy chunks, rajma, black chickpeas
+  - Vegan: Jackfruit (young green), soy chunks, large mushrooms, seitan
+  - Jain: Large beans (rajma), pumpkin chunks, large paneer pieces
+
+COOKING TIP: Jackfruit mimics pulled meat texture; cook low and slow for best results
+MARINADE TIP: Use same spices; mutton spices (garam masala, bay leaf) work great with jackfruit
+
+SPECIFIC DISH EXAMPLES:
+  - "Mutton Curry" → "Jackfruit Curry" OR "Soy Chunk Curry" OR "Rajma Masala"
+  - "Mutton Rogan Josh" → "Jackfruit Rogan Josh" OR "Soy Chunk Rogan Josh"
+  - "Mutton Keema" → "Soya Granules Keema" OR "Mixed Dal Keema" (mashed mixed lentils)
+
+--- EGGS ---
+PROBLEMATIC FOR: Vegan, Jain, Vegetarian (strict) diets
+UNIVERSAL SUBSTITUTE: Tofu scramble (vegan), Paneer bhurji (vegetarian Jain-friendly)
+REGIONAL ALTERNATIVES:
+  - All regions: Tofu scramble (firm tofu crumbled), besan (chickpea flour) scramble
+
+EGG-SPECIFIC SUBSTITUTES BY USE:
+  - BOILED EGGS (whole): No direct substitute; use paneer cubes or small tofu blocks
+  - SCRAMBLED EGGS: Tofu scramble (crumbled firm tofu with turmeric), besan scramble
+  - OMELETTE: Besan chilla (chickpea flour pancake), moong dal chilla
+  - EGG CURRY: Paneer cubes in curry OR small potato pieces (not Jain) OR firm tofu cubes
+  - BAKING (binding): 1 tbsp ground flaxseed + 3 tbsp water = 1 egg OR mashed banana
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian (lacto): Paneer bhurji, paneer cubes in curry
+  - Vegan: Tofu scramble (with black salt for egg flavor), besan chilla
+  - Jain: Paneer bhurji, besan chilla, moong dal chilla
+
+FLAVOR TIP: Add black salt (kala namak) to tofu scramble for eggy sulfur flavor
+COOKING TIP: For tofu scramble - use firm tofu, crumble with hands, cook with turmeric and black salt
+
+SPECIFIC DISH EXAMPLES:
+  - "Egg Bhurji" → "Tofu Bhurji" OR "Paneer Bhurji" OR "Besan Bhurji"
+  - "Egg Curry" → "Paneer Curry" OR "Tofu Curry" OR "Aloo Curry" (not Jain)
+  - "Egg Poi" (Goan) → "Paneer Poi" OR "Tofu Poi"
+  - "Egg Dosa" → "Paneer Dosa" OR "Vegetable Dosa"
+
+--- GENERAL PROTEIN ADAPTATION PRINCIPLES ---
+
+PORTION ADJUSTMENTS:
+  - Fish 150g → Paneer/Tofu 150g (same protein content)
+  - Chicken 150g → Paneer/Tofu 150g + 1 cup dal (combined protein)
+  - Eggs 2 (12g protein) → Tofu 100g (10g protein) + handful nuts
+
+COOKING METHOD PRESERVATION:
+  - If fish is FRIED → Fry paneer/tofu the same way
+  - If chicken is GRILLED → Grill paneer/tofu with same marinade
+  - If eggs are BOILED → Use paneer cubes or small tofu blocks in curry
+
+SPICE/MARINADE COMPATIBILITY:
+  - ALL fish marinades work for tofu/paneer
+  - ALL chicken marinades work for paneer/soy chunks/tofu
+  - ALL egg spice mixes work for tofu scramble
+
+REGIONAL AUTHENTICITY:
+  - Keep the dish name authentic: "Goan Fish Curry" becomes "Goan Tofu Curry" (not just "Tofu Curry")
+  - Use regional vegetables: Goan dishes add kokum, Kerala adds coconut milk, Bengali adds mustard
+  - Maintain traditional spice profiles exactly
+
+TEXTURE MATCHING:
+  - For FIRM texture → Pressed tofu, paneer slabs
+  - For SOFT texture → Soft tofu, crumbled paneer
+  - For CHUNKY texture → Large vegetable pieces, jackfruit
+  - For MINCED texture → Crumbled tofu, soya granules, mashed legumes
+
+VARIETY CREATION STRATEGY:
+When limited dishes available, create multiple variations:
+  - "Goan Fish Curry" → 3 VARIATIONS:
+    1. "Goan Tofu Curry (Vegan Version)" - firm tofu cubes
+    2. "Goan Paneer Curry (Vegetarian Version)" - paneer cubes
+    3. "Goan Mixed Vegetable Curry (Jain Version)" - cauliflower, beans, pumpkin, no onion/garlic
+
+================================================================================
 END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES RAG FILE
 ================================================================================
