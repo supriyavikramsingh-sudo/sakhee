@@ -56,6 +56,7 @@ const MealPlanGenerator = ({
     regions: [], // Multi-select regions
     cuisineStates: [], // Multi-select states/cuisines
     dietType: '', // Optional - defaults to onboarding
+    isKeto: false, // NEW: Keto diet modifier
     budget: 200,
     mealsPerDay: 3, // Required
     duration: 7, // Required
@@ -252,6 +253,7 @@ const MealPlanGenerator = ({
         regions: finalRegions,
         cuisines: finalCuisines,
         dietType: finalDietType,
+        isKeto: formData.isKeto, // NEW: Pass keto flag to backend
         budget: formData.budget,
         mealsPerDay: formData.mealsPerDay,
         duration: formData.duration,
@@ -463,6 +465,59 @@ const MealPlanGenerator = ({
             />
           </div>
         </div>
+
+        {/* Keto Diet Checkbox */}
+        <div className="bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="isKeto"
+              checked={formData.isKeto}
+              onChange={(e) => setFormData((prev) => ({ ...prev, isKeto: e.target.checked }))}
+              className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer"
+            />
+            <div className="flex-1">
+              <label htmlFor="isKeto" className="text-sm font-semibold text-gray-800 cursor-pointer flex items-center gap-2">
+                ⚡ Enable Ketogenic Diet
+                <span className="px-2 py-0.5 bg-primary text-white text-xs rounded-full">New</span>
+              </label>
+              <p className="text-xs text-gray-600 mt-1">
+                High-fat (70%), moderate-protein (25%), very low-carb (5%) - optimized for PCOS insulin sensitivity
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Keto Information Banner - Show when enabled */}
+        {formData.isKeto && (
+          <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <AlertCircle className="text-blue-500" size={20} />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-semibold text-blue-900 mb-2">
+                  🔥 Ketogenic Diet for PCOS
+                </h4>
+                <ul className="text-xs text-blue-800 space-y-1.5">
+                  <li>
+                    <strong>What it means:</strong> All grains (rice, roti, bread) replaced with cauliflower rice & almond flour. No starchy vegetables (potato, corn).
+                  </li>
+                  <li>
+                    <strong>PCOS Benefits:</strong> Improved insulin sensitivity, better hormone balance, reduced inflammation, stable blood sugar.
+                  </li>
+                  <li>
+                    <strong>Compatible with:</strong> Works with all diet types - Veg Keto, Non-Veg Keto, Vegan Keto, Jain Keto.
+                  </li>
+                  <li>
+                    <strong>Medical Note:</strong> Consult your healthcare provider before starting keto, especially if on medication. Initial 1-2 weeks may have "keto flu" (stay hydrated, increase salt).
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Daily Budget */}
         <div>
           <label className="block text-sm font-medium mb-2">Daily Budget: ₹{formData.budget}</label>

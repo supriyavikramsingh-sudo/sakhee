@@ -4,6 +4,7 @@ export interface PlanData {
   regions: string[];
   cuisines: string[];
   dietType: string;
+  isKeto?: boolean; // NEW: Keto diet modifier flag
   budget: number;
   ragMetadata: RagMetadata;
   personalizationSources: PersonalizationSources;
