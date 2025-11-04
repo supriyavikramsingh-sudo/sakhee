@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
-import type { OnboardingData, OnboardingQuestionnaire, Question } from '../../types/onboarding.type';
+import type { OnboardingData, OnboardingQuestionnaire } from '../../types/onboarding.type';
 import { calculateBMI, validateBMI } from '../../utils/calorieCalculations';
 import QuestionField from './QuestionField';
 
@@ -11,11 +11,19 @@ interface OnboardingFormProps {
   onComplete: (data: Record<string, any>) => void;
   onBack: () => void;
   loading: boolean;
+  userData: Record<string, any>;
+  setUserData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 }
 
-const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormProps) => {
+const OnboardingForm = ({
+  step,
+  onComplete,
+  onBack,
+  loading,
+  userData,
+  setUserData,
+}: OnboardingFormProps) => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState<OnboardingData>({} as OnboardingData);
   const [availableStates, setAvailableStates] = useState<
     {
       id: string;
@@ -27,18 +35,18 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
 
   // Update available states when regions change
   useEffect(() => {
-    if (step === 4 && formData && formData.regions && formData.regions.length > 0) {
-      const states = regionalCuisineConfig.getStatesForRegions(formData.regions);
+    if (step === 4 && userData && userData.regions && userData.regions.length > 0) {
+      const states = regionalCuisineConfig.getStatesForRegions(userData.regions);
       setAvailableStates(states);
 
       // Remove any selected states that are no longer available
-      if (formData.cuisineStates && formData.cuisineStates.length > 0) {
+      if (userData.cuisineStates && userData.cuisineStates.length > 0) {
         const availableStateIds = states.map((s) => s.id);
-        const filteredStates = formData.cuisineStates.filter((id) =>
+        const filteredStates = userData.cuisineStates.filter((id) =>
           availableStateIds.includes(id)
         );
-        if (filteredStates.length !== formData.cuisineStates.length) {
-          setFormData((prev) => ({
+        if (filteredStates.length !== userData.cuisineStates.length) {
+          setUserData((prev) => ({
             ...prev,
             cuisineStates: filteredStates,
           }));
@@ -47,13 +55,14 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
     } else {
       setAvailableStates([]);
     }
-  }, [formData?.regions, step]);
-
+  }, [userData?.regions, step]);
+  console.log(userData);
   const questions: OnboardingQuestionnaire = {
     0: [
       {
         key: 'email',
         type: 'email',
+        value: userData?.email || '',
         label: t('onboarding.email'),
         required: true,
         placeholder: 'your.email@example.com',
@@ -61,6 +70,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'age',
         type: 'select',
+        value: userData?.age || undefined,
+        placeholder: 'Please select your option',
         label: t('onboarding.age'),
         required: true,
         options: [
@@ -74,6 +85,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'location',
         type: 'text',
+        value: userData?.location || '',
         label: t('onboarding.location'),
         required: true,
         placeholder: 'e.g., Mumbai, Maharashtra',
@@ -83,7 +95,9 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'diagnosisTime',
         type: 'select',
+        value: userData?.diagnosisTime || '',
         label: t('onboarding.diagnosisTime'),
+        placeholder: 'Please select your option',
         required: true,
         options: [
           { value: 'not-diagnosed', label: 'Not yet diagnosed' },
@@ -96,7 +110,9 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'symptoms',
         type: 'multiselect',
+        value: userData?.symptoms || [],
         label: t('onboarding.symptoms'),
+        placeholder: 'Please select your options',
         required: true,
         options: [
           { value: 'irregular-periods', label: 'Irregular periods' },
@@ -113,6 +129,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'height_cm',
         type: 'number',
+        value: userData?.height_cm || '',
         label: 'Height (cm)',
         required: true,
         placeholder: 'Enter height in cm (e.g., 165.5)',
@@ -123,6 +140,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       },
       {
         key: 'current_weight_kg',
+        value: userData?.current_weight_kg || '',
         type: 'number',
         label: 'Current Weight (kg)',
         required: true,
@@ -135,6 +153,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'dietType',
         type: 'select',
+        value: userData?.dietType || '',
+        placeholder: 'Please select your option',
         label: t('onboarding.dietType'),
         required: true,
         options: [
@@ -146,6 +166,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       },
       {
         key: 'allergies',
+        value: userData?.allergies || [],
+        placeholder: 'Please select your options',
         type: 'multiselect',
         label: t('onboarding.allergies'),
         required: false,
@@ -158,8 +180,10 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       },
       {
         key: 'activityLevel',
+        value: userData?.activityLevel || '',
         type: 'select',
         label: t('onboarding.activityLevel'),
+        placeholder: 'Please select your option',
         required: true,
         options: [
           { value: 'sedentary', label: 'Sedentary (little to no exercise)' },
@@ -174,6 +198,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'goals',
         type: 'multiselect',
+        value: userData?.goals || [],
+        placeholder: 'Please select your options',
         label: t('onboarding.primaryGoals'),
         required: true,
         maxSelections: 2,
@@ -189,6 +215,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'income',
         type: 'select',
+        placeholder: 'Please select your option',
+        value: userData?.income || '',
         label: t('onboarding.income'),
         required: true,
         options: [
@@ -205,6 +233,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'language',
         type: 'select',
+        placeholder: 'Please select your option',
+        value: userData?.language || '',
         label: t('onboarding.language'),
         required: true,
         options: [
@@ -217,6 +247,8 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       {
         key: 'regions',
         type: 'multiselect',
+        placeholder: 'Please select your options',
+        value: userData?.regions || [],
         label: 'Preferred Regions',
         required: true,
         options: regionalCuisineConfig.regions.map((region) => ({
@@ -227,7 +259,9 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       },
       {
         key: 'cuisineStates',
+        value: userData?.cuisineStates || [],
         type: 'multiselect',
+        placeholder: 'Please select your options',
         label: 'Preferred Cuisines/States',
         required: true,
         options: availableStates.map((state) => ({
@@ -235,21 +269,21 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
           label: state.label,
         })),
         helperText: 'Select cuisines based on your preferred regions',
-        disabled: !formData?.regions || formData.regions.length === 0,
+        disabled: !userData?.regions || userData.regions.length === 0,
       },
     ],
   };
 
   // Build current questions with conditional logic
   const currentQuestions = questions[step] || [];
-  
+
   // Add conditional weight goal fields for Step 3
   const questionsWithConditional = [...currentQuestions];
-  
+
   if (step === 3) {
     // Show weight goal field if "weight-management" is selected
-    const hasWeightGoal = formData?.goals?.includes('weight-management');
-    
+    const hasWeightGoal = userData?.goals?.includes('weight-management');
+
     if (hasWeightGoal) {
       questionsWithConditional.push({
         key: 'weight_goal',
@@ -263,10 +297,11 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
         ],
         helperText: 'Select your weight management goal',
       });
-      
+
       // Show target weight field if lose or gain is selected
-      const needsTargetWeight = formData?.weight_goal === 'lose' || formData?.weight_goal === 'gain';
-      
+      const needsTargetWeight =
+        userData?.weight_goal === 'lose' || userData?.weight_goal === 'gain';
+
       if (needsTargetWeight) {
         questionsWithConditional.push({
           key: 'target_weight_kg',
@@ -285,7 +320,7 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
   }
 
   const handleFieldChange = (key: string, value: any) => {
-    setFormData((prev: OnboardingData) => {
+    setUserData((prev: OnboardingData) => {
       const newData: OnboardingData = {
         ...prev,
         [key]: value,
@@ -295,25 +330,25 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
       if (key === 'regions') {
         newData.cuisineStates = [];
       }
-      
+
       // Reset weight_goal when goals change and weight-management is deselected
       if (key === 'goals' && !value?.includes('weight-management')) {
         delete newData.weight_goal;
         delete newData.target_weight_kg;
         setTargetWeightError('');
       }
-      
+
       // Reset target_weight_kg when weight_goal changes to maintain
       if (key === 'weight_goal' && value === 'maintain') {
         delete newData.target_weight_kg;
         setTargetWeightError('');
       }
-      
+
       // Validate target weight BMI
       if (key === 'target_weight_kg' && newData.height_cm) {
         const bmi = calculateBMI(value, newData.height_cm);
         const validation = validateBMI(bmi);
-        
+
         if (!validation.isHealthy) {
           setTargetWeightError(validation.message);
         } else {
@@ -330,47 +365,47 @@ const OnboardingForm = ({ step, onComplete, onBack, loading }: OnboardingFormPro
 
     // For step 4, convert cuisineStates to cuisines array before submitting
     if (step === 4) {
-      const cuisines = regionalCuisineConfig.getCuisinesFromStates(formData?.cuisineStates || []);
+      const cuisines = regionalCuisineConfig.getCuisinesFromStates(userData?.cuisineStates || []);
       const finalData = {
-        ...formData,
+        ...userData,
         cuisines, // Array of cuisine names like ['Gujarati', 'Uttar Pradesh']
         // Keep cuisineStates for reference
       };
       onComplete(finalData);
     } else {
-      onComplete(formData);
+      onComplete(userData);
     }
   };
 
   // Validation
-  const isValid = questionsWithConditional
-    .filter((q) => q.required)
-    .every((q) => {
-      const value = formData?.[q.key];
-      if (q.type === 'email') {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-      }
+  const isValid =
+    questionsWithConditional
+      .filter((q) => q.required)
+      .every((q) => {
+        const value = userData?.[q.key];
+        if (q.type === 'email') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(value);
+        }
 
-      if (q.type === 'multiselect' && q.required) {
-        return Array.isArray(value) && value.length > 0;
-      }
-      
-      if (q.type === 'number' && q.required) {
-        return value !== undefined && value !== null && !isNaN(value);
-      }
-      
-      return value !== undefined && value !== null && value !== '';
-    }) && !targetWeightError; // Block submission if target weight has BMI error
+        if (q.type === 'multiselect' && q.required) {
+          return Array.isArray(value) && value.length > 0;
+        }
+
+        if (q.type === 'number' && q.required) {
+          return value !== undefined && value !== null && !isNaN(value);
+        }
+
+        return value !== undefined && value !== null && value !== '';
+      }) && !targetWeightError; // Block submission if target weight has BMI error
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-y-4">
         {questionsWithConditional.map((question) => (
           <QuestionField
-            key={question.key}
             {...question}
-            defaultValue={formData?.[question.key]}
+            value={userData?.[question.key]}
             onChange={(value) => handleFieldChange(question.key, value)}
           />
         ))}

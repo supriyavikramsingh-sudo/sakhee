@@ -2,6 +2,7 @@ import { Select } from 'antd';
 
 interface SelectInputProps {
   label: string;
+  value?: any;
   defaultValue?: string | string[] | [] | never[] | number;
   required?: boolean;
   options: { value: string | number; label: string }[];
@@ -19,6 +20,7 @@ const SelectInput = ({
   options,
   handleInputChange,
   mode,
+  value,
   disable = false,
   placeholder,
   maxSelections,
@@ -33,7 +35,8 @@ const SelectInput = ({
         maxCount={maxSelections}
         placeholder={placeholder}
         disabled={disable}
-        defaultValue={defaultValue ?? options[0]?.value}
+        value={value}
+        defaultValue={defaultValue}
         style={{ width: 400, height: mode !== 'multiple' ? 40 : 'auto' }}
         onChange={handleInputChange}
         options={options}

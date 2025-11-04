@@ -4,6 +4,7 @@ import { useState } from 'react';
 interface NumberInputProps {
   label: string;
   defaultValue?: number;
+  value?: number;
   required?: boolean;
   handleInputChange: (value: number | undefined) => void;
   disable?: boolean;
@@ -25,10 +26,9 @@ const NumberInput = ({
   min,
   max,
   error,
+  value,
 }: NumberInputProps) => {
-  const [inputValue, setInputValue] = useState<string>(
-    defaultValue !== undefined ? String(defaultValue) : ''
-  );
+  const [inputValue, setInputValue] = useState<number | string>(value || defaultValue || '');
   const [validationError, setValidationError] = useState<string>('');
 
   const validateAndUpdate = (value: string) => {
@@ -44,7 +44,9 @@ const NumberInput = ({
     const regex = new RegExp(`^\\d*\\.?\\d{0,${maxDecimals}}$`);
     if (!regex.test(value)) {
       setValidationError(
-        `Please enter a valid number with up to ${maxDecimals} decimal place${maxDecimals !== 1 ? 's' : ''}`
+        `Please enter a valid number with up to ${maxDecimals} decimal place${
+          maxDecimals !== 1 ? 's' : ''
+        }`
       );
       return;
     }

@@ -1,4 +1,4 @@
-import { Radio,  } from 'antd';
+import { Radio } from 'antd';
 
 interface RadioInputProps {
   label: string;
@@ -8,6 +8,7 @@ interface RadioInputProps {
   handleInputChange: (value: string) => void;
   disable?: boolean;
   helperText?: string;
+  value?: string;
 }
 
 const RadioInput = ({
@@ -18,6 +19,7 @@ const RadioInput = ({
   handleInputChange,
   disable = false,
   helperText,
+  value,
 }: RadioInputProps) => {
   const onChange = (e) => {
     handleInputChange(e.target.value);
@@ -30,7 +32,7 @@ const RadioInput = ({
       </label>
       <Radio.Group
         onChange={onChange}
-        value={defaultValue}
+        value={value || defaultValue}
         disabled={disable}
         className="flex flex-col gap-2"
       >
