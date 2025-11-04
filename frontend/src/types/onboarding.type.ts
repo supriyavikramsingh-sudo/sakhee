@@ -3,7 +3,7 @@ export type OnboardingQuestionnaire = {
 };
 
 export interface Question {
-  key: string;
+  id: string;
   type: string;
   label: string;
   required: boolean;

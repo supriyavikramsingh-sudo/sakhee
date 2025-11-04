@@ -26,8 +26,7 @@ const TextInput = ({
       </label>
       <Input
         placeholder={placeholder}
-        defaultValue={defaultValue}
-        value={value}
+        value={value || defaultValue}
         disabled={disable}
         style={{ width: 400, height: 40 }}
         onChange={(e) => handleInputChange(e.target.value)}

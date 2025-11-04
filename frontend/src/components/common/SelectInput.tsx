@@ -35,8 +35,7 @@ const SelectInput = ({
         maxCount={maxSelections}
         placeholder={placeholder}
         disabled={disable}
-        value={value}
-        defaultValue={defaultValue}
+        value={value || defaultValue}
         style={{ width: 400, height: mode !== 'multiple' ? 40 : 'auto' }}
         onChange={handleInputChange}
         options={options}
