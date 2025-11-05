@@ -46,7 +46,7 @@ router.post('/generate', async (req, res) => {
 
     // Check subscription limits
     const accessCheck = await canGenerateMealPlan(userId);
-    
+
     if (!accessCheck.canGenerate) {
       logger.warn('Meal plan generation blocked - limit reached', {
         userId,

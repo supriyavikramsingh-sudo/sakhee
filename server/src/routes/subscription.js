@@ -98,7 +98,7 @@ router.get('/subscription', verifyAuth, async (req, res) => {
     }
 
     const userData = userDoc.data();
-    
+
     // Initialize subscription fields if they don't exist
     let subscriptionData = {
       subscription_plan: userData.subscription_plan || 'free',
@@ -420,8 +420,8 @@ router.get('/usage', verifyAuth, async (req, res) => {
     }
 
     const userData = userDoc.data();
-    const subscriptionPlan = isTestProUser(userId) ? 'pro' : (userData.subscription_plan || 'free');
-    
+    const subscriptionPlan = isTestProUser(userId) ? 'pro' : userData.subscription_plan || 'free';
+
     // Determine limit based on plan
     let limit = 1; // Free plan default
     if (subscriptionPlan === 'pro' || subscriptionPlan === 'max') {
@@ -439,9 +439,10 @@ router.get('/usage', verifyAuth, async (req, res) => {
       lastResetDate: userData.last_meal_plan_reset_date?.toDate?.() || null,
       limitBasedOnPlan: limit,
       daysUntilMondayReset: daysUntilMonday === 0 ? 7 : daysUntilMonday,
-      canGenerateMealPlan: subscriptionPlan === 'free' 
-        ? (userData.meal_plans_generated_count || 0) < 1
-        : (userData.meal_plans_generated_this_week || 0) < 3,
+      canGenerateMealPlan:
+        subscriptionPlan === 'free'
+          ? (userData.meal_plans_generated_count || 0) < 1
+          : (userData.meal_plans_generated_this_week || 0) < 3,
     };
 
     res.json({

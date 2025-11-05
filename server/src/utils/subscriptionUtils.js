@@ -118,7 +118,7 @@ export async function canGenerateMealPlan(userId) {
     ) {
       // Subscription has expired - treat as free user
       logger.info('Pro subscription expired - treating as free user', { userId });
-      
+
       // Update user to free (could be done as a background job)
       const userRef = doc(db, 'users', userId);
       await updateDoc(userRef, {
@@ -185,7 +185,9 @@ export async function canGenerateMealPlan(userId) {
 
       return {
         canGenerate: true,
-        reason: `${subscriptionPlan.toUpperCase()} plan - ${3 - weeklyCount} meal plans remaining this week`,
+        reason: `${subscriptionPlan.toUpperCase()} plan - ${
+          3 - weeklyCount
+        } meal plans remaining this week`,
         subscriptionPlan,
         count: weeklyCount,
         limit: 3,
@@ -231,7 +233,8 @@ export async function incrementMealPlanCounter(userId) {
 
     // Only increment weekly counter for Pro/Max users
     if (subscriptionPlan === 'pro' || subscriptionPlan === 'max') {
-      updateData.meal_plans_generated_this_week = (userData.meal_plans_generated_this_week || 0) + 1;
+      updateData.meal_plans_generated_this_week =
+        (userData.meal_plans_generated_this_week || 0) + 1;
     }
 
     await updateDoc(userRef, updateData);
