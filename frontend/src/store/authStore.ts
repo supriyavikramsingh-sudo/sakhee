@@ -1,8 +1,8 @@
+import type { User as FirebaseAuthUser } from 'firebase/auth';
 import type { DocumentData } from 'firebase/firestore';
 import { create } from 'zustand';
 import authService from '../services/authService';
 import firestoreService from '../services/firestoreService';
-import type { FirebaseUser } from '../types/firebase.type';
 
 interface AuthStoreState {
   isAuthenticated: boolean;
@@ -34,10 +34,18 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
   // Initialize auth listener
   initAuth: () => {
-    authService.onAuthStateChange(async (firebaseUser: FirebaseUser) => {
+    authService.onAuthStateChange(async (firebaseUser: FirebaseAuthUser | null) => {
       if (firebaseUser) {
         // User is signed in
         console.log('🔐 User authenticated:', firebaseUser.email);
+
+        // Get and store auth token for API calls
+        try {
+          const token = await firebaseUser.getIdToken();
+          localStorage.setItem('authToken', token);
+        } catch (error) {
+          console.error('Failed to get auth token:', error);
+        }
 
         // Load profile from Firestore
         const profileResult = await firestoreService.getUserProfile(firebaseUser.uid);
@@ -73,6 +81,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
       } else {
         // User is signed out
         console.log('🚪 User signed out');
+        localStorage.removeItem('authToken');
         set({
           user: null,
           userProfile: null,

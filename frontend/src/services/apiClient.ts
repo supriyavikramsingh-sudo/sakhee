@@ -333,6 +333,29 @@ export const apiClient = {
       throw error;
     }
   },
+
+  // ============================================
+  // USER PROFILE ENDPOINTS (Settings)
+  // ============================================
+  getUserProfileSettings: async (userId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/user/profile?userId=${userId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get user profile:', error);
+      throw error;
+    }
+  },
+
+  updateUserProfileSettings: async (userId: string, updates: any): Promise<object> => {
+    try {
+      const response = await axiosInstance.put('/user/profile', { userId, ...updates });
+      return response;
+    } catch (error) {
+      console.error('Failed to update user profile:', error);
+      throw error;
+    }
+  },
 };
 
 export default apiClient;
