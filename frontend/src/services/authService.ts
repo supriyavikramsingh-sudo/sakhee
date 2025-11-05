@@ -21,6 +21,11 @@ class AuthService {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
+      // Get and store Firebase auth token for API calls
+      const token = await user.getIdToken();
+      localStorage.setItem('authToken', token);
+      console.log('✅ Auth token stored');
+
       // Create or update user in Firestore
       await this.createOrUpdateUser(user);
 
@@ -86,6 +91,8 @@ class AuthService {
    */
   async signOut() {
     try {
+      // Clear stored auth token
+      localStorage.removeItem('authToken');
       await signOut(auth);
       return { success: true };
     } catch (error) {

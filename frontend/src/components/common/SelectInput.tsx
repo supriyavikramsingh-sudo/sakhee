@@ -40,6 +40,11 @@ const SelectInput = ({
         style={{ width: 400, height: mode !== 'multiple' ? 40 : 'auto' }}
         onChange={handleInputChange}
         options={options}
+        popupClassName="custom-select-dropdown"
+        dropdownStyle={{
+          maxHeight: 300,
+        }}
+        getPopupContainer={(trigger) => trigger.parentElement}
       />
     </>
   );
