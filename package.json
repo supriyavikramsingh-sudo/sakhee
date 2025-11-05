@@ -25,6 +25,7 @@
     "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
+    "@types/react": "^18.3.26",
     "concurrently": "^8.2.0",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-prettier": "^4.2.1",
