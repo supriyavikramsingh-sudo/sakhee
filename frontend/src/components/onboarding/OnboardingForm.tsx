@@ -11,8 +11,8 @@ interface OnboardingFormProps {
   onComplete: (data: Record<string, any>) => void;
   onBack: () => void;
   loading: boolean;
-  userData: Record<string, any>;
-  setUserData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+  userData: OnboardingData;
+  setUserData: React.Dispatch<React.SetStateAction<OnboardingData>>;
 }
 
 const OnboardingForm = ({
@@ -60,7 +60,7 @@ const OnboardingForm = ({
   const questions: OnboardingQuestionnaire = {
     0: [
       {
-        key: 'email',
+        id: 'email',
         type: 'email',
         value: userData?.email || '',
         label: t('onboarding.email'),
@@ -68,7 +68,7 @@ const OnboardingForm = ({
         placeholder: 'your.email@example.com',
       },
       {
-        key: 'age',
+        id: 'age',
         type: 'select',
         value: userData?.age || undefined,
         placeholder: 'Please select your option',
@@ -83,7 +83,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'location',
+        id: 'location',
         type: 'text',
         value: userData?.location || '',
         label: t('onboarding.location'),
@@ -93,7 +93,7 @@ const OnboardingForm = ({
     ],
     1: [
       {
-        key: 'diagnosisTime',
+        id: 'diagnosisTime',
         type: 'select',
         value: userData?.diagnosisTime || '',
         label: t('onboarding.diagnosisTime'),
@@ -108,7 +108,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'symptoms',
+        id: 'symptoms',
         type: 'multiselect',
         value: userData?.symptoms || [],
         label: t('onboarding.symptoms'),
@@ -127,7 +127,7 @@ const OnboardingForm = ({
     ],
     2: [
       {
-        key: 'height_cm',
+        id: 'height_cm',
         type: 'number',
         value: userData?.height_cm || '',
         label: 'Height (cm)',
@@ -139,7 +139,7 @@ const OnboardingForm = ({
         helperText: 'Enter your height in centimeters',
       },
       {
-        key: 'current_weight_kg',
+        id: 'current_weight_kg',
         value: userData?.current_weight_kg || '',
         type: 'number',
         label: 'Current Weight (kg)',
@@ -151,7 +151,7 @@ const OnboardingForm = ({
         helperText: 'Enter your current weight in kilograms',
       },
       {
-        key: 'dietType',
+        id: 'dietType',
         type: 'select',
         value: userData?.dietType || '',
         placeholder: 'Please select your option',
@@ -165,7 +165,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'allergies',
+        id: 'allergies',
         value: userData?.allergies || [],
         placeholder: 'Please select your options',
         type: 'multiselect',
@@ -179,7 +179,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'activityLevel',
+        id: 'activityLevel',
         value: userData?.activityLevel || '',
         type: 'select',
         label: t('onboarding.activityLevel'),
@@ -196,7 +196,7 @@ const OnboardingForm = ({
     ],
     3: [
       {
-        key: 'goals',
+        id: 'goals',
         type: 'multiselect',
         value: userData?.goals || [],
         placeholder: 'Please select your options',
@@ -213,7 +213,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'income',
+        id: 'income',
         type: 'select',
         placeholder: 'Please select your option',
         value: userData?.income || '',
@@ -231,7 +231,7 @@ const OnboardingForm = ({
     4: [
       // Preferences with Region -> State hierarchy
       {
-        key: 'language',
+        id: 'language',
         type: 'select',
         placeholder: 'Please select your option',
         value: userData?.language || '',
@@ -245,7 +245,7 @@ const OnboardingForm = ({
         ],
       },
       {
-        key: 'regions',
+        id: 'regions',
         type: 'multiselect',
         placeholder: 'Please select your options',
         value: userData?.regions || [],
@@ -258,7 +258,7 @@ const OnboardingForm = ({
         helperText: 'Select one or more regions for cuisine preferences',
       },
       {
-        key: 'cuisineStates',
+        id: 'cuisineStates',
         value: userData?.cuisineStates || [],
         type: 'multiselect',
         placeholder: 'Please select your options',
@@ -286,10 +286,11 @@ const OnboardingForm = ({
 
     if (hasWeightGoal) {
       questionsWithConditional.push({
-        key: 'weight_goal',
+        id: 'weight_goal',
         type: 'radio',
         label: 'Weight Goal',
         required: true,
+        value: userData?.weight_goal || '',
         options: [
           { value: 'maintain', label: 'Maintain Weight' },
           { value: 'lose', label: 'Lose Weight' },
@@ -304,14 +305,15 @@ const OnboardingForm = ({
 
       if (needsTargetWeight) {
         questionsWithConditional.push({
-          key: 'target_weight_kg',
+          id: 'target_weight_kg',
           type: 'number',
           label: 'Target Weight (kg)',
+          value: userData?.target_weight_kg || '',
           required: true,
           placeholder: 'Enter target weight in kg',
           maxDecimals: 1,
-          min: 30,
-          max: 200,
+          min: userData?.weight_goal === 'gain' ? userData?.current_weight_kg : 30,
+          max: userData?.weight_goal === 'lose' ? userData?.current_weight_kg : 200,
           helperText: 'Enter your target weight (must result in healthy BMI)',
           error: targetWeightError,
         });
@@ -382,7 +384,7 @@ const OnboardingForm = ({
     questionsWithConditional
       .filter((q) => q.required)
       .every((q) => {
-        const value = userData?.[q.key];
+        const value = userData?.[q.id];
         if (q.type === 'email') {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(value);
@@ -404,9 +406,9 @@ const OnboardingForm = ({
       <div className="grid grid-cols-2 gap-y-4">
         {questionsWithConditional.map((question) => (
           <QuestionField
+            key={question.id}
             {...question}
-            value={userData?.[question.key]}
-            onChange={(value) => handleFieldChange(question.key, value)}
+            onChange={(value) => handleFieldChange(question.id, value)}
           />
         ))}
       </div>
