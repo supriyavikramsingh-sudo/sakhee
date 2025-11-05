@@ -14,7 +14,9 @@ import MealPlanPage from '../pages/MealPlanPage';
 import OnboardingPage from '../pages/OnboardingPage';
 import ProgressPage from '../pages/ProgressPage';
 import ReportsPage from '../pages/ReportsPage';
-import SettingsPage from '../pages/SettingsPage';
+import SettingsPageNew from '../pages/SettingsPageNew';
+import PricingPage from '../pages/PricingPage';
+import PricingDetailsPage from '../pages/PricingDetailsPage';
 import { useAuthStore } from '../store/authStore';
 import i18n from '../utils/i18n';
 
@@ -100,13 +102,16 @@ const App = () => {
               }
             />
             <Route
-              path="/settings"
+              path="/settings/*"
               element={
                 <ProtectedRoute>
-                  <SettingsPage />
+                  <SettingsPageNew />
                 </ProtectedRoute>
               }
             />
+            {/* Public Pricing Routes */}
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/pricing-details" element={<PricingDetailsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>

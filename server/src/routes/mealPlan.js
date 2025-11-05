@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
+import { canGenerateMealPlan, incrementMealPlanCounter } from '../utils/subscriptionUtils.js';
 
 const router = express.Router();
 const logger = new Logger('MealPlanRoutes');
@@ -14,6 +15,7 @@ const mealPlans = new Map();
 /**
  * POST /api/meals/generate
  * Generate a personalized meal plan with RAG retrieval (UPDATED for multiple cuisines)
+ * NOW WITH ACCESS CONTROL: Check subscription limits before generation
  */
 router.post('/generate', async (req, res) => {
   try {
@@ -31,6 +33,47 @@ router.post('/generate', async (req, res) => {
       userOverrides,
       isKeto, // NEW: Keto diet modifier flag
     } = req.body;
+
+    // ====================================
+    // ACCESS CONTROL: Check if user can generate meal plan
+    // ====================================
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: { message: 'User ID is required' },
+      });
+    }
+
+    // Check subscription limits
+    const accessCheck = await canGenerateMealPlan(userId);
+    
+    if (!accessCheck.canGenerate) {
+      logger.warn('Meal plan generation blocked - limit reached', {
+        userId,
+        reason: accessCheck.reason,
+        subscriptionPlan: accessCheck.subscriptionPlan,
+        count: accessCheck.count,
+        limit: accessCheck.limit,
+      });
+
+      return res.status(403).json({
+        success: false,
+        error: {
+          message: accessCheck.reason,
+          code: 'MEAL_PLAN_LIMIT_REACHED',
+          subscriptionPlan: accessCheck.subscriptionPlan,
+          count: accessCheck.count,
+          limit: accessCheck.limit,
+        },
+      });
+    }
+
+    logger.info('Access control passed - generating meal plan', {
+      userId,
+      subscriptionPlan: accessCheck.subscriptionPlan,
+      count: accessCheck.count,
+      limit: accessCheck.limit,
+    });
 
     // Fetch user profile to get personalized calorie requirements
     let userCalories = 2000; // Default fallback
@@ -166,6 +209,20 @@ router.post('/generate', async (req, res) => {
     };
 
     mealPlans.set(planId, planData);
+
+    // ====================================
+    // INCREMENT MEAL PLAN COUNTER
+    // ====================================
+    try {
+      await incrementMealPlanCounter(userId);
+      logger.info('Meal plan counter incremented', { userId });
+    } catch (error) {
+      logger.error('Failed to increment meal plan counter', {
+        userId,
+        error: error.message,
+      });
+      // Non-critical error - don't fail the request
+    }
 
     logger.info('Meal plan generated successfully', {
       planId,

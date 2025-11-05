@@ -26,9 +26,18 @@ This README covers how to get the project running locally, available scripts, en
   - Fallback templates used if AI generation fails
   - All plans stored in-memory (consider migrating to Firestore for persistence)
 
-Features
+## ✨ Features
 
 - **🤖 AI Chat Assistant** - Conversational AI powered by GPT-4o-mini with RAG (Retrieval-Augmented Generation) for PCOS-specific guidance
+- **💎 Subscription Plans & Pricing** - Three-tier pricing system with usage-based access control:
+  - **FREE Plan**: 1 lifetime meal plan generation for trial users
+  - **PRO Plan**: 3 meal plans per week with weekly reset (₹500/month or ₹5000/year)
+  - **MAX Plan**: Unlimited meal plans (coming soon, ₹1000/month)
+  - Public pricing page with detailed feature comparison
+  - Settings page with subscription management (upgrade, cancel, reactivate)
+  - Test user configuration for development/demo purposes
+  - Weekly Monday reset for usage limits
+  - Subscription status badges and usage tracking
 - **🍽️ Personalized Meal Planning** - AI-generated meal plans tailored to Indian cuisine and PCOS dietary needs with:
   - RAG-powered knowledge retrieval from curated meal templates and nutrition guidelines
   - **⚡ Ketogenic Diet Support (NEW)** - Optional keto modifier for insulin sensitivity and hormone balance:
@@ -367,11 +376,19 @@ client/
 │   │   ├── onboarding/                # Onboarding flow
 │   │   │   ├── OnboardingForm.jsx
 │   │   │   └── QuestionField.jsx
+│   │   ├── pricing/                   # Pricing & subscription components
+│   │   │   └── PricingCard.tsx        # Individual pricing tier card
+│   │   ├── settings/                  # Settings page components
+│   │   │   ├── SettingsSidebar.tsx    # Sidebar navigation
+│   │   │   ├── PreferencesSection.tsx # User preferences
+│   │   │   └── SubscriptionSection.tsx # Subscription management
 │   │   └── progress/                  # Progress tracking
 │   │       ├── ProgressDashboard.jsx
 │   │       └── ProgressCharts.jsx
 │   ├── config/
-│   │   └── firebase.js                # Firebase initialization
+│   │   ├── firebase.js                # Firebase initialization
+│   │   ├── pricingConfig.ts           # Pricing plans & features
+│   │   └── regionalCuisineConfig.ts   # Regional cuisine options
 │   ├── hooks/
 │   │   └── useLocalStorage.js         # Custom React hooks
 │   ├── i18n/                          # Internationalization
@@ -383,18 +400,27 @@ client/
 │   │   ├── OnboardingPage.jsx
 │   │   ├── ChatPage.jsx
 │   │   ├── MealPlanPage.jsx
+│   │   ├── PricingPage.tsx            # Public pricing page
+│   │   ├── PricingDetailsPage.tsx     # Feature comparison & FAQ
+│   │   ├── SettingsPageNew.tsx        # Settings with sidebar navigation
 │   │   ├── ProgressPage.jsx
-│   │   ├── ReportsPage.jsx
-│   │   └── SettingsPage.jsx
+│   │   └── ReportsPage.jsx
 │   ├── services/                      # API clients
 │   │   ├── apiClient.js               # Base API client (Axios)
 │   │   ├── authService.js             # Firebase auth service
 │   │   ├── firestoreService.js        # Firestore operations
 │   │   ├── chatApi.js                 # Chat API calls
-│   │   └── mealApi.js                 # Meal planning API calls
+│   │   ├── mealApi.js                 # Meal planning API calls
+│   │   └── subscriptionApi.ts         # Subscription management API
 │   ├── store/                         # State management (Zustand)
 │   │   ├── authStore.js               # Authentication state
 │   │   └── index.js
+│   ├── types/                         # TypeScript type definitions
+│   │   ├── firebase.type.ts           # Firebase & user profile types
+│   │   ├── subscription.type.ts       # Subscription & pricing types
+│   │   ├── meal.type.ts               # Meal plan types
+│   │   ├── onboarding.type.ts         # Onboarding types
+│   │   └── report.type.ts             # Medical report types
 │   ├── styles/
 │   │   └── index.css                  # Global styles + Tailwind
 │   ├── utils/
@@ -444,7 +470,8 @@ server/
 │   │   └── safetyGuards.js            # Content safety checks
 │   ├── routes/
 │   │   ├── chat.js                    # Chat endpoints
-│   │   ├── mealPlan.js                # Meal planning endpoints (with personalization tracking)
+│   │   ├── mealPlan.js                # Meal planning endpoints (with access control)
+│   │   ├── subscription.js            # Subscription management endpoints
 │   │   ├── upload.js                  # File upload endpoints
 │   │   ├── progress.js                # Progress tracking endpoints
 │   │   ├── onboarding.js              # Onboarding endpoints
@@ -466,7 +493,8 @@ server/
 │   │       └── vectordb/              # HNSWLib vector store
 │   ├── utils/
 │   │   ├── logger.js                  # Winston logger
-│   │   └── labRanges.js               # Medical lab reference ranges
+│   │   ├── labRanges.js               # Medical lab reference ranges
+│   │   └── subscriptionUtils.js       # Subscription access control & weekly reset
 │   └── data/
 │       ├── meal_templates/            # Meal plan templates (.txt files)
 │       ├── medical/                   # Medical knowledge base
@@ -957,6 +985,11 @@ npm run format:check
 | `/api/meals/user/:userId` | GET      | Get user's meal plan history             |
 | `/api/meals/:planId`      | PUT      | Update meal plan (feedback, ratings)     |
 | `/api/meals/:planId`      | DELETE   | Delete meal plan                         |
+| `/api/subscription`       | GET      | Get user's subscription details          |
+| `/api/subscription/upgrade` | PUT    | Upgrade subscription plan                |
+| `/api/subscription/cancel` | PUT     | Cancel subscription (retains access)     |
+| `/api/subscription/reactivate` | PUT | Reactivate cancelled subscription        |
+| `/api/subscription/usage` | GET      | Get meal plan usage statistics           |
 | `/api/upload`             | POST     | Upload medical report (PDF/DOCX/image)   |
 | `/api/progress`           | GET/POST | Get/update progress data                 |
 | `/api/onboarding/create`  | POST     | Complete onboarding                      |
@@ -1213,6 +1246,9 @@ For questions, issues, or suggestions:
 
 ### Planned 🔜
 
+- [ ] **Payment Integration**: Razorpay/Stripe for subscription payments
+- [ ] **MAX Plan Launch**: Unlimited meal plan tier (₹1000/month)
+- [ ] **Subscription Analytics Dashboard**: Revenue tracking, user metrics, churn analysis
 - [ ] Persistent meal plan storage in Firestore (currently in-memory)
 - [ ] User meal plan history and favorites
 - [ ] Grocery shopping list generation from meal plans
@@ -1232,7 +1268,344 @@ For questions, issues, or suggestions:
 
 ---
 
-## 📚 Additional Resources
+## � Subscription & Pricing System
+
+### Overview
+
+Sakhee implements a three-tier subscription model with usage-based access control for meal plan generation:
+
+| Plan | Price | Meal Plans | Features |
+|------|-------|------------|----------|
+| **FREE** | ₹0 | 1 lifetime | Try the platform, limited access |
+| **PRO** | ₹500/month or ₹5000/year | 3 per week | Regional meal plans, PDF export, medical report integration |
+| **MAX** | ₹1000/month | Unlimited | Coming soon - all PRO features + unlimited generation |
+
+### Usage Limits & Reset Logic
+
+**FREE Plan**:
+- 1 meal plan total (lifetime limit)
+- Once used, redirected to upgrade page
+- No reset mechanism
+
+**PRO Plan**:
+- 3 meal plans per week
+- Resets every **Monday at 00:00** (weekly reset)
+- Counter: `meal_plans_generated_this_week` (0-3)
+- After 3 plans, redirected to upgrade or wait until Monday
+
+**MAX Plan** (Coming Soon):
+- Unlimited meal plans
+- No usage restrictions
+- Premium support
+
+### Test User Configuration
+
+For development and demo purposes, a test user bypasses all subscription checks:
+
+- **Email**: supriyavikramsingh@gmail.com
+- **User ID**: fY42B1okA1Y2WOUSRPDp6XJQgkD2
+- **Access**: Unlimited meal plans (bypasses all limits)
+- **Configuration**: Hard-coded in `server/src/utils/subscriptionUtils.js`
+
+To set up a test user:
+
+```bash
+cd server
+node src/scripts/setupTestUser.js
+```
+
+This creates/updates the user in Firestore with:
+```json
+{
+  "subscription_plan": "pro",
+  "subscription_status": "active",
+  "billing_cycle": "monthly",
+  "subscription_start_date": "2025-01-01T00:00:00.000Z",
+  "meal_plans_generated_count": 0,
+  "meal_plans_generated_this_week": 0,
+  "last_meal_plan_reset_date": "2025-01-01T00:00:00.000Z"
+}
+```
+
+### Access Control Implementation
+
+**Backend** (`server/src/utils/subscriptionUtils.js`):
+
+```javascript
+// Check if user can generate meal plan
+async function canGenerateMealPlan(userId) {
+  // Test user bypass
+  if (isTestProUser(userId)) {
+    return { allowed: true, reason: 'test_user' };
+  }
+
+  const user = await getUserProfile(userId);
+  
+  // Check subscription status
+  if (user.subscription_status !== 'active') {
+    return { allowed: false, reason: 'SUBSCRIPTION_INACTIVE' };
+  }
+
+  // FREE plan check
+  if (user.subscription_plan === 'free') {
+    if (user.meal_plans_generated_count >= 1) {
+      return { allowed: false, reason: 'MEAL_PLAN_LIMIT_REACHED' };
+    }
+  }
+
+  // PRO plan check
+  if (user.subscription_plan === 'pro') {
+    // Check if weekly reset needed
+    await checkAndResetWeeklyLimit(userId, user);
+    
+    if (user.meal_plans_generated_this_week >= 3) {
+      return { allowed: false, reason: 'WEEKLY_LIMIT_REACHED' };
+    }
+  }
+
+  return { allowed: true };
+}
+```
+
+**Frontend Access Control** (`MealPlanGenerator.jsx`):
+
+When meal generation is blocked, users see:
+- Modal with upgrade message
+- Current usage stats (e.g., "2/3 plans used this week")
+- Clear CTA to upgrade or pricing page link
+- For FREE users: "You've used your 1 free meal plan"
+- For PRO users: "You've reached your weekly limit (3/3). Resets Monday."
+
+### Subscription Management
+
+**Settings Page** (`/settings/subscription`):
+
+Users can:
+- ✅ View current plan and billing details
+- ✅ See usage statistics (X/Y plans used)
+- ✅ Upgrade to PRO/MAX
+- ✅ Cancel subscription (retains access until end date)
+- ✅ Reactivate cancelled subscription
+- ✅ View next billing date
+- ✅ See subscription end date (if cancelled)
+
+**Cancellation Behavior**:
+- Subscription remains active until `next_billing_date`
+- Status changes to `cancelled` but user retains access
+- At end date, status changes to `expired` and access is blocked
+- Users can reactivate anytime before expiration
+
+### Pricing Pages
+
+**Public Routes** (accessible without login):
+
+1. **`/pricing`** - Main pricing page
+   - Three pricing cards (FREE, PRO, MAX)
+   - Monthly/Yearly billing toggle (17% discount for annual)
+   - Feature comparison with checkmarks
+   - Dynamic CTAs based on authentication state:
+     - Not logged in: "START FREE" / "GET STARTED"
+     - Logged in (FREE): "CURRENT PLAN" / "UPGRADE TO PRO"
+     - Logged in (PRO): "CURRENT PLAN" / "UPGRADE TO MAX"
+
+2. **`/pricing-details`** - Comprehensive comparison
+   - Full feature table with availability states
+   - FAQ section
+   - Detailed explanations of all features
+
+**Navigation**:
+- Pricing link added to main navbar
+- Accessible from meal plan blocked modal
+- Settings page upgrade buttons link to pricing
+
+### API Endpoints
+
+#### Get Subscription
+```bash
+GET /api/subscription?userId={userId}
+Response: {
+  subscription_plan: 'pro',
+  subscription_status: 'active',
+  billing_cycle: 'monthly',
+  subscription_start_date: '2025-01-01',
+  next_billing_date: '2025-02-01',
+  meal_plans_generated_count: 5,
+  meal_plans_generated_this_week: 2
+}
+```
+
+#### Upgrade Subscription
+```bash
+PUT /api/subscription/upgrade
+Body: {
+  userId: 'user123',
+  plan: 'pro',
+  billing_cycle: 'yearly'
+}
+Response: { success: true, message: 'Subscription upgraded' }
+```
+
+#### Cancel Subscription
+```bash
+PUT /api/subscription/cancel
+Body: { userId: 'user123' }
+Response: {
+  success: true,
+  subscription_end_date: '2025-02-01',
+  message: 'Subscription cancelled. Access until 2025-02-01'
+}
+```
+
+#### Reactivate Subscription
+```bash
+PUT /api/subscription/reactivate
+Body: { userId: 'user123' }
+Response: { success: true, message: 'Subscription reactivated' }
+```
+
+#### Get Usage Statistics
+```bash
+GET /api/subscription/usage?userId={userId}
+Response: {
+  plan: 'pro',
+  totalGenerated: 5,
+  weeklyGenerated: 2,
+  weeklyLimit: 3,
+  lastReset: '2025-11-04',
+  nextReset: '2025-11-11'
+}
+```
+
+### Weekly Reset Logic
+
+**Implementation**:
+```javascript
+async function checkAndResetWeeklyLimit(userId, user) {
+  const lastReset = new Date(user.last_meal_plan_reset_date);
+  const now = new Date();
+  
+  // Get last Monday
+  const lastMonday = getLastMonday(now);
+  
+  // Reset if last reset was before last Monday
+  if (lastReset < lastMonday) {
+    await updateUserProfile(userId, {
+      meal_plans_generated_this_week: 0,
+      last_meal_plan_reset_date: now.toISOString()
+    });
+  }
+}
+```
+
+**Reset Schedule**:
+- Trigger: Every Monday at 00:00 (user's first request after Monday)
+- Action: Sets `meal_plans_generated_this_week` to 0
+- Counter: Increments after each successful meal generation
+
+### Database Schema (Firestore)
+
+**Users Collection**:
+```javascript
+users/{userId}: {
+  // Existing fields
+  email: string,
+  displayName: string,
+  photoURL: string,
+  
+  // Subscription fields (new)
+  subscription_plan: 'free' | 'pro' | 'max',
+  subscription_status: 'active' | 'cancelled' | 'expired',
+  billing_cycle: 'monthly' | 'yearly',
+  subscription_start_date: timestamp,
+  subscription_end_date: timestamp | null,
+  next_billing_date: timestamp,
+  
+  // Usage tracking
+  meal_plans_generated_count: number,          // Total lifetime
+  meal_plans_generated_this_week: number,      // This week only
+  last_meal_plan_reset_date: timestamp,        // Last Monday reset
+  
+  // Timestamps
+  createdAt: timestamp,
+  updatedAt: timestamp
+}
+```
+
+### Testing Subscription Flows
+
+**Test Cases**:
+
+1. **FREE User - First Meal Plan**:
+   - Generate 1 meal plan → Success
+   - Try 2nd meal plan → Blocked with upgrade modal
+
+2. **PRO User - Weekly Limit**:
+   - Generate 3 meal plans → All succeed
+   - Try 4th meal plan → Blocked until Monday reset
+
+3. **Test User - Bypass**:
+   - Generate 100 meal plans → All succeed (no limits)
+
+4. **Cancellation**:
+   - Cancel PRO subscription
+   - Continue generating until `next_billing_date`
+   - After end date → Access blocked
+
+5. **Reactivation**:
+   - Cancel subscription
+   - Reactivate before end date
+   - Continue with full access
+
+**Testing Commands**:
+
+```bash
+# Check subscription status
+curl http://localhost:5000/api/subscription?userId=test123
+
+# Upgrade to PRO
+curl -X PUT http://localhost:5000/api/subscription/upgrade \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"test123","plan":"pro","billing_cycle":"monthly"}'
+
+# Check usage
+curl http://localhost:5000/api/subscription/usage?userId=test123
+```
+
+### Future Enhancements
+
+**Payment Integration** (Planned):
+- [ ] Razorpay integration for Indian payments
+- [ ] Stripe for international payments
+- [ ] Automatic subscription renewal
+- [ ] Payment failure handling & grace periods
+- [ ] Invoices & receipts
+- [ ] Refund processing
+
+**Analytics** (Planned):
+- [ ] Revenue dashboard
+- [ ] Conversion tracking (FREE → PRO)
+- [ ] Churn analysis
+- [ ] Usage patterns
+- [ ] Cohort analysis
+
+**Features** (Planned):
+- [ ] Family plans (multi-user subscriptions)
+- [ ] Gift subscriptions
+- [ ] Promotional codes & discounts
+- [ ] Referral program
+- [ ] Trial extensions for specific users
+
+### Documentation
+
+For complete implementation details, see:
+- **`PRICING_SYSTEM_DOCS.md`** - Full technical specification
+- **`server/src/utils/subscriptionUtils.js`** - Access control logic
+- **`server/src/routes/subscription.js`** - API endpoints
+- **`frontend/src/config/pricingConfig.ts`** - Pricing configuration
+
+---
+
+## �📚 Additional Resources
 
 - [LangChain.js Documentation](https://js.langchain.com/)
 - [OpenAI API Documentation](https://platform.openai.com/docs)
@@ -1244,6 +1617,242 @@ For questions, issues, or suggestions:
 ---
 
 ## 📋 Changelog
+
+### v2.0.0 - Subscription & Pricing System (November 5, 2025)
+
+**Category**: Business Model & Monetization
+
+Major feature release introducing a comprehensive three-tier subscription system with usage-based access control, public pricing pages, and subscription management.
+
+#### New Features
+
+**💎 Three-Tier Subscription Model**:
+- **FREE Plan**: 1 lifetime meal plan for trial users (₹0)
+- **PRO Plan**: 3 meal plans per week with weekly Monday reset (₹500/month or ₹5000/year)
+- **MAX Plan**: Unlimited meal plans - coming soon (₹1000/month)
+
+**📄 Public Pricing Pages**:
+- `/pricing` - Main pricing page with 3 cards, monthly/yearly toggle, feature comparison
+- `/pricing-details` - Comprehensive feature table, FAQ, and detailed comparison
+- Dynamic CTAs based on authentication state
+- Responsive design with mobile optimization
+- Added "Pricing" link to main navigation bar
+
+**⚙️ Settings Page Redesign**:
+- New sidebar navigation with Preferences and Subscription sections
+- Subscription management UI showing plan details, billing info, usage stats
+- Action buttons: Upgrade, Cancel, Reactivate
+- Usage tracking display (e.g., "2/3 meal plans used this week")
+- Cancellation modal with confirmation
+- Next billing date and subscription end date display
+
+**🔒 Access Control System**:
+- Backend middleware checks subscription limits before meal generation
+- FREE users blocked after 1 meal plan (lifetime)
+- PRO users blocked after 3 weekly meal plans (resets Monday)
+- Test user bypass for development (supriyavikramsingh@gmail.com)
+- Returns 403 with `MEAL_PLAN_LIMIT_REACHED` error code when blocked
+- Increments counters after successful generation
+
+**🔄 Weekly Reset Logic**:
+- Automatic Monday reset for PRO plan weekly limits
+- Sets `meal_plans_generated_this_week` to 0 every Monday
+- Tracks `last_meal_plan_reset_date` to determine if reset needed
+- First API call after Monday triggers reset
+
+**🧪 Test User Configuration**:
+- Hard-coded test user with unlimited access
+- Bypasses all subscription checks for demos/development
+- Setup script: `server/src/scripts/setupTestUser.js`
+- User ID: fY42B1okA1Y2WOUSRPDp6XJQgkD2
+
+#### Backend APIs
+
+**New Endpoints**:
+- `GET /api/subscription` - Get user's subscription details
+- `PUT /api/subscription/upgrade` - Upgrade to PRO/MAX
+- `PUT /api/subscription/cancel` - Cancel subscription (retains access until end date)
+- `PUT /api/subscription/reactivate` - Reactivate cancelled subscription
+- `GET /api/subscription/usage` - Get meal plan usage statistics
+
+**Access Control**:
+- `canGenerateMealPlan(userId)` - Check if user can generate
+- `incrementMealPlanCounter(userId)` - Update counters after generation
+- `checkAndResetWeeklyLimit(userId)` - Monday reset logic
+- `isTestProUser(userId)` - Test user bypass
+
+#### Frontend Components
+
+**New Files**:
+- `frontend/src/types/subscription.type.ts` - TypeScript types
+- `frontend/src/config/pricingConfig.ts` - Pricing data
+- `frontend/src/services/subscriptionApi.ts` - API client
+- `frontend/src/components/pricing/PricingCard.tsx` - Pricing card component
+- `frontend/src/components/settings/SettingsSidebar.tsx` - Settings sidebar
+- `frontend/src/components/settings/SubscriptionSection.tsx` - Subscription management
+- `frontend/src/components/settings/PreferencesSection.tsx` - User preferences
+- `frontend/src/pages/PricingPage.tsx` - Main pricing page
+- `frontend/src/pages/PricingDetailsPage.tsx` - Feature comparison page
+- `frontend/src/pages/SettingsPageNew.tsx` - Redesigned settings
+
+**Modified Files**:
+- `frontend/src/app/App.tsx` - Added public pricing routes, protected settings routes
+- `frontend/src/components/layout/Navbar.tsx` - Added Pricing menu item
+- `frontend/src/types/firebase.type.ts` - Extended UserProfileData with subscription fields
+- `server/src/routes/mealPlan.js` - Added access control check at start of POST /generate
+
+#### Database Schema Changes
+
+**Firestore Users Collection** (new fields):
+```javascript
+{
+  subscription_plan: 'free' | 'pro' | 'max',
+  subscription_status: 'active' | 'cancelled' | 'expired',
+  billing_cycle: 'monthly' | 'yearly',
+  subscription_start_date: timestamp,
+  subscription_end_date: timestamp | null,
+  next_billing_date: timestamp,
+  meal_plans_generated_count: number,
+  meal_plans_generated_this_week: number,
+  last_meal_plan_reset_date: timestamp
+}
+```
+
+#### Subscription Behaviors
+
+**Cancellation**:
+- Status changes to `cancelled` but user retains access until `next_billing_date`
+- Shows "Subscription ends on [date]" in settings
+- At end date, status changes to `expired` and access is blocked
+- Users can reactivate anytime before expiration
+
+**Upgrade Flow**:
+- FREE → PRO: Immediate access to 3 weekly meal plans
+- PRO → MAX: Immediate unlimited access (when MAX launches)
+- Billing cycle selection (monthly vs yearly)
+- 17% discount for annual plans (₹5000/year vs ₹6000)
+
+**Usage Tracking**:
+- `meal_plans_generated_count` - Total lifetime (never resets)
+- `meal_plans_generated_this_week` - Weekly counter (resets Monday)
+- Displayed in settings: "2 of 3 meal plans used this week"
+
+#### Known Issues & Limitations
+
+**🚧 Not Yet Implemented**:
+- ❌ Payment integration (Razorpay/Stripe) - upgrade is manual API call
+- ❌ Automatic subscription renewal
+- ❌ MAX plan features (still "Coming Soon")
+- ❌ Email notifications for billing/cancellation
+- ❌ Invoice generation
+- ❌ Promotional codes / discounts
+
+**⚠️ Current Upgrade Flow**:
+- Clicking "Upgrade to Pro" navigates to pricing page
+- Clicking "UPGRADE TO PRO" on pricing page navigates back to settings
+- **Circular navigation loop** - no actual API call to upgrade
+- To test: Use backend API directly with cURL
+
+#### Testing
+
+**Manual Test Flows**:
+1. FREE user generates 1 meal plan → succeeds
+2. FREE user tries 2nd meal plan → blocked with upgrade modal
+3. PRO user generates 3 meal plans → all succeed
+4. PRO user tries 4th meal plan → blocked until Monday
+5. Test user generates unlimited → all succeed
+6. User cancels subscription → retains access until end date
+7. User reactivates subscription → full access restored
+
+**Backend API Tests** (cURL):
+```bash
+# Get subscription
+curl http://localhost:5000/api/subscription?userId=test123
+
+# Upgrade to PRO
+curl -X PUT http://localhost:5000/api/subscription/upgrade \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"test123","plan":"pro","billing_cycle":"monthly"}'
+
+# Cancel subscription
+curl -X PUT http://localhost:5000/api/subscription/cancel \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"test123"}'
+```
+
+#### Documentation
+
+**New Files**:
+- `PRICING_SYSTEM_DOCS.md` - Complete technical specification (300+ lines)
+- `server/src/scripts/setupTestUser.js` - Test user setup script
+
+**Updated Files**:
+- `README.md` - Added subscription system section, API endpoints, feature list
+
+#### Files Changed Summary
+
+**Frontend** (11 new files, 3 modified):
+- New: 4 types files, 3 page files, 3 component files, 1 config file, 1 service file
+- Modified: App.tsx, Navbar.tsx, firebase.type.ts
+
+**Backend** (4 new files, 2 modified):
+- New: subscription.js (routes), subscriptionUtils.js (utils), setupTestUser.js (script), PRICING_SYSTEM_DOCS.md (docs)
+- Modified: mealPlan.js (access control), index.js (route registration)
+
+#### Impact & Benefits
+
+**User Benefits**:
+- ✅ Clear pricing transparency (public pricing pages)
+- ✅ Free trial (1 meal plan) before commitment
+- ✅ Weekly reset prevents bill shock (3/week limit)
+- ✅ Flexible cancellation with retained access
+- ✅ Usage tracking visibility
+
+**Business Benefits**:
+- ✅ Monetization path for meal plan feature
+- ✅ Prevents abuse (unlimited free generation)
+- ✅ Encourages conversion (FREE → PRO)
+- ✅ Recurring revenue model (subscriptions)
+- ✅ Foundation for payment integration
+
+**Developer Benefits**:
+- ✅ Test user for demos without limits
+- ✅ Comprehensive documentation
+- ✅ Clean separation: access control in backend, UI in frontend
+- ✅ TypeScript types for type safety
+- ✅ Modular design (easy to add payment gateway)
+
+#### Migration Notes
+
+**Existing Users**:
+- All existing users default to FREE plan (1 meal plan limit)
+- No retroactive charges
+- Existing meal plan counts preserved in `meal_plans_generated_count`
+- Users must upgrade to continue generating meal plans
+
+**Database Migration**:
+- No migration script required (Firestore handles missing fields gracefully)
+- New fields set to defaults on first access:
+  - `subscription_plan`: 'free'
+  - `subscription_status`: 'active'
+  - `meal_plans_generated_count`: 0 (or actual count if tracked)
+  - `meal_plans_generated_this_week`: 0
+
+#### Next Steps
+
+**Immediate Priorities**:
+1. **Fix upgrade flow** - Implement billing cycle selection modal and subscriptionApi.upgrade() call
+2. **Test complete flow** - End-to-end testing of all user journeys
+3. **Payment integration** - Razorpay for Indian users, Stripe for international
+
+**Future Enhancements**:
+- Family plans (multi-user subscriptions)
+- Gift subscriptions
+- Promotional codes & referral program
+- Revenue analytics dashboard
+- MAX plan launch with unlimited features
+
+---
 
 ### Latest Updates (v1.1.0)
 

@@ -97,6 +97,14 @@ export const Navbar = () => {
                 </Link>
               </>
             )}
+            <Link
+              to="/pricing"
+              className={`text-gray-700 hover:text-primary transition ${
+                pathName === '/pricing' || pathName === '/pricing-details' ? 'text-primary' : ''
+              }`}
+            >
+              Pricing
+            </Link>
           </div>
 
           {/* User Menu */}
@@ -154,8 +162,14 @@ export const Navbar = () => {
               <Link to="/progress" className="block text-primary hover:underline">
                 {t('nav.progress')}
               </Link>
+              <Link to="/reports" className="block text-primary hover:underline">
+                {t('nav.reports')}
+              </Link>
             </>
           )}
+          <Link to="/pricing" className="block text-primary hover:underline">
+            Pricing
+          </Link>
         </div>
       )}
     </nav>

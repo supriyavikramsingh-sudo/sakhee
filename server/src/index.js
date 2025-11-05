@@ -13,6 +13,7 @@ import progressRoutes from './routes/progress.js';
 import ragStatusRoutes from './routes/ragStatus.js';
 import feedbackRoutes from './routes/feedback.js';
 import userProfileRoutes from './routes/userProfile.js';
+import subscriptionRoutes from './routes/subscription.js';
 import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
@@ -61,6 +62,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/rag', ragStatusRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/user', userProfileRoutes);
+app.use('/api/user', subscriptionRoutes); // Subscription routes under /api/user
 
 // Health check
 app.get('/health', (req, res) => {
