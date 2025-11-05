@@ -43,10 +43,13 @@ export interface PricingCardData {
   tagline: string;
   value?: string;
   badge?: string;
+  badgeSubtext?: string; // Additional text for badge (e.g., "Launching in 6 months")
+  planDescription?: string; // Overall plan description
   features: PricingFeature[];
   ctaText: string;
   isPopular?: boolean;
   isDisabled?: boolean;
+  valueProps?: string[]; // Value propositions shown below features
 }
 
 export interface PricingFeature {
@@ -55,6 +58,7 @@ export interface PricingFeature {
   comingSoon?: boolean;
   isPremium?: boolean; // Shows ⭐
   isDoublePremium?: boolean; // Shows ⭐⭐
+  description?: string; // Feature description
 }
 
 export interface UserSubscriptionState {

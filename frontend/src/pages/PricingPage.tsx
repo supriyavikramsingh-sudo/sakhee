@@ -74,11 +74,39 @@ const PricingPage = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Choose Your Plan
+            Choose Your Sakhee Plan
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Affordable PCOS management for every stage of your journey
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            Affordable PCOS care for every woman in India. Start free, upgrade as you grow. No long-term commitments, cancel anytime.
           </p>
+          
+          {/* Trust Badges */}
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-8 max-w-4xl mx-auto">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
+                <span className="text-green-600 text-xl">✓</span>
+              </div>
+              <p className="text-sm text-gray-700">
+                No payment required<br />for Free plan
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-pink-100 rounded-full">
+                <span className="text-primary text-xl">₹</span>
+              </div>
+              <p className="text-sm text-gray-700">
+                Pro plan: Just ₹17/day—<br />less than a cup of chai
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
+                <span className="text-blue-600 text-xl">🔒</span>
+              </div>
+              <p className="text-sm text-gray-700">
+                Your data stays with you,<br />always
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Billing Toggle */}
@@ -96,13 +124,16 @@ const PricingPage = () => {
             </button>
             <button
               onClick={() => setBillingCycle('yearly')}
-              className={`px-6 py-2 rounded-md font-medium transition ${
+              className={`px-6 py-2 rounded-md font-medium transition relative ${
                 billingCycle === 'yearly'
                   ? 'bg-primary text-white'
                   : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Yearly
+              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">
+                Save ₹1,000+
+              </span>
             </button>
           </div>
           
@@ -126,19 +157,62 @@ const PricingPage = () => {
           ))}
         </div>
 
-        {/* Bottom Info */}
-        <div className="text-center text-gray-600 text-sm mb-8">
-          <p>7-day money-back guarantee · Cancel anytime · Secure payment</p>
-        </div>
-
         {/* Learn More Button */}
-        <div className="text-center">
+        <div className="text-center mb-16">
           <button
             onClick={() => navigate('/pricing-details')}
             className="px-8 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition"
           >
             Find out more about our plans
           </button>
+        </div>
+
+        {/* Trust Signals Footer */}
+        <div className="max-w-5xl mx-auto">
+          {/* Terms and Privacy */}
+          <div className="text-center mb-8">
+            <p className="text-sm text-gray-600 leading-relaxed">
+              By creating an account you agree to our{' '}
+              <a href="#" className="text-primary hover:underline">Terms of Service</a>
+              {' '}and{' '}
+              <a href="#" className="text-primary hover:underline">Privacy Policy</a>.
+              <br />
+              Your health data is encrypted, HIPAA-compliant, and never shared without consent.
+            </p>
+          </div>
+
+          {/* Statistics */}
+          <div className="grid md:grid-cols-3 gap-6 bg-white rounded-lg shadow-md p-8">
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-2xl">🔒</span>
+                </div>
+              </div>
+              <h3 className="font-semibold text-gray-800 mb-1">Secure payments</h3>
+              <p className="text-sm text-gray-600">All transactions encrypted and protected</p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-2xl">🛡️</span>
+                </div>
+              </div>
+              <h3 className="font-semibold text-gray-800 mb-1">HIPAA-compliant storage</h3>
+              <p className="text-sm text-gray-600">Medical-grade data security standards</p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-2xl">💬</span>
+                </div>
+              </div>
+              <h3 className="font-semibold text-gray-800 mb-1">24/7 AI support</h3>
+              <p className="text-sm text-gray-600">Your PCOS companion, always available</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

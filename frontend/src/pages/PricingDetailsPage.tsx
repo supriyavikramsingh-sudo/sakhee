@@ -8,32 +8,32 @@ const PricingDetailsPage = () => {
   const featureCategories = [
     {
       title: 'AI Chatbot & Scanning',
-      rows: [
+      availableNow: [
         {
           feature: 'Unlimited AI chat',
           free: true,
           pro: true,
+          max: true,
+        },
+      ],
+      comingSoon: [
+        {
+          feature: '5 photo scans/month with basic nutritional info',
+          free: true,
+          pro: false,
           max: false,
         },
         {
-          feature: '5 photo scans/month with basic nutritional info (Coming Soon)',
+          feature: 'Unlimited photo scans ⭐ with advanced nutritional info',
           free: false,
-          pro: false,
-          max: false,
-          comingSoon: true,
-        },
-        {
-          feature: 'Unlimited photo scans ⭐ with advanced nutritional info (Coming Soon)',
-          free: false,
-          pro: false,
-          max: false,
-          comingSoon: true,
+          pro: true,
+          max: true,
         },
       ],
     },
     {
       title: 'Meal Planning',
-      rows: [
+      availableNow: [
         {
           feature: '1 generation/month',
           free: true,
@@ -44,157 +44,171 @@ const PricingDetailsPage = () => {
           feature: '3 generations/week ⭐',
           free: false,
           pro: true,
-          max: false,
+          max: true,
         },
         {
-          feature: '3/5/7 days, All cuisines & features',
+          feature: '3/5/7 days, all cuisines & features',
           free: true,
           pro: true,
-          max: false,
+          max: true,
         },
+      ],
+      comingSoon: [
         {
-          feature: 'Nutritionist approval ⭐⭐ (Coming Soon)',
+          feature: 'Nutritionist approval ⭐⭐',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
       ],
     },
     {
       title: 'Lab Reports',
-      rows: [
+      availableNow: [
         {
           feature: 'AI analysis (25+ markers)',
           free: true,
           pro: true,
+          max: true,
+        },
+      ],
+      comingSoon: [
+        {
+          feature: '1 FREE doctor review/month ⭐',
+          free: false,
+          pro: true,
+          max: true,
+        },
+        {
+          feature: 'Extra reviews: ₹400 each',
+          free: false,
+          pro: true,
           max: false,
         },
         {
-          feature: '1 FREE doctor review/month ⭐ (Coming Soon)',
+          feature: 'Extra reviews: ₹200 (50% off) ⭐⭐',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
-        },
-        {
-          feature: 'Extra reviews: ₹400 each (Coming Soon)',
-          free: false,
-          pro: false,
-          max: false,
-          comingSoon: true,
-        },
-        {
-          feature: 'Extra reviews: ₹200 (50% off) ⭐⭐ (Coming Soon)',
-          free: false,
-          pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
       ],
     },
     {
       title: 'Food Ordering',
-      rows: [
+      availableNow: [],
+      comingSoon: [
         {
-          feature: 'Zomato ordering, No discount (Coming Soon)',
-          free: false,
+          feature: 'Zomato ordering: No discount',
+          free: true,
           pro: false,
           max: false,
-          comingSoon: true,
         },
         {
-          feature: 'Zomato + Swiggy, 10% discount ⭐ (Coming Soon)',
+          feature: 'Zomato + Swiggy: 10% discount ⭐',
           free: false,
-          pro: false,
+          pro: true,
           max: false,
-          comingSoon: true,
         },
         {
-          feature: 'Zomato + Swiggy, 20% discount ⭐⭐ (Coming Soon)',
+          feature: 'Zomato + Swiggy: 20% discount ⭐⭐',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
       ],
     },
     {
       title: 'Progress Tracking',
-      rows: [
+      availableNow: [
         {
           feature: 'Manual logging',
           free: true,
           pro: true,
-          max: false,
+          max: true,
         },
         {
           feature: '7-day view',
           free: true,
           pro: true,
-          max: false,
+          max: true,
         },
         {
-          feature: 'AI insights ⭐, 30-day trends',
+          feature: 'AI insights ⭐: 30-day trends',
           free: false,
           pro: true,
-          max: false,
+          max: true,
         },
+      ],
+      comingSoon: [
         {
           feature: '6-month history',
           free: false,
-          pro: true,
-          max: false,
+          pro: false,
+          max: true,
         },
         {
-          feature: 'Advanced analytics ⭐⭐, 12-month retention (Coming Soon)',
+          feature: 'Advanced analytics ⭐⭐: 12-month retention',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
         {
-          feature: 'Doctor-shareable reports (Coming Soon)',
+          feature: 'Doctor-shareable reports',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
       ],
     },
     {
       title: 'Supplements',
-      rows: [
+      availableNow: [
         {
           feature: 'Basic recommendations',
           free: true,
           pro: true,
-          max: false,
+          max: true,
+        },
+      ],
+      comingSoon: [
+        {
+          feature: 'Personalized by labs ⭐: Purchase links',
+          free: false,
+          pro: true,
+          max: true,
         },
         {
-          feature: 'Personalized by labs ⭐, Purchase links (Coming Soon)',
+          feature: 'Nutritionist consultation ⭐⭐: Custom plans',
           free: false,
           pro: false,
-          max: false,
-          comingSoon: true,
+          max: true,
         },
+      ],
+    },
+    {
+      title: 'Languages',
+      availableNow: [
         {
-          feature: 'Nutritionist consultation ⭐⭐, Custom plans (Coming Soon)',
-          free: false,
-          pro: false,
-          max: false,
-          comingSoon: true,
+          feature: 'Currently Available: English, Hindi',
+          free: true,
+          pro: true,
+          max: true,
+        },
+      ],
+      comingSoon: [
+        {
+          feature: 'Coming Soon: Telugu, Tamil, Marathi, Gujarati, Kannada, Bengali',
+          free: true,
+          pro: true,
+          max: true,
         },
       ],
     },
   ];
 
-  const renderCell = (value: boolean, comingSoon: boolean = false) => {
-    if (comingSoon) {
-      return <span className="text-gray-400 text-sm">(Coming Soon)</span>;
-    }
+  const renderCell = (value: boolean, isComingSoonSection: boolean = false) => {
     return value ? (
-      <Check className="w-5 h-5 text-green-500 mx-auto" />
+      <Check className={`w-5 h-5 mx-auto ${isComingSoonSection ? 'text-green-400' : 'text-green-500'}`} />
     ) : (
       <span className="text-gray-300">—</span>
     );
@@ -252,48 +266,83 @@ const PricingDetailsPage = () => {
                 {featureCategories.map((category, catIndex) => (
                   <>
                     {/* Category Header */}
-                    <tr key={`cat-${catIndex}`} className="bg-gray-100">
+                    <tr key={`cat-${catIndex}`} className="bg-gradient-to-r from-gray-100 to-gray-50">
                       <td
                         colSpan={4}
-                        className="px-6 py-3 text-sm font-semibold text-gray-800"
+                        className="px-6 py-3 text-base font-bold text-gray-800"
                       >
                         {category.title}
                       </td>
                     </tr>
-                    {/* Category Rows */}
-                    {category.rows.map((row, rowIndex) => (
-                      <tr
-                        key={`row-${catIndex}-${rowIndex}`}
-                        className="border-b border-gray-100 hover:bg-gray-50"
-                      >
-                        <td className="px-6 py-4 text-sm text-gray-700">{row.feature}</td>
-                        <td className="px-6 py-4 text-center">
-                          {renderCell(row.free, row.comingSoon)}
-                        </td>
-                        <td className="px-6 py-4 text-center bg-pink-50/30">
-                          {renderCell(row.pro, row.comingSoon)}
-                        </td>
-                        <td className="px-6 py-4 text-center text-gray-400">
-                          {renderCell(row.max, true)}
-                        </td>
-                      </tr>
-                    ))}
+                    
+                    {/* Available Now Section */}
+                    {category.availableNow.length > 0 && (
+                      <>
+                        <tr key={`available-${catIndex}`} className="bg-white">
+                          <td
+                            colSpan={4}
+                            className="px-6 py-2 text-sm font-medium text-gray-600"
+                          >
+                            Available Now
+                          </td>
+                        </tr>
+                        {category.availableNow.map((row, rowIndex) => (
+                          <tr
+                            key={`available-row-${catIndex}-${rowIndex}`}
+                            className="border-b border-gray-100 hover:bg-gray-50"
+                          >
+                            <td className="px-6 py-4 text-sm text-gray-700">{row.feature}</td>
+                            <td className="px-6 py-4 text-center">
+                              {renderCell(row.free, false)}
+                            </td>
+                            <td className="px-6 py-4 text-center bg-pink-50/30">
+                              {renderCell(row.pro, false)}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {renderCell(row.max, false)}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    )}
+                    
+                    {/* Coming Soon Section */}
+                    {category.comingSoon.length > 0 && (
+                      <>
+                        <tr key={`coming-${catIndex}`} className="bg-white">
+                          <td
+                            colSpan={4}
+                            className="px-6 py-2 text-sm font-medium text-amber-600 italic"
+                          >
+                            Coming Soon
+                          </td>
+                        </tr>
+                        {category.comingSoon.map((row, rowIndex) => (
+                          <tr
+                            key={`coming-row-${catIndex}-${rowIndex}`}
+                            className="border-b border-gray-100 hover:bg-gray-50 opacity-70"
+                          >
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {row.feature} <span className="text-amber-600 text-xs ml-1">(Coming Soon)</span>
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {renderCell(row.free, true)}
+                            </td>
+                            <td className="px-6 py-4 text-center bg-pink-50/30">
+                              {renderCell(row.pro, true)}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              {renderCell(row.max, true)}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    )}
                   </>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
-
-        {/* Language Info */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-12">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">Languages</h3>
-          <p className="text-gray-700">
-            <span className="font-medium">Currently Available:</span> English, Hindi
-          </p>
-          <p className="text-gray-600 mt-2">
-            <span className="font-medium">Coming Soon:</span> Telugu, Tamil, Marathi, Gujarati, Kannada, Bengali
-          </p>
         </div>
 
         {/* Who It's For */}
@@ -315,7 +364,7 @@ const PricingDetailsPage = () => {
             <div className="text-center opacity-60">
               <div className="text-4xl mb-3">⚕️</div>
               <h4 className="font-semibold text-gray-800 mb-2">SAKHEE MAX</h4>
-              <p className="text-sm text-gray-600">Coming Soon - Medical grade care with professional support</p>
+              <p className="text-sm text-gray-600">Coming Soon - Medical-grade care with professional support</p>
             </div>
           </div>
         </div>
