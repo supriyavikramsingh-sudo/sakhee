@@ -2795,6 +2795,7 @@
 ### HEALTHY SNACKS
 
 #### 271. Roasted Makhana
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Makhana 30g, ghee 5g, salt, pepper
@@ -2805,6 +2806,7 @@
 - Tip: Great for PCOS
 
 #### 272. Sprouts Chaat
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Mixed sprouts 50g, onion, tomato, lemon
@@ -2815,6 +2817,7 @@
 - Tip: High protein snack
 
 #### 273. Roasted Chana
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Roasted chickpeas 40g, chaat masala
@@ -2825,6 +2828,7 @@
 - Tip: Crunchy protein snack
 
 #### 274. Cucumber Raita
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Cucumber 100g, yogurt 100ml, cumin
@@ -2835,6 +2839,7 @@
 - Tip: Cooling and probiotic
 
 #### 275. Boiled Egg with Spices
+- State: All States
 - Region: North India (All States)
 - Type: Non-Vegetarian
 - Ingredients: Eggs 2, chaat masala, salt
@@ -2845,6 +2850,7 @@
 - Tip: Perfect protein snack
 
 #### 276. Peanuts Chaat
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Roasted peanuts 30g, onion, tomato, lemon
@@ -2855,6 +2861,7 @@
 - Tip: Healthy fats and protein
 
 #### 277. Paneer Tikka (Small Portion)
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Paneer 60g, yogurt marinade, grilled
@@ -2865,6 +2872,7 @@
 - Tip: High protein snack
 
 #### 278. Fruit Chaat
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Mixed fruits 150g, chaat masala, lemon
@@ -2875,6 +2883,7 @@
 - Tip: Fiber and vitamins
 
 #### 279. Roasted Pumpkin Seeds
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Pumpkin seeds 30g, salt
@@ -2885,6 +2894,7 @@
 - Tip: Zinc-rich for PCOS
 
 #### 280. Chicken Tikka Bites
+- State: All States
 - Region: North India (All States)
 - Type: Non-Vegetarian
 - Ingredients: Chicken 80g, yogurt marinade, grilled
@@ -2897,6 +2907,7 @@
 ### HEALTHY BEVERAGES
 
 #### 281. Sattu Drink (Sugar-Free)
+- State: Bihar
 - Region: Bihar/UP
 - Type: Vegetarian
 - Ingredients: Sattu 30g, water 250ml, lemon, salt/stevia
@@ -2907,6 +2918,7 @@
 - Tip: Cooling summer drink
 
 #### 282. Lassi (Sugar-Free)
+- State: Punjab
 - Region: Punjab/All North India
 - Type: Vegetarian
 - Ingredients: Yogurt 200ml, water 50ml, stevia, cardamom
@@ -2917,6 +2929,7 @@
 - Tip: Probiotic drink
 
 #### 283. Chaas (Buttermilk)
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Yogurt 150ml, water 100ml, cumin, salt
@@ -2927,6 +2940,7 @@
 - Tip: Digestive aid
 
 #### 284. Herbal Tea (Kahwa Style)
+- State: Jammu & Kashmir
 - Region: Jammu & Kashmir
 - Type: Vegetarian
 - Ingredients: Green tea, saffron, cardamom, cinnamon
@@ -2937,6 +2951,7 @@
 - Tip: Antioxidant-rich
 
 #### 285. Lemon Water with Chia Seeds
+- State: All States
 - Region: North India (All States)
 - Type: Vegetarian
 - Ingredients: Water 250ml, lemon juice, chia seeds 10g
@@ -2948,7 +2963,10 @@
 
 ---
 
-## NOTES FOR PCOS MANAGEMENT
+**Total Meal Options Across North India: 285+**
+**Coverage: 9 States with 30+ meals each**
+**Balance: 50% Vegetarian | 50% Non-Vegetarian**
+**Focus: PCOS-Friendly, Budget-Conscious, Culturally Authentic**
 
 ### BEST CHOICES FOR PCOS:
 1. **Low GI Millets**: Bajra, jowar, ragi (mandua), barnyard millet (jhangora)

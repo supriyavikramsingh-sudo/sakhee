@@ -21,6 +21,7 @@ class EnhancedRAGIngester {
   constructor() {
     this.templatesDir = path.join(__dirname, '../data/meal_templates');
     this.medicalDir = path.join(__dirname, '../data/medical');
+    this.nutritionalDir = path.join(__dirname, '../data/nutritional');
     this.documents = [];
   }
 
@@ -80,12 +81,23 @@ class EnhancedRAGIngester {
           const tip = this.extractTip(mealContent);
           const gi = this.extractGI(mealContent);
 
+          // ⭐ NEW: Extract normalized mealType from categoryName
+          // "BREAKFAST OPTIONS" → "breakfast"
+          // "LUNCH OPTIONS" → "lunch"
+          // "DINNER OPTIONS" → "dinner"
+          // "SNACKS OPTIONS" → "snack"
+          const mealType = this.extractMealType(categoryName);
+
           // Create a rich document for embedding
+          // ⭐ ADDED: Normalized "MealType: breakfast/lunch/dinner/snack" field
+          // This fixes the vocabulary mismatch issue where queries use "breakfast"
+          // but documents say "BREAKFAST OPTIONS"
           const structuredContent = `
 Region: ${region}
 State: ${state}
 Regional Section: ${regionalSection}
 Category: ${categoryName}
+MealType: ${mealType}
 Meal: ${mealName}
 Type: ${dietType}
 Ingredients: ${ingredients}
@@ -105,6 +117,7 @@ Tip: ${tip}
               state: state,
               regionalSection: regionalSection.toLowerCase(),
               category: categoryName.toLowerCase(),
+              mealType: mealType, // ⭐ NEW: Normalized field
               mealName: mealName,
               dietType: dietType,
               ingredients: ingredients.split(', ').filter((i) => i),
@@ -394,6 +407,27 @@ Tip: ${tip}
   }
 
   /**
+   * ⭐ NEW: Extract normalized mealType from category name
+   * Fixes vocabulary mismatch: "BREAKFAST OPTIONS" → "breakfast"
+   */
+  extractMealType(categoryName) {
+    const normalized = categoryName.toLowerCase();
+
+    if (normalized.includes('breakfast')) {
+      return 'breakfast';
+    } else if (normalized.includes('lunch')) {
+      return 'lunch';
+    } else if (normalized.includes('dinner')) {
+      return 'dinner';
+    } else if (normalized.includes('snack')) {
+      return 'snack';
+    } else {
+      // Fallback: try to infer from common patterns
+      return 'unknown';
+    }
+  }
+
+  /**
    * Read all .txt files from meal_templates directory
    */
   async loadMealTemplates() {
@@ -478,6 +512,90 @@ Tip: ${tip}
   }
 
   /**
+   * Load nutritional guidelines documents
+   * Read all .txt files from nutritional directory
+   */
+  async loadNutritionalGuidelines() {
+    try {
+      logger.info('🥗 Reading nutritional guidelines files...');
+
+      if (!fs.existsSync(this.nutritionalDir)) {
+        logger.warn(`⚠️  Nutritional directory not found: ${this.nutritionalDir}`);
+        logger.info(
+          '💡 Skipping nutritional guidelines ingestion. Create the directory and add files to enable this feature.'
+        );
+        return [];
+      }
+
+      const files = fs.readdirSync(this.nutritionalDir).filter((file) => file.endsWith('.txt'));
+
+      if (files.length === 0) {
+        logger.warn('⚠️  No .txt files found in nutritional directory');
+        return [];
+      }
+
+      logger.info(`Found ${files.length} nutritional guidelines files: ${files.join(', ')}`);
+
+      let nutritionalDocs = [];
+      for (const file of files) {
+        const filePath = path.join(this.nutritionalDir, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
+
+        logger.info(`📄 Processing ${file}...`);
+        // Parse as simple sections (## headers)
+        const docs = this.parseNutritionalGuidelines(content, file);
+        nutritionalDocs.push(...docs);
+        logger.info(`   ✓ Extracted ${docs.length} guideline documents`);
+      }
+
+      logger.info(`✅ Total nutritional documents extracted: ${nutritionalDocs.length}`);
+      return nutritionalDocs;
+    } catch (error) {
+      logger.error('Failed to load nutritional guidelines', {
+        error: error.message,
+        stack: error.stack,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Parse nutritional guidelines document into sections
+   * Split by ## headers
+   */
+  parseNutritionalGuidelines(content, filename) {
+    const docs = [];
+
+    // Split by ## headers (main sections)
+    const sections = content.split(/\n## /g);
+
+    // First section is the title, skip it
+    for (let i = 1; i < sections.length; i++) {
+      const section = sections[i];
+      const lines = section.split('\n');
+      const sectionTitle = lines[0].trim();
+      const sectionContent = lines.slice(1).join('\n').trim();
+
+      if (sectionContent.length > 100) {
+        // Only create document if has substantial content
+        const doc = new Document({
+          pageContent: `${sectionTitle}\n\n${sectionContent}`,
+          metadata: {
+            type: 'nutritional_guidance',
+            source: filename,
+            section: sectionTitle,
+            title: sectionTitle,
+          },
+        });
+
+        docs.push(doc);
+      }
+    }
+
+    return docs;
+  }
+
+  /**
    * Ingest all documents into vector store
    */
   async ingest() {
@@ -498,8 +616,11 @@ Tip: ${tip}
       // Load medical guidance
       const medicalDocs = await this.loadMedicalGuidance();
 
+      // Load nutritional guidelines
+      const nutritionalDocs = await this.loadNutritionalGuidelines();
+
       // Combine all documents
-      this.documents = [...mealDocs, ...medicalDocs];
+      this.documents = [...mealDocs, ...medicalDocs, ...nutritionalDocs];
 
       if (this.documents.length === 0) {
         logger.warn('⚠️  No documents to ingest');
@@ -511,6 +632,7 @@ Tip: ${tip}
       logger.info('📊 Ingestion Summary:');
       logger.info(`   Meal Templates: ${mealDocs.length} documents`);
       logger.info(`   Medical Guidance: ${medicalDocs.length} documents`);
+      logger.info(`   Nutritional Guidelines: ${nutritionalDocs.length} documents`);
       logger.info(`   Total: ${this.documents.length} documents`);
       logger.info('='.repeat(60));
 

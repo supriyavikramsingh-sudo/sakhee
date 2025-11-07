@@ -29,8 +29,27 @@ class VectorStoreManager {
       if (fs.existsSync(this.dbPath)) {
         logger.info('📦 Loading existing vector store...');
         this.vectorStore = await HNSWLib.load(this.dbPath, embeddingsManager.getEmbeddings());
+
+        // ✅ OPTIMIZATION: Configure efSearch for balanced quality/performance
+        // Note: Using 30 (2× topK=15) instead of 50 for more conservative search
+        if (this.vectorStore.index && this.vectorStore.index.setEf) {
+          this.vectorStore.index.setEf(30);
+          logger.info('✅ Set efSearch = 30 (2× topK=15 for balanced search)');
+        } else {
+          logger.warn('⚠️  Could not set efSearch - index.setEf() not available');
+        }
+
         this.isInitialized = true;
-        logger.info('✅ Vector store loaded successfully');
+
+        // Log vector store stats
+        try {
+          const docCount = this.vectorStore.index
+            ? await this.vectorStore.index.getCurrentCount()
+            : 'unknown';
+          logger.info(`✅ Vector store loaded: ${docCount} documents`);
+        } catch (e) {
+          logger.info('✅ Vector store loaded successfully');
+        }
       } else {
         // Create new vector store
         logger.info('📦 Creating new vector store...');
@@ -230,6 +249,7 @@ class VectorStoreManager {
         hasVectorStore: !!this.vectorStore,
         dbPath: this.dbPath,
         dbExists: fs.existsSync(this.dbPath),
+        embeddingCache: embeddingsManager.getCacheStats(), // ✅ Add cache stats
       };
     } catch (error) {
       logger.error('Failed to get stats', { error: error.message });
@@ -239,6 +259,13 @@ class VectorStoreManager {
         error: error.message,
       };
     }
+  }
+
+  /**
+   * ✅ NEW: Get embedding cache statistics
+   */
+  getCacheStats() {
+    return embeddingsManager.getCacheStats();
   }
 
   /**

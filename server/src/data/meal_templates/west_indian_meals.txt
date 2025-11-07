@@ -1252,31 +1252,7 @@ This file contains state-wise structured PCOS-friendly meal templates for Mahara
 
 ---
 
-## NOTES FOR PCOS MANAGEMENT – WEST INDIA
-### Best Ingredients by Region
-- **Maharashtra:** Jowar, ragi, bajra, methi, moong sprouts, coconut in moderation.
-- **Gujarat:** Bajra, jowar, buttermilk, fermented batters (handvo, dhokla), seasonal vegetables.
-- **Goa:** Fish (omega-3), light coconut milk, kokum, red rice, leafy greens.
-
-### Ideal Cooking Methods
-- Prefer **steaming, roasting, air-frying,** or **light sautéing** over deep frying.
-- Replace coconut cream with light coconut milk.
-- Use **fermented** and **sprouted** preparations to improve gut health.
-
-### Meal Timings
-- **Breakfast:** Within 60 minutes of waking up
-- **Lunch:** 12–2 PM (main meal)
-- **Dinner:** Before 8 PM (light and high-protein)
-- **Snacks:** Two light, high-protein options per day
-
-### Portion Guide
-- **Breakfast:** 300–400 kcal
-- **Lunch:** 400–500 kcal
-- **Dinner:** 300–400 kcal
-- **Snacks:** 100–150 kcal each
-
-### PCOS Benefits Summary
-- **Low GI grains** stabilize blood sugar.
-- **Lean proteins (fish, eggs, legumes)** improve insulin sensitivity.
-- **Probiotics and fermented foods** enhance gut microbiota.
-- **Regional diversity** ensures nutrient variety and sustainability.
+**Total Meal Options for West India: 120+**
+**Coverage: Maharashtra (40 meals) | Gujarat (40 meals) | Goa (40 meals)**
+**Balance: 52% Vegetarian | 48% Non-Vegetarian**
+**Focus: PCOS-Friendly, Coastal & Traditional, Fermented Foods**
