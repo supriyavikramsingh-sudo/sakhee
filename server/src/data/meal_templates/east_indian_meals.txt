@@ -12,7 +12,7 @@
 - Macros: Protein 8g, Carbs 42g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use thick poha and light mustard oil for tempering
 
 #### 2. Luchi with Cholar Dal (Bengal Gram Curry)
@@ -22,7 +22,7 @@
 - Macros: Protein 15g, Carbs 50g, Fats 12g
 - Budget: ₹40-45
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake luchi instead of deep frying for a lighter option
 
 #### 3. Mochar Ghonto (Banana Flower Curry)
@@ -32,7 +32,7 @@
 - Macros: Protein 9g, Carbs 36g, Fats 8g
 - Budget: ₹30-35
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Rich in iron; excellent for hormonal balance
 
 #### 4. Egg Roll (Healthy Street Style)
@@ -42,7 +42,7 @@
 - Macros: Protein 20g, Carbs 30g, Fats 10g
 - Budget: ₹45-50
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use whole wheat base and avoid mayo
 
 #### 5. Dim Shahi Toast
@@ -52,7 +52,7 @@
 - Macros: Protein 16g, Carbs 25g, Fats 9g
 - Budget: ₹25-30
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pan-grill without butter
 
 #### 6. Ghugni (Yellow Peas Curry)
@@ -62,7 +62,7 @@
 - Macros: Protein 14g, Carbs 38g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Add cucumber and boiled egg for protein boost
 
 #### 7. Muri Ghonto (Fish Head Rice Mix)
@@ -72,7 +72,7 @@
 - Macros: Protein 20g, Carbs 35g, Fats 9g
 - Budget: ₹60-70
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use minimal oil; high in calcium
 
 #### 8. Aloo Posto with Brown Rice
@@ -82,7 +82,7 @@
 - Macros: Protein 9g, Carbs 38g, Fats 11g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use sweet potato instead for lower GI
 
 #### 9. Chingri Malai Scramble
@@ -92,7 +92,7 @@
 - Macros: Protein 25g, Carbs 10g, Fats 11g
 - Budget: ₹75-85
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light sauté with coconut oil for PCOS-friendly fat
 
 #### 10. Patishapta (Healthy Oat Crepe)
@@ -102,7 +102,7 @@
 - Macros: Protein 9g, Carbs 35g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Replace maida with oats for fiber boost
 
 ### LUNCH OPTIONS
@@ -114,7 +114,7 @@
 - Macros: Protein 28g, Carbs 8g, Fats 18g
 - Budget: ₹160-180
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of deep fry; rich in omega-3 for hormonal balance
 
 #### 12. Cholar Dal with Brown Rice
@@ -124,7 +124,7 @@
 - Macros: Protein 17g, Carbs 48g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use coconut oil sparingly; good plant protein
 
 #### 13. Kosha Mangsho (Spiced Mutton Curry)
@@ -134,7 +134,7 @@
 - Macros: Protein 32g, Carbs 14g, Fats 20g
 - Budget: ₹130-150
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Slow-cook with minimal oil for authentic flavor
 
 #### 14. Chingri Malai Curry (Prawn Coconut Curry)
@@ -144,7 +144,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 16g
 - Budget: ₹120-140
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use light coconut milk and avoid cream
 
 #### 15. Bhaja Moong Dal with Lau Ghonto
@@ -154,7 +154,7 @@
 - Macros: Protein 18g, Carbs 44g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Rich in fiber and easy to digest
 
 #### 16. Rui Macher Jhol (Light Rohu Curry)
@@ -164,7 +164,7 @@
 - Macros: Protein 29g, Carbs 38g, Fats 12g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Grill fish before simmering to cut oil
 
 #### 17. Pui Shaak Chingri
@@ -174,7 +174,7 @@
 - Macros: Protein 26g, Carbs 20g, Fats 10g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Great calcium + protein combo
 
 #### 18. Dhokar Dalna (Lentil Cake Curry)
@@ -184,7 +184,7 @@
 - Macros: Protein 18g, Carbs 40g, Fats 9g
 - Budget: ₹40-45
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake lentil cakes instead of frying
 
 #### 19. Begun Bhaja with Steamed Rice
@@ -194,7 +194,7 @@
 - Macros: Protein 9g, Carbs 45g, Fats 10g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Air-fry brinjal for crisp texture
 
 #### 20. Chicken Rezala (Light Yogurt Curry)
@@ -204,7 +204,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 14g
 - Budget: ₹95-110
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use lean breast pieces and no cream
 
 ### DINNER OPTIONS
@@ -216,7 +216,7 @@
 - Macros: Protein 6g, Carbs 36g, Fats 5g
 - Budget: ₹20-25
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of pan-fry; healthy dessert dinner
 
 #### 22. Fish Tikka with Salad
@@ -226,7 +226,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 11g
 - Budget: ₹80-90
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill with mustard marinade for authentic flavor
 
 #### 23. Paneer Posto
@@ -236,7 +236,7 @@
 - Macros: Protein 22g, Carbs 25g, Fats 13g
 - Budget: ₹65-75
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Replace part of paneer with tofu for low fat
 
 #### 24. Bhetki Paturi (Fish in Banana Leaf)
@@ -246,7 +246,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 12g
 - Budget: ₹100-120
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam in banana leaf; no oil needed
 
 #### 25. Moong Dal Khichuri
@@ -256,7 +256,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Ideal detox meal; gentle on gut
 
 #### 26. Chicken Stew with Vegetables
@@ -266,7 +266,7 @@
 - Macros: Protein 28g, Carbs 32g, Fats 9g
 - Budget: ₹70-80
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Avoid maida thickener; use oats slurry
 
 #### 27. Enchor Dalna (Raw Jackfruit Curry)
@@ -276,7 +276,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 8g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Substitute potato with soya chunks for protein
 
 #### 28. Egg Curry with Brown Rice
@@ -286,7 +286,7 @@
 - Macros: Protein 24g, Carbs 45g, Fats 14g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Go easy on mustard oil; add spinach
 
 #### 29. Lau Moong Dal
@@ -296,7 +296,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 6g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Perfect low-calorie dinner
 
 #### 30. Mutton Keema with Millet Roti
@@ -306,7 +306,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 16g
 - Budget: ₹95-110
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use minced lean meat for balance
 
 ### SNACK OPTIONS
@@ -318,7 +318,7 @@
 - Macros: Protein 9g, Carbs 38g, Fats 6g
 - Budget: ₹25–30
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of deep-frying for lower fat intake
 
 #### 32. Egg Devil (Air-Fried)
@@ -328,7 +328,7 @@
 - Macros: Protein 20g, Carbs 25g, Fats 9g
 - Budget: ₹45–50
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Air-fry with minimal oil; a classic Kolkata street snack made healthy
 
 #### 33. Jhal Muri (Spicy Puffed Rice Mix)
@@ -338,7 +338,7 @@
 - Macros: Protein 6g, Carbs 35g, Fats 5g
 - Budget: ₹20–25
 - Prep: 10 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Add boiled chickpeas for extra protein
 
 #### 34. Fish Cutlet (Baked)
@@ -348,7 +348,7 @@
 - Macros: Protein 22g, Carbs 20g, Fats 8g
 - Budget: ₹65–75
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of deep-frying; rich in omega-3
 
 #### 35. Chanar Sandesh (Low-Sugar Paneer Dessert)
@@ -358,7 +358,7 @@
 - Macros: Protein 18g, Carbs 12g, Fats 9g
 - Budget: ₹35–40
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich sweet for guilt-free indulgence
 
 #### 36. Chicken Pakora (Air-Fried)
@@ -368,7 +368,7 @@
 - Macros: Protein 25g, Carbs 15g, Fats 10g
 - Budget: ₹55–65
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Marinate in curd for tenderness
 
 #### 37. Prawn Skewers
@@ -378,7 +378,7 @@
 - Macros: Protein 26g, Carbs 6g, Fats 8g
 - Budget: ₹70–80
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill on tawa; avoid butter for leaner option
 
 #### 38. Dahi Puri Lite
@@ -388,7 +388,7 @@
 - Macros: Protein 9g, Carbs 32g, Fats 6g
 - Budget: ₹25–30
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use curd instead of tamarind water to lower acidity
 
 #### 39. Soya Cutlet
@@ -398,7 +398,7 @@
 - Macros: Protein 18g, Carbs 30g, Fats 7g
 - Budget: ₹35–40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Air-fry; high-protein, PCOS-friendly snack
 
 #### 40. Date-Nut Ladoo
@@ -408,7 +408,7 @@
 - Macros: Protein 6g, Carbs 30g, Fats 9g
 - Budget: ₹25–30
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Natural sweetener; no added sugar
 
 ---
@@ -425,7 +425,7 @@
 - Macros: Protein 10g, Carbs 40g, Fats 6g
 - Budget: ₹25-30
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Excellent probiotic breakfast aiding gut health
 
 #### 42. Dalma Upma
@@ -435,7 +435,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Odia twist on upma, with lentil base for protein
 
 #### 43. Manda Pitha (Steamed Rice Dumpling)
@@ -445,7 +445,7 @@
 - Macros: Protein 8g, Carbs 40g, Fats 6g
 - Budget: ₹25-30
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of frying; healthy traditional option
 
 #### 44. Santula with Millet Roti
@@ -455,7 +455,7 @@
 - Macros: Protein 10g, Carbs 40g, Fats 5g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light sauté; excellent for hormonal balance
 
 #### 45. Chuda Kadali (Flattened Rice with Banana)
@@ -465,7 +465,7 @@
 - Macros: Protein 7g, Carbs 38g, Fats 5g
 - Budget: ₹20-25
 - Prep: 10 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Quick meal; choose small banana for lower GI
 
 #### 46. Ghuguni (Pea Curry)
@@ -475,7 +475,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Add cucumber and lemon for freshness
 
 #### 47. Anda Tarkari with Roti
@@ -485,7 +485,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 14g
 - Budget: ₹45-50
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use minimal oil; rich in choline
 
 #### 48. Chingudi Bhaja (Prawn Fry)
@@ -495,7 +495,7 @@
 - Macros: Protein 25g, Carbs 8g, Fats 10g
 - Budget: ₹80-90
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pan-fry on low heat; omega-3 rich
 
 #### 49. Besara Tarkari (Vegetable Mustard Curry)
@@ -505,7 +505,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 7g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Mustard aids metabolism; limit oil
 
 #### 50. Chicken Chuna Tarkari
@@ -515,7 +515,7 @@
 - Macros: Protein 30g, Carbs 12g, Fats 14g
 - Budget: ₹70-80
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein and flavorful
 
 ### LUNCH OPTIONS
@@ -527,7 +527,7 @@
 - Macros: Protein 17g, Carbs 45g, Fats 8g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use minimal oil; high fiber
 
 #### 52. Maccha Besara (Fish in Mustard Gravy)
@@ -537,7 +537,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 12g
 - Budget: ₹85-100
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of fry for lighter version
 
 #### 53. Saga Bhaja with Dal
@@ -547,7 +547,7 @@
 - Macros: Protein 15g, Carbs 38g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron-rich meal
 
 #### 54. Chingudi Malai Tarkari (Prawn Coconut Curry)
@@ -557,7 +557,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 16g
 - Budget: ₹100-120
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use light coconut milk
 
 #### 55. Pakhala Bhata with Bhendi Bhaja
@@ -567,7 +567,7 @@
 - Macros: Protein 10g, Carbs 38g, Fats 6g
 - Budget: ₹25-30
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Cooling probiotic combo
 
 #### 56. Mutton Kassa
@@ -577,7 +577,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 18g
 - Budget: ₹130-150
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Choose lean cuts; avoid cream
 
 #### 57. Baigana Bharta
@@ -587,7 +587,7 @@
 - Macros: Protein 8g, Carbs 35g, Fats 7g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Roast with little mustard oil
 
 #### 58. Fish Ambula (Sour Fish Curry)
@@ -597,7 +597,7 @@
 - Macros: Protein 29g, Carbs 12g, Fats 10g
 - Budget: ₹85-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Natural souring aids digestion
 
 #### 59. Chana Tarkari
@@ -607,7 +607,7 @@
 - Macros: Protein 19g, Carbs 48g, Fats 8g
 - Budget: ₹40-45
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Add spinach for added iron
 
 #### 60. Anda Bhurji with Brown Rice
@@ -617,7 +617,7 @@
 - Macros: Protein 25g, Carbs 42g, Fats 14g
 - Budget: ₹40-50
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Quick and protein-dense
 
 ### DINNER OPTIONS
@@ -629,7 +629,7 @@
 - Macros: Protein 15g, Carbs 40g, Fats 7g
 - Budget: ₹25–30
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light, comforting; add vegetables for extra fiber
 
 #### 62. Dahi Baigana (Curd & Brinjal Curry)
@@ -639,7 +639,7 @@
 - Macros: Protein 10g, Carbs 28g, Fats 9g
 - Budget: ₹30–35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use air-fried brinjal to reduce oil
 
 #### 63. Kankada Jhola (Crab Curry)
@@ -649,7 +649,7 @@
 - Macros: Protein 28g, Carbs 14g, Fats 12g
 - Budget: ₹140–160
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Simmer gently; high in zinc and protein
 
 #### 64. Dalma (Dinner Portion)
@@ -659,7 +659,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹30–35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair with small portion of red rice if needed
 
 #### 65. Fish Tikka (Mustard-Yogurt Marinade)
@@ -669,7 +669,7 @@
 - Macros: Protein 30g, Carbs 8g, Fats 11g
 - Budget: ₹80–90
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill or air-fry; minimal oil
 
 #### 66. Sarsapa Paneer (Paneer in Mustard Gravy)
@@ -679,7 +679,7 @@
 - Macros: Protein 22g, Carbs 20g, Fats 12g
 - Budget: ₹60–70
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Substitute half paneer with tofu for lighter fats
 
 #### 67. Mutton Curry (Light Odia Style)
@@ -689,7 +689,7 @@
 - Macros: Protein 32g, Carbs 16g, Fats 18g
 - Budget: ₹130–150
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pressure cook; avoid cream or cashew paste
 
 #### 68. Saga Dal (Spinach Dal)
@@ -699,7 +699,7 @@
 - Macros: Protein 16g, Carbs 36g, Fats 6g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron-rich; great as a light dinner
 
 #### 69. Chicken Tarkari (Lean)
@@ -709,7 +709,7 @@
 - Macros: Protein 30g, Carbs 18g, Fats 12g
 - Budget: ₹80–90
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use lean breast; simmer slowly to reduce oil
 
 #### 70. Pumpkin Curry (Khatta Kaddu)
@@ -719,7 +719,7 @@
 - Macros: Protein 7g, Carbs 34g, Fats 6g
 - Budget: ₹20–25
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Natural sweetness; add chickpeas for protein
 
 ### SNACK OPTIONS
@@ -731,7 +731,7 @@
 - Macros: Protein 8g, Carbs 36g, Fats 7g
 - Budget: ₹20–25
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Dry-roast for a crisp, light evening snack
 
 #### 72. Mudhi Mix (Puffed Rice Salad)
@@ -741,7 +741,7 @@
 - Macros: Protein 5g, Carbs 32g, Fats 4g
 - Budget: ₹15–20
 - Prep: 10 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Add roasted chana for protein boost
 
 #### 73. Fish Cutlet (Baked)
@@ -751,7 +751,7 @@
 - Macros: Protein 22g, Carbs 20g, Fats 8g
 - Budget: ₹60–70
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of frying; perfect coastal protein snack
 
 #### 74. Aloo Chop (Air-Fried Potato Patty)
@@ -761,7 +761,7 @@
 - Macros: Protein 6g, Carbs 42g, Fats 8g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use sweet potato instead for lower GI
 
 #### 75. Dahi Bara Aloo Dum (Low-Oil Version)
@@ -771,7 +771,7 @@
 - Macros: Protein 10g, Carbs 35g, Fats 7g
 - Budget: ₹30–35
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Air-fry vadas; probiotic and filling
 
 #### 76. Prawn Skewer
@@ -781,7 +781,7 @@
 - Macros: Protein 26g, Carbs 6g, Fats 9g
 - Budget: ₹70–80
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill with mustard marinade; coastal favorite
 
 #### 77. Chhena Balls (Low-Sugar)
@@ -791,7 +791,7 @@
 - Macros: Protein 14g, Carbs 10g, Fats 7g
 - Budget: ₹30–35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of syrup soak for PCOS-friendly dessert
 
 #### 78. Soya Nuggets (Roasted)
@@ -801,7 +801,7 @@
 - Macros: Protein 25g, Carbs 12g, Fats 5g
 - Budget: ₹35–40
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High-protein, low-GI; best evening bite
 
 #### 79. Chicken Pop (Grilled)
@@ -811,7 +811,7 @@
 - Macros: Protein 26g, Carbs 8g, Fats 10g
 - Budget: ₹55–65
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill instead of fry; light and juicy
 
 #### 80. Sweet Pitha Bites (Steamed)
@@ -821,7 +821,7 @@
 - Macros: Protein 7g, Carbs 35g, Fats 6g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam for soft texture; natural sweetness
 
 ---
@@ -838,7 +838,7 @@
 - Macros: Protein 14 g, Carbs 42 g, Fats 8 g
 - Budget: ₹30–35
 - Prep: 30 mins (after soaking)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Shallow-fry on tawa using minimal oil
 
 #### 82. Thekua (Whole-Wheat Jaggery Cookie)
@@ -848,7 +848,7 @@
 - Macros: Protein 7 g, Carbs 40 g, Fats 6 g
 - Budget: ₹20–25
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of deep-fry for fibre-rich sweetness
 
 #### 83. Chana Sattu Drink
@@ -858,7 +858,7 @@
 - Macros: Protein 12 g, Carbs 18 g, Fats 4 g
 - Budget: ₹10–15
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Excellent protein breakfast; balances sugar levels
 
 #### 84. Rugra Bhurji (Mushroom Stir-Fry)
@@ -868,7 +868,7 @@
 - Macros: Protein 10 g, Carbs 20 g, Fats 6 g
 - Budget: ₹45–55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Rugra is rich in selenium, aids hormone balance
 
 #### 85. Anda Dhuska
@@ -878,7 +878,7 @@
 - Macros: Protein 18 g, Carbs 40 g, Fats 10 g
 - Budget: ₹35–40
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Add boiled egg topping instead of mixing
 
 #### 86. Tilkut (Sesame-Jaggery Bar)
@@ -888,7 +888,7 @@
 - Macros: Protein 6 g, Carbs 28 g, Fats 8 g
 - Budget: ₹20–25
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Good source of calcium and healthy fats
 
 #### 87. Pitha (Rice Cake)
@@ -898,7 +898,7 @@
 - Macros: Protein 8 g, Carbs 38 g, Fats 5 g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam instead of fry; light and filling
 
 #### 88. Egg Bhurji with Roti
@@ -908,7 +908,7 @@
 - Macros: Protein 24 g, Carbs 38 g, Fats 15 g
 - Budget: ₹45–55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Add spinach for extra iron
 
 #### 89. Millet Porridge (Kodo Daliya)
@@ -918,7 +918,7 @@
 - Macros: Protein 9 g, Carbs 35 g, Fats 6 g
 - Budget: ₹25–30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Millet stabilises insulin response
 
 #### 90. Chicken Sattu Wrap
@@ -928,7 +928,7 @@
 - Macros: Protein 26 g, Carbs 35 g, Fats 11 g
 - Budget: ₹60–70
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use curd-based dressing; high in protein
 
 ### LUNCH OPTIONS
@@ -940,7 +940,7 @@
 - Macros: Protein 18 g, Carbs 50 g, Fats 8 g
 - Budget: ₹35–40
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Classic combination; fibre-rich
 
 #### 92. Rugra Curry with Rice
@@ -950,7 +950,7 @@
 - Macros: Protein 12 g, Carbs 38 g, Fats 9 g
 - Budget: ₹45–50
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein from mushrooms; earthy flavour
 
 #### 93. Handia-Steamed Vegetables
@@ -960,7 +960,7 @@
 - Macros: Protein 7 g, Carbs 30 g, Fats 4 g
 - Budget: ₹25–30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fermented liquid promotes gut health
 
 #### 94. Fish Curry with Red Rice
@@ -970,7 +970,7 @@
 - Macros: Protein 30 g, Carbs 45 g, Fats 12 g
 - Budget: ₹85–95
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard paste; rich in omega-3
 
 #### 95. Dhuska with Ghugni
@@ -980,7 +980,7 @@
 - Macros: Protein 15 g, Carbs 42 g, Fats 10 g
 - Budget: ₹35–40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam Dhuska first, then shallow-fry
 
 #### 96. Mutton Curry with Millet Roti
@@ -990,7 +990,7 @@
 - Macros: Protein 32 g, Carbs 40 g, Fats 16 g
 - Budget: ₹110–130
 - Prep: 60 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Choose lean cuts; avoid ghee
 
 #### 97. Kodo Khichdi
@@ -1000,7 +1000,7 @@
 - Macros: Protein 15 g, Carbs 42 g, Fats 7 g
 - Budget: ₹30–35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Great for lunch; improves insulin sensitivity
 
 #### 98. Chicken Curry with Rice
@@ -1010,7 +1010,7 @@
 - Macros: Protein 30 g, Carbs 45 g, Fats 13 g
 - Budget: ₹80–90
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard oil sparingly
 
 #### 99. Aloo Baigan Curry
@@ -1020,7 +1020,7 @@
 - Macros: Protein 8 g, Carbs 40 g, Fats 7 g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Add tofu cubes for extra protein
 
 #### 100. Egg Curry with Brown Rice
@@ -1030,7 +1030,7 @@
 - Macros: Protein 25 g, Carbs 45 g, Fats 14 g
 - Budget: ₹45–55
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Simple, wholesome high-protein meal
 
 ### DINNER OPTIONS
@@ -1042,7 +1042,7 @@
 - Macros: Protein 15 g, Carbs 42 g, Fats 6 g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Add spinach for extra iron; excellent for light dinners
 
 #### 102. Rugra Stir-Fry
@@ -1052,7 +1052,7 @@
 - Macros: Protein 11 g, Carbs 28 g, Fats 8 g
 - Budget: ₹45–50
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Low-oil sauté; pairs well with millet roti
 
 #### 103. Mutton Stew
@@ -1062,7 +1062,7 @@
 - Macros: Protein 30 g, Carbs 35 g, Fats 14 g
 - Budget: ₹110–120
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Slow-cook to retain flavor without excess oil
 
 #### 104. Spinach-Lentil Curry
@@ -1072,7 +1072,7 @@
 - Macros: Protein 18 g, Carbs 40 g, Fats 7 g
 - Budget: ₹30–35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron-rich dinner option; improves metabolism
 
 #### 105. Chicken Roast (Grilled)
@@ -1082,7 +1082,7 @@
 - Macros: Protein 32 g, Carbs 10 g, Fats 12 g
 - Budget: ₹80–90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Yogurt-based marinade helps tenderize naturally
 
 #### 106. Sattu Soup
@@ -1092,7 +1092,7 @@
 - Macros: Protein 12 g, Carbs 20 g, Fats 4 g
 - Budget: ₹15–20
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Warm or cold; balances insulin sensitivity
 
 #### 107. Fish Tikka
@@ -1102,7 +1102,7 @@
 - Macros: Protein 30 g, Carbs 8 g, Fats 11 g
 - Budget: ₹80–90
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill or air-fry; no oil needed
 
 #### 108. Vegetable Khichdi
@@ -1112,7 +1112,7 @@
 - Macros: Protein 16 g, Carbs 40 g, Fats 6 g
 - Budget: ₹25–30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Gentle on gut; ideal for late dinners
 
 #### 109. Paneer Bhurji with Roti
@@ -1122,7 +1122,7 @@
 - Macros: Protein 24 g, Carbs 35 g, Fats 13 g
 - Budget: ₹60–70
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use low-fat paneer or tofu for PCOS-friendly protein
 
 #### 110. Pork Curry (Tribal Style)
@@ -1132,7 +1132,7 @@
 - Macros: Protein 28 g, Carbs 15 g, Fats 16 g
 - Budget: ₹100–120
 - Prep: 60 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional tribal recipe; slow-cooked, low-oil
 
 ### SNACK OPTIONS
@@ -1144,7 +1144,7 @@
 - Macros: Protein 9 g, Carbs 30 g, Fats 6 g
 - Budget: ₹20–25
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Natural energy bite; stabilises blood sugar
 
 #### 112. Roasted Makhanas
@@ -1154,7 +1154,7 @@
 - Macros: Protein 5 g, Carbs 18 g, Fats 4 g
 - Budget: ₹15–20
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Crunchy evening snack rich in magnesium
 
 #### 113. Chicken Skewers
@@ -1164,7 +1164,7 @@
 - Macros: Protein 26 g, Carbs 8 g, Fats 10 g
 - Budget: ₹60–70
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill with curd-based marinade
 
 #### 114. Steamed Pitha Bites
@@ -1174,7 +1174,7 @@
 - Macros: Protein 7 g, Carbs 32 g, Fats 5 g
 - Budget: ₹25–30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam to retain nutrients
 
 #### 115. Fish Popcorn
@@ -1184,7 +1184,7 @@
 - Macros: Protein 22 g, Carbs 20 g, Fats 9 g
 - Budget: ₹70–80
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of deep-fry
 
 #### 116. Millet Crackers
@@ -1194,7 +1194,7 @@
 - Macros: Protein 6 g, Carbs 28 g, Fats 6 g
 - Budget: ₹20–25
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Oven-baked; gluten-free
 
 #### 117. Pork Momos
@@ -1204,7 +1204,7 @@
 - Macros: Protein 25 g, Carbs 30 g, Fats 11 g
 - Budget: ₹70–80
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam, don’t fry; authentic tribal snack
 
 #### 118. Sprout Salad
@@ -1214,7 +1214,7 @@
 - Macros: Protein 14 g, Carbs 28 g, Fats 4 g
 - Budget: ₹25–30
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Add black salt and raw mango
 
 #### 119. Egg Cutlets (Baked)
@@ -1224,7 +1224,7 @@
 - Macros: Protein 20 g, Carbs 25 g, Fats 9 g
 - Budget: ₹40–45
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Air-fry for crispness
 
 #### 120. Banana Chips (Baked)
@@ -1234,7 +1234,7 @@
 - Macros: Protein 4 g, Carbs 30 g, Fats 5 g
 - Budget: ₹20–25
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake thin slices; potassium-rich
 
 # East Indian PCOS-Friendly Meal Templates (Remaining States – V2, Non‑Repetitive)
@@ -1251,7 +1251,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹33
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 122. Komal Saul Doi (Soft Rice with Yogurt)
 - State: Assam
@@ -1260,7 +1260,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹45
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 123. Til Pitha (Sesame Rice Roll)
 - State: Assam
@@ -1269,7 +1269,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹32
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 124. Bora Saul Poha Bhaji
 - State: Assam
@@ -1278,7 +1278,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹41
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 125. Xaak Bhaji Ruti Set (Greens + Roti)
 - State: Assam
@@ -1287,7 +1287,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹32
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 126. Masor Tenga Omelette Wrap
 - State: Assam
@@ -1296,7 +1296,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹83
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 127. Chakhao Lite Bowl (Black Rice Porridge)
 - State: Assam
@@ -1305,7 +1305,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹32
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 128. Poita Bhaat Herb Cup
 - State: Assam
@@ -1314,7 +1314,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹22
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 129. Roasted Gram & Dim Jolpan
 - State: Assam
@@ -1323,7 +1323,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹78
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 130. Chicken Bhujia Roti
 - State: Assam
@@ -1332,7 +1332,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹55
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 
 ### LUNCH OPTIONS
@@ -1344,7 +1344,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹91
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 132. Ou Tenga Dal (Elephant Apple Lentils)
 - State: Assam
@@ -1353,7 +1353,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹25
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 133. Khar Lau (Alkaline Gourd Broth)
 - State: Assam
@@ -1362,7 +1362,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹42
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 134. Haah Jool (Duck Broth – Light)
 - State: Assam
@@ -1371,7 +1371,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹56
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 135. Xoru Maas Pora (Small Fish Grill)
 - State: Assam
@@ -1380,7 +1380,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹86
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 136. Lai Xaak with Red Rice
 - State: Assam
@@ -1389,7 +1389,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹36
 - Prep: 38 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 137. Aloo Pitika & Moong Dal
 - State: Assam
@@ -1398,7 +1398,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹40
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 138. Chicken Tenga (Tangy Chicken)
 - State: Assam
@@ -1407,7 +1407,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹82
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 139. Red Rice Khichdi (Assamese)
 - State: Assam
@@ -1416,7 +1416,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹23
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 140. Chingri Bhaji with Brown Rice
 - State: Assam
@@ -1425,7 +1425,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹104
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 
 ### DINNER OPTIONS
@@ -1437,7 +1437,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹115
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 142. Xaak‑Jool (Greens Broth)
 - State: Assam
@@ -1446,7 +1446,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹23
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 143. Patot Dia Chicken (Banana‑Leaf Wrap)
 - State: Assam
@@ -1455,7 +1455,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹101
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 144. Black Rice + Moong Dal Bowl
 - State: Assam
@@ -1464,7 +1464,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹22
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 145. Haah Roast (Pepper Duck – Lite)
 - State: Assam
@@ -1473,7 +1473,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹98
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 146. Vegetable Khar Curry
 - State: Assam
@@ -1482,7 +1482,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹29
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 147. Prawn Jool (Assamese Stew)
 - State: Assam
@@ -1491,7 +1491,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹58
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 148. Mixed Veg Tenga
 - State: Assam
@@ -1500,7 +1500,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹42
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 149. Dim Tenga (Tangy Egg Curry)
 - State: Assam
@@ -1509,7 +1509,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹108
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 150. Paneer‑Xaak Stir Fry
 - State: Assam
@@ -1518,7 +1518,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹41
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 
 ### SNACKS OPTIONS
@@ -1530,7 +1530,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹33
 - Prep: 12 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 152. Tilor Ladoo
 - State: Assam
@@ -1539,7 +1539,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹39
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 153. Baked Fish Cutlet (Assamese)
 - State: Assam
@@ -1548,7 +1548,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹100
 - Prep: 27 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 154. Haah Skewers (Duck Sticks)
 - State: Assam
@@ -1557,7 +1557,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹71
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 155. Aloo Pitika Cups
 - State: Assam
@@ -1566,7 +1566,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹35
 - Prep: 11 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 156. Chicken Pora Bites
 - State: Assam
@@ -1575,7 +1575,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹119
 - Prep: 24 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 157. Chira‑Moong Crunch
 - State: Assam
@@ -1584,7 +1584,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹39
 - Prep: 16 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 158. Air‑fried Prawn Bhujia
 - State: Assam
@@ -1593,7 +1593,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹112
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Squeeze lemon at the end to preserve vitamin C.
 #### 159. Black Rice Pops (Chakhao)
 - State: Assam
@@ -1602,7 +1602,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹45
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 #### 160. Dim Chop (Air‑fried Egg Chop)
 - State: Assam
@@ -1611,7 +1611,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹56
 - Prep: 11 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use mustard oil sparingly; focus on steaming and grilling.
 
 ---
@@ -1629,7 +1629,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹38
 - Prep: 14 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 162. Sel Roti (Baked) & Curd
 - State: Sikkim
@@ -1638,7 +1638,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹42
 - Prep: 18 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 163. Kinema Stir Bowl
 - State: Sikkim
@@ -1647,7 +1647,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹26
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 164. Buckwheat Pancake (Phapar)
 - State: Sikkim
@@ -1656,7 +1656,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹42
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 165. Tsampa Chicken Bowl
 - State: Sikkim
@@ -1665,7 +1665,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹119
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 166. Thenthuk Egg Cup
 - State: Sikkim
@@ -1674,7 +1674,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹96
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 167. Makai Bhutan (Corn Stir)
 - State: Sikkim
@@ -1683,7 +1683,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹45
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 168. Tofu Millet Wrap
 - State: Sikkim
@@ -1692,7 +1692,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹23
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 169. Chhurpi Protein Cup
 - State: Sikkim
@@ -1701,7 +1701,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹25
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 170. Veg Thukpa Lite
 - State: Sikkim
@@ -1710,7 +1710,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹33
 - Prep: 11 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 
 ### LUNCH OPTIONS
@@ -1722,7 +1722,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹99
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 172. Phagshapa (Radish‑Pork Lean)
 - State: Sikkim
@@ -1731,7 +1731,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹68
 - Prep: 43 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 173. Kinema Curry Red Rice
 - State: Sikkim
@@ -1740,7 +1740,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹37
 - Prep: 32 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 174. Gundruk Sadeko Salad
 - State: Sikkim
@@ -1749,7 +1749,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹37
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 175. Chhurpi Greens Stew
 - State: Sikkim
@@ -1758,7 +1758,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹30
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 176. Chicken Shapta Fry
 - State: Sikkim
@@ -1767,7 +1767,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹109
 - Prep: 43 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 177. Buckwheat Roti Set
 - State: Sikkim
@@ -1776,7 +1776,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹43
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 178. Chicken Momos (Steamed)
 - State: Sikkim
@@ -1785,7 +1785,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹112
 - Prep: 37 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 179. Tofu‑Spinach Thukpa
 - State: Sikkim
@@ -1794,7 +1794,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹44
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 180. Trout Tawa Grill
 - State: Sikkim
@@ -1803,7 +1803,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹76
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 
 ### DINNER OPTIONS
@@ -1815,7 +1815,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹40
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 182. Gyathuk Chicken
 - State: Sikkim
@@ -1824,7 +1824,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹104
 - Prep: 34 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 183. Tofu Mustard‑Greens Fry
 - State: Sikkim
@@ -1833,7 +1833,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹23
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 184. Steamed Pork Bamboo
 - State: Sikkim
@@ -1842,7 +1842,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹117
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 185. Barley & Dal Soup
 - State: Sikkim
@@ -1851,7 +1851,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹44
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 186. Egg Curry (Himalayan)
 - State: Sikkim
@@ -1860,7 +1860,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹100
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 187. Veg Shapta Dry
 - State: Sikkim
@@ -1869,7 +1869,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹44
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 188. Teesta Trout Grill
 - State: Sikkim
@@ -1878,7 +1878,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹66
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 #### 189. Chhurpi Veg Stew
 - State: Sikkim
@@ -1887,7 +1887,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹23
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 190. Chicken–Barley Porridge
 - State: Sikkim
@@ -1896,7 +1896,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹56
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean on fermentation (gundruk/kinema) for gut health.
 
 ### SNACKS OPTIONS
@@ -1908,7 +1908,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹22
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 192. Chicken Momos (Steamed) – Sikkim
 - State: Sikkim
@@ -1917,7 +1917,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹125
 - Prep: 27 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 193. Sel Roti Crisps (Baked)
 - State: Sikkim
@@ -1926,7 +1926,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹32
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 194. Kinema Lettuce Cups
 - State: Sikkim
@@ -1935,7 +1935,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹24
 - Prep: 16 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 195. Chhurpi Bites
 - State: Sikkim
@@ -1944,7 +1944,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹45
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 196. Lean Pork Skewers
 - State: Sikkim
@@ -1953,7 +1953,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹119
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 197. Tofu Chili Air‑fry
 - State: Sikkim
@@ -1962,7 +1962,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹26
 - Prep: 12 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 198. Egg Thenthuk Bites
 - State: Sikkim
@@ -1971,7 +1971,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹70
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 199. Buckwheat Crackers
 - State: Sikkim
@@ -1980,7 +1980,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹36
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 #### 200. Trout Fingers (Baked)
 - State: Sikkim
@@ -1989,7 +1989,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹103
 - Prep: 11 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Steam momos instead of frying; skip refined sauces.
 
 ---
@@ -2007,7 +2007,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹36
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 202. Singju Roti Roll
 - State: Manipur
@@ -2016,7 +2016,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹26
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 203. Nga‑Flake Omelette
 - State: Manipur
@@ -2025,7 +2025,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹79
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 204. Kangsoi Veg Bowl
 - State: Manipur
@@ -2034,7 +2034,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹41
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 205. Kanghou Soy Fry
 - State: Manipur
@@ -2043,7 +2043,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹28
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 206. Boiled Egg & Greens
 - State: Manipur
@@ -2052,7 +2052,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹85
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 207. Millet Pitha (Steamed)
 - State: Manipur
@@ -2061,7 +2061,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹40
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 208. Chamthong Rice Soup
 - State: Manipur
@@ -2070,7 +2070,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹32
 - Prep: 14 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 209. Chicken Herb Roll
 - State: Manipur
@@ -2079,7 +2079,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹118
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 210. Tofu Singju Cup
 - State: Manipur
@@ -2088,7 +2088,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹29
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 
 ### LUNCH OPTIONS
@@ -2100,7 +2100,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹83
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 212. Utong Thongba (Bamboo Curry)
 - State: Manipur
@@ -2109,7 +2109,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹34
 - Prep: 36 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 213. Nga Thongba (Fish Curry)
 - State: Manipur
@@ -2118,7 +2118,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹100
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 214. Yongchak Iromba
 - State: Manipur
@@ -2127,7 +2127,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹35
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 215. Masoor + Black Rice
 - State: Manipur
@@ -2136,7 +2136,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹42
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 216. Chicken Thongba
 - State: Manipur
@@ -2145,7 +2145,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹116
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 217. Soibum Curry (Fermented Bamboo)
 - State: Manipur
@@ -2154,7 +2154,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹32
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 218. Prawn Chili Dry
 - State: Manipur
@@ -2163,7 +2163,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹106
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 219. Hawai Thongba (Pumpkin)
 - State: Manipur
@@ -2172,7 +2172,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹32
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 220. Duck Herb Curry
 - State: Manipur
@@ -2181,7 +2181,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹55
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 
 ### DINNER OPTIONS
@@ -2193,7 +2193,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹32
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 222. Savory Oat–Chicken Broth
 - State: Manipur
@@ -2202,7 +2202,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹59
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 223. Black Rice Khichdi
 - State: Manipur
@@ -2211,7 +2211,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹29
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 224. Nga Kelli (Fish Stew)
 - State: Manipur
@@ -2220,7 +2220,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹83
 - Prep: 43 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 225. Tofu & Lai Greens
 - State: Manipur
@@ -2229,7 +2229,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹38
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 226. Egg Curry (Mairong)
 - State: Manipur
@@ -2238,7 +2238,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹95
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 227. Mushroom Chamthong
 - State: Manipur
@@ -2247,7 +2247,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹41
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 228. Herb Chicken Roast
 - State: Manipur
@@ -2256,7 +2256,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹68
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 229. Paneer + Black Rice
 - State: Manipur
@@ -2265,7 +2265,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹39
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 230. Lite Prawn Soup
 - State: Manipur
@@ -2274,7 +2274,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹84
 - Prep: 36 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 
 ### SNACKS OPTIONS
@@ -2286,7 +2286,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹40
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 232. Chicken Herb Skewers
 - State: Manipur
@@ -2295,7 +2295,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹97
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 233. Singju Cups
 - State: Manipur
@@ -2304,7 +2304,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹36
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 234. Fish Fingers Baked
 - State: Manipur
@@ -2313,7 +2313,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹56
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 235. Black Rice Pops
 - State: Manipur
@@ -2322,7 +2322,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹44
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 236. Egg Chop Air‑fry
 - State: Manipur
@@ -2331,7 +2331,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹57
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 237. Soy Nugget Roast
 - State: Manipur
@@ -2340,7 +2340,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹45
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 #### 238. Duck Strips Grill
 - State: Manipur
@@ -2349,7 +2349,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹92
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 239. Tofu Chili Bites
 - State: Manipur
@@ -2358,7 +2358,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹39
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use indigenous herbs generously; they add flavour without oil.
 #### 240. Prawn Skewers
 - State: Manipur
@@ -2367,7 +2367,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹77
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pair black rice with protein to moderate glycemic response.
 
 ---
@@ -2385,7 +2385,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹26
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 242. Pumaloi Steamed
 - State: Meghalaya
@@ -2394,7 +2394,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹35
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 243. Tungrymbai Scramble
 - State: Meghalaya
@@ -2403,7 +2403,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹35
 - Prep: 18 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 244. Pukhlein (Baked)
 - State: Meghalaya
@@ -2412,7 +2412,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹43
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 245. Millet Roti + Herb
 - State: Meghalaya
@@ -2421,7 +2421,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹33
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 246. Smoked Pork Omelette
 - State: Meghalaya
@@ -2430,7 +2430,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹64
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 247. Black Rice Porridge
 - State: Meghalaya
@@ -2439,7 +2439,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹39
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 248. Chicken Stew Cup
 - State: Meghalaya
@@ -2448,7 +2448,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹109
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 249. Cabbage Roti Set
 - State: Meghalaya
@@ -2457,7 +2457,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹38
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 250. Tofu Herb Wrap
 - State: Meghalaya
@@ -2466,7 +2466,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹22
 - Prep: 14 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 
 ### LUNCH OPTIONS
@@ -2478,7 +2478,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹55
 - Prep: 44 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 252. Dohkhlieh Pork Salad (Lean)
 - State: Meghalaya
@@ -2487,7 +2487,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹103
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 253. Tungrymbai Curry
 - State: Meghalaya
@@ -2496,7 +2496,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹44
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 254. Dohneiiong (Pork + Sesame)
 - State: Meghalaya
@@ -2505,7 +2505,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹86
 - Prep: 37 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 255. Veg Jadoh
 - State: Meghalaya
@@ -2514,7 +2514,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹40
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 256. Chicken + Lai Greens
 - State: Meghalaya
@@ -2523,7 +2523,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹66
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 257. Black Rice & Dal
 - State: Meghalaya
@@ -2532,7 +2532,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹37
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 258. Hill Herb Fish Grill
 - State: Meghalaya
@@ -2541,7 +2541,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹71
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 259. Pumpkin Masoor Curry
 - State: Meghalaya
@@ -2550,7 +2550,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹31
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 260. Egg Curry Hill Style
 - State: Meghalaya
@@ -2559,7 +2559,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 
 ### DINNER OPTIONS
@@ -2571,7 +2571,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹89
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 262. Tofu Sesame Fry
 - State: Meghalaya
@@ -2580,7 +2580,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹29
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 263. Pepper‑Lemon Chicken
 - State: Meghalaya
@@ -2589,7 +2589,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹90
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 264. Red Rice + Dal Soup
 - State: Meghalaya
@@ -2598,7 +2598,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹40
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 265. Hill Herb Fish Stew
 - State: Meghalaya
@@ -2607,7 +2607,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹60
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 266. Cabbage‑Carrot Chamthong
 - State: Meghalaya
@@ -2616,7 +2616,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹42
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 267. Tawa Prawn Chili
 - State: Meghalaya
@@ -2625,7 +2625,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹110
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 268. Paneer + Greens Stir
 - State: Meghalaya
@@ -2634,7 +2634,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹36
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 269. Egg Roast Dry
 - State: Meghalaya
@@ -2643,7 +2643,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹121
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 270. Millet Khichdi
 - State: Meghalaya
@@ -2652,7 +2652,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹28
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 
 ### SNACKS OPTIONS
@@ -2664,7 +2664,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹35
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 272. Chicken Skewers
 - State: Meghalaya
@@ -2673,7 +2673,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹58
 - Prep: 26 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 273. Lean Pork Sticks
 - State: Meghalaya
@@ -2682,7 +2682,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹84
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 274. Tungrymbai Lettuce Cups
 - State: Meghalaya
@@ -2691,7 +2691,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹28
 - Prep: 14 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 275. Baked Fish Fingers
 - State: Meghalaya
@@ -2700,7 +2700,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹115
 - Prep: 24 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 276. Black Rice Pops – Meghalaya
 - State: Meghalaya
@@ -2709,7 +2709,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹31
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 277. Tofu Chili Bites – Meghalaya
 - State: Meghalaya
@@ -2718,7 +2718,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹36
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 278. Egg Chop Air‑fry – Meghalaya
 - State: Meghalaya
@@ -2727,7 +2727,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹82
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 #### 279. Pumpkin Seed Mix
 - State: Meghalaya
@@ -2736,7 +2736,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹22
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Sesame adds calcium—use modestly in stews.
 #### 280. Cabbage Cutlet Air‑fry
 - State: Meghalaya
@@ -2745,7 +2745,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹27
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Prefer smoked meats trimmed of visible fat.
 
 ---
@@ -2763,7 +2763,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹94
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 282. Bai Veg Stew
 - State: Mizoram
@@ -2772,7 +2772,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹42
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 283. Chhangban Lehkhabu (Baked)
 - State: Mizoram
@@ -2781,7 +2781,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 284. Tofu + Mustard Greens Wrap
 - State: Mizoram
@@ -2790,7 +2790,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹35
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 285. Lean Pork Omelette
 - State: Mizoram
@@ -2799,7 +2799,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹90
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 286. Black Rice Porridge – Mizoram
 - State: Mizoram
@@ -2808,7 +2808,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹31
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 287. Millet Roti + Herb – Mizoram
 - State: Mizoram
@@ -2817,7 +2817,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹35
 - Prep: 18 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 288. Chicken Stew Cup – Mizoram
 - State: Mizoram
@@ -2826,7 +2826,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹78
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 289. Bamboo Shoot Stir
 - State: Mizoram
@@ -2835,7 +2835,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹24
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 290. Egg + Greens Wrap
 - State: Mizoram
@@ -2844,7 +2844,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹123
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 
 ### LUNCH OPTIONS
@@ -2856,7 +2856,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹29
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 292. Smoked Pork + Bamboo (Lean)
 - State: Mizoram
@@ -2865,7 +2865,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹60
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 293. Chicken Sawhchiar Broth
 - State: Mizoram
@@ -2874,7 +2874,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹99
 - Prep: 36 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 294. Paneer + Mustard Greens
 - State: Mizoram
@@ -2883,7 +2883,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹45
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 295. Mizo Fish Curry
 - State: Mizoram
@@ -2892,7 +2892,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹123
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 296. Tofu Bai
 - State: Mizoram
@@ -2901,7 +2901,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹39
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 297. Lean Pork Stew
 - State: Mizoram
@@ -2910,7 +2910,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹107
 - Prep: 38 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 298. Black Rice & Dal – Mizoram
 - State: Mizoram
@@ -2919,7 +2919,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹40
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 299. Light Egg Curry
 - State: Mizoram
@@ -2928,7 +2928,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹81
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 300. Pumpkin Lentil Curry
 - State: Mizoram
@@ -2937,7 +2937,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹31
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 
 ### DINNER OPTIONS
@@ -2949,7 +2949,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹72
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 302. Tofu Chili‑Lime Fry
 - State: Mizoram
@@ -2958,7 +2958,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹28
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 303. Pepper Chicken Roast
 - State: Mizoram
@@ -2967,7 +2967,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹123
 - Prep: 43 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 304. Mizo Rice + Dal Soup
 - State: Mizoram
@@ -2976,7 +2976,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹31
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 305. Herb Fish Stew
 - State: Mizoram
@@ -2985,7 +2985,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹56
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 306. Bamboo + Veg Fry
 - State: Mizoram
@@ -2994,7 +2994,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹30
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 307. Prawn Chili Tawa
 - State: Mizoram
@@ -3003,7 +3003,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹87
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 308. Paneer Greens Khichdi
 - State: Mizoram
@@ -3012,7 +3012,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹37
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 309. Egg Roast Dry – Mizoram
 - State: Mizoram
@@ -3021,7 +3021,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹100
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 310. Millet Khichdi – Mizoram
 - State: Mizoram
@@ -3030,7 +3030,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹40
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 
 ### SNACKS OPTIONS
@@ -3042,7 +3042,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹26
 - Prep: 27 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 312. Chicken Momos Steamed
 - State: Mizoram
@@ -3051,7 +3051,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹120
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 313. Lean Pork Skewers – Mizoram
 - State: Mizoram
@@ -3060,7 +3060,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹108
 - Prep: 17 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 314. Bamboo Cutlet Air‑fry
 - State: Mizoram
@@ -3069,7 +3069,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹44
 - Prep: 26 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 315. Baked Fish Fingers – Mizoram
 - State: Mizoram
@@ -3078,7 +3078,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹107
 - Prep: 14 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 316. Black Rice Pops – Mizoram
 - State: Mizoram
@@ -3087,7 +3087,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹43
 - Prep: 18 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 317. Tofu Chili Bites – Mizoram
 - State: Mizoram
@@ -3096,7 +3096,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹24
 - Prep: 22 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bamboo shoots add fibre with minimal calories.
 #### 318. Egg Chop Air‑fry – Mizoram
 - State: Mizoram
@@ -3105,7 +3105,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹123
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 319. Pumpkin Seed Trail
 - State: Mizoram
@@ -3114,7 +3114,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹36
 - Prep: 27 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Boil or steam, then flash‑sauté to limit oil absorption.
 #### 320. Cabbage Cutlet Air‑fry – Mizoram
 - State: Mizoram
@@ -3123,7 +3123,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹25
 - Prep: 26 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bamboo shoots add fibre with minimal calories.
 
 ---
@@ -3141,7 +3141,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹22
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 322. Lean Pork Omelette – Nagaland
 - State: Nagaland
@@ -3150,7 +3150,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹84
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 323. Spinach Rice Stew
 - State: Nagaland
@@ -3159,7 +3159,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹23
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 324. Tofu Bamboo Stir
 - State: Nagaland
@@ -3168,7 +3168,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹39
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 325. Chicken Herb Broth
 - State: Nagaland
@@ -3177,7 +3177,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹78
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 326. Black Rice Porridge – Nagaland
 - State: Nagaland
@@ -3186,7 +3186,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹32
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 327. Axone Red Rice (Baked)
 - State: Nagaland
@@ -3195,7 +3195,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹35
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 328. Prawn Omelette
 - State: Nagaland
@@ -3204,7 +3204,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹111
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 329. Pumpkin Porridge
 - State: Nagaland
@@ -3213,7 +3213,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹44
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 330. Egg + Greens Wrap – Nagaland
 - State: Nagaland
@@ -3222,7 +3222,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹112
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 
 ### LUNCH OPTIONS
@@ -3234,7 +3234,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹110
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 332. Axone Veg Curry
 - State: Nagaland
@@ -3243,7 +3243,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹44
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 333. Raja Mircha Chicken (Lite)
 - State: Nagaland
@@ -3252,7 +3252,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹61
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 334. Herb Fish Stew – Nagaland
 - State: Nagaland
@@ -3261,7 +3261,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹96
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 335. Black Rice & Dal – Nagaland
 - State: Nagaland
@@ -3270,7 +3270,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹25
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 336. Veg Bamboo Stew
 - State: Nagaland
@@ -3279,7 +3279,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹41
 - Prep: 38 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 337. Prawn Chili Tawa – Nagaland
 - State: Nagaland
@@ -3288,7 +3288,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹63
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 338. Paneer + Greens Fry
 - State: Nagaland
@@ -3297,7 +3297,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹42
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 339. Pumpkin Lentil Curry – Nagaland
 - State: Nagaland
@@ -3306,7 +3306,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹43
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 340. Light Egg Curry – Nagaland
 - State: Nagaland
@@ -3315,7 +3315,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹116
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 
 ### DINNER OPTIONS
@@ -3327,7 +3327,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹62
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 342. Tofu Chili‑Lime Fry – Nagaland
 - State: Nagaland
@@ -3336,7 +3336,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹33
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 343. Pepper Chicken Roast – Nagaland
 - State: Nagaland
@@ -3345,7 +3345,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹109
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 344. Naga Rice + Dal Soup
 - State: Nagaland
@@ -3354,7 +3354,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹23
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 345. Herb Fish Stew – Nagaland
 - State: Nagaland
@@ -3363,7 +3363,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹58
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 346. Bamboo Veg Fry
 - State: Nagaland
@@ -3372,7 +3372,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹31
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 347. Prawn Chili Tawa – Nagaland
 - State: Nagaland
@@ -3381,7 +3381,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹94
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 348. Paneer Greens Khichdi – Nagaland
 - State: Nagaland
@@ -3390,7 +3390,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹35
 - Prep: 44 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 349. Egg Roast Dry – Nagaland
 - State: Nagaland
@@ -3399,7 +3399,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹105
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 350. Millet Khichdi – Nagaland
 - State: Nagaland
@@ -3408,7 +3408,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹28
 - Prep: 23 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 
 ### SNACKS OPTIONS
@@ -3420,7 +3420,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹36
 - Prep: 19 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Axone brings umami; combine with greens for balance.
 #### 352. Chicken Momos Steamed – Nagaland
 - State: Nagaland
@@ -3429,7 +3429,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹86
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 353. Lean Pork Skewers – Nagaland
 - State: Nagaland
@@ -3438,7 +3438,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹107
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 354. Bamboo Cutlet Air‑fry – Nagaland
 - State: Nagaland
@@ -3447,7 +3447,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹31
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 355. Baked Fish Fingers – Nagaland
 - State: Nagaland
@@ -3456,7 +3456,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹64
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 #### 356. Black Rice Pops – Nagaland
 - State: Nagaland
@@ -3465,7 +3465,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹44
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 357. Tofu Chili Bites – Nagaland
 - State: Nagaland
@@ -3474,7 +3474,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹33
 - Prep: 29 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 358. Egg Chop Air‑fry – Nagaland
 - State: Nagaland
@@ -3483,7 +3483,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹58
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 359. Pumpkin Seed Mix – Nagaland
 - State: Nagaland
@@ -3492,7 +3492,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹34
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Raja mircha adds heat—use sparingly for stomach comfort.
 #### 360. Cabbage Cutlet Air‑fry – Nagaland
 - State: Nagaland
@@ -3501,7 +3501,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹22
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Axone brings umami; combine with greens for balance.
 
 ---
@@ -3519,7 +3519,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹42
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 362. Tofu Herb Wrap – Tripura
 - State: Tripura
@@ -3528,7 +3528,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹29
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 363. Berma Omelette
 - State: Tripura
@@ -3537,7 +3537,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹30
 - Prep: 21 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 364. Poha Tripuri
 - State: Tripura
@@ -3546,7 +3546,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹23
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 365. Black Rice Porridge – Tripura
 - State: Tripura
@@ -3555,7 +3555,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹45
 - Prep: 13 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 366. Chicken Stew Cup – Tripura
 - State: Tripura
@@ -3564,7 +3564,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹84
 - Prep: 18 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 367. Bamboo Shoot Stir – Tripura
 - State: Tripura
@@ -3573,7 +3573,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹37
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 368. Egg + Greens Wrap – Tripura
 - State: Tripura
@@ -3582,7 +3582,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹77
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 369. Pumpkin Porridge – Tripura
 - State: Tripura
@@ -3591,7 +3591,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹28
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 370. Millet Roti + Herb – Tripura
 - State: Tripura
@@ -3600,7 +3600,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹33
 - Prep: 14 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 
 ### LUNCH OPTIONS
@@ -3612,7 +3612,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹118
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 372. Bamboo + Veg Stew
 - State: Tripura
@@ -3621,7 +3621,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹30
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 373. Chicken Chili Tawa
 - State: Tripura
@@ -3630,7 +3630,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹64
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 374. Herb Fish Grill
 - State: Tripura
@@ -3639,7 +3639,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹112
 - Prep: 43 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 375. Black Rice & Dal – Tripura
 - State: Tripura
@@ -3648,7 +3648,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹24
 - Prep: 41 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 376. Paneer + Greens Fry – Tripura
 - State: Tripura
@@ -3657,7 +3657,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹30
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 377. Prawn Chili
 - State: Tripura
@@ -3666,7 +3666,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹117
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 378. Pumpkin Lentil Curry – Tripura
 - State: Tripura
@@ -3675,7 +3675,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹23
 - Prep: 32 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 379. Light Egg Curry – Tripura
 - State: Tripura
@@ -3684,7 +3684,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹58
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 380. Tofu Thukpa (Fusion)
 - State: Tripura
@@ -3693,7 +3693,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹43
 - Prep: 31 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 
 ### DINNER OPTIONS
@@ -3705,7 +3705,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹93
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 382. Tofu Chili‑Lime Fry – Tripura
 - State: Tripura
@@ -3714,7 +3714,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹29
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 383. Pepper Chicken Roast – Tripura
 - State: Tripura
@@ -3723,7 +3723,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹68
 - Prep: 44 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 384. Red Rice + Dal Soup – Tripura
 - State: Tripura
@@ -3732,7 +3732,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹39
 - Prep: 33 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 385. Lite Prawn Stew
 - State: Tripura
@@ -3741,7 +3741,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹69
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 386. Bamboo Veg Fry – Tripura
 - State: Tripura
@@ -3750,7 +3750,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹22
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 387. Paneer Greens Khichdi – Tripura
 - State: Tripura
@@ -3759,7 +3759,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹22
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 388. Egg Roast Dry – Tripura
 - State: Tripura
@@ -3768,7 +3768,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹64
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 389. Millet Khichdi – Tripura
 - State: Tripura
@@ -3777,7 +3777,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹31
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 390. Mushroom Herb Bowl
 - State: Tripura
@@ -3786,7 +3786,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹33
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 
 ### SNACKS OPTIONS
@@ -3798,7 +3798,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹24
 - Prep: 16 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 392. Chicken Momos Steamed – Tripura
 - State: Tripura
@@ -3807,7 +3807,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹79
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 393. Berma Fish Sticks (Baked)
 - State: Tripura
@@ -3816,7 +3816,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹97
 - Prep: 19 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 394. Bamboo Cutlet Air‑fry – Tripura
 - State: Tripura
@@ -3825,7 +3825,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹41
 - Prep: 24 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 395. Black Rice Pops – Tripura
 - State: Tripura
@@ -3834,7 +3834,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹28
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 396. Tofu Chili Bites – Tripura
 - State: Tripura
@@ -3843,7 +3843,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹29
 - Prep: 16 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use red rice in measured portions to keep GI low.
 #### 397. Egg Chop Air‑fry – Tripura
 - State: Tripura
@@ -3852,7 +3852,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹112
 - Prep: 18 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use red rice in measured portions to keep GI low.
 #### 398. Pumpkin Seed Mix – Tripura
 - State: Tripura
@@ -3861,7 +3861,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹29
 - Prep: 19 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 #### 399. Cabbage Cutlet Air‑fry – Tripura
 - State: Tripura
@@ -3870,7 +3870,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹26
 - Prep: 26 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Berma is potent—use small amounts for depth, not bulk.
 #### 400. Chicken Skewers – Tripura
 - State: Tripura
@@ -3879,7 +3879,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹88
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use red rice in measured portions to keep GI low.
 
 ---
@@ -3897,7 +3897,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹33
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 402. Khura Buckwheat Pancake (Baked)
 - State: Arunachal Pradesh
@@ -3906,7 +3906,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹38
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 403. Chura Leafy Stew
 - State: Arunachal Pradesh
@@ -3915,7 +3915,7 @@
 - Macros: Protein 14g, Carbs 36g, Fats 6g
 - Budget: ₹31
 - Prep: 14 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 404. Chicken Herb Broth – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3924,7 +3924,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹110
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 405. Lean Pork Omelette – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3933,7 +3933,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹94
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 406. Black Rice Porridge – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3942,7 +3942,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹43
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 407. Millet Roti + Herb – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3951,7 +3951,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹36
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 408. Egg + Greens Wrap – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3960,7 +3960,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹113
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 409. Bamboo Stir‑fry
 - State: Arunachal Pradesh
@@ -3969,7 +3969,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹26
 - Prep: 12 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 410. Tofu + Mustard Greens Wrap – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -3978,7 +3978,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 
 ### LUNCH OPTIONS
@@ -3990,7 +3990,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹61
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 412. Fermented Soy Curry (Local)
 - State: Arunachal Pradesh
@@ -3999,7 +3999,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹39
 - Prep: 39 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 413. Herb Chicken Stew
 - State: Arunachal Pradesh
@@ -4008,7 +4008,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹58
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 414. Ngatok (River Fish Grill)
 - State: Arunachal Pradesh
@@ -4017,7 +4017,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹121
 - Prep: 32 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 415. Red Rice & Dal Set
 - State: Arunachal Pradesh
@@ -4026,7 +4026,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹22
 - Prep: 28 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 416. Leafy Greens Stew
 - State: Arunachal Pradesh
@@ -4035,7 +4035,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹31
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 417. Prawn Chili Tawa – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4044,7 +4044,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹71
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 418. Paneer + Greens Fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4053,7 +4053,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹44
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 419. Pumpkin Lentil Curry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4062,7 +4062,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹45
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 420. Light Egg Curry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4071,7 +4071,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹102
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 
 ### DINNER OPTIONS
@@ -4083,7 +4083,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 11g
 - Budget: ₹88
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 422. Tofu Chili‑Lime Fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4092,7 +4092,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹44
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 423. Pepper Chicken Roast – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4101,7 +4101,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹101
 - Prep: 44 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 424. Arunachali Rice + Dal Soup
 - State: Arunachal Pradesh
@@ -4110,7 +4110,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹28
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 425. Herb Fish Stew – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4119,7 +4119,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹86
 - Prep: 37 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 426. Bamboo Veg Fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4128,7 +4128,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹38
 - Prep: 26 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 427. Prawn Chili Tawa – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4137,7 +4137,7 @@
 - Macros: Protein 29g, Carbs 14g, Fats 13g
 - Budget: ₹101
 - Prep: 44 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 428. Paneer Greens Khichdi – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4146,7 +4146,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹24
 - Prep: 27 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 429. Egg Roast Dry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4155,7 +4155,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹75
 - Prep: 42 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 430. Millet Khichdi – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4164,7 +4164,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹29
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 
 ### SNACKS OPTIONS
@@ -4176,7 +4176,7 @@
 - Macros: Protein 12g, Carbs 38g, Fats 7g
 - Budget: ₹31
 - Prep: 12 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 432. Chicken Momos Steamed – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4185,7 +4185,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹106
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 433. Lean Pork Skewers – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4194,7 +4194,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹119
 - Prep: 24 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 434. Bamboo Cutlet Air‑fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4203,7 +4203,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹28
 - Prep: 17 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 435. Baked Fish Fingers – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4212,7 +4212,7 @@
 - Macros: Protein 32g, Carbs 18g, Fats 12g
 - Budget: ₹109
 - Prep: 22 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 436. Black Rice Pops – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4221,7 +4221,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹29
 - Prep: 29 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Fresh river herbs add aroma without extra salt.
 #### 437. Tofu Chili Bites – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4230,7 +4230,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹38
 - Prep: 15 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 438. Egg Chop Air‑fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4239,7 +4239,7 @@
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹96
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 439. Pumpkin Seed Mix – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4248,7 +4248,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 7g
 - Budget: ₹24
 - Prep: 29 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Buckwheat and millet are great low‑GI staples—rotate them.
 #### 440. Cabbage Cutlet Air‑fry – Arunachal Pradesh
 - State: Arunachal Pradesh
@@ -4257,7 +4257,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹36
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Fresh river herbs add aroma without extra salt.
 
 ---

@@ -2,6 +2,7 @@ import { OpenAIEmbeddings } from '@langchain/openai';
 import NodeCache from 'node-cache';
 import { env } from '../config/env.js';
 import { Logger } from '../utils/logger.js';
+import { withRetry } from '../utils/retryHandler.js';
 
 const logger = new Logger('Embeddings');
 
@@ -41,7 +42,7 @@ class CachedOpenAIEmbeddings {
   }
 
   /**
-   * Embed query with caching
+   * Embed query with caching and retry logic
    */
   async embedQuery(query) {
     const cacheKey = this.getCacheKey(query);
@@ -53,20 +54,65 @@ class CachedOpenAIEmbeddings {
       return cached;
     }
 
-    // Cache miss - generate embedding
+    // Cache miss - generate embedding with retry
     this.stats.misses++;
-    const embedding = await this.embeddings.embedQuery(query);
+
+    // ✅ ENHANCEMENT: Wrap API call with retry logic (3 retries, exponential backoff)
+    const embedding = await withRetry(
+      async () => await this.embeddings.embedQuery(query),
+      {
+        maxRetries: 3,
+        initialDelayMs: 1000,
+        maxDelayMs: 10000,
+        backoffMultiplier: 2,
+      },
+      'Query Embedding'
+    );
+
     this.cache.set(cacheKey, embedding);
 
     return embedding;
   }
 
   /**
-   * Embed documents (no cache for bulk operations)
+   * Embed documents with retry logic (no cache for bulk operations)
    */
   async embedDocuments(documents) {
-    // Batch processing - no cache for documents during ingestion
-    return await this.embeddings.embedDocuments(documents);
+    // ✅ ENHANCEMENT: Batch processing with retry logic
+    // Split into smaller batches to handle rate limits better
+    const BATCH_SIZE = 100; // Process 100 documents at a time
+    const batches = [];
+
+    for (let i = 0; i < documents.length; i += BATCH_SIZE) {
+      batches.push(documents.slice(i, i + BATCH_SIZE));
+    }
+
+    const results = [];
+
+    for (let i = 0; i < batches.length; i++) {
+      const batch = batches[i];
+
+      // Wrap each batch with retry logic
+      const batchEmbeddings = await withRetry(
+        async () => await this.embeddings.embedDocuments(batch),
+        {
+          maxRetries: 3,
+          initialDelayMs: 2000, // Longer initial delay for batch operations
+          maxDelayMs: 20000,
+          backoffMultiplier: 2,
+        },
+        `Document Embedding Batch ${i + 1}/${batches.length}`
+      );
+
+      results.push(...batchEmbeddings);
+
+      // Add small delay between batches to avoid rate limits
+      if (i < batches.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    }
+
+    return results;
   }
 
   /**

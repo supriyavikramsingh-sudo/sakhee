@@ -6,413 +6,458 @@
 
 ### Breakfast Options
 
-#### Pesarattu Upma (Low GI: ★★★)
+#### Pesarattu Upma
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Green gram 100g, rice 20g, ginger, green chilies, onions
 - Macros: Protein 15g, Carbs 28g, Fats 4g
 - Budget: ₹25-30
 - Prep: 20 mins (after soaking)
+- GI: Low
 - Tip: High protein breakfast, excellent for insulin resistance
 
-#### Ragi Sangati (Low GI: ★★★)
+#### Ragi Sangati
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, water, salt
 - Macros: Protein 8g, Carbs 32g, Fats 2g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: Traditional finger millet porridge, rich in calcium
 
-#### Upma with Pesara Pappu (Low GI: ★★)
+#### Upma with Pesara Pappu
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, moong dal 30g, vegetables, curry leaves
 - Macros: Protein 10g, Carbs 35g, Fats 6g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Protein-enhanced upma variety
 
-#### Idli with Gongura Chutney (Low GI: ★★★)
+#### Idli with Gongura Chutney
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, gongura leaves, spices
 - Macros: Protein 9g, Carbs 30g, Fats 3g
 - Budget: ₹25-30
 - Prep: 25 mins (batter fermented)
+- GI: Low
 - Tip: Tangy sorrel leaves boost iron content
 
-#### Atukula Upma (Poha) (Low GI: ★★)
+#### Atukula Upma (Poha)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Poha 60g, peanuts, curry leaves, vegetables
 - Macros: Protein 7g, Carbs 28g, Fats 8g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: Light and easy to digest
 
-#### Saggubiyyam Khichdi (Low GI: ★)
+#### Saggubiyyam Khichdi
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Sabudana 50g, peanuts 20g, potatoes, green chilies
 - Macros: Protein 6g, Carbs 40g, Fats 10g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Good for fasting days, consume in moderation
 
-#### Dosa with Allam Pachadi (Low GI: ★★)
+#### Dosa with Allam Pachadi
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, ginger chutney
 - Macros: Protein 8g, Carbs 32g, Fats 4g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Ginger aids digestion and reduces inflammation
 
-#### Bobbatlu (Puran Poli) - Healthy Version (Low GI: ★★)
+#### Bobbatlu (Puran Poli) - Healthy Version
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Whole wheat 60g, chana dal 40g, jaggery 20g, cardamom
 - Macros: Protein 11g, Carbs 45g, Fats 5g
 - Budget: ₹35-40
 - Prep: 40 mins
+- GI: Low
 - Tip: Festival special, use jaggery in moderation
 
-#### Pesara Dosa (Low GI: ★★★)
+#### Pesara Dosa
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Moong dal 100g, rice 15g, ginger, cumin
 - Macros: Protein 16g, Carbs 25g, Fats 3g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: No fermentation needed, instant breakfast
 
-#### Semiya Upma (Low GI: ★★)
+#### Semiya Upma
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Vermicelli 50g, vegetables, peanuts, spices
 - Macros: Protein 7g, Carbs 35g, Fats 7g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick breakfast option
 
-#### Egg Dosa (Low GI: ★★★)
+#### Egg Dosa
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, eggs 2, onions, green chilies
 - Macros: Protein 18g, Carbs 28g, Fats 10g
 - Budget: ₹35-40
 - Prep: 15 mins
+- GI: Low
 - Tip: High protein, fills you up longer
 
-#### Kodi Koora Idli (Chicken Curry Idli) (Low GI: ★★★)
+#### Kodi Koora Idli (Chicken Curry Idli)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, chicken curry 100g, onions, spices
 - Macros: Protein 22g, Carbs 30g, Fats 8g
 - Budget: ₹60-70
 - Prep: 30 mins
+- GI: Low
 - Tip: Hearty breakfast, rich in protein
 
-#### Royyala Upma (Prawn Upma) (Low GI: ★★★)
+#### Royyala Upma (Prawn Upma)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Rava 50g, prawns 80g, vegetables, spices
 - Macros: Protein 20g, Carbs 30g, Fats 6g
 - Budget: ₹80-100
 - Prep: 25 mins
+- GI: Low
 - Tip: Coastal special, high in omega-3
 
-#### Mamsam Pesarattu (Mutton Stuffed Dosa) (Low GI: ★★★)
+#### Mamsam Pesarattu (Mutton Stuffed Dosa)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Moong dal 100g, minced mutton 60g, spices
 - Macros: Protein 24g, Carbs 26g, Fats 12g
 - Budget: ₹70-80
 - Prep: 35 mins
+- GI: Low
 - Tip: Traditional Andhra delicacy, protein-packed
 
-#### Kodi Pulusu with Idli (Low GI: ★★★)
+#### Kodi Pulusu with Idli
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, chicken 100g, tamarind, spices
 - Macros: Protein 23g, Carbs 32g, Fats 9g
 - Budget: ₹65-75
 - Prep: 40 mins
+- GI: Low
 - Tip: Tangy chicken curry with soft idlis
 
 ### Lunch Options
 
-#### Pulihora (Tamarind Rice) (Low GI: ★★)
+#### Pulihora (Tamarind Rice)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, tamarind, peanuts, curry leaves
 - Macros: Protein 8g, Carbs 42g, Fats 9g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Tangy and flavorful, good for gut health
 
-#### Gutti Vankaya Koora (Low GI: ★★★)
+#### Gutti Vankaya Koora
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Brinjal 200g, peanut-sesame paste, tamarind, spices
 - Macros: Protein 9g, Carbs 18g, Fats 12g
 - Budget: ₹40-50
 - Prep: 35 mins
+- GI: Low
 - Tip: Stuffed brinjal curry, rich in antioxidants
 
-#### Pappu Charu (Dal Soup) (Low GI: ★★★)
+#### Pappu Charu (Dal Soup)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, tomatoes, tamarind, garlic, curry leaves
 - Macros: Protein 15g, Carbs 28g, Fats 5g
 - Budget: ₹25-30
 - Prep: 30 mins
+- GI: Low
 - Tip: Light and digestive, perfect with brown rice
 
-#### Dondakaya Fry (Ivy Gourd Fry) (Low GI: ★★★)
+#### Dondakaya Fry (Ivy Gourd Fry)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Ivy gourd 200g, onions, spices, curry leaves
 - Macros: Protein 4g, Carbs 12g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Excellent for blood sugar management
 
-#### Majjiga Pulusu (Buttermilk Curry) (Low GI: ★★★)
+#### Majjiga Pulusu (Buttermilk Curry)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Buttermilk 200ml, besan 20g, vegetables, spices
 - Macros: Protein 8g, Carbs 15g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Probiotic-rich, cooling curry
 
-#### Bendakaya Pulusu (Okra Curry) (Low GI: ★★★)
+#### Bendakaya Pulusu (Okra Curry)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Okra 200g, tamarind, onions, tomatoes, spices
 - Macros: Protein 5g, Carbs 16g, Fats 7g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: High fiber, helps with cholesterol
 
-#### Pesara Pappu (Moong Dal) (Low GI: ★★★)
+#### Pesara Pappu (Moong Dal)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Moong dal 60g, green chilies, ginger, ghee
 - Macros: Protein 14g, Carbs 25g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Easy to digest, protein-rich
 
-#### Avakaya with Brown Rice (Low GI: ★★)
+#### Avakaya with Brown Rice
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, mango pickle, curd
 - Macros: Protein 7g, Carbs 45g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Traditional Andhra meal, pickle in moderation
 
-#### Gutti Karam Dosa (Low GI: ★★★)
+#### Gutti Karam Dosa
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Dosa batter, red chili paste, sesame, jaggery
 - Macros: Protein 9g, Carbs 35g, Fats 10g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Spicy stuffed dosa variety
 
-#### Gongura Pachadi with Millet Rice (Low GI: ★★★)
+#### Gongura Pachadi with Millet Rice
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Foxtail millet 60g, gongura leaves, dal, spices
 - Macros: Protein 10g, Carbs 38g, Fats 7g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Iron-rich tangy curry
 
-#### Kodi Vepudu (Chicken Fry) (Low GI: ★★★)
+#### Kodi Vepudu (Chicken Fry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, curry leaves, spices
 - Macros: Protein 28g, Carbs 8g, Fats 12g
 - Budget: ₹80-90
 - Prep: 35 mins
+- GI: Low
 - Tip: Dry chicken fry, excellent protein source
 
-#### Royyala Iguru (Prawn Curry) (Low GI: ★★★)
+#### Royyala Iguru (Prawn Curry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, tomatoes, coconut, spices
 - Macros: Protein 26g, Carbs 10g, Fats 14g
 - Budget: ₹120-140
 - Prep: 30 mins
+- GI: Low
 - Tip: Coastal delicacy, omega-3 rich
 
-#### Mamsam Kura (Mutton Curry) (Low GI: ★★★)
+#### Mamsam Kura (Mutton Curry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, onions, ginger-garlic, gongura/spices
 - Macros: Protein 25g, Carbs 12g, Fats 18g
 - Budget: ₹100-120
 - Prep: 60 mins
+- GI: Low
 - Tip: Rich iron source, occasional treat
 
-#### Chepala Pulusu (Fish Curry) (Low GI: ★★★)
+#### Chepala Pulusu (Fish Curry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, onions, tomatoes, curry leaves
 - Macros: Protein 24g, Carbs 9g, Fats 10g
 - Budget: ₹80-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Tangy fish curry, high in protein and healthy fats
 
-#### Kodi Pulao (Chicken Pulao) (Low GI: ★★)
+#### Kodi Pulao (Chicken Pulao)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, chicken 100g, vegetables, spices
 - Macros: Protein 22g, Carbs 45g, Fats 10g
 - Budget: ₹70-80
 - Prep: 40 mins
+- GI: Low
 - Tip: One-pot meal, balanced nutrition
 
 ### Dinner Options
 
-#### Ragi Sangati with Natu Kodi Pulusu (Low GI: ★★★)
+#### Ragi Sangati with Natu Kodi Pulusu
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Ragi flour 80g, country chicken 100g, curry leaves
 - Macros: Protein 26g, Carbs 35g, Fats 12g
 - Budget: ₹90-110
 - Prep: 50 mins
+- GI: Low
 - Tip: Traditional meal, very filling
 
-#### Pesarattu with Allam Chutney (Low GI: ★★★)
+#### Pesarattu with Allam Chutney
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Moong dal 100g, rice 20g, ginger chutney
 - Macros: Protein 15g, Carbs 28g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Light dinner option, easy to digest
 
-#### Quinoa Upma (Low GI: ★★★)
+#### Quinoa Upma
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Quinoa 60g, vegetables, peanuts, curry leaves
 - Macros: Protein 12g, Carbs 32g, Fats 8g
 - Budget: ₹70-80
 - Prep: 20 mins
+- GI: Low
 - Tip: Protein-rich, modern adaptation
 
-#### Vegetable Kootu (Low GI: ★★★)
+#### Vegetable Kootu
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, moong dal 30g, coconut
 - Macros: Protein 10g, Carbs 22g, Fats 8g
 - Budget: ₹35-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Balanced meal, high fiber
 
-#### Dahi Vada (Low GI: ★★)
+#### Dahi Vada
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Urad dal 50g, curd 150ml, spices
 - Macros: Protein 12g, Carbs 28g, Fats 6g
 - Budget: ₹30-35
 - Prep: 40 mins
+- GI: Low
 - Tip: Probiotic-rich, cooling dinner
 
-#### Bagara Baingan (Low GI: ★★★)
+#### Bagara Baingan
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Brinjal 200g, peanuts, sesame, tamarind, spices
 - Macros: Protein 8g, Carbs 18g, Fats 14g
 - Budget: ₹45-55
 - Prep: 35 mins
+- GI: Low
 - Tip: Hyderabadi style, rich and flavorful
 
-#### Tomato Pappu (Low GI: ★★★)
+#### Tomato Pappu
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, tomatoes 100g, garlic, curry leaves
 - Macros: Protein 14g, Carbs 26g, Fats 5g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Comfort food, lycopene-rich
 
-#### Mirapakaya Bajji (Chili Fritters) (Low GI: ★★)
+#### Mirapakaya Bajji (Chili Fritters)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Green chilies 100g, besan 50g, spices
 - Macros: Protein 8g, Carbs 30g, Fats 10g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Evening snack, consume in moderation
 
-#### Ragi Mudde with Sambar (Low GI: ★★★)
+#### Ragi Mudde with Sambar
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, sambar vegetables, tamarind
 - Macros: Protein 11g, Carbs 38g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Traditional dinner, very nutritious
 
-#### Pachi Pulusu (Raw Tamarind Soup) (Low GI: ★★★)
+#### Pachi Pulusu (Raw Tamarind Soup)
 - **State:** Andhra Pradesh
 - **Type:** Vegetarian
 - Ingredients: Tamarind, onions, tomatoes, curry leaves, jaggery
 - Macros: Protein 3g, Carbs 15g, Fats 5g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: No-cook curry, summer special
 
-#### Chepala Vepudu (Fish Fry) (Low GI: ★★★)
+#### Chepala Vepudu (Fish Fry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, rice flour, spices
 - Macros: Protein 26g, Carbs 12g, Fats 10g
 - Budget: ₹80-100
 - Prep: 25 mins
+- GI: Low
 - Tip: Crispy and protein-rich
 
-#### Kodi Koora (Chicken Curry) (Low GI: ★★★)
+#### Kodi Koora (Chicken Curry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, curry leaves, spices
 - Macros: Protein 28g, Carbs 10g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: Classic Andhra curry, pairs well with ragi
 
-#### Royyala Fry (Prawn Fry) (Low GI: ★★★)
+#### Royyala Fry (Prawn Fry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, spices, curry leaves
 - Macros: Protein 27g, Carbs 8g, Fats 10g
 - Budget: ₹120-140
 - Prep: 20 mins
+- GI: Low
 - Tip: Quick dinner, seafood lovers' delight
 
-#### Mamsam Vepudu (Mutton Fry) (Low GI: ★★★)
+#### Mamsam Vepudu (Mutton Fry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, onions, ginger-garlic, spices
 - Macros: Protein 26g, Carbs 10g, Fats 20g
 - Budget: ₹110-130
 - Prep: 60 mins
+- GI: Low
 - Tip: Slow-cooked, tender meat
 
-#### Natu Kodi Pulusu (Country Chicken Curry) (Low GI: ★★★)
+#### Natu Kodi Pulusu (Country Chicken Curry)
 - **State:** Andhra Pradesh
 - **Type:** Non-Vegetarian
 - Ingredients: Country chicken 150g, tamarind, onions, spices
 - Macros: Protein 30g, Carbs 12g, Fats 14g
 - Budget: ₹100-120
 - Prep: 60 mins
+- GI: Low
 - Tip: Lean protein, traditional preparation
 
 ---
@@ -421,413 +466,458 @@
 
 ### Breakfast Options
 
-#### Ragi Mudde (Low GI: ★★★)
+#### Ragi Mudde
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, water, salt
 - Macros: Protein 8g, Carbs 35g, Fats 2g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: Traditional finger millet ball, calcium-rich
 
-#### Akki Roti (Rice Roti) (Low GI: ★★)
+#### Akki Roti (Rice Roti)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, onions, carrots, coriander, spices
 - Macros: Protein 6g, Carbs 38g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Karnataka breakfast staple, add vegetables for fiber
 
-#### Jolada Roti with Ennegai (Low GI: ★★★)
+#### Jolada Roti with Ennegai
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Jowar flour 70g, brinjal curry 150g
 - Macros: Protein 9g, Carbs 40g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: North Karnataka special, high fiber
 
-#### Neer Dosa (Low GI: ★★★)
+#### Neer Dosa
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, water, salt
 - Macros: Protein 5g, Carbs 32g, Fats 2g
 - Budget: ₹20-25
 - Prep: 15 mins (no fermentation)
+- GI: Low
 - Tip: Light and easy to digest
 
-#### Bisi Bele Bath (Millet Version) (Low GI: ★★★)
+#### Bisi Bele Bath (Millet Version)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Foxtail millet 50g, toor dal 30g, vegetables, spices
 - Macros: Protein 12g, Carbs 38g, Fats 8g
 - Budget: ₹45-55
 - Prep: 40 mins
+- GI: Low
 - Tip: One-pot meal, comfort food
 
-#### Set Dosa with Coconut Chutney (Low GI: ★★)
+#### Set Dosa with Coconut Chutney
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, fenugreek, coconut chutney
 - Macros: Protein 9g, Carbs 35g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins (batter fermented)
+- GI: Low
 - Tip: Soft and spongy, Bangalore favorite
 
-#### Rava Idli (Low GI: ★★)
+#### Rava Idli
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rava 60g, curd 50ml, vegetables, cashews
 - Macros: Protein 8g, Carbs 32g, Fats 7g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Quick breakfast, instant preparation
 
-#### Upittu (Uppittu/Upma) (Low GI: ★★)
+#### Upittu (Uppittu/Upma)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, curry leaves, peanuts
 - Macros: Protein 7g, Carbs 33g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Classic Karnataka breakfast
 
-#### Masala Dosa (Low GI: ★★)
+#### Masala Dosa
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 70g, potato masala 80g, onions
 - Macros: Protein 8g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: Iconic South Indian breakfast
 
-#### Paddu (Appe) (Low GI: ★★★)
+#### Paddu (Appe)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, onions, green chilies, coriander
 - Macros: Protein 9g, Carbs 30g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Round dumplings, less oil
 
-#### Mysore Bonda (Low GI: ★★)
+#### Mysore Bonda
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Maida 40g, rice flour 20g, curd, onions, spices
 - Macros: Protein 7g, Carbs 35g, Fats 9g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Deep-fried snack, occasional treat
 
-#### Kadubu (Steamed Rice Dumplings) (Low GI: ★★)
+#### Kadubu (Steamed Rice Dumplings)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut, jaggery
 - Macros: Protein 5g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Festive breakfast, Coorg special
 
-#### Chicken Dosa (Low GI: ★★★)
+#### Chicken Dosa
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, chicken keema 80g, onions, spices
 - Macros: Protein 22g, Carbs 32g, Fats 12g
 - Budget: ₹60-70
 - Prep: 30 mins
+- GI: Low
 - Tip: Protein-packed breakfast
 
-#### Mutton Akki Roti (Low GI: ★★★)
+#### Mutton Akki Roti
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, minced mutton 60g, vegetables
 - Macros: Protein 20g, Carbs 36g, Fats 14g
 - Budget: ₹70-80
 - Prep: 35 mins
+- GI: Low
 - Tip: Hearty breakfast, filling
 
-#### Fish Upma (Low GI: ★★★)
+#### Fish Upma
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Rava 50g, fish pieces 80g, curry leaves, spices
 - Macros: Protein 24g, Carbs 30g, Fats 8g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: Coastal Karnataka special
 
 ### Lunch Options
 
-#### Bisi Bele Bath (Traditional) (Low GI: ★★★)
+#### Bisi Bele Bath (Traditional)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, toor dal 30g, mixed vegetables, ghee
 - Macros: Protein 14g, Carbs 45g, Fats 9g
 - Budget: ₹40-50
 - Prep: 45 mins
+- GI: Low
 - Tip: Complete meal, Karnataka comfort food
 
-#### Huli (Sambar) with Brown Rice (Low GI: ★★★)
+#### Huli (Sambar) with Brown Rice
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, toor dal 30g, vegetables, tamarind
 - Macros: Protein 12g, Carbs 42g, Fats 6g
 - Budget: ₹35-40
 - Prep: 35 mins
+- GI: Low
 - Tip: Daily staple, balanced meal
 
-#### Vangi Bath (Brinjal Rice) (Low GI: ★★★)
+#### Vangi Bath (Brinjal Rice)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, brinjal 150g, peanuts, spices
 - Macros: Protein 10g, Carbs 45g, Fats 10g
 - Budget: ₹40-50
 - Prep: 30 mins
+- GI: Low
 - Tip: Festive rice dish, aromatic
 
-#### Saaru with Ragi Mudde (Low GI: ★★★)
+#### Saaru with Ragi Mudde
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, rasam spices, tamarind, tomatoes
 - Macros: Protein 9g, Carbs 38g, Fats 5g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Comfort food, aids digestion
 
-#### Gojju (Sweet-Sour Curry) (Low GI: ★★)
+#### Gojju (Sweet-Sour Curry)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Vegetables 200g, jaggery 15g, tamarind, spices
 - Macros: Protein 5g, Carbs 28g, Fats 7g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Karnataka specialty, balanced flavors
 
-#### Kosambari (Moong Dal Salad) (Low GI: ★★★)
+#### Kosambari (Moong Dal Salad)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Moong dal 50g, cucumber 100g, coconut, lemon
 - Macros: Protein 12g, Carbs 20g, Fats 6g
 - Budget: ₹30-35
 - Prep: 15 mins (after soaking)
+- GI: Low
 - Tip: Protein-rich salad, refreshing
 
-#### Kootu (Mixed Vegetable Dal) (Low GI: ★★★)
+#### Kootu (Mixed Vegetable Dal)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, chana dal 40g, coconut
 - Macros: Protein 11g, Carbs 25g, Fats 8g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Balanced nutrition, high fiber
 
-#### Palya (Vegetable Stir-Fry) (Low GI: ★★★)
+#### Palya (Vegetable Stir-Fry)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Beans 150g, coconut 20g, mustard, curry leaves
 - Macros: Protein 6g, Carbs 18g, Fats 7g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Simple side dish, retains nutrients
 
-#### Tovve (Dal) (Low GI: ★★★)
+#### Tovve (Dal)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, ghee, cumin, curry leaves
 - Macros: Protein 15g, Carbs 28g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Simple protein-rich dal
 
-#### Chitranna (Lemon Rice) (Low GI: ★★)
+#### Chitranna (Lemon Rice)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, lemon, peanuts, turmeric, curry leaves
 - Macros: Protein 8g, Carbs 44g, Fats 9g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Tangy and flavorful, vitamin C rich
 
-#### Kori Rotti (Chicken Curry with Rice Wafers) (Low GI: ★★)
+#### Kori Rotti (Chicken Curry with Rice Wafers)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Rice wafers 50g, chicken 150g, coconut, spices
 - Macros: Protein 28g, Carbs 35g, Fats 14g
 - Budget: ₹90-110
 - Prep: 50 mins
+- GI: Low
 - Tip: Mangalorean specialty, festive dish
 
-#### Kane Rava Fry (Ladyfish Fry) (Low GI: ★★★)
+#### Kane Rava Fry (Ladyfish Fry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Ladyfish 150g, rava coating, spices
 - Macros: Protein 26g, Carbs 15g, Fats 10g
 - Budget: ₹80-100
 - Prep: 25 mins
+- GI: Low
 - Tip: Coastal Karnataka favorite
 
-#### Mutton Saaru (Mutton Rasam) (Low GI: ★★★)
+#### Mutton Saaru (Mutton Rasam)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 100g, rasam spices, tamarind, tomatoes
 - Macros: Protein 22g, Carbs 12g, Fats 16g
 - Budget: ₹100-120
 - Prep: 60 mins
+- GI: Low
 - Tip: Coorg specialty, rich and tangy
 
-#### Koli Saaru (Chicken Curry) (Low GI: ★★★)
+#### Koli Saaru (Chicken Curry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, coconut, spices
 - Macros: Protein 30g, Carbs 10g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: Karnataka style chicken curry, protein-rich
 
-#### Meen Ghassi (Fish Curry) (Low GI: ★★★)
+#### Meen Ghassi (Fish Curry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut, tamarind, onions, spices
 - Macros: Protein 25g, Carbs 12g, Fats 14g
 - Budget: ₹80-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Mangalorean delicacy, omega-3 rich
 
 ### Dinner Options
 
-#### Ragi Mudde with Soppu Saaru (Low GI: ★★★)
+#### Ragi Mudde with Soppu Saaru
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, leafy greens 150g, dal, tamarind
 - Macros: Protein 12g, Carbs 38g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Traditional dinner, iron-rich
 
-#### Jowar Roti with Vegetable Palya (Low GI: ★★★)
+#### Jowar Roti with Vegetable Palya
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Jowar flour 70g, mixed vegetables 150g, coconut
 - Macros: Protein 10g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: North Karnataka style, filling meal
 
-#### Neer Dosa with Chutney Pudi (Low GI: ★★★)
+#### Neer Dosa with Chutney Pudi
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, chutney powder, coconut oil
 - Macros: Protein 6g, Carbs 35g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Light dinner, easy to digest
 
-#### Akki Roti with Ennegai (Low GI: ★★★)
+#### Akki Roti with Ennegai
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, brinjal curry 150g, onions
 - Macros: Protein 8g, Carbs 40g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Complete meal, North Karnataka special
 
-#### Ragi Dosa with Sambar (Low GI: ★★★)
+#### Ragi Dosa with Sambar
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 70g, urad dal 20g, sambar vegetables
 - Macros: Protein 13g, Carbs 35g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: High calcium, nutritious dinner
 
-#### Set Dosa with Vegetable Kurma (Low GI: ★★)
+#### Set Dosa with Vegetable Kurma
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, mixed vegetables 150g, coconut
 - Macros: Protein 10g, Carbs 38g, Fats 10g
 - Budget: ₹40-45
 - Prep: 35 mins
+- GI: Low
 - Tip: Soft dosas with creamy curry
 
-#### Upma with Kesari (Low GI: ★★)
+#### Upma with Kesari
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, kesari 30g (occasional)
 - Macros: Protein 7g, Carbs 45g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: Classic combo, kesari in moderation
 
-#### Puliyogare (Tamarind Rice) (Low GI: ★★)
+#### Puliyogare (Tamarind Rice)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, tamarind, peanuts, jaggery, spices
 - Macros: Protein 9g, Carbs 46g, Fats 10g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: Temple food, tangy and flavorful
 
-#### Khara Bath (Spicy Rava) (Low GI: ★★)
+#### Khara Bath (Spicy Rava)
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rava 60g, vegetables, ghee, cashews, spices
 - Macros: Protein 8g, Carbs 38g, Fats 9g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Spicy version of upma
 
-#### Tomato Bath (Low GI: ★★)
+#### Tomato Bath
 - **State:** Karnataka
 - **Type:** Vegetarian
 - Ingredients: Rava 60g, tomatoes 100g, peas, onions, spices
 - Macros: Protein 7g, Carbs 36g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Lycopene-rich, flavorful
 
-#### Kori Gassi (Chicken Curry) (Low GI: ★★★)
+#### Kori Gassi (Chicken Curry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, coconut 40g, tamarind, spices
 - Macros: Protein 30g, Carbs 12g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
+- GI: Low
 - Tip: Mangalorean style, rich and creamy
 
-#### Meen Gassi (Fish Curry) (Low GI: ★★★)
+#### Meen Gassi (Fish Curry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut milk 100ml, tamarind, spices
 - Macros: Protein 26g, Carbs 10g, Fats 14g
 - Budget: ₹85-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Coastal special, omega-3 rich
 
-#### Mutton Sukka (Dry Mutton) (Low GI: ★★★)
+#### Mutton Sukka (Dry Mutton)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, coconut 30g, onions, spices
 - Macros: Protein 28g, Carbs 10g, Fats 20g
 - Budget: ₹110-130
 - Prep: 60 mins
+- GI: Low
 - Tip: Coorg specialty, dry preparation
 
-#### Kori Rotti (Low GI: ★★)
+#### Kori Rotti
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Rice wafers 50g, chicken gravy 150g, coconut
 - Macros: Protein 28g, Carbs 36g, Fats 14g
 - Budget: ₹90-110
 - Prep: 50 mins
+- GI: Low
 - Tip: Festival special, soak rotti in curry
 
-#### Yetti Gassi (Prawn Curry) (Low GI: ★★★)
+#### Yetti Gassi (Prawn Curry)
 - **State:** Karnataka
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, coconut milk 100ml, kokum, spices
 - Macros: Protein 27g, Carbs 10g, Fats 15g
 - Budget: ₹130-150
 - Prep: 30 mins
+- GI: Low
 - Tip: Mangalorean delicacy, creamy
 
 ---
@@ -836,281 +926,311 @@
 
 ### Breakfast Options
 
-#### Puttu with Kadala Curry (Low GI: ★★★)
+#### Puttu with Kadala Curry
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, black chickpea curry 80g
 - Macros: Protein 12g, Carbs 38g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Steamed breakfast, high protein
 
-#### Appam with Vegetable Stew (Low GI: ★★)
+#### Appam with Vegetable Stew
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, coconut milk 80ml, mixed vegetables 100g
 - Macros: Protein 8g, Carbs 35g, Fats 12g
 - Budget: ₹40-45
 - Prep: 30 mins (batter fermented)
+- GI: Low
 - Tip: Soft hoppers with creamy stew
 
-#### Idiyappam with Coconut Chutney (Low GI: ★★★)
+#### Idiyappam with Coconut Chutney
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut chutney 50g
 - Macros: Protein 6g, Carbs 36g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: String hoppers, light breakfast
 
-#### Dosa with Sambar (Low GI: ★★)
+#### Dosa with Sambar
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, sambar vegetables 100g
 - Macros: Protein 10g, Carbs 35g, Fats 5g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Classic South Indian breakfast
 
-#### Idli with Thengai Chutney (Low GI: ★★★)
+#### Idli with Thengai Chutney
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, coconut chutney 50g
 - Macros: Protein 9g, Carbs 32g, Fats 7g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Steamed, easy to digest
 
-#### Upma with Banana (Low GI: ★★)
+#### Upma with Banana
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables 50g, banana 1pc
 - Macros: Protein 7g, Carbs 42g, Fats 6g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Kerala style, served with banana
 
-#### Pazhampori (Banana Fritters) (Low GI: ★)
+#### Pazhampori (Banana Fritters)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Raw banana 100g, maida 30g, jaggery 15g
 - Macros: Protein 4g, Carbs 40g, Fats 8g
 - Budget: ₹20-25
 - Prep: 20 mins
+- GI: Low
 - Tip: Tea-time snack, occasional treat
 
-#### Vellayappam (Sweet Appam) (Low GI: ★★)
+#### Vellayappam (Sweet Appam)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, coconut milk 50ml, jaggery 20g
 - Macros: Protein 5g, Carbs 45g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Festive breakfast, sweet version
 
-#### Nei Choru (Ghee Rice) (Low GI: ★★)
+#### Nei Choru (Ghee Rice)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, ghee 10g, cashews, raisins
 - Macros: Protein 7g, Carbs 44g, Fats 12g
 - Budget: ₹40-45
 - Prep: 25 mins
+- GI: Low
 - Tip: Simple and flavorful
 
-#### Pathiri (Rice Roti) (Low GI: ★★)
+#### Pathiri (Rice Roti)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, water, salt
 - Macros: Protein 5g, Carbs 38g, Fats 2g
 - Budget: ₹20-25
 - Prep: 20 mins
+- GI: Low
 - Tip: Malabar special, soft rotis
 
-#### Porichathu (Fish Fry) (Low GI: ★★★)
+#### Porichathu (Fish Fry)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, spices, curry leaves
 - Macros: Protein 28g, Carbs 6g, Fats 10g
 - Budget: ₹80-100
 - Prep: 20 mins
+- GI: Low
 - Tip: Crispy fish fry, protein-rich
 
-#### Mutta Roast (Egg Roast) (Low GI: ★★★)
+#### Mutta Roast (Egg Roast)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, onions, tomatoes, coconut, spices
 - Macros: Protein 20g, Carbs 10g, Fats 14g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Spicy egg curry, goes well with appam
 
-#### Appam with Chicken Stew (Low GI: ★★★)
+#### Appam with Chicken Stew
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, chicken 100g, coconut milk 100ml, vegetables
 - Macros: Protein 24g, Carbs 35g, Fats 16g
 - Budget: ₹75-85
 - Prep: 45 mins
+- GI: Low
 - Tip: Kerala breakfast special, creamy
 
-#### Puttu with Meen Curry (Low GI: ★★★)
+#### Puttu with Meen Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, fish curry 100g
 - Macros: Protein 26g, Carbs 36g, Fats 12g
 - Budget: ₹80-90
 - Prep: 35 mins
+- GI: Low
 - Tip: Coastal Kerala favorite
 
-#### Idiyappam with Egg Curry (Low GI: ★★★)
+#### Idiyappam with Egg Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, eggs 2pcs, coconut milk, spices
 - Macros: Protein 18g, Carbs 36g, Fats 14g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: String hoppers with spicy curry
 
 ### Lunch Options
 
-#### Kerala Sadya (PCOS-Adapted) (Low GI: ★★★)
+#### Kerala Sadya (PCOS-Adapted)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, sambar, avial, thoran, pickle
 - Macros: Protein 15g, Carbs 50g, Fats 12g
 - Budget: ₹60-70
 - Prep: 60 mins
+- GI: Low
 - Tip: Festival meal, balanced nutrition
 
-#### Avial (Low GI: ★★★)
+#### Avial
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut 30g, curd 50ml, curry leaves
 - Macros: Protein 9g, Carbs 22g, Fats 10g
 - Budget: ₹45-50
 - Prep: 30 mins
+- GI: Low
 - Tip: High fiber, probiotic-rich
 
-#### Thoran (Vegetable Stir-Fry) (Low GI: ★★★)
+#### Thoran (Vegetable Stir-Fry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Cabbage/beans 200g, coconut 20g, mustard, curry leaves
 - Macros: Protein 6g, Carbs 16g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Dry curry, retains nutrients
 
-#### Olan (Pumpkin Coconut Curry) (Low GI: ★★★)
+#### Olan (Pumpkin Coconut Curry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Ash gourd 150g, cowpeas 30g, coconut milk 80ml
 - Macros: Protein 8g, Carbs 20g, Fats 10g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: Mild and soothing
 
-#### Pulissery (Buttermilk Curry) (Low GI: ★★★)
+#### Pulissery (Buttermilk Curry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Buttermilk 200ml, vegetables 100g, coconut, turmeric
 - Macros: Protein 7g, Carbs 18g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Probiotic-rich, cooling
 
-#### Parippu Curry (Dal Curry) (Low GI: ★★★)
+#### Parippu Curry (Dal Curry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Moong dal 60g, coconut 20g, curry leaves, spices
 - Macros: Protein 14g, Carbs 26g, Fats 8g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Daily staple, protein-rich
 
-#### Kootu Curry (Low GI: ★★★)
+#### Kootu Curry
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 150g, chana dal 40g, coconut 30g
 - Macros: Protein 12g, Carbs 28g, Fats 10g
 - Budget: ₹40-45
 - Prep: 35 mins
+- GI: Low
 - Tip: Festival curry, balanced meal
 
-#### Pachadi (Yogurt Curry) (Low GI: ★★★)
+#### Pachadi (Yogurt Curry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Pineapple/cucumber 100g, curd 150ml, coconut, mustard
 - Macros: Protein 8g, Carbs 20g, Fats 7g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Probiotic-rich, refreshing
 
-#### Kaalan (Low GI: ★★★)
+#### Kaalan
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Raw banana 100g, yam 50g, curd 100ml, coconut
 - Macros: Protein 7g, Carbs 32g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Onam special, thick curry
 
-#### Mezhukkupuratti (Stir-Fry) (Low GI: ★★★)
+#### Mezhukkupuratti (Stir-Fry)
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Vegetables 200g, coconut oil, shallots, curry leaves
 - Macros: Protein 5g, Carbs 18g, Fats 10g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Simple preparation, flavorful
 
-#### Meen Pollichathu (Fish in Banana Leaf) (Low GI: ★★★)
+#### Meen Pollichathu (Fish in Banana Leaf)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut paste, banana leaf, spices
 - Macros: Protein 28g, Carbs 8g, Fats 12g
 - Budget: ₹90-110
 - Prep: 35 mins
+- GI: Low
 - Tip: Traditional preparation, aromatic
 
-#### Meen Moilee (Fish Stew) (Low GI: ★★★)
+#### Meen Moilee (Fish Stew)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut milk 100ml, tomatoes, spices
 - Macros: Protein 26g, Carbs 10g, Fats 16g
 - Budget: ₹95-115
 - Prep: 30 mins
+- GI: Low
 - Tip: Mild and creamy, Kerala style
 
-#### Kozhi Curry (Chicken Curry) (Low GI: ★★★)
+#### Kozhi Curry (Chicken Curry)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, coconut 30g, curry leaves, spices
 - Macros: Protein 30g, Carbs 10g, Fats 14g
 - Budget: ₹80-90
 - Prep: 40 mins
+- GI: Low
 - Tip: Kerala style, spicy and flavorful
 
-#### Chemmeen Curry (Prawn Curry) (Low GI: ★★★)
+#### Chemmeen Curry (Prawn Curry)
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, coconut milk 80ml, tamarind, spices
 - Macros: Protein 28g, Carbs 10g, Fats 14g
 - Budget: ₹140-160
 - Prep: 25 mins
+- GI: Low
 - Tip: Coastal delicacy, rich in omega-3
 
-#### Mutton Stew (Low GI: ★★★)
+#### Mutton Stew
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, coconut milk 100ml, potatoes, spices
 - Macros: Protein 26g, Carbs 18g, Fats 20g
 - Budget: ₹120-140
 - Prep: 60 mins
+- GI: Low
 - Tip: Syrian Christian special, mild
 
 ### Dinner Options
 
-#### Puttu with Kadala Curry (Low GI: ★★★)
+#### Puttu with Kadala Curry
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, black chickpea curry
@@ -1119,130 +1239,144 @@
 - Prep: 25 mins
 - Tip: Light dinner, high protein
 
-#### Appam with Vegetable Ishtu (Low GI: ★★)
+#### Appam with Vegetable Ishtu
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, mixed vegetables 150g, coconut milk 100ml
 - Macros: Protein 9g, Carbs 36g, Fats 14g
 - Budget: ₹40-45
 - Prep: 35 mins
+- GI: Low
 - Tip: Soft appams with creamy stew
 
-#### Idiyappam with Kadala Curry (Low GI: ★★★)
+#### Idiyappam with Kadala Curry
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, black chickpea curry 100g
 - Macros: Protein 13g, Carbs 38g, Fats 7g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: String hoppers, protein-rich
 
-#### Tapioca with Meen Curry (Low GI: ★★)
+#### Tapioca with Meen Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Tapioca 100g, fish curry 100g, coconut
 - Macros: Protein 24g, Carbs 40g, Fats 12g
 - Budget: ₹70-80
 - Prep: 35 mins
+- GI: Low
 - Tip: Kerala staple, filling meal
 
-#### Parotta with Chicken Curry (Low GI: ★)
+#### Parotta with Chicken Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat parotta 2pcs, chicken curry 150g
 - Macros: Protein 28g, Carbs 50g, Fats 16g
 - Budget: ₹80-90
 - Prep: 45 mins
+- GI: Low
 - Tip: Occasional treat, very filling
 
-#### Dosa with Coconut Chutney (Low GI: ★★)
+#### Dosa with Coconut Chutney
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, coconut chutney 50g, sambar
 - Macros: Protein 10g, Carbs 34g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Simple dinner option
 
-#### Upma with Papadam (Low GI: ★★)
+#### Upma with Papadam
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables 80g, papadam 2pcs
 - Macros: Protein 8g, Carbs 36g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Light and easy
 
-#### Pathiri with Chicken Curry (Low GI: ★★★)
+#### Pathiri with Chicken Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, chicken curry 150g
 - Macros: Protein 30g, Carbs 38g, Fats 14g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: Malabar special, soft rotis
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, sambar vegetables
 - Macros: Protein 11g, Carbs 32g, Fats 5g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Light dinner, easy to digest
 
-#### Nei Choru with Pappadam (Low GI: ★★)
+#### Nei Choru with Pappadam
 - **State:** Kerala
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, ghee 10g, papadam, pickle
 - Macros: Protein 7g, Carbs 44g, Fats 11g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Simple comfort food
 
-#### Appam with Mutta Curry (Low GI: ★★★)
+#### Appam with Mutta Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, eggs 2pcs, coconut milk, spices
 - Macros: Protein 18g, Carbs 34g, Fats 16g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Popular dinner combo
 
-#### Puttu with Fish Curry (Low GI: ★★★)
+#### Puttu with Fish Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, fish curry 100g
 - Macros: Protein 26g, Carbs 36g, Fats 12g
 - Budget: ₹80-90
 - Prep: 35 mins
+- GI: Low
 - Tip: Traditional dinner
 
-#### Tapioca with Chemmeen Curry (Low GI: ★★)
+#### Tapioca with Chemmeen Curry
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Tapioca 100g, prawn curry 100g
 - Macros: Protein 25g, Carbs 42g, Fats 14g
 - Budget: ₹130-150
 - Prep: 40 mins
+- GI: Low
 - Tip: Coastal special, filling
 
-#### Idiyappam with Meen Moilee (Low GI: ★★★)
+#### Idiyappam with Meen Moilee
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, fish stew 150g, coconut milk
 - Macros: Protein 26g, Carbs 36g, Fats 16g
 - Budget: ₹95-115
 - Prep: 40 mins
+- GI: Low
 - Tip: Elegant dinner option
 
-#### Vellayappam with Mutton Stew (Low GI: ★★)
+#### Vellayappam with Mutton Stew
 - **State:** Kerala
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, mutton stew 150g, coconut milk
 - Macros: Protein 26g, Carbs 40g, Fats 20g
 - Budget: ₹120-140
 - Prep: 60 mins
+- GI: Low
 - Tip: Festival dinner, rich
 
 ---
@@ -1251,7 +1385,7 @@
 
 ### Breakfast Options
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, sambar vegetables 100g
@@ -1260,189 +1394,209 @@
 - Prep: 25 mins (batter fermented)
 - Tip: Classic TN breakfast, steamed
 
-#### Dosai with Chutney (Low GI: ★★)
+#### Dosai with Chutney
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, coconut chutney 50g
 - Macros: Protein 9g, Carbs 34g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Crispy dosa, Tamil Nadu staple
 
-#### Pongal (Low GI: ★★★)
+#### Pongal
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, pepper, cumin, ghee
 - Macros: Protein 14g, Carbs 35g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Comfort food, protein-rich
 
-#### Idiyappam with Coconut Milk (Low GI: ★★★)
+#### Idiyappam with Coconut Milk
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut milk 100ml, sugar minimal
 - Macros: Protein 5g, Carbs 36g, Fats 10g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: String hoppers, light breakfast
 
-#### Upma (Low GI: ★★)
+#### Upma
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables 80g, peanuts, curry leaves
 - Macros: Protein 8g, Carbs 34g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick breakfast
 
-#### Ragi Kool (Low GI: ★★★)
+#### Ragi Kool
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, buttermilk 150ml, onions, curry leaves
 - Macros: Protein 10g, Carbs 36g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Cooling breakfast, calcium-rich
 
-#### Adai (Mixed Dal Dosa) (Low GI: ★★★)
+#### Adai (Mixed Dal Dosa)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Mixed dals 80g, rice 20g, vegetables
 - Macros: Protein 16g, Carbs 30g, Fats 5g
 - Budget: ₹30-35
 - Prep: 25 mins (after soaking)
+- GI: Low
 - Tip: Protein-packed, thick dosa
 
-#### Kambu Koozh (Bajra Porridge) (Low GI: ★★★)
+#### Kambu Koozh (Bajra Porridge)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Bajra flour 70g, buttermilk 150ml, onions
 - Macros: Protein 9g, Carbs 38g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Traditional, cooling
 
-#### Kuzhi Paniyaram (Low GI: ★★)
+#### Kuzhi Paniyaram
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, onions, green chilies
 - Macros: Protein 8g, Carbs 32g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Round dumplings, less oil
 
-#### Podi Idli (Low GI: ★★★)
+#### Podi Idli
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Idli 3pcs, gun powder 15g, ghee 5g
 - Macros: Protein 10g, Carbs 32g, Fats 9g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Dry preparation, flavorful
 
-#### Muttai Dosai (Egg Dosa) (Low GI: ★★★)
+#### Muttai Dosai (Egg Dosa)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, eggs 2pcs, onions
 - Macros: Protein 18g, Carbs 32g, Fats 12g
 - Budget: ₹35-40
 - Prep: 15 mins
+- GI: Low
 - Tip: Protein-rich breakfast
 
-#### Kothu Parotta (Low GI: ★)
+#### Kothu Parotta
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Parotta 2pcs, eggs 2pcs, vegetables, chicken optional
 - Macros: Protein 20g, Carbs 48g, Fats 14g
 - Budget: ₹60-70
 - Prep: 25 mins
+- GI: Low
 - Tip: Street food, occasional treat
 
-#### Idli with Meen Kulambu (Low GI: ★★★)
+#### Idli with Meen Kulambu
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, fish curry 100g, tamarind
 - Macros: Protein 25g, Carbs 32g, Fats 10g
 - Budget: ₹75-85
 - Prep: 35 mins
+- GI: Low
 - Tip: Tangy fish curry
 
-#### Kozhi Idiyappam (Low GI: ★★★)
+#### Kozhi Idiyappam
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, chicken curry 100g, coconut
 - Macros: Protein 24g, Carbs 36g, Fats 12g
 - Budget: ₹70-80
 - Prep: 40 mins
+- GI: Low
 - Tip: String hoppers with chicken
 
-#### Pongal with Chicken Gravy (Low GI: ★★★)
+#### Pongal with Chicken Gravy
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, chicken gravy 100g
 - Macros: Protein 26g, Carbs 35g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: Hearty breakfast combination
 
 ### Lunch Options
 
-#### Sambar Sadam (Low GI: ★★★)
+#### Sambar Sadam
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, sambar vegetables 150g, tamarind
 - Macros: Protein 12g, Carbs 44g, Fats 6g
 - Budget: ₹35-40
 - Prep: 35 mins
+- GI: Low
 - Tip: Complete meal, balanced nutrition
 
-#### Rasam Sadam (Low GI: ★★★)
+#### Rasam Sadam
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, rasam 200ml, tamarind, tomatoes
 - Macros: Protein 8g, Carbs 42g, Fats 5g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Digestive, comfort food
 
-#### Mor Kuzhambu (Low GI: ★★★)
+#### Mor Kuzhambu
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Buttermilk 200ml, vegetables 100g, coconut 20g
 - Macros: Protein 9g, Carbs 18g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Probiotic-rich, cooling
 
-#### Poriyal (Vegetable Stir-Fry) (Low GI: ★★★)
+#### Poriyal (Vegetable Stir-Fry)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Beans/carrot 200g, coconut 20g, mustard, dal
 - Macros: Protein 7g, Carbs 16g, Fats 7g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: High fiber, nutrient-dense
 
-#### Kootu (Low GI: ★★★)
+#### Kootu
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 150g, chana dal 40g, coconut 30g
 - Macros: Protein 11g, Carbs 26g, Fats 9g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Balanced meal, protein-rich
 
-#### Keerai Masiyal (Spinach Mash) (Low GI: ★★★)
+#### Keerai Masiyal (Spinach Mash)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Spinach 200g, moong dal 30g, garlic, cumin
 - Macros: Protein 12g, Carbs 18g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Iron-rich, mashed consistency
 
-#### Avial (Low GI: ★★★)
+#### Avial
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut 30g, curd 50ml
@@ -1451,90 +1605,99 @@
 - Prep: 30 mins
 - Tip: High fiber, probiotic benefits
 
-#### Puli Kuzhambu (Low GI: ★★★)
+#### Puli Kuzhambu
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Vegetables 150g, tamarind, sambar powder, jaggery
 - Macros: Protein 6g, Carbs 24g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Tangy curry, pairs well with rice
 
-#### Kathirikai Gothsu (Brinjal Curry) (Low GI: ★★★)
+#### Kathirikai Gothsu (Brinjal Curry)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brinjal 200g, tamarind, dal, tomatoes
 - Macros: Protein 8g, Carbs 20g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: Tangy and spicy
 
-#### Vendakkai Puli Kuzhambu (Okra Tamarind Curry) (Low GI: ★★★)
+#### Vendakkai Puli Kuzhambu (Okra Tamarind Curry)
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Okra 200g, tamarind, onions, sambar powder
 - Macros: Protein 6g, Carbs 18g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: High fiber, good for cholesterol
 
-#### Meen Kuzhambu (Fish Curry) (Low GI: ★★★)
+#### Meen Kuzhambu (Fish Curry)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, onions, tomatoes, spices
 - Macros: Protein 26g, Carbs 10g, Fats 10g
 - Budget: ₹80-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Tangy fish curry, Tamil Nadu style
 
-#### Kozhi Kuzhambu (Chicken Curry) (Low GI: ★★★)
+#### Kozhi Kuzhambu (Chicken Curry)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, curry leaves, spices
 - Macros: Protein 30g, Carbs 10g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: Spicy chicken curry
 
-#### Eral Masala (Prawn Masala) (Low GI: ★★★)
+#### Eral Masala (Prawn Masala)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, tomatoes, coconut, spices
 - Macros: Protein 28g, Carbs 12g, Fats 14g
 - Budget: ₹140-160
 - Prep: 30 mins
+- GI: Low
 - Tip: Rich and flavorful, omega-3 rich
 
-#### Aattu Kaal Paya (Mutton Trotters) (Low GI: ★★★)
+#### Aattu Kaal Paya (Mutton Trotters)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton trotters 200g, onions, ginger-garlic, spices
 - Macros: Protein 24g, Carbs 10g, Fats 18g
 - Budget: ₹100-120
 - Prep: 90 mins
+- GI: Low
 - Tip: Collagen-rich, traditional delicacy
 
-#### Nandu Masala (Crab Masala) (Low GI: ★★★)
+#### Nandu Masala (Crab Masala)
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Crab 200g, onions, tomatoes, coconut, spices
 - Macros: Protein 22g, Carbs 12g, Fats 12g
 - Budget: ₹150-180
 - Prep: 40 mins
+- GI: Low
 - Tip: Coastal delicacy, special occasions
 
 ### Dinner Options
 
-#### Curd Rice (Low GI: ★★★)
+#### Curd Rice
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, curd 150ml, pomegranate, cucumber
 - Macros: Protein 10g, Carbs 44g, Fats 6g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Probiotic-rich, cooling dinner
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, sambar vegetables
@@ -1543,7 +1706,7 @@
 - Prep: 25 mins
 - Tip: French-Tamil fusion breakfast
 
-#### Dosa with Coconut Chutney (Low GI: ★★)
+#### Dosa with Coconut Chutney
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, coconut chutney
@@ -1552,16 +1715,17 @@
 - Prep: 20 mins
 - Tip: Classic breakfast
 
-#### Upma with Vegetables (Low GI: ★★)
+#### Upma with Vegetables
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, mixed vegetables 80g, cashews
 - Macros: Protein 8g, Carbs 34g, Fats 8g
 - Budget: ₹30-35
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick morning meal
 
-#### Pongal (Low GI: ★★★)
+#### Pongal
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, pepper, cumin, ghee
@@ -1570,7 +1734,7 @@
 - Prep: 25 mins
 - Tip: Comfort breakfast
 
-#### Appam with Vegetable Stew (Low GI: ★★)
+#### Appam with Vegetable Stew
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, coconut milk 80ml, vegetables
@@ -1579,99 +1743,109 @@
 - Prep: 30 mins
 - Tip: French-influenced stew
 
-#### Ragi Dosa (Low GI: ★★★)
+#### Ragi Dosa
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 70g, urad dal 20g, fenugreek
 - Macros: Protein 11g, Carbs 30g, Fats 4g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Nutritious breakfast
 
-#### Paniyaram (Low GI: ★★)
+#### Paniyaram
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, onions, curry leaves
 - Macros: Protein 8g, Carbs 32g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Round dumplings
 
-#### Egg Omelette (Low GI: ★★★)
+#### Egg Omelette
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, onions, tomatoes, herbs
 - Macros: Protein 20g, Carbs 6g, Fats 15g
 - Budget: ₹35-40
 - Prep: 10 mins
+- GI: Low
 - Tip: French influence, protein-rich
 
-#### Fish Cutlet (Low GI: ★★★)
+#### Fish Cutlet
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 100g, potato 30g, breadcrumbs, spices
 - Macros: Protein 22g, Carbs 18g, Fats 8g
 - Budget: ₹60-70
 - Prep: 25 mins
+- GI: Low
 - Tip: French-Tamil fusion
 
-#### Chicken Sandwich (Low GI: ★★)
+#### Chicken Sandwich
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat bread 2 slices, grilled chicken 80g
 - Macros: Protein 26g, Carbs 30g, Fats 10g
 - Budget: ₹60-70
 - Prep: 15 mins
+- GI: Low
 - Tip: Colonial influence
 
 ### Lunch Options
 
-#### Fish Curry with Rice (Low GI: ★★★)
+#### Fish Curry with Rice
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, coconut, brown rice 60g
 - Macros: Protein 26g, Carbs 44g, Fats 12g
 - Budget: ₹90-110
 - Prep: 35 mins
+- GI: Low
 - Tip: Coastal specialty
 
-#### Sambar Rice (Low GI: ★★★)
+#### Sambar Rice
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, sambar vegetables, tamarind
 - Macros: Protein 12g, Carbs 44g, Fats 6g
 - Budget: ₹35-40
 - Prep: 35 mins
+- GI: Low
 - Tip: Complete meal
 
-#### Rasam with Rice (Low GI: ★★★)
+#### Rasam with Rice
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, rasam, tomatoes, tamarind
 - Macros: Protein 8g, Carbs 42g, Fats 5g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Digestive curry
 
-#### Crab Curry (Low GI: ★★★)
+#### Crab Curry
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Crab 200g, coconut, tamarind, spices
 - Macros: Protein 22g, Carbs 12g, Fats 12g
 - Budget: ₹150-180
 - Prep: 40 mins
+- GI: Low
 - Tip: Puducherry special
 
-#### Prawn Masala (Low GI: ★★★)
+#### Prawn Masala
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, tomatoes, French spices
 - Macros: Protein 28g, Carbs 12g, Fats 14g
 - Budget: ₹140-160
 - Prep: 30 mins
+- GI: Low
 - Tip: Fusion preparation
 
-#### Avial (Low GI: ★★★)
+#### Avial
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut, curd
@@ -1680,27 +1854,29 @@
 - Prep: 30 mins
 - Tip: High fiber meal
 
-#### Chicken Curry (Low GI: ★★★)
+#### Chicken Curry
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, coconut
 - Macros: Protein 30g, Carbs 10g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
+- GI: Low
 - Tip: French-Tamil blend
 
 ### Dinner Options
 
-#### Idli with Coconut Chutney (Low GI: ★★★)
+#### Idli with Coconut Chutney
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, coconut chutney
 - Macros: Protein 11g, Carbs 32g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Light dinner
 
-#### Dosa with Sambar (Low GI: ★★)
+#### Dosa with Sambar
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, sambar vegetables
@@ -1709,34 +1885,37 @@
 - Prep: 20 mins
 - Tip: Classic dinner
 
-#### Appam with Egg Curry (Low GI: ★★★)
+#### Appam with Egg Curry
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, eggs 2pcs, coconut milk
 - Macros: Protein 18g, Carbs 34g, Fats 16g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Fusion dinner
 
-#### Fish Fry with Salad (Low GI: ★★★)
+#### Fish Fry with Salad
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, mixed greens 100g, lemon
 - Macros: Protein 28g, Carbs 10g, Fats 10g
 - Budget: ₹90-100
 - Prep: 25 mins
+- GI: Low
 - Tip: French influence
 
-#### Pongal with Sambar (Low GI: ★★★)
+#### Pongal with Sambar
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, sambar
 - Macros: Protein 15g, Carbs 36g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Comfort dinner
 
-#### Upma (Low GI: ★★)
+#### Upma
 - **State:** Tamil Nadu
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, cashews
@@ -1745,13 +1924,14 @@
 - Prep: 15 mins
 - Tip: Quick dinner
 
-#### Grilled Chicken Salad (Low GI: ★★★)
+#### Grilled Chicken Salad
 - **State:** Tamil Nadu
 - **Type:** Non-Vegetarian
 - Ingredients: Grilled chicken 150g, mixed greens 150g
 - Macros: Protein 32g, Carbs 12g, Fats 10g
 - Budget: ₹80-90
 - Prep: 20 mins
+- GI: Low
 - Tip: French-style healthy
 
 ---
@@ -1760,16 +1940,17 @@
 
 ### Breakfast Options
 
-#### Maskateri (Tuna Curry with Rice) (Low GI: ★★★)
+#### Maskateri (Tuna Curry with Rice)
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 120g, coconut, brown rice 60g, curry leaves
 - Macros: Protein 28g, Carbs 44g, Fats 12g
 - Budget: ₹100-120
 - Prep: 30 mins
+- GI: Low
 - Tip: Island specialty, omega-3 rich
 
-#### Idli with Coconut Chutney (Low GI: ★★★)
+#### Idli with Coconut Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, fresh coconut 50g
@@ -1778,34 +1959,37 @@
 - Prep: 25 mins
 - Tip: Fresh island coconut
 
-#### Appam with Fish Curry (Low GI: ★★★)
+#### Appam with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, fish 100g, coconut milk 80ml
 - Macros: Protein 24g, Carbs 35g, Fats 14g
 - Budget: ₹80-90
 - Prep: 35 mins
+- GI: Low
 - Tip: Island breakfast special
 
-#### Roti with Tuna (Low GI: ★★★)
+#### Roti with Tuna
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat 60g, tuna 80g, onions, spices
 - Macros: Protein 26g, Carbs 38g, Fats 10g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: High protein breakfast
 
-#### Puttu with Coconut (Low GI: ★★★)
+#### Puttu with Coconut
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, fresh coconut 30g
 - Macros: Protein 6g, Carbs 38g, Fats 10g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Steamed breakfast
 
-#### Dosa with Sambar (Low GI: ★★)
+#### Dosa with Sambar
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, sambar
@@ -1814,16 +1998,17 @@
 - Prep: 20 mins
 - Tip: South Indian influence
 
-#### Coconut Rice (Low GI: ★★)
+#### Coconut Rice
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, fresh coconut 30g, curry leaves
 - Macros: Protein 7g, Carbs 44g, Fats 10g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Island breakfast
 
-#### Fish Cutlet (Low GI: ★★★)
+#### Fish Cutlet
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 100g, potato 30g, breadcrumbs
@@ -1834,81 +2019,89 @@
 
 ### Lunch Options
 
-#### Tuna Curry with Rice (Low GI: ★★★)
+#### Tuna Curry with Rice
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 150g, coconut 40g, brown rice 60g
 - Macros: Protein 30g, Carbs 44g, Fats 14g
 - Budget: ₹110-130
 - Prep: 30 mins
+- GI: Low
 - Tip: Island staple, protein-rich
 
-#### Octopus Fry (Low GI: ★★★)
+#### Octopus Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Octopus 150g, coconut oil, spices, curry leaves
 - Macros: Protein 26g, Carbs 8g, Fats 10g
 - Budget: ₹120-140
 - Prep: 35 mins
+- GI: Low
 - Tip: Delicacy, special occasions
 
-#### Squid Curry (Low GI: ★★★)
+#### Squid Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Squid 150g, coconut milk 100ml, tamarind
 - Macros: Protein 24g, Carbs 12g, Fats 14g
 - Budget: ₹100-120
 - Prep: 30 mins
+- GI: Low
 - Tip: Coastal specialty
 
-#### Sambar with Brown Rice (Low GI: ★★★)
+#### Sambar with Brown Rice
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, vegetables 150g, tamarind
 - Macros: Protein 12g, Carbs 44g, Fats 6g
 - Budget: ₹35-40
 - Prep: 35 mins
+- GI: Low
 - Tip: Balanced vegetarian meal
 
-#### Fish Moilee (Low GI: ★★★)
+#### Fish Moilee
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut milk 100ml, curry leaves
 - Macros: Protein 26g, Carbs 10g, Fats 16g
 - Budget: ₹95-115
 - Prep: 30 mins
+- GI: Low
 - Tip: Mild and creamy
 
-#### Coconut Vegetable Curry (Low GI: ★★★)
+#### Coconut Vegetable Curry
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut 40g, spices
 - Macros: Protein 8g, Carbs 24g, Fats 12g
 - Budget: ₹40-50
 - Prep: 30 mins
+- GI: Low
 - Tip: Fresh island vegetables
 
-#### Prawn Curry (Low GI: ★★★)
+#### Prawn Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, coconut 40g, tamarind
 - Macros: Protein 28g, Carbs 10g, Fats 14g
 - Budget: ₹140-160
 - Prep: 25 mins
+- GI: Low
 - Tip: Omega-3 rich
 
 ### Dinner Options
 
-#### Tuna Stir-Fry (Low GI: ★★★)
+#### Tuna Stir-Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 150g, onions, curry leaves, coconut
 - Macros: Protein 30g, Carbs 10g, Fats 12g
 - Budget: ₹110-130
 - Prep: 20 mins
+- GI: Low
 - Tip: Quick protein dinner
 
-#### Appam with Fish Curry (Low GI: ★★★)
+#### Appam with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, fish 100g, coconut milk
@@ -1917,7 +2110,7 @@
 - Prep: 35 mins
 - Tip: Light dinner
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, vegetables
@@ -1926,7 +2119,7 @@
 - Prep: 25 mins
 - Tip: Easy to digest
 
-#### Puttu with Fish Curry (Low GI: ★★★)
+#### Puttu with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, fish 100g
@@ -1935,16 +2128,17 @@
 - Prep: 35 mins
 - Tip: Traditional dinner
 
-#### Coconut Rice with Fish Fry (Low GI: ★★)
+#### Coconut Rice with Fish Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, coconut 30g, fish 100g
 - Macros: Protein 26g, Carbs 44g, Fats 14g
 - Budget: ₹90-100
 - Prep: 35 mins
+- GI: Low
 - Tip: Complete island meal
 
-#### Dosa with Coconut Chutney (Low GI: ★★)
+#### Dosa with Coconut Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, fresh coconut 50g
@@ -1953,13 +2147,14 @@
 - Prep: 20 mins
 - Tip: Simple dinner
 
-#### Grilled Tuna with Salad (Low GI: ★★★)
+#### Grilled Tuna with Salad
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Grilled tuna 150g, mixed greens 100g
 - Macros: Protein 32g, Carbs 10g, Fats 10g
 - Budget: ₹120-140
 - Prep: 20 mins
+- GI: Low
 - Tip: Healthy, light dinner
 
 ---
@@ -2020,7 +2215,7 @@
 1. **Portion Control**: 60g brown rice or 70-80g millets per meal
 2. **Protein Priority**: Include 100-150g protein source per meal
 3. **Healthy Fats**: Use coconut, peanuts, ghee in moderation (8-12g per meal)
-4. **Low GI Focus**: Prioritize ★★★ rated meals
+4. **Low GI Focus**: Prioritize  rated meals
 5. **Budget-Friendly**: Most meals under ₹50 for vegetarian, ₹100 for non-vegetarian
 6. **Prep Time**: Most meals under 40 minutes
 7. **Spice Moderation**: Reduce if inflammation-sensitive
@@ -2031,7 +2226,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Light dinner, easy to digest
 
-#### Dosai with Chutney (Low GI: ★★)
+#### Dosai with Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, coconut chutney 50g
@@ -2040,34 +2235,37 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Simple dinner option
 
-#### Ragi Kali with Keerai (Low GI: ★★★)
+#### Ragi Kali with Keerai
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, spinach curry 150g
 - Macros: Protein 12g, Carbs 38g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
+- GI: Low
 - Tip: Traditional, iron-rich
 
-#### Upma with Coconut Chutney (Low GI: ★★)
+#### Upma with Coconut Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables 80g, coconut chutney
 - Macros: Protein 8g, Carbs 34g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick dinner
 
-#### Adai with Avial (Low GI: ★★★)
+#### Adai with Avial
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Mixed dals 80g, rice 20g, avial 100g
 - Macros: Protein 18g, Carbs 32g, Fats 10g
 - Budget: ₹40-45
 - Prep: 35 mins
+- GI: Low
 - Tip: Protein-packed dinner
 
-#### Pongal with Sambar (Low GI: ★★★)
+#### Pongal with Sambar
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, sambar vegetables
@@ -2076,16 +2274,17 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Comfort food, balanced meal
 
-#### Kambu Koozh (Low GI: ★★★)
+#### Kambu Koozh
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Bajra flour 70g, buttermilk 150ml, onions
 - Macros: Protein 9g, Carbs 38g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Cooling dinner, summer special
 
-#### Idiyappam with Coconut Milk (Low GI: ★★★)
+#### Idiyappam with Coconut Milk
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut milk 100ml
@@ -2094,58 +2293,64 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Light and easy
 
-#### Ragi Koozh (Low GI: ★★★)
+#### Ragi Koozh
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, buttermilk 150ml
 - Macros: Protein 10g, Carbs 36g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Nutritious, cooling
 
-#### Muttai Podimas (Egg Scramble) (Low GI: ★★★)
+#### Muttai Podimas (Egg Scramble)
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, onions, tomatoes, spices
 - Macros: Protein 20g, Carbs 8g, Fats 15g
 - Budget: ₹35-40
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick protein-rich dinner
 
-#### Idli with Meen Kuzhambu (Low GI: ★★★)
+#### Idli with Meen Kuzhambu
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, fish curry 100g
 - Macros: Protein 25g, Carbs 32g, Fats 10g
 - Budget: ₹75-85
 - Prep: 35 mins
+- GI: Low
 - Tip: Light and nutritious
 
-#### Kozhi Dosai (Chicken Dosa) (Low GI: ★★★)
+#### Kozhi Dosai (Chicken Dosa)
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, chicken masala 80g
 - Macros: Protein 24g, Carbs 32g, Fats 12g
 - Budget: ₹65-75
 - Prep: 30 mins
+- GI: Low
 - Tip: Filling dinner option
 
-#### Eral Varuval with Rasam (Low GI: ★★★)
+#### Eral Varuval with Rasam
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, spices, rasam 200ml
 - Macros: Protein 28g, Carbs 12g, Fats 10g
 - Budget: ₹140-160
 - Prep: 30 mins
+- GI: Low
 - Tip: Prawn fry with soup
 
-#### Meen Varuval (Fish Fry) (Low GI: ★★★)
+#### Meen Varuval (Fish Fry)
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, spices, curry leaves
 - Macros: Protein 28g, Carbs 8g, Fats 10g
 - Budget: ₹80-100
 - Prep: 25 mins
+- GI: Low
 - Tip: Crispy and protein-rich
 
 ---
@@ -2154,25 +2359,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 
 ### Breakfast Options
 
-#### Pesarattu (Low GI: ★★★)
+#### Pesarattu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Green gram 100g, rice 20g, ginger, green chilies
 - Macros: Protein 15g, Carbs 28g, Fats 4g
 - Budget: ₹25-30
 - Prep: 20 mins (after soaking)
+- GI: Low
 - Tip: High protein breakfast
 
-#### Idli with Peanut Chutney (Low GI: ★★★)
+#### Idli with Peanut Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, peanut chutney 50g
 - Macros: Protein 12g, Carbs 32g, Fats 10g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Telangana style chutney
 
-#### Upma with Vegetables (Low GI: ★★)
+#### Upma with Vegetables
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, mixed vegetables 100g, peanuts
@@ -2181,16 +2388,17 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Quick breakfast
 
-#### Dosa with Gongura Chutney (Low GI: ★★★)
+#### Dosa with Gongura Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, gongura leaves 50g, dal
 - Macros: Protein 10g, Carbs 32g, Fats 5g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Tangy sorrel chutney
 
-#### Atukula Upma (Poha) (Low GI: ★★)
+#### Atukula Upma (Poha)
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Poha 60g, peanuts, curry leaves, vegetables
@@ -2199,25 +2407,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Light breakfast
 
-#### Ragi Sangati with Chutney (Low GI: ★★★)
+#### Ragi Sangati with Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, peanut/coconut chutney
 - Macros: Protein 9g, Carbs 35g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Calcium-rich breakfast
 
-#### Minapappu Punukulu (Urad Dal Fritters) (Low GI: ★★)
+#### Minapappu Punukulu (Urad Dal Fritters)
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Urad dal 60g, onions, green chilies, curry leaves
 - Macros: Protein 14g, Carbs 28g, Fats 8g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Protein-rich snack breakfast
 
-#### Semiya Upma (Low GI: ★★)
+#### Semiya Upma
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Vermicelli 50g, vegetables, peanuts
@@ -2226,72 +2436,79 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Quick preparation
 
-#### Sajja Rotte (Bajra Roti) (Low GI: ★★★)
+#### Sajja Rotte (Bajra Roti)
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Bajra flour 70g, onions, green chilies
 - Macros: Protein 8g, Carbs 40g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Millet roti, filling
 
-#### Bobbatlu (Healthy Version) (Low GI: ★★)
+#### Bobbatlu (Healthy Version)
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Whole wheat 60g, chana dal 40g, jaggery 20g
 - Macros: Protein 11g, Carbs 45g, Fats 5g
 - Budget: ₹35-40
 - Prep: 40 mins
+- GI: Low
 - Tip: Festival special, moderation
 
-#### Egg Burji (Low GI: ★★★)
+#### Egg Burji
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, onions, tomatoes, green chilies
 - Macros: Protein 20g, Carbs 8g, Fats 15g
 - Budget: ₹35-40
 - Prep: 15 mins
+- GI: Low
 - Tip: High protein scramble
 
-#### Kodi Upma (Chicken Upma) (Low GI: ★★★)
+#### Kodi Upma (Chicken Upma)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Rava 50g, chicken 80g, vegetables, spices
 - Macros: Protein 22g, Carbs 32g, Fats 10g
 - Budget: ₹70-80
 - Prep: 30 mins
+- GI: Low
 - Tip: Protein-enhanced upma
 
-#### Mamsam Idli (Mutton with Idli) (Low GI: ★★★)
+#### Mamsam Idli (Mutton with Idli)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, mutton curry 100g
 - Macros: Protein 26g, Carbs 32g, Fats 16g
 - Budget: ₹90-100
 - Prep: 50 mins
+- GI: Low
 - Tip: Hearty breakfast
 
-#### Royyala Pesarattu (Prawn Dosa) (Low GI: ★★★)
+#### Royyala Pesarattu (Prawn Dosa)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Moong dal 100g, prawns 60g, ginger
 - Macros: Protein 24g, Carbs 26g, Fats 8g
 - Budget: ₹100-120
 - Prep: 30 mins
+- GI: Low
 - Tip: Coastal special
 
-#### Kodi Pesarattu (Chicken Dosa) (Low GI: ★★★)
+#### Kodi Pesarattu (Chicken Dosa)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Moong dal 100g, chicken keema 60g, spices
 - Macros: Protein 26g, Carbs 26g, Fats 10g
 - Budget: ₹70-80
 - Prep: 30 mins
+- GI: Low
 - Tip: Protein-packed breakfast
 
 ### Lunch Options
 
-#### Pulihora (Tamarind Rice) (Low GI: ★★)
+#### Pulihora (Tamarind Rice)
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, tamarind, peanuts, curry leaves
@@ -2300,7 +2517,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Tangy rice dish
 
-#### Bagara Baingan (Low GI: ★★★)
+#### Bagara Baingan
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Brinjal 200g, peanuts, sesame, tamarind
@@ -2309,7 +2526,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Hyderabadi specialty
 
-#### Gutti Vankaya Koora (Low GI: ★★★)
+#### Gutti Vankaya Koora
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Brinjal 200g, peanut paste, tamarind, spices
@@ -2318,52 +2535,57 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Stuffed brinjal curry
 
-#### Pappu Charu (Low GI: ★★★)
+#### Pappu Charu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, tomatoes, tamarind, garlic
 - Macros: Protein 15g, Carbs 28g, Fats 5g
 - Budget: ₹25-30
 - Prep: 30 mins
+- GI: Low
 - Tip: Light dal soup
 
-#### Dondakaya Curry (Low GI: ★★★)
+#### Dondakaya Curry
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Ivy gourd 200g, onions, spices
 - Macros: Protein 4g, Carbs 12g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
+- GI: Low
 - Tip: Good for blood sugar
 
-#### Majjiga Pulusu (Low GI: ★★★)
+#### Majjiga Pulusu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Buttermilk 200ml, besan 20g, vegetables
 - Macros: Protein 8g, Carbs 15g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Probiotic curry
 
-#### Bendakaya Pulusu (Low GI: ★★★)
+#### Bendakaya Pulusu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Okra 200g, tamarind, onions, tomatoes
 - Macros: Protein 5g, Carbs 16g, Fats 7g
 - Budget: ₹35-40
 - Prep: 25 mins
+- GI: Low
 - Tip: High fiber curry
 
-#### Gongura Pappu (Low GI: ★★★)
+#### Gongura Pappu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, gongura leaves 100g, spices
 - Macros: Protein 16g, Carbs 26g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Tangy, iron-rich
 
-#### Tomato Pappu (Low GI: ★★★)
+#### Tomato Pappu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Toor dal 60g, tomatoes 100g, garlic
@@ -2372,16 +2594,17 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Comfort food
 
-#### Pesara Pappu (Low GI: ★★★)
+#### Pesara Pappu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Moong dal 60g, green chilies, ginger
 - Macros: Protein 14g, Carbs 25g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
+- GI: Low
 - Tip: Easy to digest
 
-#### Kodi Koora (Chicken Curry) (Low GI: ★★★)
+#### Kodi Koora (Chicken Curry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, curry leaves
@@ -2390,7 +2613,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 40 mins
 - Tip: Classic Telangana curry
 
-#### Mamsam Kura (Mutton Curry) (Low GI: ★★★)
+#### Mamsam Kura (Mutton Curry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, onions, ginger-garlic, spices
@@ -2399,7 +2622,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 60 mins
 - Tip: Rich iron source
 
-#### Royyala Iguru (Prawn Curry) (Low GI: ★★★)
+#### Royyala Iguru (Prawn Curry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, tomatoes, coconut
@@ -2408,7 +2631,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Coastal delicacy
 
-#### Chepala Pulusu (Fish Curry) (Low GI: ★★★)
+#### Chepala Pulusu (Fish Curry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, onions, curry leaves
@@ -2417,27 +2640,29 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Tangy fish curry
 
-#### Natu Kodi Pulusu (Country Chicken) (Low GI: ★★★)
+#### Natu Kodi Pulusu (Country Chicken)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Country chicken 150g, tamarind, onions, spices
 - Macros: Protein 30g, Carbs 12g, Fats 14g
 - Budget: ₹100-120
 - Prep: 60 mins
+- GI: Low
 - Tip: Traditional, lean protein
 
 ### Dinner Options
 
-#### Ragi Sangati with Pappu (Low GI: ★★★)
+#### Ragi Sangati with Pappu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, dal curry 100g
 - Macros: Protein 13g, Carbs 38g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Nutritious dinner
 
-#### Pesarattu with Allam Chutney (Low GI: ★★★)
+#### Pesarattu with Allam Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Moong dal 100g, ginger chutney
@@ -2446,16 +2671,17 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Light, easy to digest
 
-#### Sajja Rotte with Curry (Low GI: ★★★)
+#### Sajja Rotte with Curry
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Bajra flour 70g, vegetable curry 150g
 - Macros: Protein 10g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
+- GI: Low
 - Tip: Filling millet dinner
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, sambar vegetables
@@ -2464,7 +2690,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Light dinner option
 
-#### Upma with Coconut Chutney (Low GI: ★★)
+#### Upma with Coconut Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, coconut chutney
@@ -2473,7 +2699,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Quick dinner
 
-#### Dosa with Gongura Chutney (Low GI: ★★★)
+#### Dosa with Gongura Chutney
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, gongura chutney 50g
@@ -2482,7 +2708,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Tangy dinner
 
-#### Quinoa Upma (Low GI: ★★★)
+#### Quinoa Upma
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Quinoa 60g, vegetables, peanuts
@@ -2491,25 +2717,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Modern adaptation
 
-#### Atukula Upma (Low GI: ★★)
+#### Atukula Upma
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Poha 60g, vegetables, peanuts
 - Macros: Protein 7g, Carbs 28g, Fats 8g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: Light evening meal
 
-#### Pachi Pulusu (Low GI: ★★★)
+#### Pachi Pulusu
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Tamarind, onions, tomatoes, curry leaves
 - Macros: Protein 3g, Carbs 15g, Fats 5g
 - Budget: ₹20-25
 - Prep: 15 mins
+- GI: Low
 - Tip: No-cook curry, summer special
 
-#### Ragi Mudde with Sambar (Low GI: ★★★)
+#### Ragi Mudde with Sambar
 - **State:** Telangana
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 80g, sambar vegetables
@@ -2518,34 +2746,37 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Traditional dinner
 
-#### Ragi Sangati with Kodi Pulusu (Low GI: ★★★)
+#### Ragi Sangati with Kodi Pulusu
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Ragi flour 80g, chicken curry 100g
 - Macros: Protein 26g, Carbs 35g, Fats 12g
 - Budget: ₹85-95
 - Prep: 50 mins
+- GI: Low
 - Tip: Traditional meal, filling
 
-#### Pesarattu with Mamsam (Low GI: ★★★)
+#### Pesarattu with Mamsam
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Moong dal 100g, mutton curry 80g
 - Macros: Protein 28g, Carbs 28g, Fats 16g
 - Budget: ₹100-110
 - Prep: 50 mins
+- GI: Low
 - Tip: Protein-rich dinner
 
-#### Idli with Meen Curry (Low GI: ★★★)
+#### Idli with Meen Curry
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Idli 3pcs, fish curry 100g
 - Macros: Protein 25g, Carbs 32g, Fats 10g
 - Budget: ₹75-85
 - Prep: 35 mins
+- GI: Low
 - Tip: Light and nutritious
 
-#### Kodi Vepudu (Chicken Fry) (Low GI: ★★★)
+#### Kodi Vepudu (Chicken Fry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, curry leaves
@@ -2554,7 +2785,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Dry preparation
 
-#### Royyala Fry (Prawn Fry) (Low GI: ★★★)
+#### Royyala Fry (Prawn Fry)
 - **State:** Telangana
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, spices
@@ -2569,7 +2800,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 
 ### Breakfast Options
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, sambar vegetables
@@ -2578,7 +2809,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: French-Tamil fusion breakfast
 
-#### Dosa with Coconut Chutney (Low GI: ★★)
+#### Dosa with Coconut Chutney
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, coconut chutney
@@ -2587,7 +2818,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Classic breakfast
 
-#### Upma with Vegetables (Low GI: ★★)
+#### Upma with Vegetables
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, mixed vegetables 80g, cashews
@@ -2596,7 +2827,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Quick morning meal
 
-#### Pongal (Low GI: ★★★)
+#### Pongal
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, pepper, cumin, ghee
@@ -2605,7 +2836,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Comfort breakfast
 
-#### Appam with Vegetable Stew (Low GI: ★★)
+#### Appam with Vegetable Stew
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, coconut milk 80ml, vegetables
@@ -2614,7 +2845,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: French-influenced stew
 
-#### Ragi Dosa (Low GI: ★★★)
+#### Ragi Dosa
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 70g, urad dal 20g, fenugreek
@@ -2623,7 +2854,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Nutritious breakfast
 
-#### Paniyaram (Low GI: ★★)
+#### Paniyaram
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, onions, curry leaves
@@ -2632,25 +2863,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Round dumplings
 
-#### French Toast (Healthy Version) (Low GI: ★★)
+#### French Toast (Healthy Version)
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Whole wheat bread 2 slices, eggs 2pcs, cinnamon
 - Macros: Protein 16g, Carbs 32g, Fats 10g
 - Budget: ₹35-40
 - Prep: 15 mins
+- GI: Low
 - Tip: French influence, protein-rich
 
-#### Crepes with Vegetables (Low GI: ★★)
+#### Crepes with Vegetables
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Whole wheat flour 50g, eggs 1pc, mixed vegetables
 - Macros: Protein 12g, Carbs 36g, Fats 8g
 - Budget: ₹40-45
 - Prep: 20 mins
+- GI: Low
 - Tip: French-style, healthy filling
 
-#### Masala Dosa (Low GI: ★★)
+#### Masala Dosa
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 70g, potato masala 80g, onions
@@ -2659,7 +2892,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Popular breakfast
 
-#### Adai with Avial (Low GI: ★★★)
+#### Adai with Avial
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Mixed dals 80g, rice 20g, avial 100g
@@ -2668,7 +2901,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Protein-packed
 
-#### Idiyappam with Coconut Milk (Low GI: ★★★)
+#### Idiyappam with Coconut Milk
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, coconut milk 80ml, sugar minimal
@@ -2677,7 +2910,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: String hoppers, light
 
-#### Rava Idli (Low GI: ★★)
+#### Rava Idli
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rava 60g, curd 50ml, vegetables, cashews
@@ -2686,25 +2919,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Quick instant breakfast
 
-#### Poori with Potato Curry (Low GI: ★)
+#### Poori with Potato Curry
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Whole wheat 60g, potato curry 100g
 - Macros: Protein 9g, Carbs 45g, Fats 12g
 - Budget: ₹30-35
 - Prep: 30 mins
+- GI: Low
 - Tip: Occasional treat, deep-fried
 
-#### Vegetable Sandwich (Low GI: ★★)
+#### Vegetable Sandwich
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Whole wheat bread 2 slices, vegetables 100g, cheese 20g
 - Macros: Protein 12g, Carbs 34g, Fats 10g
 - Budget: ₹40-45
 - Prep: 15 mins
+- GI: Low
 - Tip: French influence, quick meal
 
-#### Egg Omelette (Low GI: ★★★)
+#### Egg Omelette
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, onions, tomatoes, herbs
@@ -2713,7 +2948,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 10 mins
 - Tip: French influence, protein-rich
 
-#### Fish Cutlet (Low GI: ★★★)
+#### Fish Cutlet
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 100g, potato 30g, breadcrumbs, spices
@@ -2722,7 +2957,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: French-Tamil fusion
 
-#### Chicken Sandwich (Low GI: ★★)
+#### Chicken Sandwich
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat bread 2 slices, grilled chicken 80g
@@ -2731,7 +2966,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Colonial influence
 
-#### Egg Dosa (Low GI: ★★★)
+#### Egg Dosa
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, eggs 2pcs, onions
@@ -2740,63 +2975,69 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Protein-enhanced breakfast
 
-#### Chicken Crepes (Low GI: ★★★)
+#### Chicken Crepes
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat flour 50g, chicken 80g, vegetables
 - Macros: Protein 24g, Carbs 34g, Fats 12g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: French-style, filling
 
-#### Fish Fry with Toast (Low GI: ★★★)
+#### Fish Fry with Toast
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 120g, whole wheat toast 2 slices, herbs
 - Macros: Protein 28g, Carbs 32g, Fats 10g
 - Budget: ₹75-85
 - Prep: 20 mins
+- GI: Low
 - Tip: Continental breakfast
 
-#### Prawn Omelette (Low GI: ★★★)
+#### Prawn Omelette
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, prawns 60g, onions, herbs
 - Macros: Protein 28g, Carbs 6g, Fats 16g
 - Budget: ₹80-90
 - Prep: 15 mins
+- GI: Low
 - Tip: Seafood protein breakfast
 
-#### Chicken Sausage with Eggs (Low GI: ★★★)
+#### Chicken Sausage with Eggs
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken sausage 80g, eggs 2pcs, toast 1 slice
 - Macros: Protein 30g, Carbs 20g, Fats 18g
 - Budget: ₹80-90
 - Prep: 15 mins
+- GI: Low
 - Tip: French breakfast style
 
-#### Mutta Roast with Appam (Low GI: ★★★)
+#### Mutta Roast with Appam
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, appam 2pcs, spices, coconut
 - Macros: Protein 20g, Carbs 36g, Fats 16g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Tamil-French blend
 
-#### Fish Appam (Low GI: ★★★)
+#### Fish Appam
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Appam 2pcs, fish curry 100g, coconut milk
 - Macros: Protein 24g, Carbs 36g, Fats 14g
 - Budget: ₹80-90
 - Prep: 35 mins
+- GI: Low
 - Tip: Coastal special
 
 ### Lunch Options
 
-#### Fish Curry with Rice (Low GI: ★★★)
+#### Fish Curry with Rice
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, coconut, brown rice 60g
@@ -2805,7 +3046,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Coastal specialty
 
-#### Sambar Rice (Low GI: ★★★)
+#### Sambar Rice
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, sambar vegetables, tamarind
@@ -2814,7 +3055,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Complete meal
 
-#### Rasam with Rice (Low GI: ★★★)
+#### Rasam with Rice
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, rasam, tomatoes, tamarind
@@ -2823,7 +3064,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Digestive curry
 
-#### Crab Curry (Low GI: ★★★)
+#### Crab Curry
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Crab 200g, coconut, tamarind, spices
@@ -2832,7 +3073,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 40 mins
 - Tip: Puducherry special
 
-#### Prawn Masala (Low GI: ★★★)
+#### Prawn Masala
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, onions, tomatoes, French spices
@@ -2841,7 +3082,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Fusion preparation
 
-#### Avial (Low GI: ★★★)
+#### Avial
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut, curd
@@ -2850,7 +3091,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: High fiber meal
 
-#### Chicken Curry (Low GI: ★★★)
+#### Chicken Curry
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Chicken 150g, onions, tomatoes, coconut
@@ -2859,25 +3100,27 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 40 mins
 - Tip: French-Tamil blend
 
-#### Vegetable Pulao (Low GI: ★★)
+#### Vegetable Pulao
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, mixed vegetables 150g, spices
 - Macros: Protein 10g, Carbs 46g, Fats 8g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: One-pot meal
 
-#### Fish Fry with Lemon Rice (Low GI: ★★★)
+#### Fish Fry with Lemon Rice
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, brown rice 60g, lemon, peanuts
 - Macros: Protein 28g, Carbs 44g, Fats 12g
 - Budget: ₹90-110
 - Prep: 35 mins
+- GI: Low
 - Tip: Tangy and protein-rich
 
-#### Curd Rice (Low GI: ★★★)
+#### Curd Rice
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, curd 150ml, pomegranate, cucumber
@@ -2886,88 +3129,97 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Probiotic-rich, cooling
 
-#### Squid Fry (Low GI: ★★★)
+#### Squid Fry
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Squid 150g, onions, spices, curry leaves
 - Macros: Protein 24g, Carbs 10g, Fats 10g
 - Budget: ₹100-120
 - Prep: 25 mins
+- GI: Low
 - Tip: Coastal delicacy
 
-#### Poriyal with Rice (Low GI: ★★★)
+#### Poriyal with Rice
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Beans 200g, coconut, brown rice 60g
 - Macros: Protein 12g, Carbs 46g, Fats 8g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: High fiber meal
 
-#### Chicken Biryani (Healthy) (Low GI: ★★)
+#### Chicken Biryani (Healthy)
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, chicken 100g, vegetables, spices
 - Macros: Protein 26g, Carbs 46g, Fats 12g
 - Budget: ₹80-90
 - Prep: 50 mins
+- GI: Low
 - Tip: Special occasion meal
 
-#### Meen Kuzhambu (Low GI: ★★★)
+#### Meen Kuzhambu
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, tamarind, onions, tomatoes
 - Macros: Protein 26g, Carbs 10g, Fats 10g
 - Budget: ₹85-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Tangy fish curry
 
-#### Vegetable Korma (Low GI: ★★)
+#### Vegetable Korma
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut milk 80ml, cashews
 - Macros: Protein 9g, Carbs 26g, Fats 14g
 - Budget: ₹50-60
 - Prep: 35 mins
+- GI: Low
 - Tip: Creamy curry, French influence
 
-#### Prawn Biryani (Low GI: ★★)
+#### Prawn Biryani
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, prawns 120g, vegetables, spices
 - Macros: Protein 28g, Carbs 46g, Fats 12g
 - Budget: ₹140-160
 - Prep: 50 mins
+- GI: Low
 - Tip: Festive meal
 
-#### Egg Curry with Rice (Low GI: ★★★)
+#### Egg Curry with Rice
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Eggs 3pcs, brown rice 60g, coconut, spices
 - Macros: Protein 22g, Carbs 44g, Fats 16g
 - Budget: ₹45-50
 - Prep: 30 mins
+- GI: Low
 - Tip: Protein-rich meal
 
-#### Mutton Curry (Low GI: ★★★)
+#### Mutton Curry
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Mutton 150g, onions, tomatoes, French herbs
 - Macros: Protein 26g, Carbs 12g, Fats 18g
 - Budget: ₹110-130
 - Prep: 60 mins
+- GI: Low
 - Tip: Rich and flavorful
 
-#### Kootu with Rice (Low GI: ★★★)
+#### Kootu with Rice
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, chana dal 40g, brown rice 60g
 - Macros: Protein 16g, Carbs 50g, Fats 8g
 - Budget: ₹45-50
 - Prep: 40 mins
+- GI: Low
 - Tip: Complete balanced meal
 
-#### Fish Moilee (Low GI: ★★★)
+#### Fish Moilee
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut milk 100ml, curry leaves
@@ -2978,7 +3230,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 
 ### Dinner Options
 
-#### Idli with Coconut Chutney (Low GI: ★★★)
+#### Idli with Coconut Chutney
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, coconut chutney
@@ -2987,7 +3239,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Light dinner
 
-#### Dosa with Sambar (Low GI: ★★)
+#### Dosa with Sambar
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, sambar vegetables
@@ -2996,7 +3248,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Classic dinner
 
-#### Appam with Egg Curry (Low GI: ★★★)
+#### Appam with Egg Curry
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, eggs 2pcs, coconut milk
@@ -3005,7 +3257,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Fusion dinner
 
-#### Fish Fry with Salad (Low GI: ★★★)
+#### Fish Fry with Salad
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, mixed greens 100g, lemon
@@ -3014,7 +3266,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: French influence
 
-#### Pongal with Sambar (Low GI: ★★★)
+#### Pongal with Sambar
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice 40g, moong dal 40g, sambar
@@ -3023,7 +3275,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Comfort dinner
 
-#### Upma (Low GI: ★★)
+#### Upma
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, cashews
@@ -3032,7 +3284,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Light and easy
 
-#### Grilled Chicken Salad (Low GI: ★★★)
+#### Grilled Chicken Salad
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Grilled chicken 150g, mixed greens 150g
@@ -3041,76 +3293,84 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: French-style healthy
 
-#### Vegetable Soup with Bread (Low GI: ★★)
+#### Vegetable Soup with Bread
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, whole wheat bread 2 slices
 - Macros: Protein 10g, Carbs 36g, Fats 6g
 - Budget: ₹40-45
 - Prep: 25 mins
+- GI: Low
 - Tip: French influence, light
 
-#### Prawn Curry with Appam (Low GI: ★★★)
+#### Prawn Curry with Appam
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Appam 2pcs, prawns 120g, coconut milk
 - Macros: Protein 26g, Carbs 36g, Fats 16g
 - Budget: ₹130-150
 - Prep: 35 mins
+- GI: Low
 - Tip: Coastal dinner
 
-#### Ragi Dosa with Chutney (Low GI: ★★★)
+#### Ragi Dosa with Chutney
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Ragi flour 70g, urad dal 20g, coconut chutney
 - Macros: Protein 11g, Carbs 30g, Fats 6g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Nutritious evening meal
 
-#### Fish Soup (Low GI: ★★★)
+#### Fish Soup
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 120g, vegetables 100g, French herbs
 - Macros: Protein 24g, Carbs 12g, Fats 8g
 - Budget: ₹85-95
 - Prep: 25 mins
+- GI: Low
 - Tip: French-style, light dinner
 
-#### Idiyappam with Vegetable Stew (Low GI: ★★★)
+#### Idiyappam with Vegetable Stew
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, mixed vegetables 150g, coconut milk
 - Macros: Protein 8g, Carbs 38g, Fats 12g
 - Budget: ₹40-45
 - Prep: 30 mins
+- GI: Low
 - Tip: Light and filling
 
-#### Chicken Stew with Appam (Low GI: ★★★)
+#### Chicken Stew with Appam
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Appam 2pcs, chicken 100g, coconut milk, vegetables
 - Macros: Protein 24g, Carbs 36g, Fats 16g
 - Budget: ₹75-85
 - Prep: 45 mins
+- GI: Low
 - Tip: Creamy dinner
 
-#### Paniyaram with Chutney (Low GI: ★★★)
+#### Paniyaram with Chutney
 - **State:** Puducherry
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, coconut chutney 50g
 - Macros: Protein 9g, Carbs 32g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
+- GI: Low
 - Tip: Less oil, healthy
 
-#### Egg Fried Rice (Low GI: ★★)
+#### Egg Fried Rice
 - **State:** Puducherry
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, eggs 2pcs, vegetables
 - Macros: Protein 18g, Carbs 44g, Fats 12g
 - Budget: ₹45-50
 - Prep: 20 mins
+- GI: Low
 - Tip: Quick dinner
 
 
@@ -3120,7 +3380,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 
 ### Breakfast Options
 
-#### Maskateri (Tuna Curry with Rice) (Low GI: ★★★)
+#### Maskateri (Tuna Curry with Rice)
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 120g, coconut, brown rice 60g, curry leaves
@@ -3129,7 +3389,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Island specialty, omega-3 rich
 
-#### Idli with Coconut Chutney (Low GI: ★★★)
+#### Idli with Coconut Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, fresh coconut 50g
@@ -3138,7 +3398,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Fresh island coconut
 
-#### Appam with Fish Curry (Low GI: ★★★)
+#### Appam with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, fish 100g, coconut milk 80ml
@@ -3147,7 +3407,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Island breakfast special
 
-#### Roti with Tuna (Low GI: ★★★)
+#### Roti with Tuna
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat 60g, tuna 80g, onions, spices
@@ -3156,7 +3416,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: High protein breakfast
 
-#### Puttu with Coconut (Low GI: ★★★)
+#### Puttu with Coconut
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice flour 60g, fresh coconut 30g
@@ -3165,7 +3425,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Steamed breakfast
 
-#### Dosa with Sambar (Low GI: ★★)
+#### Dosa with Sambar
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 60g, urad dal 20g, sambar
@@ -3174,7 +3434,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: South Indian influence
 
-#### Coconut Rice (Low GI: ★★)
+#### Coconut Rice
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, fresh coconut 30g, curry leaves
@@ -3183,7 +3443,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Island breakfast
 
-#### Fish Cutlet (Low GI: ★★★)
+#### Fish Cutlet
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 100g, potato 30g, breadcrumbs
@@ -3192,72 +3452,79 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Popular snack breakfast
 
-#### Tuna Sandwich (Low GI: ★★★)
+#### Tuna Sandwich
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Whole wheat bread 2 slices, tuna 80g, vegetables
 - Macros: Protein 26g, Carbs 32g, Fats 10g
 - Budget: ₹70-80
 - Prep: 15 mins
+- GI: Low
 - Tip: Quick protein breakfast
 
-#### Upma with Coconut (Low GI: ★★)
+#### Upma with Coconut
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables 60g, fresh coconut 20g
 - Macros: Protein 8g, Carbs 34g, Fats 10g
 - Budget: ₹30-35
 - Prep: 15 mins
+- GI: Low
 - Tip: Island style upma
 
-#### Fish Porridge (Low GI: ★★★)
+#### Fish Porridge
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 50g, fish 80g, ginger, coconut
 - Macros: Protein 22g, Carbs 36g, Fats 8g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: Comfort breakfast, easy to digest
 
-#### Coconut Pancakes (Low GI: ★★)
+#### Coconut Pancakes
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Whole wheat flour 50g, coconut 30g, jaggery 15g
 - Macros: Protein 7g, Carbs 40g, Fats 10g
 - Budget: ₹35-40
 - Prep: 20 mins
+- GI: Low
 - Tip: Sweet island breakfast
 
-#### Egg Appam (Low GI: ★★★)
+#### Egg Appam
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Appam 2pcs, eggs 2pcs, coconut milk
 - Macros: Protein 16g, Carbs 36g, Fats 14g
 - Budget: ₹40-45
 - Prep: 25 mins
+- GI: Low
 - Tip: Protein-enriched breakfast
 
-#### Tuna Upma (Low GI: ★★★)
+#### Tuna Upma
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rava 50g, tuna 80g, vegetables, coconut
 - Macros: Protein 24g, Carbs 32g, Fats 10g
 - Budget: ₹90-110
 - Prep: 25 mins
+- GI: Low
 - Tip: Protein-packed breakfast
 
-#### Fish Dosa (Low GI: ★★★)
+#### Fish Dosa
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Dosa batter 60g, fish masala 70g
 - Macros: Protein 22g, Carbs 32g, Fats 10g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: Seafood breakfast
 
 ### Lunch Options
 
-#### Tuna Curry with Rice (Low GI: ★★★)
+#### Tuna Curry with Rice
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 150g, coconut 40g, brown rice 60g
@@ -3266,7 +3533,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Island staple, protein-rich
 
-#### Octopus Fry (Low GI: ★★★)
+#### Octopus Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Octopus 150g, coconut oil, spices, curry leaves
@@ -3275,7 +3542,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Delicacy, special occasions
 
-#### Squid Curry (Low GI: ★★★)
+#### Squid Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Squid 150g, coconut milk 100ml, tamarind
@@ -3284,7 +3551,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Coastal specialty
 
-#### Sambar with Brown Rice (Low GI: ★★★)
+#### Sambar with Brown Rice
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Brown rice 60g, vegetables 150g, tamarind
@@ -3293,7 +3560,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Balanced vegetarian meal
 
-#### Fish Moilee (Low GI: ★★★)
+#### Fish Moilee
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut milk 100ml, curry leaves
@@ -3302,7 +3569,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Mild and creamy
 
-#### Coconut Vegetable Curry (Low GI: ★★★)
+#### Coconut Vegetable Curry
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut 40g, spices
@@ -3311,7 +3578,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 30 mins
 - Tip: Fresh island vegetables
 
-#### Prawn Curry (Low GI: ★★★)
+#### Prawn Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Prawns 150g, coconut 40g, tamarind
@@ -3320,34 +3587,37 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Omega-3 rich
 
-#### Tuna Biryani (Low GI: ★★)
+#### Tuna Biryani
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, tuna 120g, vegetables, spices
 - Macros: Protein 30g, Carbs 46g, Fats 12g
 - Budget: ₹120-140
 - Prep: 45 mins
+- GI: Low
 - Tip: Island special, festive meal
 
-#### Fish Pulao (Low GI: ★★)
+#### Fish Pulao
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, fish 120g, vegetables, spices
 - Macros: Protein 28g, Carbs 46g, Fats 10g
 - Budget: ₹90-110
 - Prep: 40 mins
+- GI: Low
 - Tip: One-pot seafood meal
 
-#### Lobster Curry (Low GI: ★★★)
+#### Lobster Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Lobster 150g, coconut milk 100ml, spices
 - Macros: Protein 26g, Carbs 10g, Fats 14g
 - Budget: ₹200-250
 - Prep: 35 mins
+- GI: Low
 - Tip: Premium delicacy, special occasions
 
-#### Coconut Rice with Fish Fry (Low GI: ★★)
+#### Coconut Rice with Fish Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, coconut 30g, fish 100g
@@ -3356,43 +3626,47 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Complete island meal
 
-#### Tuna Steak with Vegetables (Low GI: ★★★)
+#### Tuna Steak with Vegetables
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna steak 150g, mixed vegetables 150g, lemon
 - Macros: Protein 32g, Carbs 18g, Fats 10g
 - Budget: ₹130-150
 - Prep: 25 mins
+- GI: Low
 - Tip: Grilled, healthy preparation
 
-#### Fish Thoran (Low GI: ★★★)
+#### Fish Thoran
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, coconut 30g, curry leaves, vegetables
 - Macros: Protein 28g, Carbs 12g, Fats 12g
 - Budget: ₹85-100
 - Prep: 25 mins
+- GI: Low
 - Tip: Dry fish preparation with coconut
 
-#### Avial with Rice (Low GI: ★★★)
+#### Avial with Rice
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Mixed vegetables 200g, coconut 30g, brown rice 60g
 - Macros: Protein 12g, Carbs 48g, Fats 10g
 - Budget: ₹45-50
 - Prep: 35 mins
+- GI: Low
 - Tip: High fiber vegetarian meal
 
-#### Squid Masala (Low GI: ★★★)
+#### Squid Masala
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Squid 150g, onions, tomatoes, spices
 - Macros: Protein 24g, Carbs 14g, Fats 12g
 - Budget: ₹100-120
 - Prep: 30 mins
+- GI: Low
 - Tip: Spicy preparation
 
-#### Prawn Biryani (Low GI: ★★)
+#### Prawn Biryani
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, prawns 120g, vegetables, spices
@@ -3403,7 +3677,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 
 ### Dinner Options
 
-#### Tuna Stir-Fry (Low GI: ★★★)
+#### Tuna Stir-Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 150g, onions, curry leaves, coconut
@@ -3412,7 +3686,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Quick protein dinner
 
-#### Appam with Fish Curry (Low GI: ★★★)
+#### Appam with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice 60g, fish 100g, coconut milk
@@ -3421,7 +3695,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Light dinner
 
-#### Idli with Sambar (Low GI: ★★★)
+#### Idli with Sambar
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rice 50g, urad dal 30g, vegetables
@@ -3430,7 +3704,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Easy to digest
 
-#### Puttu with Fish Curry (Low GI: ★★★)
+#### Puttu with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, coconut 20g, fish 100g
@@ -3439,7 +3713,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Traditional dinner
 
-#### Coconut Rice with Fish Fry (Low GI: ★★)
+#### Coconut Rice with Fish Fry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Brown rice 60g, coconut 30g, fish 100g
@@ -3448,7 +3722,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Complete island meal
 
-#### Dosa with Coconut Chutney (Low GI: ★★)
+#### Dosa with Coconut Chutney
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Dosa batter 60g, fresh coconut 50g
@@ -3457,7 +3731,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Simple dinner
 
-#### Grilled Tuna with Salad (Low GI: ★★★)
+#### Grilled Tuna with Salad
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Grilled tuna 150g, mixed greens 100g
@@ -3466,16 +3740,17 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 20 mins
 - Tip: Healthy, light dinner
 
-#### Fish Stir-Fry with Rice (Low GI: ★★★)
+#### Fish Stir-Fry with Rice
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 150g, brown rice 60g, vegetables, coconut
 - Macros: Protein 28g, Carbs 44g, Fats 12g
 - Budget: ₹90-100
 - Prep: 30 mins
+- GI: Low
 - Tip: Complete meal
 
-#### Upma with Coconut (Low GI: ★★)
+#### Upma with Coconut
 - **State:** Lakshadweep
 - **Type:** Vegetarian
 - Ingredients: Rava 50g, vegetables, fresh coconut 20g
@@ -3484,7 +3759,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 15 mins
 - Tip: Quick island dinner
 
-#### Prawn Curry with Appam (Low GI: ★★★)
+#### Prawn Curry with Appam
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Appam 2pcs, prawns 120g, coconut milk
@@ -3493,7 +3768,7 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 35 mins
 - Tip: Coastal dinner special
 
-#### Fish Soup (Low GI: ★★★)
+#### Fish Soup
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish 120g, vegetables 100g, coconut
@@ -3502,39 +3777,43 @@ These meal plans are nutritional guides for PCOS management. Always consult your
 - Prep: 25 mins
 - Tip: Light, nourishing dinner
 
-#### Idiyappam with Fish Curry (Low GI: ★★★)
+#### Idiyappam with Fish Curry
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Rice flour 60g, fish curry 100g
 - Macros: Protein 24g, Carbs 36g, Fats 12g
 - Budget: ₹80-90
 - Prep: 30 mins
+- GI: Low
 - Tip: String hoppers with curry
 
-#### Tuna Salad (Low GI: ★★★)
+#### Tuna Salad
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Tuna 150g, mixed greens 150g, lemon, olive oil
 - Macros: Protein 30g, Carbs 12g, Fats 12g
 - Budget: ₹120-140
 - Prep: 15 mins
+- GI: Low
 - Tip: Fresh, light dinner
 
-#### Squid Fry with Rice (Low GI: ★★★)
+#### Squid Fry with Rice
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Squid 150g, brown rice 60g, spices
 - Macros: Protein 24g, Carbs 44g, Fats 10g
 - Budget: ₹100-120
 - Prep: 30 mins
+- GI: Low
 - Tip: Complete seafood meal
 
-#### Fish Cutlet with Salad (Low GI: ★★★)
+#### Fish Cutlet with Salad
 - **State:** Lakshadweep
 - **Type:** Non-Vegetarian
 - Ingredients: Fish cutlet 2pcs, mixed greens 150g
 - Macros: Protein 24g, Carbs 20g, Fats 10g
 - Budget: ₹70-80
 - Prep: 25 mins
+- GI: Low
 - Tip: Balanced dinner
 

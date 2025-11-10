@@ -11,7 +11,7 @@
 - Macros: Protein 8g, Carbs 45g, Fats 10g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use air fryer for puris, reduce oil significantly
 
 #### 2. Bedmi Puri with Aloo Sabzi
@@ -21,7 +21,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Shallow fry instead of deep frying
 
 #### 3. Kachori Sabzi (Healthier Version)
@@ -31,7 +31,7 @@
 - Macros: Protein 10g, Carbs 40g, Fats 9g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake kachoris instead of frying
 
 #### 4. Poha Jalebi (Modified)
@@ -41,7 +41,7 @@
 - Macros: Protein 7g, Carbs 35g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Skip jalebi or use dates-based sweet
 
 #### 5. Matar Kachori (Baked)
@@ -51,7 +51,7 @@
 - Macros: Protein 11g, Carbs 38g, Fats 7g
 - Budget: ₹25-30
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake at 180°C for 20 mins
 
 #### 6. Keema Paratha
@@ -61,7 +61,7 @@
 - Macros: Protein 25g, Carbs 40g, Fats 12g
 - Budget: ₹60-70
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use lean chicken mince
 
 #### 7. Egg Bhurji with Roti
@@ -71,7 +71,7 @@
 - Macros: Protein 22g, Carbs 35g, Fats 15g
 - Budget: ₹40-50
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein breakfast option
 
 #### 8. Chana Samosa (Baked)
@@ -81,7 +81,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake for healthier version
 
 #### 9. Malaiyo (Sugar-Free Version)
@@ -91,7 +91,7 @@
 - Macros: Protein 8g, Carbs 15g, Fats 6g
 - Budget: ₹35-40
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Winter special, use sugar alternatives
 
 #### 10. Keema Pav (Whole Wheat)
@@ -101,7 +101,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 14g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use lean mutton
 
 ### LUNCH OPTIONS
@@ -113,7 +113,7 @@
 - Macros: Protein 28g, Carbs 45g, Fats 12g
 - Budget: ₹90-100
 - Prep: 60 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use minimal oil, opt for brown rice
 
 #### 12. Arhar Dal Tadka with Roti
@@ -123,7 +123,7 @@
 - Macros: Protein 18g, Carbs 50g, Fats 8g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Rich in protein and fiber
 
 #### 13. Kadhi Pakora (Baked Pakoras)
@@ -133,7 +133,7 @@
 - Macros: Protein 15g, Carbs 48g, Fats 9g
 - Budget: ₹40-45
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake pakoras instead of frying
 
 #### 14. Gobhi Matar with Multigrain Roti
@@ -143,7 +143,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 7g
 - Budget: ₹45-50
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High fiber vegetable combination
 
 #### 15. Chicken Korma with Roti
@@ -153,7 +153,7 @@
 - Macros: Protein 30g, Carbs 38g, Fats 16g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use low-fat yogurt
 
 #### 16. Aloo Gobhi with Roti
@@ -163,7 +163,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Reduce potato quantity
 
 #### 17. Mutton Rogan Josh with Rice
@@ -173,7 +173,7 @@
 - Macros: Protein 32g, Carbs 42g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use lean mutton cuts
 
 #### 18. Paneer Butter Masala (Low Fat)
@@ -183,7 +183,7 @@
 - Macros: Protein 22g, Carbs 38g, Fats 14g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Replace cream with cashew paste
 
 #### 19. Fish Curry with Rice
@@ -193,7 +193,7 @@
 - Macros: Protein 28g, Carbs 42g, Fats 10g
 - Budget: ₹80-90
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich in omega-3 fatty acids
 
 #### 20. Mixed Dal with Roti
@@ -203,7 +203,7 @@
 - Macros: Protein 20g, Carbs 48g, Fats 8g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich combination
 
 ### DINNER OPTIONS
@@ -215,7 +215,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 10g
 - Budget: ₹75-85
 - Prep: 35 mins (+ marination)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill or bake, high protein dinner
 
 #### 22. Palak Paneer with Roti
@@ -225,7 +225,7 @@
 - Macros: Protein 20g, Carbs 35g, Fats 12g
 - Budget: ₹55-65
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron and calcium rich
 
 #### 23. Khichdi with Kadhi
@@ -235,7 +235,7 @@
 - Macros: Protein 15g, Carbs 38g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Easy to digest, perfect dinner
 
 #### 24. Egg Curry with Roti
@@ -245,7 +245,7 @@
 - Macros: Protein 24g, Carbs 35g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich economical option
 
 #### 25. Bhindi Masala with Roti
@@ -255,7 +255,7 @@
 - Macros: Protein 8g, Carbs 38g, Fats 7g
 - Budget: ₹40-45
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Good for blood sugar control
 
 #### 26. Mutton Seekh Kebab with Salad
@@ -265,7 +265,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 15g
 - Budget: ₹90-100
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill for healthier option
 
 #### 27. Lauki Chana Dal
@@ -275,7 +275,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and nutritious
 
 #### 28. Fish Tikka with Vegetables
@@ -285,7 +285,7 @@
 - Macros: Protein 30g, Carbs 15g, Fats 12g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Omega-3 rich dinner
 
 #### 29. Turai Sabzi with Roti
@@ -295,7 +295,7 @@
 - Macros: Protein 7g, Carbs 35g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Very light dinner option
 
 #### 30. Chicken Soup with Multigrain Toast
@@ -305,7 +305,7 @@
 - Macros: Protein 22g, Carbs 30g, Fats 8g
 - Budget: ₹60-70
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Warm, comforting, protein-rich
 
 ---
@@ -321,7 +321,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 10g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional winter breakfast, very nutritious
 
 #### 32. Aloo Paratha (Minimal Oil)
@@ -331,7 +331,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 8g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Cook with minimal ghee or oil
 
 #### 33. Paneer Paratha
@@ -341,7 +341,7 @@
 - Macros: Protein 18g, Carbs 40g, Fats 12g
 - Budget: ₹50-60
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: High protein breakfast option
 
 #### 34. Keema Paratha
@@ -351,7 +351,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 14g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-packed breakfast
 
 #### 35. Chhole Bhature (Baked)
@@ -361,7 +361,7 @@
 - Macros: Protein 15g, Carbs 50g, Fats 10g
 - Budget: ₹40-50
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake bhature instead of frying
 
 #### 36. Egg Bhurji Paratha
@@ -371,7 +371,7 @@
 - Macros: Protein 24g, Carbs 40g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Quick protein-rich breakfast
 
 #### 37. Mooli Paratha
@@ -381,7 +381,7 @@
 - Macros: Protein 9g, Carbs 42g, Fats 7g
 - Budget: ₹20-25
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Good for digestion
 
 #### 38. Chicken Tikka Roll
@@ -391,7 +391,7 @@
 - Macros: Protein 28g, Carbs 38g, Fats 12g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grilled chicken, healthy wrap
 
 #### 39. Besan Cheela
@@ -401,7 +401,7 @@
 - Macros: Protein 15g, Carbs 25g, Fats 6g
 - Budget: ₹25-30
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein, gluten-free option
 
 #### 40. Mutton Keema Pav (Whole Wheat)
@@ -411,7 +411,7 @@
 - Macros: Protein 26g, Carbs 38g, Fats 16g
 - Budget: ₹80-90
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use lean mutton
 
 ### LUNCH OPTIONS
@@ -423,7 +423,7 @@
 - Macros: Protein 18g, Carbs 50g, Fats 7g
 - Budget: ₹40-50
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Iconic Punjabi comfort food
 
 #### 42. Butter Chicken (Low Fat) with Roti
@@ -433,7 +433,7 @@
 - Macros: Protein 30g, Carbs 38g, Fats 15g
 - Budget: ₹90-100
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use yogurt instead of cream
 
 #### 43. Kadhi Pakora (Baked)
@@ -443,7 +443,7 @@
 - Macros: Protein 14g, Carbs 48g, Fats 8g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake pakoras for health
 
 #### 44. Amritsari Fish with Roti
@@ -453,7 +453,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 14g
 - Budget: ₹95-110
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake or air fry instead of deep frying
 
 #### 45. Paneer Tikka Masala with Roti
@@ -463,7 +463,7 @@
 - Macros: Protein 22g, Carbs 38g, Fats 16g
 - Budget: ₹75-85
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Grill paneer before adding to gravy
 
 #### 46. Chicken Curry with Rice
@@ -473,7 +473,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 13g
 - Budget: ₹80-90
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Reduce oil in preparation
 
 #### 47. Chana Masala with Kulcha (Whole Wheat)
@@ -483,7 +483,7 @@
 - Macros: Protein 17g, Carbs 52g, Fats 8g
 - Budget: ₹45-55
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: High protein vegetarian meal
 
 #### 48. Mutton Curry with Roti
@@ -493,7 +493,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Pressure cook for tenderness
 
 #### 49. Palak Paneer with Roti
@@ -503,7 +503,7 @@
 - Macros: Protein 22g, Carbs 38g, Fats 14g
 - Budget: ₹60-70
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Nutrient-dense meal
 
 #### 50. Fish Curry with Rice
@@ -513,7 +513,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Omega-3 rich
 
 ### DINNER OPTIONS
@@ -525,7 +525,7 @@
 - Macros: Protein 20g, Carbs 42g, Fats 9g
 - Budget: ₹45-55
 - Prep: 60 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use low-fat milk instead of cream
 
 #### 52. Tandoori Chicken with Salad
@@ -535,7 +535,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins (+ marination)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein, low carb dinner
 
 #### 53. Baingan Bharta with Roti
@@ -545,7 +545,7 @@
 - Macros: Protein 8g, Carbs 38g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Roast eggplant for smoky flavor
 
 #### 54. Egg Curry with Roti
@@ -555,7 +555,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical protein source
 
 #### 55. Aloo Gobi with Roti
@@ -565,7 +565,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 7g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Reduce potato portion
 
 #### 56. Fish Tikka with Vegetables
@@ -575,7 +575,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Tandoor-style preparation
 
 #### 57. Mixed Vegetable Sabzi with Roti
@@ -585,7 +585,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High fiber meal
 
 #### 58. Chicken Seekh Kebab with Salad
@@ -595,7 +595,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Grill for best results
 
 #### 59. Bhindi Do Pyaza with Roti
@@ -605,7 +605,7 @@
 - Macros: Protein 8g, Carbs 40g, Fats 7g
 - Budget: ₹40-45
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Good for blood sugar
 
 #### 60. Mutton Seekh Kebab with Salad
@@ -615,7 +615,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -631,7 +631,7 @@
 - Macros: Protein 11g, Carbs 40g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bajra is excellent for PCOS
 
 #### 62. Methi Thepla
@@ -641,7 +641,7 @@
 - Macros: Protein 10g, Carbs 38g, Fats 7g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fenugreek helps insulin sensitivity
 
 #### 63. Pyaaz Kachori (Baked)
@@ -651,7 +651,7 @@
 - Macros: Protein 9g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of frying
 
 #### 64. Mirchi Vada (Baked)
@@ -661,7 +661,7 @@
 - Macros: Protein 10g, Carbs 40g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Stuff with paneer for more protein
 
 #### 65. Makhaniya Lassi (Sugar-Free)
@@ -671,7 +671,7 @@
 - Macros: Protein 10g, Carbs 18g, Fats 8g
 - Budget: ₹35-40
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Probiotic-rich breakfast drink
 
 #### 66. Egg Bhurji Rajasthani Style
@@ -681,7 +681,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 15g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein breakfast
 
 #### 67. Mawa Kachori (Healthier Version)
@@ -691,7 +691,7 @@
 - Macros: Protein 12g, Carbs 45g, Fats 10g
 - Budget: ₹50-60
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use dates instead of sugar
 
 #### 68. Chicken Paratha Rajasthani
@@ -701,7 +701,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-packed traditional breakfast
 
 #### 69. Mohanthal (Sugar-Free Version)
@@ -711,7 +711,7 @@
 - Macros: Protein 14g, Carbs 40g, Fats 12g
 - Budget: ₹45-50
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Natural sweeteners only
 
 #### 70. Mutton Keema Paratha
@@ -721,7 +721,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use lean mutton
 
 ### LUNCH OPTIONS
@@ -733,7 +733,7 @@
 - Macros: Protein 18g, Carbs 55g, Fats 12g
 - Budget: ₹40-50
 - Prep: 60 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake baati, use less ghee
 
 #### 72. Gatte Ki Sabzi with Bajra Roti
@@ -743,7 +743,7 @@
 - Macros: Protein 16g, Carbs 45g, Fats 10g
 - Budget: ₹35-45
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein vegetarian option
 
 #### 73. Laal Maas (Modified) with Roti
@@ -753,7 +753,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Use lean mutton cuts
 
 #### 74. Ker Sangri with Bajra Roti
@@ -763,7 +763,7 @@
 - Macros: Protein 10g, Carbs 42g, Fats 7g
 - Budget: ₹50-60
 - Prep: 45 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional desert vegetable
 
 #### 75. Safed Maas with Roti
@@ -773,7 +773,7 @@
 - Macros: Protein 30g, Carbs 40g, Fats 20g
 - Budget: ₹130-150
 - Prep: 80 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Royal Rajasthani delicacy
 
 #### 76. Panchmel Dal with Roti
@@ -783,7 +783,7 @@
 - Macros: Protein 20g, Carbs 50g, Fats 8g
 - Budget: ₹40-45
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein and fiber rich
 
 #### 77. Chicken Curry Rajasthani Style
@@ -793,7 +793,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Spicy and flavorful
 
 #### 78. Papad Ki Sabzi with Roti
@@ -803,7 +803,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 8g
 - Budget: ₹25-30
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Quick and unique dish
 
 #### 79. Fish Curry Rajasthani Style
@@ -813,7 +813,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Coastal Rajasthani specialty
 
 #### 80. Bajre Ki Khichdi
@@ -823,7 +823,7 @@
 - Macros: Protein 14g, Carbs 45g, Fats 7g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Nutritious one-pot meal
 
 ### DINNER OPTIONS
@@ -835,7 +835,7 @@
 - Macros: Protein 14g, Carbs 38g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein roti
 
 #### 82. Tandoori Chicken with Salad
@@ -845,7 +845,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light protein dinner
 
 #### 83. Kadhi with Bajra Roti
@@ -855,7 +855,7 @@
 - Macros: Protein 13g, Carbs 40g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Probiotic-rich dinner
 
 #### 84. Egg Curry Rajasthani
@@ -865,7 +865,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical protein meal
 
 #### 85. Lahsun Ki Chutney with Bajra Roti
@@ -875,7 +875,7 @@
 - Macros: Protein 10g, Carbs 42g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Garlic helps with PCOS
 
 #### 86. Mutton Seekh Kebab with Vegetables
@@ -885,7 +885,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 16g
 - Budget: ₹100-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 87. Gatta Curry with Roti
@@ -895,7 +895,7 @@
 - Macros: Protein 15g, Carbs 40g, Fats 10g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich gram flour
 
 #### 88. Fish Tikka Rajasthani
@@ -905,7 +905,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 11g
 - Budget: ₹95-105
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Omega-3 rich
 
 #### 89. Moong Dal with Missi Roti
@@ -915,7 +915,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and digestible
 
 #### 90. Chicken Tikka with Bajra Roti
@@ -925,7 +925,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 12g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional combination
 
 ---
@@ -941,7 +941,7 @@
 - Macros: Protein 13g, Carbs 38g, Fats 7g
 - Budget: ₹25-30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein breakfast
 
 #### 92. Bathua Raita with Bajra Roti
@@ -951,7 +951,7 @@
 - Macros: Protein 12g, Carbs 40g, Fats 8g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Bathua is iron-rich
 
 #### 93. Mixed Sprouts Paratha
@@ -961,7 +961,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein and fiber rich
 
 #### 94. Egg Paratha Haryanvi
@@ -971,7 +971,7 @@
 - Macros: Protein 20g, Carbs 40g, Fats 14g
 - Budget: ₹40-50
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Quick protein breakfast
 
 #### 95. Singri Ki Sabzi with Roti
@@ -981,7 +981,7 @@
 - Macros: Protein 9g, Carbs 38g, Fats 6g
 - Budget: ₹40-45
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional Haryanvi vegetable
 
 #### 96. Chicken Paratha
@@ -991,7 +991,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Filling breakfast
 
 #### 97. Methi Bajra Roti with Yogurt
@@ -1001,7 +1001,7 @@
 - Macros: Protein 11g, Carbs 40g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fenugreek aids insulin sensitivity
 
 #### 98. Mutton Keema Paratha
@@ -1011,7 +1011,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hearty breakfast
 
 #### 99. Cholia with Roti
@@ -1021,7 +1021,7 @@
 - Macros: Protein 15g, Carbs 45g, Fats 7g
 - Budget: ₹30-35
 - Prep: 40 mins (after soaking)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein breakfast
 
 #### 100. Egg Bhurji with Bajra Roti
@@ -1031,7 +1031,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 15g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional combination
 
 ### LUNCH OPTIONS
@@ -1043,7 +1043,7 @@
 - Macros: Protein 14g, Carbs 48g, Fats 9g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Thicker than regular kadhi
 
 #### 102. Kachri Ki Sabzi with Bajra Roti
@@ -1053,7 +1053,7 @@
 - Macros: Protein 10g, Carbs 42g, Fats 7g
 - Budget: ₹40-45
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Unique desert vegetable
 
 #### 103. Chicken Curry Haryanvi
@@ -1063,7 +1063,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹80-90
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich and flavorful
 
 #### 104. Mixed Dal with Bajra Roti
@@ -1073,7 +1073,7 @@
 - Macros: Protein 20g, Carbs 48g, Fats 8g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich meal
 
 #### 105. Mutton Curry with Roti
@@ -1083,7 +1083,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional meat curry
 
 #### 106. Bathua Saag with Makki Roti
@@ -1093,7 +1093,7 @@
 - Macros: Protein 13g, Carbs 42g, Fats 9g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron and protein rich
 
 #### 107. Fish Curry with Rice
@@ -1103,7 +1103,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Omega-3 rich
 
 #### 108. Hara Chana with Roti
@@ -1113,7 +1113,7 @@
 - Macros: Protein 17g, Carbs 50g, Fats 7g
 - Budget: ₹45-50
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Seasonal delicacy
 
 #### 109. Chicken Tikka Masala with Roti
@@ -1123,7 +1123,7 @@
 - Macros: Protein 30g, Carbs 38g, Fats 15g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Popular preparation
 
 #### 110. Arhar Dal with Bajra Roti
@@ -1133,7 +1133,7 @@
 - Macros: Protein 18g, Carbs 48g, Fats 8g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Daily staple meal
 
 ### DINNER OPTIONS
@@ -1145,7 +1145,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Comfort food, easy to digest
 
 #### 112. Tandoori Chicken with Salad
@@ -1155,7 +1155,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light protein dinner
 
 #### 113. Lauki Chana Dal
@@ -1165,7 +1165,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and nutritious
 
 #### 114. Egg Curry with Roti
@@ -1175,7 +1175,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical protein source
 
 #### 115. Mixed Vegetable Sabzi with Bajra Roti
@@ -1185,7 +1185,7 @@
 - Macros: Protein 10g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High fiber dinner
 
 #### 116. Fish Tikka with Vegetables
@@ -1195,7 +1195,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy grilled option
 
 #### 117. Moong Dal with Roti
@@ -1205,7 +1205,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner option
 
 #### 118. Chicken Seekh Kebab with Salad
@@ -1215,7 +1215,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein, low carb
 
 #### 119. Turai Sabzi with Roti
@@ -1225,7 +1225,7 @@
 - Macros: Protein 7g, Carbs 38g, Fats 5g
 - Budget: ₹25-30
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Very light dinner
 
 #### 120. Mutton Seekh Kebab
@@ -1235,7 +1235,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -1251,7 +1251,7 @@
 - Macros: Protein 17g, Carbs 52g, Fats 10g
 - Budget: ₹45-55
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Iconic Delhi breakfast
 
 #### 122. Bedmi Puri with Aloo Sabzi
@@ -1261,7 +1261,7 @@
 - Macros: Protein 12g, Carbs 45g, Fats 9g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Air fry puris
 
 #### 123. Paranthe Wali Gali Style Paratha
@@ -1271,7 +1271,7 @@
 - Macros: Protein 11g, Carbs 42g, Fats 10g
 - Budget: ₹40-50
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Multiple stuffing options
 
 #### 124. Egg Omelette with Toast
@@ -1281,7 +1281,7 @@
 - Macros: Protein 22g, Carbs 32g, Fats 15g
 - Budget: ₹40-50
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Quick breakfast
 
 #### 125. Moong Dal Chilla
@@ -1291,7 +1291,7 @@
 - Macros: Protein 16g, Carbs 30g, Fats 6g
 - Budget: ₹30-35
 - Prep: 20 mins (after soaking)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein option
 
 #### 126. Chicken Sandwich (Whole Wheat)
@@ -1301,7 +1301,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 12g
 - Budget: ₹60-70
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Street food favorite
 
 #### 127. Aloo Tikki with Chana
@@ -1311,7 +1311,7 @@
 - Macros: Protein 13g, Carbs 48g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake tikkis instead of frying
 
 #### 128. Mutton Keema Pav
@@ -1321,7 +1321,7 @@
 - Macros: Protein 26g, Carbs 38g, Fats 16g
 - Budget: ₹80-90
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Popular street food
 
 #### 129. Poha with Peanuts
@@ -1331,7 +1331,7 @@
 - Macros: Protein 9g, Carbs 35g, Fats 8g
 - Budget: ₹25-30
 - Prep: 15 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light breakfast
 
 #### 130. Egg Bhurji with Pav
@@ -1341,7 +1341,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Classic Delhi breakfast
 
 ### LUNCH OPTIONS
@@ -1353,7 +1353,7 @@
 - Macros: Protein 30g, Carbs 42g, Fats 16g
 - Budget: ₹95-110
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Delhi's signature dish
 
 #### 132. Dal Makhani with Roti
@@ -1363,7 +1363,7 @@
 - Macros: Protein 20g, Carbs 42g, Fats 10g
 - Budget: ₹45-55
 - Prep: 60 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use low-fat milk
 
 #### 133. Rajma Chawal Delhi Style
@@ -1373,7 +1373,7 @@
 - Macros: Protein 19g, Carbs 52g, Fats 8g
 - Budget: ₹45-55
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Comfort food classic
 
 #### 134. Chicken Biryani (Brown Rice)
@@ -1383,7 +1383,7 @@
 - Macros: Protein 28g, Carbs 48g, Fats 14g
 - Budget: ₹90-100
 - Prep: 60 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Fragrant and flavorful
 
 #### 135. Paneer Tikka Masala with Naan
@@ -1393,7 +1393,7 @@
 - Macros: Protein 22g, Carbs 40g, Fats 16g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Popular restaurant dish
 
 #### 136. Mutton Rogan Josh with Rice
@@ -1403,7 +1403,7 @@
 - Macros: Protein 32g, Carbs 45g, Fats 18g
 - Budget: ₹130-150
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich and aromatic
 
 #### 137. Kadhi Pakora with Rice
@@ -1413,7 +1413,7 @@
 - Macros: Protein 14g, Carbs 48g, Fats 10g
 - Budget: ₹40-45
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake pakoras
 
 #### 138. Fish Tikka Masala with Rice
@@ -1423,7 +1423,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 13g
 - Budget: ₹95-110
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Omega-3 rich
 
 #### 139. Chana Masala with Bhatura
@@ -1433,7 +1433,7 @@
 - Macros: Protein 17g, Carbs 52g, Fats 9g
 - Budget: ₹45-55
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Street food favorite
 
 #### 140. Chicken Curry with Roti
@@ -1443,7 +1443,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Home-style curry
 
 ### DINNER OPTIONS
@@ -1455,7 +1455,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹80-90
 - Prep: 40 mins (+ marination)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iconic Delhi preparation
 
 #### 142. Palak Paneer with Roti
@@ -1465,7 +1465,7 @@
 - Macros: Protein 22g, Carbs 38g, Fats 14g
 - Budget: ₹60-70
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron and calcium rich
 
 #### 143. Khichdi with Kadhi
@@ -1475,7 +1475,7 @@
 - Macros: Protein 15g, Carbs 40g, Fats 7g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Comfort food
 
 #### 144. Egg Curry with Roti
@@ -1485,7 +1485,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Quick protein dinner
 
 #### 145. Mixed Vegetable Sabzi with Roti
@@ -1495,7 +1495,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fiber-rich meal
 
 #### 146. Fish Tikka with Vegetables
@@ -1505,7 +1505,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹95-105
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and healthy
 
 #### 147. Dal Tadka with Roti
@@ -1515,7 +1515,7 @@
 - Macros: Protein 17g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Daily staple
 
 #### 148. Chicken Seekh Kebab with Salad
@@ -1525,7 +1525,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 149. Bhindi Masala with Roti
@@ -1535,7 +1535,7 @@
 - Macros: Protein 8g, Carbs 38g, Fats 7g
 - Budget: ₹40-45
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Good for blood sugar
 
 #### 150. Mutton Seekh Kebab with Salad
@@ -1545,7 +1545,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Rich in protein
 
 ---
@@ -1561,7 +1561,7 @@
 - Macros: Protein 12g, Carbs 40g, Fats 11g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Ragi is excellent for PCOS
 
 #### 152. Aloo Ke Gutke with Puri
@@ -1571,7 +1571,7 @@
 - Macros: Protein 8g, Carbs 48g, Fats 10g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Pahadi-style spiced potatoes
 
 #### 153. Gahat Dal Paratha
@@ -1581,7 +1581,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Gahat is protein-rich
 
 #### 154. Egg Bhurji Pahadi Style
@@ -1591,7 +1591,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Mountain-style preparation
 
 #### 155. Jhangora Kheer (Sugar-Free)
@@ -1601,7 +1601,7 @@
 - Macros: Protein 10g, Carbs 42g, Fats 6g
 - Budget: ₹40-45
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional breakfast porridge
 
 #### 156. Chicken Paratha Pahadi
@@ -1611,7 +1611,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Filling mountain breakfast
 
 #### 157. Singal with Ghee
@@ -1621,7 +1621,7 @@
 - Macros: Protein 11g, Carbs 38g, Fats 11g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional millet roti
 
 #### 158. Mutton Keema Paratha
@@ -1631,7 +1631,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hearty breakfast
 
 #### 159. Urad Dal Paratha
@@ -1641,7 +1641,7 @@
 - Macros: Protein 15g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich breakfast
 
 #### 160. Egg Omelette with Mandua Roti
@@ -1651,7 +1651,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 15g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy combination
 
 ### LUNCH OPTIONS
@@ -1663,7 +1663,7 @@
 - Macros: Protein 22g, Carbs 48g, Fats 10g
 - Budget: ₹45-55
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein Pahadi dal
 
 #### 162. Gahat Dal with Mandua Roti
@@ -1673,7 +1673,7 @@
 - Macros: Protein 20g, Carbs 45g, Fats 8g
 - Budget: ₹40-50
 - Prep: 60 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Excellent for PCOS
 
 #### 163. Chicken Curry Pahadi Style
@@ -1683,7 +1683,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Simple mountain-style curry
 
 #### 164. Kafuli with Rice
@@ -1693,7 +1693,7 @@
 - Macros: Protein 14g, Carbs 45g, Fats 8g
 - Budget: ₹40-45
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron-rich green curry
 
 #### 165. Mutton Curry with Roti
@@ -1703,7 +1703,7 @@
 - Macros: Protein 32g, Carbs 38g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional preparation
 
 #### 166. Jhangora Pulao
@@ -1713,7 +1713,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 7g
 - Budget: ₹40-45
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy millet pulao
 
 #### 167. Fish Curry Kumaoni Style
@@ -1723,7 +1723,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: River fish preparation
 
 #### 168. Chainsoo with Rice
@@ -1733,7 +1733,7 @@
 - Macros: Protein 20g, Carbs 48g, Fats 10g
 - Budget: ₹45-50
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich Pahadi dish
 
 #### 169. Chicken Tikka Masala with Roti
@@ -1743,7 +1743,7 @@
 - Macros: Protein 30g, Carbs 38g, Fats 15g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Popular preparation
 
 #### 170. Phaanu with Mandua Roti
@@ -1753,7 +1753,7 @@
 - Macros: Protein 21g, Carbs 45g, Fats 9g
 - Budget: ₹40-45
 - Prep: 60 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Slow-cooked dal dish
 
 ### DINNER OPTIONS
@@ -1765,7 +1765,7 @@
 - Macros: Protein 18g, Carbs 40g, Fats 9g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Complete protein meal
 
 #### 172. Tandoori Chicken with Salad
@@ -1775,7 +1775,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner option
 
 #### 173. Aloo Tamatar Ka Jhol with Roti
@@ -1785,7 +1785,7 @@
 - Macros: Protein 8g, Carbs 42g, Fats 7g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Simple curry
 
 #### 174. Egg Curry Pahadi Style
@@ -1795,7 +1795,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Mountain-style preparation
 
 #### 175. Jhangora Khichdi
@@ -1805,7 +1805,7 @@
 - Macros: Protein 13g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Easy to digest
 
 #### 176. Fish Tikka with Vegetables
@@ -1815,7 +1815,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy grilled option
 
 #### 177. Gahat Dal with Roti
@@ -1825,7 +1825,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹35-40
 - Prep: 50 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner
 
 #### 178. Chicken Seekh Kebab Pahadi
@@ -1835,7 +1835,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 179. Mixed Vegetable Sabzi with Mandua Roti
@@ -1845,7 +1845,7 @@
 - Macros: Protein 11g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fiber-rich meal
 
 #### 180. Mutton Seekh Kebab with Salad
@@ -1855,7 +1855,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -1871,7 +1871,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 14g
 - Budget: ₹30-35
 - Prep: 90 mins (with rising time)
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steamed bread, eat in moderation
 
 #### 182. Chana Madra with Rice
@@ -1881,7 +1881,7 @@
 - Macros: Protein 16g, Carbs 50g, Fats 9g
 - Budget: ₹40-45
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Protein-rich breakfast
 
 #### 183. Babru (Baked Version)
@@ -1891,7 +1891,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 8g
 - Budget: ₹35-40
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of frying
 
 #### 184. Egg Bhurji Himachali Style
@@ -1901,7 +1901,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Mountain-style preparation
 
 #### 185. Aktori (Buckwheat Pancake)
@@ -1911,7 +1911,7 @@
 - Macros: Protein 12g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Gluten-free option
 
 #### 186. Chicken Paratha Himachali
@@ -1921,7 +1921,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Filling breakfast
 
 #### 187. Patande (Sweetened with Dates)
@@ -1931,7 +1931,7 @@
 - Macros: Protein 10g, Carbs 48g, Fats 6g
 - Budget: ₹35-40
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Pancakes with natural sweetener
 
 #### 188. Mutton Keema Paratha
@@ -1941,7 +1941,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hearty mountain breakfast
 
 #### 189. Chilra (Savory Pancake)
@@ -1951,7 +1951,7 @@
 - Macros: Protein 9g, Carbs 42g, Fats 6g
 - Budget: ₹30-35
 - Prep: 20 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Quick breakfast option
 
 #### 190. Egg Omelette with Roti
@@ -1961,7 +1961,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 15g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Simple and nutritious
 
 ### LUNCH OPTIONS
@@ -1973,7 +1973,7 @@
 - Macros: Protein 18g, Carbs 52g, Fats 10g
 - Budget: ₹45-55
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Traditional festival dish
 
 #### 192. Tudkiya Bhath
@@ -1983,7 +1983,7 @@
 - Macros: Protein 15g, Carbs 50g, Fats 8g
 - Budget: ₹40-45
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: One-pot pulao
 
 #### 193. Chicken Anardana
@@ -1993,7 +1993,7 @@
 - Macros: Protein 30g, Carbs 48g, Fats 14g
 - Budget: ₹90-100
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Tangy and flavorful
 
 #### 194. Bhey (Lotus Stem) with Roti
@@ -2003,7 +2003,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 8g
 - Budget: ₹50-60
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fiber-rich vegetable
 
 #### 195. Mutton Curry Himachali Style
@@ -2013,7 +2013,7 @@
 - Macros: Protein 32g, Carbs 45g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich and aromatic
 
 #### 196. Khatta (Sour Curry) with Rice
@@ -2023,7 +2023,7 @@
 - Macros: Protein 16g, Carbs 50g, Fats 7g
 - Budget: ₹35-40
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Tangy and nutritious
 
 #### 197. Fish Curry Himachali Style
@@ -2033,7 +2033,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Omega-3 rich
 
 #### 198. Sepu Vadi with Roti
@@ -2043,7 +2043,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 9g
 - Budget: ₹40-45
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Iron-rich meal
 
 #### 199. Chicken Curry with Rice
@@ -2053,7 +2053,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Traditional preparation
 
 #### 200. Aloo Palda with Roti
@@ -2063,7 +2063,7 @@
 - Macros: Protein 11g, Carbs 48g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Comfort food
 
 ### DINNER OPTIONS
@@ -2075,7 +2075,7 @@
 - Macros: Protein 16g, Carbs 45g, Fats 10g
 - Budget: ₹35-40
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Traditional combination
 
 #### 202. Tandoori Chicken with Salad
@@ -2085,7 +2085,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner option
 
 #### 203. Auriya Kadoo (Pumpkin Curry) with Roti
@@ -2095,7 +2095,7 @@
 - Macros: Protein 7g, Carbs 40g, Fats 6g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and nutritious
 
 #### 204. Egg Curry Himachali
@@ -2105,7 +2105,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical protein meal
 
 #### 205. Khichdi Himachali Style
@@ -2115,7 +2115,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Easy to digest
 
 #### 206. Fish Tikka with Vegetables
@@ -2125,7 +2125,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy option
 
 #### 207. Chana Dal with Roti
@@ -2135,7 +2135,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner
 
 #### 208. Chicken Seekh Kebab with Salad
@@ -2145,7 +2145,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 209. Mixed Vegetable Sabzi with Roti
@@ -2155,7 +2155,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 6g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fiber-rich meal
 
 #### 210. Mutton Seekh Kebab with Salad
@@ -2165,7 +2165,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -2181,7 +2181,7 @@
 - Macros: Protein 9g, Carbs 40g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Traditional Kashmiri breakfast
 
 #### 212. Kashmiri Kulcha with Yogurt
@@ -2191,7 +2191,7 @@
 - Macros: Protein 11g, Carbs 42g, Fats 9g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Slightly sweet bread
 
 #### 213. Harissa (Chicken Porridge)
@@ -2201,7 +2201,7 @@
 - Macros: Protein 24g, Carbs 40g, Fats 12g
 - Budget: ₹70-80
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Winter special, hearty
 
 #### 214. Egg Omelette with Kashmiri Roti
@@ -2211,7 +2211,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 15g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Simple breakfast
 
 #### 215. Khambir (Whole Wheat Bread)
@@ -2221,7 +2221,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 5g
 - Budget: ₹25-30
 - Prep: 90 mins (with rising)
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Traditional Ladakhi bread
 
 #### 216. Chicken Paratha Kashmiri
@@ -2231,7 +2231,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Filling breakfast
 
 #### 217. Modur Pulav (Less Sweet Version)
@@ -2241,7 +2241,7 @@
 - Macros: Protein 10g, Carbs 48g, Fats 10g
 - Budget: ₹50-60
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Festive breakfast rice
 
 #### 218. Mutton Keema Paratha
@@ -2251,7 +2251,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hearty breakfast
 
 #### 219. Sheermal (Healthier Version)
@@ -2261,7 +2261,7 @@
 - Macros: Protein 11g, Carbs 45g, Fats 8g
 - Budget: ₹40-45
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Mildly sweet bread
 
 #### 220. Egg Bhurji with Lavasa
@@ -2271,7 +2271,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional combination
 
 ### LUNCH OPTIONS
@@ -2283,7 +2283,7 @@
 - Macros: Protein 32g, Carbs 45g, Fats 18g
 - Budget: ₹130-150
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Iconic Kashmiri dish
 
 #### 222. Rajma Chawal Kashmiri Style
@@ -2293,7 +2293,7 @@
 - Macros: Protein 19g, Carbs 52g, Fats 8g
 - Budget: ₹45-55
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Comfort food
 
 #### 223. Yakhni (Yogurt-Based Mutton)
@@ -2303,7 +2303,7 @@
 - Macros: Protein 32g, Carbs 45g, Fats 16g
 - Budget: ₹120-140
 - Prep: 80 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Mild and aromatic
 
 #### 224. Dum Aloo Kashmiri with Rice
@@ -2313,7 +2313,7 @@
 - Macros: Protein 10g, Carbs 55g, Fats 10g
 - Budget: ₹40-45
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich and flavorful
 
 #### 225. Gushtaba with Rice
@@ -2323,7 +2323,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 18g
 - Budget: ₹130-150
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Royal dish
 
 #### 226. Chaman (Paneer) Kaliya with Rice
@@ -2333,7 +2333,7 @@
 - Macros: Protein 22g, Carbs 45g, Fats 15g
 - Budget: ₹70-80
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Yellow curry
 
 #### 227. Chicken Curry Kashmiri Style
@@ -2343,7 +2343,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Mildly spiced
 
 #### 228. Haak (Collard Greens) with Rice
@@ -2353,7 +2353,7 @@
 - Macros: Protein 12g, Carbs 45g, Fats 7g
 - Budget: ₹35-40
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional greens
 
 #### 229. Tabak Maaz (Modified) with Rice
@@ -2363,7 +2363,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 18g
 - Budget: ₹120-140
 - Prep: 80 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Pan-fry with minimal oil
 
 #### 230. Rajma Gogji with Rice
@@ -2373,7 +2373,7 @@
 - Macros: Protein 16g, Carbs 50g, Fats 7g
 - Budget: ₹40-45
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Unique combination
 
 ### DINNER OPTIONS
@@ -2385,7 +2385,7 @@
 - Macros: Protein 11g, Carbs 48g, Fats 11g
 - Budget: ₹55-65
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Aromatic rice dish
 
 #### 232. Tandoori Chicken with Salad
@@ -2395,7 +2395,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner
 
 #### 233. Monji Haak (Knol Khol Greens) with Roti
@@ -2405,7 +2405,7 @@
 - Macros: Protein 10g, Carbs 38g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Simple and healthy
 
 #### 234. Egg Curry Kashmiri
@@ -2415,7 +2415,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical meal
 
 #### 235. Nadru (Lotus Stem) with Rice
@@ -2425,7 +2425,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 7g
 - Budget: ₹50-60
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Fiber-rich vegetable
 
 #### 236. Fish Tikka Kashmiri Style
@@ -2435,7 +2435,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹90-100
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy option
 
 #### 237. Dal with Roti
@@ -2445,7 +2445,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Simple dinner
 
 #### 238. Chicken Seekh Kebab with Salad
@@ -2455,7 +2455,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 239. Gogji (Turnip) Sabzi with Roti
@@ -2465,7 +2465,7 @@
 - Macros: Protein 8g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner
 
 #### 240. Mutton Seekh Kebab with Salad
@@ -2475,7 +2475,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -2491,7 +2491,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 8g
 - Budget: ₹25-30
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein breakfast
 
 #### 242. Litti Chokha (Modified)
@@ -2501,7 +2501,7 @@
 - Macros: Protein 14g, Carbs 48g, Fats 10g
 - Budget: ₹35-40
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake litti instead of roasting in coals
 
 #### 243. Chuda Dahi (Flattened Rice with Yogurt)
@@ -2511,7 +2511,7 @@
 - Macros: Protein 10g, Carbs 45g, Fats 6g
 - Budget: ₹25-30
 - Prep: 10 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Probiotic-rich breakfast
 
 #### 244. Egg Paratha Bihari Style
@@ -2521,7 +2521,7 @@
 - Macros: Protein 20g, Carbs 40g, Fats 14g
 - Budget: ₹40-50
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Street-style preparation
 
 #### 245. Malpua (Healthier Version)
@@ -2531,7 +2531,7 @@
 - Macros: Protein 8g, Carbs 45g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Use dates syrup instead of sugar
 
 #### 246. Chicken Paratha
@@ -2541,7 +2541,7 @@
 - Macros: Protein 26g, Carbs 40g, Fats 13g
 - Budget: ₹65-75
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-packed breakfast
 
 #### 247. Dhuska (Baked Version)
@@ -2551,7 +2551,7 @@
 - Macros: Protein 12g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 40 mins (after soaking)
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Bake instead of deep frying
 
 #### 248. Mutton Keema Paratha
@@ -2561,7 +2561,7 @@
 - Macros: Protein 28g, Carbs 40g, Fats 16g
 - Budget: ₹80-90
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hearty breakfast
 
 #### 249. Pua (Less Sweet Version)
@@ -2571,7 +2571,7 @@
 - Macros: Protein 9g, Carbs 48g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Festival sweet
 
 #### 250. Egg Bhurji with Roti
@@ -2581,7 +2581,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 20 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Traditional preparation
 
 ### LUNCH OPTIONS
@@ -2593,7 +2593,7 @@
 - Macros: Protein 16g, Carbs 50g, Fats 7g
 - Budget: ₹35-40
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Steamed dumplings
 
 #### 252. Ghugni with Litti
@@ -2603,7 +2603,7 @@
 - Macros: Protein 17g, Carbs 52g, Fats 9g
 - Budget: ₹40-45
 - Prep: 50 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Protein-rich meal
 
 #### 253. Chicken Curry Bihari Style with Rice
@@ -2613,7 +2613,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 14g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Mustard oil adds flavor
 
 #### 254. Chokha (Mixed) with Roti
@@ -2623,7 +2623,7 @@
 - Macros: Protein 9g, Carbs 50g, Fats 8g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Smoky flavored mash
 
 #### 255. Mutton Curry with Rice
@@ -2633,7 +2633,7 @@
 - Macros: Protein 32g, Carbs 45g, Fats 18g
 - Budget: ₹120-140
 - Prep: 90 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Rich and flavorful
 
 #### 256. Kadhi Bari with Rice
@@ -2643,7 +2643,7 @@
 - Macros: Protein 14g, Carbs 50g, Fats 9g
 - Budget: ₹35-40
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Probiotic-rich meal
 
 #### 257. Fish Curry Bihari Style with Rice
@@ -2653,7 +2653,7 @@
 - Macros: Protein 30g, Carbs 45g, Fats 12g
 - Budget: ₹80-90
 - Prep: 35 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Mustard-based curry
 
 #### 258. Aloo Chokha with Litti
@@ -2663,7 +2663,7 @@
 - Macros: Protein 10g, Carbs 55g, Fats 10g
 - Budget: ₹30-35
 - Prep: 40 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Classic combination
 
 #### 259. Chicken Tikka Masala with Roti
@@ -2673,7 +2673,7 @@
 - Macros: Protein 30g, Carbs 38g, Fats 15g
 - Budget: ₹85-95
 - Prep: 45 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Popular preparation
 
 #### 260. Sattu Ka Paratha with Yogurt
@@ -2683,7 +2683,7 @@
 - Macros: Protein 18g, Carbs 42g, Fats 8g
 - Budget: ₹30-35
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein meal
 
 ### DINNER OPTIONS
@@ -2695,7 +2695,7 @@
 - Macros: Protein 14g, Carbs 42g, Fats 6g
 - Budget: ₹30-35
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Comfort food
 
 #### 262. Tandoori Chicken with Salad
@@ -2705,7 +2705,7 @@
 - Macros: Protein 32g, Carbs 12g, Fats 11g
 - Budget: ₹75-85
 - Prep: 40 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner option
 
 #### 263. Chana Dal with Roti
@@ -2715,7 +2715,7 @@
 - Macros: Protein 16g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light and nutritious
 
 #### 264. Egg Curry with Roti
@@ -2725,7 +2725,7 @@
 - Macros: Protein 24g, Carbs 38g, Fats 16g
 - Budget: ₹45-55
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Economical protein meal
 
 #### 265. Lauki Chana Dal
@@ -2735,7 +2735,7 @@
 - Macros: Protein 16g, Carbs 40g, Fats 6g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Light dinner
 
 #### 266. Fish Tikka with Vegetables
@@ -2745,7 +2745,7 @@
 - Macros: Protein 32g, Carbs 15g, Fats 11g
 - Budget: ₹85-95
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Omega-3 rich
 
 #### 267. Mixed Dal with Roti
@@ -2755,7 +2755,7 @@
 - Macros: Protein 17g, Carbs 42g, Fats 7g
 - Budget: ₹30-35
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Daily staple
 
 #### 268. Chicken Seekh Kebab with Salad
@@ -2765,7 +2765,7 @@
 - Macros: Protein 30g, Carbs 10g, Fats 13g
 - Budget: ₹70-80
 - Prep: 30 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein dinner
 
 #### 269. Bhindi Masala with Roti
@@ -2775,7 +2775,7 @@
 - Macros: Protein 8g, Carbs 38g, Fats 8g
 - Budget: ₹40-45
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Good for blood sugar
 
 #### 270. Mutton Seekh Kebab with Salad
@@ -2785,7 +2785,7 @@
 - Macros: Protein 32g, Carbs 10g, Fats 16g
 - Budget: ₹95-110
 - Prep: 35 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Protein-rich dinner
 
 ---
@@ -2802,7 +2802,7 @@
 - Macros: Protein 5g, Carbs 18g, Fats 4g
 - Budget: ₹20-25
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Great for PCOS
 
 #### 272. Sprouts Chaat
@@ -2813,7 +2813,7 @@
 - Macros: Protein 8g, Carbs 15g, Fats 2g
 - Budget: ₹15-20
 - Prep: 5 mins (after sprouting)
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein snack
 
 #### 273. Roasted Chana
@@ -2824,7 +2824,7 @@
 - Macros: Protein 9g, Carbs 22g, Fats 3g
 - Budget: ₹15-20
 - Prep: 2 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Crunchy protein snack
 
 #### 274. Cucumber Raita
@@ -2835,7 +2835,7 @@
 - Macros: Protein 5g, Carbs 8g, Fats 3g
 - Budget: ₹15-20
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Cooling and probiotic
 
 #### 275. Boiled Egg with Spices
@@ -2846,7 +2846,7 @@
 - Macros: Protein 13g, Carbs 1g, Fats 10g
 - Budget: ₹20-25
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Perfect protein snack
 
 #### 276. Peanuts Chaat
@@ -2857,7 +2857,7 @@
 - Macros: Protein 8g, Carbs 10g, Fats 14g
 - Budget: ₹15-20
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Healthy fats and protein
 
 #### 277. Paneer Tikka (Small Portion)
@@ -2868,7 +2868,7 @@
 - Macros: Protein 12g, Carbs 4g, Fats 8g
 - Budget: ₹35-40
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: High protein snack
 
 #### 278. Fruit Chaat
@@ -2879,7 +2879,7 @@
 - Macros: Protein 2g, Carbs 25g, Fats 0g
 - Budget: ₹30-35
 - Prep: 5 mins
-- GI: Medium ⭐⭐
+- GI: Medium
 - Tip: Fiber and vitamins
 
 #### 279. Roasted Pumpkin Seeds
@@ -2890,7 +2890,7 @@
 - Macros: Protein 9g, Carbs 4g, Fats 13g
 - Budget: ₹25-30
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Zinc-rich for PCOS
 
 #### 280. Chicken Tikka Bites
@@ -2901,7 +2901,7 @@
 - Macros: Protein 18g, Carbs 3g, Fats 6g
 - Budget: ₹45-50
 - Prep: 25 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Lean protein snack
 
 ### HEALTHY BEVERAGES
@@ -2914,7 +2914,7 @@
 - Macros: Protein 8g, Carbs 15g, Fats 2g
 - Budget: ₹15-20
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Cooling summer drink
 
 #### 282. Lassi (Sugar-Free)
@@ -2925,7 +2925,7 @@
 - Macros: Protein 8g, Carbs 12g, Fats 6g
 - Budget: ₹25-30
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Probiotic drink
 
 #### 283. Chaas (Buttermilk)
@@ -2936,7 +2936,7 @@
 - Macros: Protein 6g, Carbs 9g, Fats 4g
 - Budget: ₹15-20
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Digestive aid
 
 #### 284. Herbal Tea (Kahwa Style)
@@ -2947,7 +2947,7 @@
 - Macros: Protein 0g, Carbs 2g, Fats 0g
 - Budget: ₹20-25
 - Prep: 10 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Antioxidant-rich
 
 #### 285. Lemon Water with Chia Seeds
@@ -2958,7 +2958,7 @@
 - Macros: Protein 2g, Carbs 5g, Fats 3g
 - Budget: ₹15-20
 - Prep: 5 mins
-- GI: Low ⭐⭐⭐
+- GI: Low
 - Tip: Hydrating and fiber-rich
 
 ---
@@ -3030,7 +3030,7 @@ These meal plans are general guidelines for PCOS management. Always consult with
 - Use minimal oil (1-2 tsp per meal)
 
 ### For Insulin Resistance:
-- Focus on Low GI options (⭐⭐⭐)
+- Focus on Low GI options
 - Pair carbs with protein
 - Include fiber-rich vegetables
 - Choose whole grains over refined

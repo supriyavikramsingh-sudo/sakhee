@@ -3,6 +3,8 @@ import { ChatOpenAI } from '@langchain/openai';
 import { env } from '../../config/env.js';
 import { retriever } from '../retriever.js';
 import { Logger } from '../../utils/logger.js';
+import { deduplicator } from '../../utils/deduplicator.js';
+import { HybridReRanker } from '../reranker.js';
 
 const logger = new Logger('MealPlanChain');
 
@@ -17,6 +19,9 @@ class MealPlanChain {
         response_format: { type: 'json_object' },
       },
     });
+
+    // Initialize hybrid re-ranker for improved meal recommendations
+    this.reranker = new HybridReRanker();
   }
 
   /**
@@ -1327,6 +1332,67 @@ class MealPlanChain {
         allergyRestrictions: restrictions.length,
         isKeto: preferences.isKeto || false,
       });
+
+      // ✅ OPTIMIZATION: Hybrid Re-Ranking
+      // Re-rank meal templates using combined semantic + feature-based scoring
+      // Improves recommendation quality by considering nutritional alignment,
+      // budget constraints, prep time, and GI levels beyond pure semantic similarity
+      if (retrievalResults.mealTemplates.length > 0) {
+        logger.info('🎯 Applying hybrid re-ranking to meal templates');
+
+        // Build query from preferences for intent detection
+        const rankingQuery = this.buildMealTemplateQuery(preferences, healthContext);
+
+        // Re-rank using hybrid scoring
+        const beforeRerank = [...retrievalResults.mealTemplates];
+        retrievalResults.mealTemplates = this.reranker.reRank(
+          retrievalResults.mealTemplates,
+          rankingQuery,
+          {
+            isKeto: preferences.isKeto || false,
+            budget: preferences.budget,
+            maxPrepTime: preferences.maxPrepTime,
+            targetProtein: preferences.targetProtein,
+            targetCarbs: preferences.targetCarbs,
+          }
+        );
+
+        // Log re-ranking stats
+        const stats = this.reranker.getStats(beforeRerank, retrievalResults.mealTemplates);
+        if (stats) {
+          logger.info('✅ Re-ranking complete', {
+            totalDocs: stats.totalDocs,
+            changedPositions: stats.changedPositions,
+            avgImprovement: stats.avgImprovement,
+          });
+        }
+      }
+
+      // ✅ OPTIMIZATION: Deduplicate meal templates
+      // Removes duplicate documents based on mealName + state
+      // Reduces noise and improves LLM context quality
+      // ✅ ENHANCED: Prefers state-specific over "All States" versions
+      if (retrievalResults.mealTemplates.length > 0) {
+        const beforeCount = retrievalResults.mealTemplates.length;
+        retrievalResults.mealTemplates = deduplicator.deduplicateDocuments(
+          retrievalResults.mealTemplates,
+          {
+            keyFields: ['mealName', 'state'],
+            keepFirst: false, // Keep best scoring duplicate
+            handleAllStates: true, // Prefer state-specific over "All States"
+            logStats: true,
+          }
+        );
+        const afterCount = retrievalResults.mealTemplates.length;
+
+        if (beforeCount !== afterCount) {
+          logger.info(
+            `✅ Deduplication: ${beforeCount} → ${afterCount} meal templates (-${
+              beforeCount - afterCount
+            } duplicates)`
+          );
+        }
+      }
 
       return retrievalResults;
     } catch (error) {
