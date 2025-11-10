@@ -50,7 +50,7 @@ const HomePage = () => {
             </div>
             <Qoutes />
           </div>
-          <img src="/images/undraw_confident_9v38.png" className="max-w-[550px]" />
+          <img src="/images/undraw_happy-women-day_8whn.svg" className="max-w-[550px]" />
         </section>
 
         <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center pt-[80px] px-4">
