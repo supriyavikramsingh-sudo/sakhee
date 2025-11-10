@@ -9,6 +9,213 @@ import { performanceMetrics } from '../../utils/performanceMetrics.js';
 
 const logger = new Logger('MealPlanChain');
 
+/**
+ * Helper function to get meal structure description based on meals per day
+ */
+function getMealStructure(mealsPerDay) {
+  const structures = {
+    2: 'Breakfast + Dinner (2 large meals)',
+    3: 'Breakfast + Lunch + Dinner',
+    4: 'Breakfast + Lunch + Snack + Dinner',
+  };
+  return structures[mealsPerDay] || structures[3];
+}
+
+/**
+ * Calculate breakfast calorie target based on total daily calories and meals per day
+ */
+function getBreakfastCalories(dailyCalories, mealsPerDay) {
+  const distribution = {
+    2: dailyCalories * 0.4, // 40% for 2 meals
+    3: dailyCalories * 0.3, // 30% for 3 meals
+    4: dailyCalories * 0.25, // 25% for 4 meals
+  };
+  return Math.round(distribution[mealsPerDay] || dailyCalories * 0.3);
+}
+
+/**
+ * Calculate lunch calorie target based on total daily calories and meals per day
+ */
+function getLunchCalories(dailyCalories, mealsPerDay) {
+  const distribution = {
+    2: 0, // No lunch in 2-meal plan
+    3: dailyCalories * 0.4, // 40% for 3 meals
+    4: dailyCalories * 0.35, // 35% for 4 meals
+  };
+  return Math.round(distribution[mealsPerDay] || dailyCalories * 0.35);
+}
+
+/**
+ * Calculate dinner calorie target based on total daily calories and meals per day
+ */
+function getDinnerCalories(dailyCalories, mealsPerDay) {
+  const distribution = {
+    2: dailyCalories * 0.6, // 60% for 2 meals
+    3: dailyCalories * 0.3, // 30% for 3 meals
+    4: dailyCalories * 0.25, // 25% for 4 meals
+  };
+  return Math.round(distribution[mealsPerDay] || dailyCalories * 0.35);
+}
+
+/**
+ * Calculate snack calorie target based on total daily calories and meals per day
+ */
+function getSnackCalories(dailyCalories, mealsPerDay) {
+  const snackCalories = {
+    2: 0, // No snack in 2-meal plan
+    3: 0, // No snack in 3-meal plan
+    4: dailyCalories * 0.15, // 15% for 1 snack in 4-meal plan
+  };
+  return Math.round(snackCalories[mealsPerDay] || 0);
+}
+
+/**
+ * Validate breakfast meal to ensure it's breakfast-appropriate
+ */
+function validateBreakfast(breakfast) {
+  const issues = [];
+  const inappropriateKeywords = [
+    'curry',
+    'gravy',
+    'masala',
+    'biryani',
+    'pulao',
+    'rice',
+    'chole',
+    'rajma',
+    'kadhi',
+  ];
+
+  // Check for inappropriate breakfast items
+  const mealName = breakfast.name?.toLowerCase() || '';
+  inappropriateKeywords.forEach((keyword) => {
+    if (mealName.includes(keyword)) {
+      issues.push(`Inappropriate breakfast item detected: "${keyword}" found in meal name`);
+    }
+  });
+
+  // Check component count
+  const components = breakfast.components || breakfast.ingredients || [];
+  if (components.length < 2) {
+    issues.push('Breakfast should have at least 2 components (main + accompaniment/beverage)');
+  }
+
+  // Check for inflated calories in single component
+  components.forEach((component) => {
+    if (component.calories > 400) {
+      issues.push(
+        `Component "${component.item || component.name}" has unusually high calories (${
+          component.calories
+        }). Consider splitting or adding variety.`
+      );
+    }
+  });
+
+  return issues;
+}
+
+/**
+ * Validate lunch/dinner meal
+ */
+function validateMeal(meal, mealType) {
+  const issues = [];
+
+  // Check component count
+  const components = meal.components || meal.ingredients || [];
+  if (components.length < 2) {
+    issues.push(`${mealType} should have at least 2 components for balanced nutrition`);
+  }
+
+  // Check for inflated calories in single component
+  components.forEach((component) => {
+    // Simple heuristic check
+    if (component.calories > 500) {
+      issues.push(
+        `Component "${component.item || component.name}" has unusually high calories (${
+          component.calories
+        }). Consider adding accompaniments instead of inflating.`
+      );
+    }
+  });
+
+  return issues;
+}
+
+/**
+ * Validate snack
+ */
+function validateSnack(snack) {
+  const issues = [];
+
+  // Snacks should be light
+  if (snack.calories > 300) {
+    issues.push(`Snack calories (${snack.calories}) too high. Snacks should be 100-250 kcal.`);
+  }
+
+  // Snacks should be simple
+  const components = snack.components || snack.ingredients || [];
+  if (components.length > 3) {
+    issues.push('Snack too complex. Keep snacks simple with 1-2 components.');
+  }
+
+  return issues;
+}
+
+/**
+ * Validate entire meal plan for calorie accuracy and meal appropriateness
+ */
+function validateMealPlan(mealPlan, dailyCalories, mealsPerDay) {
+  const issues = [];
+
+  mealPlan.days.forEach((day, dayIndex) => {
+    let dayTotalCalories = 0;
+
+    // Validate each meal based on type
+    day.meals?.forEach((meal, mealIndex) => {
+      const mealType = meal.mealType?.toLowerCase();
+      let mealIssues = [];
+
+      if (mealType === 'breakfast') {
+        mealIssues = validateBreakfast(meal);
+      } else if (mealType === 'snack') {
+        mealIssues = validateSnack(meal);
+      } else if (mealType === 'lunch' || mealType === 'dinner') {
+        mealIssues = validateMeal(meal, mealType);
+      }
+
+      if (mealIssues.length > 0) {
+        issues.push({
+          day: dayIndex + 1,
+          meal: `${mealType}_${mealIndex + 1}`,
+          mealName: meal.name,
+          issues: mealIssues,
+        });
+      }
+
+      dayTotalCalories += meal.calories || 0;
+    });
+
+    // Validate daily calorie total (±3% tolerance)
+    const minAcceptableCalories = Math.round(dailyCalories * 0.97);
+    const maxAcceptableCalories = Math.round(dailyCalories * 1.03);
+
+    if (dayTotalCalories < minAcceptableCalories || dayTotalCalories > maxAcceptableCalories) {
+      issues.push({
+        day: dayIndex + 1,
+        meal: 'daily_total',
+        issues: [
+          `Daily calories (${dayTotalCalories}) outside strict ±3% range (${minAcceptableCalories} - ${maxAcceptableCalories} kcal)`,
+        ],
+      });
+    }
+  });
+
+  return {
+    isValid: issues.length === 0,
+    issues: issues,
+  };
+}
+
 class MealPlanChain {
   constructor() {
     this.structuredLLM = new ChatOpenAI({
@@ -271,6 +478,29 @@ class MealPlanChain {
     this.validateAndAdjustCalories(parsed, targetCalories);
     const validationMetrics = performanceMetrics.endTimer(validationTimer);
 
+    // ===== STEP 9.5: VALIDATE MEAL TYPES AND CALORIE INFLATION =====
+    logger.info('Validating meal types and calorie distribution');
+    const mealValidation = validateMealPlan(parsed, targetCalories, mealsPerDay);
+
+    if (!mealValidation.isValid) {
+      logger.warn('Meal plan validation issues detected', {
+        issueCount: mealValidation.issues.length,
+        issues: mealValidation.issues,
+      });
+
+      // Log specific issues for monitoring
+      mealValidation.issues.forEach((issue) => {
+        logger.warn(
+          `Day ${issue.day}, Meal ${issue.meal}${issue.mealName ? ` (${issue.mealName})` : ''}:`,
+          {
+            issues: issue.issues,
+          }
+        );
+      });
+    } else {
+      logger.info('✅ Meal plan validation passed - all meals are appropriate and realistic');
+    }
+
     // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
     const overallMetrics = performanceMetrics.endTimer(overallTimer);
 
@@ -348,6 +578,7 @@ class MealPlanChain {
     return {
       ...parsed,
       ragMetadata,
+      validationWarnings: mealValidation.issues.length > 0 ? mealValidation.issues : null,
       performanceMetrics: {
         totalDuration: Math.round(overallMetrics.duration),
         llmDuration: Math.round(llmMetrics.duration),
@@ -992,6 +1223,47 @@ class MealPlanChain {
           }
 
           retrievalResults.mealTemplates.push(...filteredResults);
+        }
+      }
+
+      // ===== STAGE 1.5: Retrieve accompaniments and complete meal suggestions =====
+      logger.info('Stage 1.5: Retrieving accompaniment suggestions');
+
+      const accompanimentQueries = [
+        `PCOS-friendly beverage options low calorie herbal tea`,
+        `healthy accompaniments Indian meals side dishes`,
+        `low GI side dishes grains brown rice quinoa`,
+        `PCOS-friendly snacks nuts seeds healthy fats`,
+        `complete meal structure balanced nutrition Indian cuisine`,
+        `healthy salads Indian raita cucumber vegetables`,
+        `chutneys pickles Indian condiments low calorie`,
+      ];
+
+      for (const query of accompanimentQueries) {
+        try {
+          const results = await retriever.retrieve(query, { topK: 5 });
+
+          // Filter for nutritional guidance, not full meal templates
+          const accompanimentDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            // Accept nutritional data, ingredient info, but not full meal templates
+            return (
+              type === 'nutritional_data' ||
+              type === 'ingredient_substitute' ||
+              type === 'medical_info' ||
+              type === 'medical_knowledge'
+            );
+          });
+
+          if (accompanimentDocs.length > 0) {
+            logger.info(
+              `  Found ${accompanimentDocs.length} accompaniment suggestions for "${query}"`
+            );
+            // Add to meal templates so they're available in context
+            retrievalResults.mealTemplates.push(...accompanimentDocs);
+          }
+        } catch (error) {
+          logger.warn(`Failed to retrieve accompaniments for "${query}":`, error.message);
         }
       }
 
@@ -2191,9 +2463,289 @@ class MealPlanChain {
     }
     prompt += `\n`;
 
+    // ===== CRITICAL CALORIE BALANCING RULES =====
+    prompt += `\n🚨🚨🚨 CRITICAL CALORIE BALANCING RULES (HIGHEST PRIORITY):\n\n`;
+
+    prompt += `0. MEAL TYPE MATCHING (ABSOLUTELY NON-NEGOTIABLE):\n`;
+    prompt += `   🚨 BREAKFAST must ONLY use breakfast items: Upma, Poha, Idli, Dosa, Chilla, Paratha, Oats\n`;
+    prompt += `   🚨 NEVER use soup, curry, rice, or gravied dishes for breakfast\n`;
+    prompt += `   🚨 LUNCH/DINNER must use lunch/dinner templates (can include curries, rice, dal)\n`;
+    prompt += `   🚨 SNACKS must ONLY use light snack items (nuts, fruits, salads)\n`;
+    prompt += `   → If you use wrong meal type, the entire meal plan will be REJECTED\n\n`;
+
+    prompt += `1. NEVER artificially inflate or deflate calorie values of individual meal components to meet daily calorie targets.\n\n`;
+
+    prompt += `2. Each meal component must have REALISTIC calorie values based on:\n`;
+    prompt += `   - Standard portion sizes\n`;
+    prompt += `   - Actual nutritional content of ingredients\n`;
+    prompt += `   - Typical cooking methods\n`;
+    prompt += `   - Real-world food composition data\n\n`;
+
+    prompt += `3. To meet daily calorie targets, BUILD COMPLETE MEALS by adding multiple components:\n\n`;
+    prompt += `   MEAL STRUCTURE FOR BALANCED CALORIES:\n\n`;
+
+    const currentMealsPerDay = parseInt(preferences.mealsPerDay) || 3;
+
+    if (currentMealsPerDay === 2) {
+      prompt += `   For 2 meals/day (target: ~${Math.round(targetCalories / 2)} kcal per meal):\n`;
+      prompt += `   - Main dish: 400-500 kcal\n`;
+      prompt += `   - Side dish/accompaniment: 200-300 kcal\n`;
+      prompt += `   - Beverage (PCOS-friendly): 100-150 kcal\n`;
+      prompt += `   - Additional component (salad, nuts, fruit): 100-200 kcal\n`;
+      prompt += `   - Total: 800-1150 kcal (realistic range)\n\n`;
+    } else if (currentMealsPerDay === 3) {
+      prompt += `   For 3 meals/day (target: ~${Math.round(targetCalories / 3)} kcal per meal):\n`;
+      prompt += `   - Main dish: 350-450 kcal\n`;
+      prompt += `   - Side dish/accompaniment: 150-200 kcal\n`;
+      prompt += `   - Beverage or small addition: 50-100 kcal\n`;
+      prompt += `   - Total: 550-750 kcal (realistic range)\n\n`;
+    } else {
+      prompt += `   For ${currentMealsPerDay} meals/day (target: ~${Math.round(
+        targetCalories / currentMealsPerDay
+      )} kcal per meal):\n`;
+      prompt += `   - Main dish: 300-400 kcal\n`;
+      prompt += `   - Side dish or beverage: 100-150 kcal\n`;
+      prompt += `   - Total: 400-550 kcal (realistic range)\n\n`;
+    }
+
+    prompt += `4. ALWAYS include appropriate accompaniments to complete meals:\n\n`;
+    prompt += `   ACCOMPANIMENT OPTIONS (choose based on diet type and meal):\n`;
+    prompt += `   - Grains: Quinoa, brown rice, millet, whole wheat roti, cauliflower rice (keto)\n`;
+    prompt += `   - Proteins: Dal, legumes, paneer, tofu, eggs (if diet allows)\n`;
+    prompt += `   - Vegetables: Side salad, roasted vegetables, vegetable raita\n`;
+    prompt += `   - Fats: Nuts (almonds, walnuts), seeds (chia, flax, pumpkin), avocado\n`;
+    prompt += `   - Beverages: Green tea, turmeric latte, herbal tea, coconut water, buttermilk\n`;
+    prompt += `   - Condiments: Chutney, pickles, yogurt-based dips\n\n`;
+
+    prompt += `5. MEAL COMPLETION EXAMPLES:\n\n`;
+    prompt += `   Example 1 - Vegetable Stir Fry (${mealsCount} meals/day plan):\n`;
+    prompt += `   ❌ WRONG NAME: "Vegetable Stir Fry" (incomplete, missing accompaniments)\n`;
+    prompt += `   ❌ WRONG CALORIES: Vegetable Stir Fry (600 kcal) - artificially inflated\n`;
+    prompt += `   ✅ CORRECT NAME: "Vegetable Stir Fry with Quinoa and Raita"\n`;
+    prompt += `   ✅ CORRECT COMPONENTS:\n`;
+    prompt += `   - Vegetable Stir Fry with tofu (280 kcal)\n`;
+    prompt += `   - Quinoa (1 cup cooked, 220 kcal)\n`;
+    prompt += `   - Cucumber Raita (80 kcal)\n`;
+    prompt += `   - Handful of roasted almonds (100 kcal)\n`;
+    prompt += `   - Green tea (5 kcal)\n`;
+    prompt += `   - Total: 685 kcal (realistic and balanced)\n\n`;
+
+    prompt += `   Example 2 - Dal Meal:\n`;
+    prompt += `   ❌ WRONG NAME: "Moong Dal" (incomplete, missing rice)\n`;
+    prompt += `   ❌ WRONG CALORIES: Moong Dal (500 kcal) - inflated\n`;
+    prompt += `   ✅ CORRECT NAME: "Moong Dal with Brown Rice"\n`;
+    prompt += `   ✅ CORRECT COMPONENTS:\n`;
+    prompt += `   - Moong Dal (1.5 cups, 250 kcal)\n`;
+    prompt += `   - Brown Rice (1 cup cooked, 215 kcal)\n`;
+    prompt += `   - Mixed Vegetable Salad with lemon (80 kcal)\n`;
+    prompt += `   - Buttermilk (100 kcal)\n`;
+    prompt += `   - Total: 645 kcal (realistic and complete)\n\n`;
+
+    prompt += `6. PORTION SIZE GUIDELINES (use realistic portions):\n`;
+    prompt += `   - Rice/Quinoa: 1 cup cooked = 200-220 kcal\n`;
+    prompt += `   - Dal/Legumes: 1 cup cooked = 150-230 kcal (depending on type)\n`;
+    prompt += `   - Vegetables (cooked): 1 cup = 50-100 kcal\n`;
+    prompt += `   - Paneer: 100g = 260-280 kcal\n`;
+    prompt += `   - Tofu: 100g = 70-80 kcal\n`;
+    prompt += `   - Nuts: 1 handful (28g) = 150-170 kcal\n`;
+    prompt += `   - Oil/Ghee: 1 tbsp = 120 kcal\n`;
+    prompt += `   - Roti: 1 medium = 70-80 kcal\n\n`;
+
+    prompt += `7. MACRO BALANCE (for each meal):\n`;
+    prompt += `   - Carbohydrates: 40-50% of meal calories (PCOS-friendly, low GI)\n`;
+    prompt += `   - Protein: 25-35% of meal calories\n`;
+    prompt += `   - Fats: 20-30% of meal calories (healthy fats prioritized)\n`;
+    prompt += `   - Ensure macros come from diverse food sources, not just one inflated component\n\n`;
+
+    prompt += `8. QUALITY OVER QUANTITY:\n`;
+    prompt += `   - Prioritize nutrient-dense foods\n`;
+    prompt += `   - Include variety of food groups in each meal\n`;
+    prompt += `   - Focus on PCOS-friendly ingredients (low GI, anti-inflammatory)\n`;
+    prompt += `   - Never sacrifice meal quality to meet calorie targets artificially\n\n`;
+
+    prompt += `9. VALIDATION CHECK (before finalizing meal plan):\n`;
+    prompt += `    - Review each meal component's calorie value\n`;
+    prompt += `    - Ask: "Is this calorie count realistic for this portion size?"\n`;
+    prompt += `    - If any single component exceeds expected calories by 50%+, add accompaniments instead\n`;
+    prompt += `    - Ensure every meal has at least 2-3 distinct components (main + sides/beverages)\n\n`;
+
+    // ===== CRITICAL MEAL TYPE RULES =====
+    prompt += `🚨🚨🚨 CRITICAL MEAL TYPE RULES (STRICTLY ENFORCE):\n\n`;
+
+    prompt += `1. MEAL TEMPLATE USAGE (STRICTLY ENFORCE):\n\n`;
+    prompt += `   BREAKFAST (ABSOLUTELY NON-NEGOTIABLE):\n`;
+    prompt += `   - ONLY use traditional Indian breakfast items:\n`;
+    prompt += `     * Upma, Poha, Idli, Dosa, Chilla, Paratha, Uttapam, Dhokla\n`;
+    prompt += `     * Oats preparations, Sprout salads, Whole grain toast\n`;
+    prompt += `   - 🚨 NEVER EVER use: Soups, Curries, Rice dishes, Gravied items\n`;
+    prompt += `   - 🚨 If a template says "breakfast" but contains soup/curry, IGNORE IT\n`;
+    prompt += `   - NEVER use lunch or dinner templates for breakfast\n`;
+    prompt += `   - Breakfast should be light to moderate, appropriate for morning consumption (7-9 AM)\n\n`;
+
+    prompt += `   LUNCH (MAIN MEAL):\n`;
+    prompt += `   - Use ONLY lunch OR dinner templates\n`;
+    prompt += `   - 🚨 NEVER use breakfast templates for lunch\n`;
+    prompt += `   - 🚨 NEVER use snack templates for lunch\n`;
+    prompt += `   - Can include curries, rice dishes, dal, rotis, complete meals\n`;
+    prompt += `   - Can be heavier than breakfast (12-2 PM)\n\n`;
+
+    prompt += `   DINNER (EVENING MEAL):\n`;
+    prompt += `   - Use ONLY dinner OR lunch templates\n`;
+    prompt += `   - 🚨 NEVER use breakfast templates for dinner\n`;
+    prompt += `   - 🚨 NEVER use snack templates for dinner\n`;
+    prompt += `   - Can include curries, rice dishes, dal, rotis, complete meals\n`;
+    prompt += `   - Can be moderate to heavy (7-9 PM)\n\n`;
+
+    prompt += `   SNACKS (BETWEEN MEALS):\n`;
+    prompt += `   - Use ONLY snack templates from RAG\n`;
+    prompt += `   - 🚨 NEVER use breakfast/lunch/dinner templates for snacks\n`;
+    prompt += `   - Light, portable options only\n`;
+    prompt += `   - 100-250 kcal range typically\n`;
+    prompt += `   - Simple, 1-2 components maximum\n\n`;
+
+    prompt += `2. BREAKFAST CHARACTERISTICS (Indian Context):\n\n`;
+    prompt += `   APPROPRIATE BREAKFAST FOODS:\n`;
+    prompt += `   - Traditional: Idli, Dosa, Upma, Poha, Paratha (stuffed), Uttapam\n`;
+    prompt += `   - Modern: Oats preparations, Smoothie bowls, Whole grain toast\n`;
+    prompt += `   - Protein: Eggs (if diet allows), Paneer in light preparations, Sprouts\n`;
+    prompt += `   - Accompaniments: Chutney, Sambhar, Curd, Fresh fruit\n`;
+    prompt += `   - Beverages: Tea, Coffee, Fresh juice, Smoothies, Herbal tea\n\n`;
+
+    prompt += `   ❌ INAPPROPRIATE FOR BREAKFAST (NEVER USE THESE):\n`;
+    prompt += `   - Heavy curries (Paneer Butter Masala, Chole, Rajma, Fish Curry, Chicken Curry)\n`;
+    prompt += `   - Rice-based meals (Biryani, Pulao, Fish with Rice, Chicken with Rice)\n`;
+    prompt += `   - Gravied dishes (any curry with gravy)\n`;
+    prompt += `   - Soups (Fish Soup, Chicken Soup, Vegetable Soup) - these are NOT breakfast items\n`;
+    prompt += `   - Deep-fried items (except occasional special items like Puri)\n`;
+    prompt += `   - Anything labeled as "lunch" or "dinner" in templates\n`;
+    prompt += `   - Any dish that would typically be served at lunch or dinner\n\n`;
+
+    prompt += `   🚨 CRITICAL: If you see "soup", "curry with rice", or "gravied" items in breakfast templates,\n`;
+    prompt += `   these are ERRORS in the template database. DO NOT USE THEM for breakfast.\n`;
+    prompt += `   Use ONLY traditional Indian breakfast items listed above.\n\n`;
+
+    prompt += `3. BREAKFAST EXAMPLES (Correct):\n\n`;
+    prompt += `   Example 1:\n`;
+    prompt += `   - Vegetable Oats Upma\n`;
+    prompt += `   - Coconut Chutney\n`;
+    prompt += `   - Green Tea\n\n`;
+
+    prompt += `   Example 2:\n`;
+    prompt += `   - Moong Dal Chilla (2 pieces)\n`;
+    prompt += `   - Mint-Coriander Chutney\n`;
+    prompt += `   - Fresh Fruit (Papaya)\n\n`;
+
+    prompt += `   Example 3:\n`;
+    prompt += `   - Ragi Dosa (2 pieces)\n`;
+    prompt += `   - Sambhar\n`;
+    prompt += `   - Coconut Chutney\n`;
+    prompt += `   - Filter Coffee\n\n`;
+
+    prompt += `4. LUNCH/DINNER CHARACTERISTICS:\n\n`;
+    prompt += `   Can include:\n`;
+    prompt += `   - Curries and gravied dishes\n`;
+    prompt += `   - Rice preparations (within PCOS guidelines)\n`;
+    prompt += `   - Dal preparations\n`;
+    prompt += `   - Roti/Chapati with vegetables/protein\n`;
+    prompt += `   - Complete meal combinations\n\n`;
+
+    prompt += `   Examples:\n`;
+    prompt += `   - Dal + Rice + Vegetable + Salad\n`;
+    prompt += `   - Paneer Curry + Roti + Raita\n`;
+    prompt += `   - Mixed Vegetable Curry + Quinoa + Salad\n\n`;
+
+    prompt += `5. SNACK CHARACTERISTICS:\n\n`;
+    prompt += `   Light, portable, between-meal options:\n`;
+    prompt += `   - Nuts and seeds\n`;
+    prompt += `   - Fresh fruit\n`;
+    prompt += `   - Roasted chickpeas (chana)\n`;
+    prompt += `   - Vegetable sticks with hummus\n`;
+    prompt += `   - Herbal tea with almond cookies\n`;
+    prompt += `   - Sprouts salad\n`;
+    prompt += `   - Greek yogurt with berries\n\n`;
+
+    prompt += `   NOT snacks:\n`;
+    prompt += `   - Full meals\n`;
+    prompt += `   - Heavy dishes\n`;
+    prompt += `   - Multiple-component meals\n\n`;
+
+    prompt += `6. CULTURAL APPROPRIATENESS CHECK:\n\n`;
+    prompt += `   Before finalizing any meal, ask:\n`;
+    prompt += `   - "Would an Indian person typically eat this for {meal_type}?"\n`;
+    prompt += `   - "Is this meal too heavy/light for {meal_type}?"\n`;
+    prompt += `   - "Does this follow Indian meal timing and customs?"\n\n`;
+
+    prompt += `   Indian meal culture context:\n`;
+    prompt += `   - Breakfast: 7-9 AM, light to moderate, energizing\n`;
+    prompt += `   - Mid-morning snack: 10-11 AM, very light\n`;
+    prompt += `   - Lunch: 12-2 PM, can be heavier, main meal for many\n`;
+    prompt += `   - Evening snack: 4-5 PM, light, tea-time\n`;
+    prompt += `   - Dinner: 7-9 PM, moderate to heavy, but lighter than lunch ideally\n\n`;
+
+    prompt += `7. VALIDATION CHECKLIST (before finalizing meal plan):\n\n`;
+    prompt += `   For EVERY breakfast meal:\n`;
+    prompt += `   ☐ Is this from a breakfast template?\n`;
+    prompt += `   ☐ Is this something people eat in the morning?\n`;
+    prompt += `   ☐ Is this light enough for breakfast?\n`;
+    prompt += `   ☐ Does this NOT include: soup, curry, rice, or gravy?\n`;
+    prompt += `   ☐ Is this a traditional breakfast item (Upma/Poha/Idli/Dosa/Paratha/Chilla/Oats)?\n\n`;
+
+    prompt += `   For EVERY lunch/dinner meal:\n`;
+    prompt += `   ☐ Is this from lunch or dinner templates?\n`;
+    prompt += `   ☐ Is this substantial enough for a main meal?\n`;
+    prompt += `   ☐ Does this include balanced components?\n\n`;
+
+    prompt += `   For EVERY snack:\n`;
+    prompt += `   ☐ Is this from snack templates?\n`;
+    prompt += `   ☐ Is this 100-250 kcal?\n`;
+    prompt += `   ☐ Is this simple and light?\n\n`;
+
+    // ===== MEAL-SPECIFIC INSTRUCTIONS WITH CALORIE TARGETS =====
+    prompt += `\n📋 MEAL-SPECIFIC INSTRUCTIONS:\n\n`;
+
+    const breakfastCal = getBreakfastCalories(targetCalories, currentMealsPerDay);
+    const lunchCal = getLunchCalories(targetCalories, currentMealsPerDay);
+    const dinnerCal = getDinnerCalories(targetCalories, currentMealsPerDay);
+    const snackCal = getSnackCalories(targetCalories, currentMealsPerDay);
+
+    prompt += `BREAKFAST (${breakfastCal} kcal target):\n`;
+    prompt += `- Use ONLY breakfast templates provided in RAG context\n`;
+    prompt += `- Must be appropriate for morning consumption in Indian cuisine\n`;
+    prompt += `- Include traditional breakfast items (Idli, Dosa, Upma, Poha, Oats, Eggs if diet allows)\n`;
+    prompt += `- NO curries, NO gravied dishes, NO rice meals\n`;
+    prompt += `- Complete with accompaniments: chutney, fruit, beverage\n`;
+    prompt += `- Validate: "Would an Indian person eat this for breakfast?"\n\n`;
+
+    if (currentMealsPerDay >= 3) {
+      prompt += `LUNCH (${lunchCal} kcal target):\n`;
+      prompt += `- Use lunch or dinner templates\n`;
+      prompt += `- Can include curries, rice, dal, roti-based meals\n`;
+      prompt += `- Build complete meal with multiple components\n`;
+      prompt += `- Add realistic accompaniments to meet calorie targets\n\n`;
+    }
+
+    prompt += `DINNER (${dinnerCal} kcal target):\n`;
+    prompt += `- Use dinner or lunch templates\n`;
+    prompt += `- Can include curries, rice, dal, roti-based meals\n`;
+    prompt += `- Build complete meal with multiple components\n`;
+    prompt += `- Add realistic accompaniments to meet calorie targets\n\n`;
+
+    if (snackCal > 0) {
+      prompt += `SNACKS (${snackCal} kcal each):\n`;
+      prompt += `- Use ONLY snack templates\n`;
+      prompt += `- Light, portable options\n`;
+      prompt += `- 100-250 kcal range\n`;
+      prompt += `- Simple, 1-2 components\n\n`;
+    }
+
     prompt += `REQUIREMENTS:\n`;
     prompt += `1. Each meal must include:\n`;
-    prompt += `   - name: Meal name (mention cuisine if multi-cuisine)\n`;
+    prompt += `   - name: Complete descriptive meal name including ALL main components\n`;
+    prompt += `     Examples:\n`;
+    prompt += `     ✅ CORRECT: "Fish Curry with Brown Rice (Karnataka)"\n`;
+    prompt += `     ✅ CORRECT: "Chicken Tikka with Roti and Salad"\n`;
+    prompt += `     ❌ WRONG: "Fish Curry" (missing rice component)\n`;
+    prompt += `     ❌ WRONG: "Chicken Tikka" (missing accompaniments)\n`;
     prompt += `   - mealType: breakfast/lunch/snack/dinner\n`;
     prompt += `   - ingredients: Array of {item, quantity, unit}\n`;
     prompt += `   - recipe: Step-by-step cooking instructions (2-4 sentences)\n`;
@@ -2296,19 +2848,62 @@ class MealPlanChain {
         bengali: ['shukto', 'chingri', 'ilish', 'machher jhol', 'mishti doi'],
       };
 
+      // ⭐ FIX: Map cuisines to their parent regions to check if ANY cuisine from that region is selected
+      const cuisineToRegionMap = {
+        tamil: 'south-indian',
+        telugu: 'south-indian',
+        kerala: 'south-indian',
+        karnataka: 'south-indian',
+        andhra: 'south-indian',
+        bengali: 'east-indian',
+        odia: 'east-indian',
+        assamese: 'east-indian',
+        manipuri: 'east-indian',
+        bihari: 'east-indian',
+        punjabi: 'north-indian',
+        rajasthani: 'north-indian',
+        'uttar pradesh': 'north-indian',
+        uttarakhand: 'north-indian',
+        haryanvi: 'north-indian',
+        kashmiri: 'north-indian',
+        himachali: 'north-indian',
+        gujarati: 'west-indian',
+        maharashtrian: 'west-indian',
+        goan: 'west-indian',
+        jharkhandi: 'east-indian',
+        chhattisgarh: 'central-indian',
+        'madhya pradesh': 'central-indian',
+      };
+
+      // Check if ANY cuisine from each region is selected
+      const selectedRegions = new Set();
+      preferences.cuisines.forEach((cuisine) => {
+        const cuisineLower = cuisine.toLowerCase();
+        const region = cuisineToRegionMap[cuisineLower];
+        if (region) {
+          selectedRegions.add(region);
+        }
+      });
+
       // Build list of EXPLICITLY FORBIDDEN dishes
       const forbiddenDishes = [];
       for (const [region, dishes] of Object.entries(forbiddenDishKeywords)) {
-        // Check if this region is in the forbidden list (NOT selected)
-        const regionIsForbidden = forbiddenCuisines.some((cuisine) => {
-          const cuisineLower = cuisine.toLowerCase();
-          return (
-            region.includes(cuisineLower) || cuisineLower.includes(region.replace('-indian', ''))
-          );
-        });
+        // ⭐ FIX: Only forbid if NO cuisine from this region is selected
+        // If user selected Tamil (south-indian), don't forbid south-indian dishes
+        const regionIsSelected = selectedRegions.has(region);
 
-        if (regionIsForbidden) {
-          forbiddenDishes.push(...dishes);
+        if (!regionIsSelected) {
+          // Also check if the region name itself is in forbidden cuisines
+          const regionIsForbidden = forbiddenCuisines.some((cuisine) => {
+            const cuisineLower = cuisine.toLowerCase();
+            return (
+              region.includes(cuisineLower) || cuisineLower.includes(region.replace('-indian', ''))
+            );
+          });
+
+          if (regionIsForbidden) {
+            forbiddenDishes.push(...dishes);
+          }
         }
       }
 
@@ -2897,6 +3492,46 @@ class MealPlanChain {
       bengali: ['shukto', 'chingri', 'ilish', 'machher jhol', 'mishti'],
     };
 
+    // ⭐ FIX: Map cuisines to their parent regions (same as prompt generation)
+    const cuisineToRegionMap = {
+      tamil: 'south-indian',
+      telugu: 'south-indian',
+      kerala: 'south-indian',
+      karnataka: 'south-indian',
+      andhra: 'south-indian',
+      puducherry: 'south-indian',
+      bengali: 'east-indian',
+      odia: 'east-indian',
+      assamese: 'east-indian',
+      manipuri: 'east-indian',
+      bihari: 'east-indian',
+      mizo: 'east-indian',
+      naga: 'east-indian',
+      punjabi: 'north-indian',
+      rajasthani: 'north-indian',
+      'uttar pradesh': 'north-indian',
+      uttarakhand: 'north-indian',
+      haryanvi: 'north-indian',
+      kashmiri: 'north-indian',
+      himachali: 'north-indian',
+      gujarati: 'west-indian',
+      maharashtrian: 'west-indian',
+      goan: 'west-indian',
+      jharkhandi: 'east-indian',
+      chhattisgarh: 'central-indian',
+      'madhya pradesh': 'central-indian',
+    };
+
+    // ✅ Check if ANY cuisine from each region is selected
+    const selectedRegions = new Set();
+    requestedCuisines.forEach((cuisine) => {
+      const cuisineLower = cuisine.toLowerCase();
+      const region = cuisineToRegionMap[cuisineLower];
+      if (region) {
+        selectedRegions.add(region); // "kerala" → adds "south-indian"
+      }
+    });
+
     // Determine which cuisines are FORBIDDEN based on selection
     const requestedRegions = requestedCuisines.map((c) => c.toLowerCase());
     const violations = [];
@@ -2923,7 +3558,13 @@ class MealPlanChain {
         // Check for forbidden cuisine keywords (BAD)
         let foundForbiddenCuisine = null;
         for (const [region, keywords] of Object.entries(forbiddenCuisineKeywords)) {
-          // Skip if this region is in the requested list
+          // ⭐ FIX: Skip if ANY cuisine from this region is selected
+          // If user selected Kerala (south-indian), don't forbid south-indian dishes
+          if (selectedRegions.has(region)) {
+            continue;
+          }
+
+          // Also check old logic for backward compatibility
           if (requestedRegions.some((r) => region.includes(r) || r.includes(region))) {
             continue;
           }

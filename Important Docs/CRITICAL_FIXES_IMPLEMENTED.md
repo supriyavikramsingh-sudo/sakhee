@@ -161,6 +161,125 @@ This proactive fix prevents the same "0 meals retrieved" bug from happening with
 
 ---
 
+### ✅ Fix #13: Tamil Cuisine Forbidden Dishes Bug (CRITICAL - Nov 10, 2025)
+
+**Problem:** User selected **Tamil + Uttar Pradesh + Uttarakhand + Bihari** cuisines, but LLM generated Tamil dishes (Pongal, Sambar, Rasam) that were flagged as **"FORBIDDEN"** by validation!
+
+**Root Cause:**
+- **Flawed region-based forbidden logic**: The code forbids entire regional dish categories (e.g., ALL south-indian dishes) instead of checking if ANY cuisine from that region was selected
+- User selected **Tamil** (a South Indian cuisine), but the forbidden dish logic still blocked ALL south-indian dishes
+- **Logic Error in lines 2295-2302**: Checked if `'south-indian'` region is in `forbiddenCuisines` list:
+  - `forbiddenCuisines` contains "South Indian" (the general region name from line 2231)
+  - But "Tamil" (the specific state) is NOT in forbiddenCuisines
+  - Code incorrectly forbids south-indian dishes even though Tamil was explicitly requested
+
+**User Evidence:**
+```
+[CuisineValidation] 🚨 CUISINE VALIDATION FAILED: 4 meals from WRONG cuisines!
+  violations: [
+    'Day 1 dinner: Pongal with Sambar (Tamil) - Contains south-indian dish (forbidden)',
+    'Day 2 breakfast: Sambar Rice (Tamil) - Contains south-indian dish (forbidden)',
+    'Day 3 breakfast: Pongal (Tamil) - Contains south-indian dish (forbidden)',
+    'Day 3 snack: Rasam Sadam (Tamil) - Contains south-indian dish (forbidden)'
+  ]
+```
+
+**Cuisines Requested:** `['Uttar Pradesh', 'Uttarakhand', 'Bihari', 'Tamil']`  
+**Regions Selected:** `['south-indian', 'north-indian']`
+
+**The Bug:**
+```javascript
+// ❌ OLD LOGIC (lines 2295-2302):
+const regionIsForbidden = forbiddenCuisines.some((cuisine) => {
+  const cuisineLower = cuisine.toLowerCase();
+  return region.includes(cuisineLower) || cuisineLower.includes(region.replace('-indian', ''));
+});
+// This checks if 'south-indian' matches ANY forbidden cuisine
+// BUT "South Indian" (region) is in forbiddenCuisines even though "Tamil" (state) was selected!
+```
+
+**The Fix:**
+```javascript
+// File: server/src/langchain/chains/mealPlanChain.js (lines 2270-2338)
+
+// ⭐ FIX: Map cuisines to their parent regions
+const cuisineToRegionMap = {
+  tamil: 'south-indian',
+  telugu: 'south-indian',
+  kerala: 'south-indian',
+  karnataka: 'south-indian',
+  andhra: 'south-indian',
+  bengali: 'east-indian',
+  odia: 'east-indian',
+  assamese: 'east-indian',
+  manipuri: 'east-indian',
+  bihari: 'east-indian',
+  punjabi: 'north-indian',
+  rajasthani: 'north-indian',
+  'uttar pradesh': 'north-indian',
+  uttarakhand: 'north-indian',
+  haryanvi: 'north-indian',
+  kashmiri: 'north-indian',
+  himachali: 'north-indian',
+  gujarati: 'west-indian',
+  maharashtrian: 'west-indian',
+  goan: 'west-indian',
+  jharkhandi: 'east-indian',
+  chhattisgarh: 'central-indian',
+  'madhya pradesh': 'central-indian',
+};
+
+// ✅ Check if ANY cuisine from each region is selected
+const selectedRegions = new Set();
+preferences.cuisines.forEach((cuisine) => {
+  const cuisineLower = cuisine.toLowerCase();
+  const region = cuisineToRegionMap[cuisineLower];
+  if (region) {
+    selectedRegions.add(region);  // "tamil" → adds "south-indian"
+  }
+});
+
+// ✅ Only forbid if NO cuisine from this region is selected
+for (const [region, dishes] of Object.entries(forbiddenDishKeywords)) {
+  const regionIsSelected = selectedRegions.has(region);
+  
+  if (!regionIsSelected) {
+    // Only NOW check if region is forbidden
+    forbiddenDishes.push(...dishes);
+  }
+}
+```
+
+**Impact:**
+- **Tamil dishes now ALLOWED** when Tamil cuisine is selected ✅
+- **Pongal, Sambar, Rasam** no longer flagged as forbidden for Tamil meal plans
+- **Smart region detection**: If ANY South Indian state is selected (Tamil/Kerala/Karnataka/Andhra), ALL south-indian dishes are allowed
+- **Prevents future bugs**: Works for all 33 cuisines across 5 regions
+
+**Before/After:**
+```
+BEFORE (Tamil selected):
+❌ FORBIDDEN DISHES: idli, dosa, sambar, rasam, pongal (Tamil dishes blocked!)
+❌ Validation: "Pongal (Tamil) - Contains south-indian dish (forbidden)"
+
+AFTER (Tamil selected):
+✅ NO forbidden south-indian dishes (Tamil dishes allowed!)
+✅ Validation: PASSES - Kerala dishes like Idiyappam, Appam are allowed
+✅ Forbidden: chole, rajma, dhokla (only OTHER regions blocked)
+```
+
+**Additional Fix (Nov 10 - Evening):**
+- Fixed validation phase bug: `validateCuisineAdherence()` was using separate forbidden logic
+- Applied same `cuisineToRegionMap` + `selectedRegions` logic to validation
+- **BEFORE:** Validation flagged Kerala dishes even when Kerala was selected
+- **AFTER:** Both prompt generation AND validation use consistent region-based logic
+
+**Files Modified:**
+- `server/src/langchain/chains/mealPlanChain.js` (lines 2270-2338): Prompt generation forbidden logic
+- `server/src/langchain/chains/mealPlanChain.js` (lines 2920-3020): Validation forbidden logic (NEW FIX)
+
+---
+
 ### ✅ Fix #9: Explicit Forbidden Dish Prevention (South Indian)
 
 **Problem:** LLM validation catches South Indian dishes (e.g., "Coconut Flour Dosa") AFTER generation, but doesn't prevent them from being generated in the first place.
