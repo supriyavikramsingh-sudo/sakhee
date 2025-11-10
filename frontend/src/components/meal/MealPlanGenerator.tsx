@@ -387,6 +387,15 @@ const MealPlanGenerator = ({
               handleInputChange={(value) => {
                 setFormData((prev) => ({ ...prev, regions: value }));
               }}
+              placeholder={
+                formData.regions.length === 0
+                  ? `Will use your onboarding preference${
+                      profileData.region ? `: ${profileData.cuisines.slice(0, 2).join(', ')}` : ''
+                    }`
+                  : `${formData.regions.length} region${
+                      formData.regions.length > 1 ? 's' : ''
+                    } selected`
+              }
               mode="multiple"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -440,7 +449,7 @@ const MealPlanGenerator = ({
                 return { value: diet.value, label: diet.label };
               })}
               placeholder="Use my onboarding preference"
-              defaultValue={dietTypes[0].value}
+              value={formData.dietType}
               handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: val }))}
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -458,7 +467,7 @@ const MealPlanGenerator = ({
                 { value: '3', label: '3 Meals' },
                 { value: '4', label: '4 Meals (with snack)' },
               ]}
-              defaultValue="3"
+              value={formData.mealsPerDay}
               handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: val }))}
             />
           </div>
@@ -467,7 +476,7 @@ const MealPlanGenerator = ({
             <SelectInput
               required
               label={'Duration'}
-              defaultValue="3"
+              value={formData.duration}
               options={[
                 { value: '3', label: '3 Days' },
                 { value: '5', label: '5 Days' },
