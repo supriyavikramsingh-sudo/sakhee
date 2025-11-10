@@ -5,6 +5,7 @@ import { retriever } from '../retriever.js';
 import { Logger } from '../../utils/logger.js';
 import { deduplicator } from '../../utils/deduplicator.js';
 import { HybridReRanker } from '../reranker.js';
+import { performanceMetrics } from '../../utils/performanceMetrics.js';
 
 const logger = new Logger('MealPlanChain');
 
@@ -98,6 +99,9 @@ class MealPlanChain {
    * Generate meal plan with RAG retrieval (UPDATED for multiple cuisines)
    */
   async generateWithRAG(preferences) {
+    // Start overall timing
+    const overallTimer = performanceMetrics.startTimer('meal_plan_generation');
+
     const duration = parseInt(preferences.duration) || 3;
     const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
     const restrictions = preferences.restrictions || [];
@@ -115,7 +119,9 @@ class MealPlanChain {
 
     // ===== STEP 1: MULTI-STAGE RAG RETRIEVAL (ENHANCED) =====
     logger.info('Performing multi-stage RAG retrieval');
+    const ragTimer = performanceMetrics.startTimer('rag_retrieval');
     const retrievalResults = await this.performMultiStageRetrieval(preferences, healthContext);
+    const ragMetrics = performanceMetrics.endTimer(ragTimer);
 
     // Extract results
     const mealTemplates = retrievalResults.mealTemplates || [];
@@ -225,12 +231,22 @@ class MealPlanChain {
       cuisineCount: cuisines.length,
     });
 
+    const llmTimer = performanceMetrics.startTimer('llm_invocation');
     const response = await this.structuredLLM.invoke(prompt);
+    const llmMetrics = performanceMetrics.endTimer(llmTimer, {
+      promptLength: prompt.length,
+      model: 'gpt-4o-mini',
+    });
+
     const rawContent = response.content || response;
 
-    logger.info('LLM response received', { responseLength: rawContent.length });
+    logger.info('LLM response received', {
+      responseLength: rawContent.length,
+      duration: `${llmMetrics.duration.toFixed(0)}ms`,
+    });
 
     // ===== STEP 8: PARSE AND VALIDATE =====
+    const parsingTimer = performanceMetrics.startTimer('json_parsing');
     let parsed = this.parseJSON(rawContent);
 
     if (!parsed || !this.validateStructure(parsed, duration, mealsPerDay)) {
@@ -242,12 +258,59 @@ class MealPlanChain {
       logger.error('Structure validation failed after fixes');
       throw new Error('Invalid meal plan structure');
     }
+    const parsingMetrics = performanceMetrics.endTimer(parsingTimer);
+
+    // ===== STEP 8.5: VALIDATE CUISINE ADHERENCE (NEW) =====
+    if (cuisines && cuisines.length > 0) {
+      this.validateCuisineAdherence(parsed, cuisines, preferences.dietType);
+    }
 
     // ===== STEP 9: VALIDATE AND ADJUST CALORIES =====
+    const validationTimer = performanceMetrics.startTimer('calorie_validation');
     const targetCalories = preferences.userCalories || 2000;
     this.validateAndAdjustCalories(parsed, targetCalories);
+    const validationMetrics = performanceMetrics.endTimer(validationTimer);
 
     // ===== STEP 10: COMPILE RAG METADATA (ENHANCED) =====
+    const overallMetrics = performanceMetrics.endTimer(overallTimer);
+
+    // Record detailed metrics
+    performanceMetrics.recordMealPlanGeneration({
+      totalDuration: overallMetrics.duration,
+      llmDuration: llmMetrics.duration,
+      ragDuration: ragMetrics.duration,
+      parsingDuration: parsingMetrics.duration,
+      validationDuration: validationMetrics.duration,
+      duration,
+      mealsPerDay,
+      cuisineCount: cuisines.length,
+      hasHealthContext: !!healthContext.symptoms?.length || !!healthContext.medicalData?.labValues,
+      success: true,
+    });
+
+    // Record LLM-specific metrics
+    performanceMetrics.recordLLMCall({
+      duration: llmMetrics.duration,
+      model: 'gpt-4o-mini',
+      promptLength: prompt.length,
+      responseLength: rawContent.length,
+      operation: 'meal_plan_generation',
+      success: true,
+    });
+
+    // Record RAG retrieval metrics
+    performanceMetrics.recordRAGRetrieval({
+      duration: ragMetrics.duration,
+      stage: 'multi_stage_retrieval',
+      documentsRetrieved:
+        mealTemplates.length +
+        nutritionGuidelines.length +
+        symptomGuidanceDocs.length +
+        labGuidanceDocs.length,
+      query: 'multi-stage',
+      success: true,
+    });
+
     const ragMetadata = {
       mealTemplates: mealTemplates.length,
       nutritionGuidelines: nutritionGuidelines.length,
@@ -267,11 +330,33 @@ class MealPlanChain {
     logger.info('Meal plan generated successfully with RAG', {
       days: parsed.days.length,
       ragMetadata,
+      performanceMetrics: {
+        total: `${overallMetrics.duration.toFixed(0)}ms`,
+        llm: `${llmMetrics.duration.toFixed(0)}ms (${(
+          (llmMetrics.duration / overallMetrics.duration) *
+          100
+        ).toFixed(1)}%)`,
+        rag: `${ragMetrics.duration.toFixed(0)}ms (${(
+          (ragMetrics.duration / overallMetrics.duration) *
+          100
+        ).toFixed(1)}%)`,
+        parsing: `${parsingMetrics.duration.toFixed(0)}ms`,
+        validation: `${validationMetrics.duration.toFixed(0)}ms`,
+      },
     });
 
     return {
       ...parsed,
       ragMetadata,
+      performanceMetrics: {
+        totalDuration: Math.round(overallMetrics.duration),
+        llmDuration: Math.round(llmMetrics.duration),
+        ragDuration: Math.round(ragMetrics.duration),
+        parsingDuration: Math.round(parsingMetrics.duration),
+        validationDuration: Math.round(validationMetrics.duration),
+        llmPercentage: Math.round((llmMetrics.duration / overallMetrics.duration) * 100),
+        ragPercentage: Math.round((ragMetrics.duration / overallMetrics.duration) * 100),
+      },
     };
   }
 
@@ -567,29 +652,113 @@ class MealPlanChain {
             // Check if document matches the requested cuisine(s)
             const cuisineMatch = cuisines.some((cuisine) => {
               const cuisineLower = cuisine.toLowerCase();
-              // Check metadata fields (IMPROVED: More precise matching)
-              const regionMatch = (metadata.regionalSection || '')
-                .toLowerCase()
-                .includes(cuisineLower);
-              const stateMatch = (metadata.state || '').toLowerCase() === cuisineLower;
-              const mealNameMatch = (metadata.mealName || '').toLowerCase().includes(cuisineLower);
-              // Check content
-              const contentMatch = contentLower.includes(cuisineLower);
 
-              return regionMatch || stateMatch || mealNameMatch || contentMatch;
+              // ⭐ FIX: Handle both "Sikkimese" (cuisine) and "Sikkim" (state) variations
+              // Map cuisine names to possible variations
+              const cuisineVariations = [cuisineLower];
+
+              // Add state name variations (e.g., "Sikkimese" → also match "Sikkim")
+              if (cuisineLower.endsWith('ese')) {
+                // Sikkimese → Sikkim, Assamese → Assam
+                cuisineVariations.push(cuisineLower.replace(/ese$/, ''));
+              }
+
+              // ⭐ COMPREHENSIVE CUISINE → STATE MAPPINGS
+              // Map all cuisine names to their corresponding state names
+              const cuisineToStateMap = {
+                // East Indian
+                manipuri: 'manipur',
+                bihari: 'bihar',
+                odia: 'odisha',
+                bengali: 'west bengal',
+                jharkhandi: 'jharkhand',
+                meghalayan: 'meghalaya',
+                mizo: 'mizoram',
+                naga: 'nagaland',
+                tripuri: 'tripura',
+                arunachali: 'arunachal pradesh',
+
+                // North Indian
+                rajasthani: 'rajasthan',
+                punjabi: 'punjab',
+                haryanvi: 'haryana',
+
+                // West Indian
+                gujarati: 'gujarat',
+                maharashtrian: 'maharashtra',
+                goan: 'goa',
+
+                // Central Indian
+                chhattisgarh: 'chhattisgarhi', // Also accepts Chhattisgarh as-is
+
+                // South Indian
+                tamil: 'tamil nadu',
+                andhra: 'andhra pradesh',
+              };
+
+              // Add mapped state name if exists
+              if (cuisineToStateMap[cuisineLower]) {
+                cuisineVariations.push(cuisineToStateMap[cuisineLower]);
+                // Also add shortened versions (e.g., "bengal" for "west bengal")
+                const stateParts = cuisineToStateMap[cuisineLower].split(' ');
+                if (stateParts.length > 1) {
+                  cuisineVariations.push(stateParts[stateParts.length - 1]); // "bengal", "nadu", "pradesh"
+                }
+              }
+
+              // Check if ANY variation matches
+              const matches = cuisineVariations.some((variation) => {
+                // Check metadata fields
+                const regionMatch = (metadata.regionalSection || '')
+                  .toLowerCase()
+                  .includes(variation);
+                const stateMatch = (metadata.state || '').toLowerCase().includes(variation);
+                const mealNameMatch = (metadata.mealName || '').toLowerCase().includes(variation);
+                // Check content (but be more specific to avoid false positives)
+                // Look for "State: Sikkim" or "Cuisine: Sikkimese" patterns
+                const contentStateMatch = contentLower.includes(`state: ${variation}`);
+                const contentCuisineMatch = contentLower.includes(`cuisine: ${variation}`);
+                const contentMentionMatch =
+                  contentLower.includes(` ${variation} `) ||
+                  contentLower.includes(`${variation}-style`) ||
+                  contentLower.includes(`${variation} style`);
+
+                return (
+                  regionMatch ||
+                  stateMatch ||
+                  mealNameMatch ||
+                  contentStateMatch ||
+                  contentCuisineMatch ||
+                  contentMentionMatch
+                );
+              });
+
+              return matches;
             });
 
             // If no cuisine match, skip this document
-            if (!cuisineMatch) return false;
+            if (!cuisineMatch) {
+              // ⭐ DEBUG: Log rejected meals to help diagnose retrieval issues
+              if (metadata.mealName) {
+                logger.debug(
+                  `  ⏭️  Skipping "${metadata.mealName}" - doesn't match cuisines [${cuisines.join(
+                    ', '
+                  )}]`,
+                  { state: metadata.state, region: metadata.regionalSection }
+                );
+              }
+              return false;
+            }
 
             // 🔍 SECOND: Filter by ALLERGENS (if any restrictions)
             // ⭐ CRITICAL: Check for user's allergies/intolerances BEFORE diet type
             if (restrictions && restrictions.length > 0) {
-              // Check ingredients section for allergens
+              // ⭐ FIX: Check BOTH meal name AND ingredients AND full content for allergens
+              // Bug: "Egg Paratha" has "Egg" in the name, not just ingredients
+              // Solution: Check meal name first, then ingredients, then full content as fallback
+              const mealNameLower = (metadata.mealName || '').toLowerCase();
               const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
-              const ingredientsText = ingredientsMatch
-                ? ingredientsMatch[1].toLowerCase()
-                : contentLower;
+              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
 
               // Allergen keywords
               const allergenMap = {
@@ -599,15 +768,26 @@ class MealPlanChain {
                   'cheese',
                   'curd',
                   'yogurt',
+                  'dahi',
                   'ghee',
                   'butter',
                   'cream',
                   'khoya',
                   'malai',
                 ],
-                gluten: ['wheat', 'maida', 'atta', 'roti', 'chapati', 'paratha', 'bread'],
-                nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'peanut', 'hazelnut', 'pecan'],
-                eggs: ['egg', 'omelette'],
+                gluten: ['wheat', 'maida', 'atta', 'roti', 'chapati', 'paratha', 'bread', 'naan'],
+                nuts: [
+                  'almond',
+                  'cashew',
+                  'walnut',
+                  'pistachio',
+                  'peanut',
+                  'hazelnut',
+                  'pecan',
+                  'badam',
+                  'kaju',
+                ],
+                eggs: ['egg', 'omelette', 'anda'],
               };
 
               // Check each restriction
@@ -616,9 +796,19 @@ class MealPlanChain {
                 const allergens = allergenMap[normalizedRestriction];
 
                 if (allergens) {
-                  const hasAllergen = allergens.some((allergen) =>
-                    ingredientsText.includes(allergen)
-                  );
+                  // ⭐ COMPREHENSIVE CHECK: Meal name → Ingredients → Full content
+                  const hasAllergen = allergens.some((allergen) => {
+                    // Check meal name (catches "Egg Paratha", "Paneer Tikka", etc.)
+                    if (mealNameLower.includes(allergen)) return true;
+
+                    // Check ingredients section (most accurate)
+                    if (ingredientsText.includes(allergen)) return true;
+
+                    // Fallback: Check full content (catches mentions in preparation, etc.)
+                    if (contentLower.includes(allergen)) return true;
+
+                    return false;
+                  });
 
                   if (hasAllergen) {
                     logger.info(
@@ -1276,46 +1466,86 @@ class MealPlanChain {
       }
 
       // ⭐ ALLERGEN MODE: Final validation to ensure NO allergen-containing meals slipped through
+      // This should NEVER catch anything if Stage 1 filtering works correctly
       if (restrictions && restrictions.length > 0 && retrievalResults.mealTemplates.length > 0) {
         const allergenMap = {
-          dairy: ['milk', 'paneer', 'cheese', 'curd', 'yogurt', 'ghee', 'butter', 'cream'],
-          gluten: ['wheat', 'maida', 'atta', 'roti', 'bread'],
-          nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'peanut'],
-          eggs: ['egg', 'omelette'],
+          dairy: [
+            'milk',
+            'paneer',
+            'cheese',
+            'curd',
+            'yogurt',
+            'dahi',
+            'ghee',
+            'butter',
+            'cream',
+            'khoya',
+            'malai',
+          ],
+          gluten: ['wheat', 'maida', 'atta', 'roti', 'chapati', 'paratha', 'bread', 'naan'],
+          nuts: [
+            'almond',
+            'cashew',
+            'walnut',
+            'pistachio',
+            'peanut',
+            'hazelnut',
+            'pecan',
+            'badam',
+            'kaju',
+          ],
+          eggs: ['egg', 'omelette', 'anda'],
         };
 
         const violatingMeals = retrievalResults.mealTemplates.filter((doc) => {
           const content = (doc.pageContent || doc.content || '').toLowerCase();
+          const mealName = (doc.metadata?.mealName || '').toLowerCase();
 
           return restrictions.some((restriction) => {
             const normalizedRestriction = restriction.toLowerCase().trim();
             const allergens = allergenMap[normalizedRestriction];
-            return allergens && allergens.some((allergen) => content.includes(allergen));
+            // ⭐ FIX: Check both meal name AND content
+            return (
+              allergens &&
+              allergens.some(
+                (allergen) => mealName.includes(allergen) || content.includes(allergen)
+              )
+            );
           });
         });
 
         if (violatingMeals.length > 0) {
-          logger.warn(
-            `⚠️  ALLERGEN VALIDATION: Found ${violatingMeals.length} meals with allergens that should have been filtered`,
+          logger.error(
+            `🚨 CRITICAL BUG: ALLERGEN VALIDATION FAILED IN STAGE 1! Found ${violatingMeals.length} meals with allergens that should have been filtered earlier`,
             {
               restrictions: restrictions,
-              examples: violatingMeals.slice(0, 3).map((m) => m.metadata?.mealName || 'Unknown'),
+              violatingMeals: violatingMeals
+                .slice(0, 5)
+                .map((m) => m.metadata?.mealName || 'Unknown'),
+              message:
+                'This indicates a bug in the Stage 1 allergen filtering logic. Removing meals as fallback.',
             }
           );
 
-          // Remove them
+          // Remove them as fallback safety
           retrievalResults.mealTemplates = retrievalResults.mealTemplates.filter((doc) => {
             const content = (doc.pageContent || doc.content || '').toLowerCase();
+            const mealName = (doc.metadata?.mealName || '').toLowerCase();
 
             return !restrictions.some((restriction) => {
               const normalizedRestriction = restriction.toLowerCase().trim();
               const allergens = allergenMap[normalizedRestriction];
-              return allergens && allergens.some((allergen) => content.includes(allergen));
+              return (
+                allergens &&
+                allergens.some(
+                  (allergen) => mealName.includes(allergen) || content.includes(allergen)
+                )
+              );
             });
           });
 
           logger.info(
-            `✅ Removed ${violatingMeals.length} allergen-containing meals. Safe meals remaining: ${retrievalResults.mealTemplates.length}`
+            `✅ Removed ${violatingMeals.length} allergen-containing meals as fallback. Safe meals remaining: ${retrievalResults.mealTemplates.length}`
           );
         } else {
           logger.info(
@@ -1979,25 +2209,131 @@ class MealPlanChain {
     // ⭐ NEW: Add regional authenticity requirement
     if (preferences.cuisines && preferences.cuisines.length > 0) {
       prompt += `2. 🚨🚨🚨 REGIONAL AUTHENTICITY (ABSOLUTELY NON-NEGOTIABLE):\n`;
-      prompt += `   - You are ONLY allowed to use dishes from ${preferences.cuisines.join(
-        ' and '
-      )} cuisine\n`;
-      prompt += `   - The RAG meal templates above contain ONLY ${preferences.cuisines.join(
-        ' and '
+      prompt += `   - SELECTED CUISINES: ${preferences.cuisines.join(', ')}\n`;
+      prompt += `   - You are ONLY allowed to use dishes from the SELECTED cuisines above\n`;
+      prompt += `   - The RAG meal templates contain dishes from these selected cuisines\n`;
+      prompt += `   - You MUST prioritize using EXACT dish names from the RAG templates\n`;
+      prompt += `   - If no suitable template exists, create authentic ${preferences.cuisines.join(
+        '/'
       )} dishes\n`;
-      prompt += `   - You MUST use EXACT dish names from those templates - DO NOT make up dishes\n`;
-      prompt += `   - DO NOT use dishes from other regions:\n`;
-      prompt += `     ❌ NO Jharkhand/Bihar dishes (Rugra Bhurji, Dhuska, Thekua, Sattu)\n`;
-      prompt += `     ❌ NO North Indian dishes (Paneer Tikka, Chole, Rajma, Aloo Paratha)\n`;
-      prompt += `     ❌ NO generic dishes (plain Biryani, plain Dal) unless ${preferences.cuisines.join(
+      prompt += `\n`;
+      prompt += `   📋 WHAT YOU MUST USE:\n`;
+      prompt += `   - ✅ ONLY dishes from: ${preferences.cuisines.join(', ')}\n`;
+      prompt += `   - ✅ Check RAG meal templates first - use those exact names when possible\n`;
+      prompt += `   - ✅ Mention cuisine/state in meal name: "Chicken Curry (Bihari)", "Fish Curry (Manipuri)"\n`;
+      prompt += `   - ✅ Use regional spices, cooking methods, and ingredients authentic to selected cuisines\n`;
+      prompt += `\n`;
+      prompt += `   ❌ WHAT YOU MUST NEVER USE:\n`;
+
+      // ⭐ FIX: Build exclusion list dynamically based on what's NOT selected
+      const allIndianCuisines = [
+        'South Indian',
+        'North Indian',
+        'West Indian',
+        'East Indian',
+        'Tamil',
+        'Telugu',
+        'Kerala',
+        'Karnataka',
+        'Andhra',
+        'Bengali',
+        'Odia',
+        'Assamese',
+        'Punjabi',
+        'Rajasthani',
+        'Gujarati',
+        'Maharashtrian',
+        'Goan',
+        'Kashmiri',
+        'Himachali',
+        'Uttarakhand',
+        'Uttar Pradesh',
+        'Madhya Pradesh',
+        'Jharkhand',
+        'Chhattisgarh',
+      ];
+
+      // Filter out selected cuisines and their regions
+      const selectedCuisinesLower = preferences.cuisines.map((c) => c.toLowerCase());
+      const forbiddenCuisines = allIndianCuisines.filter((cuisine) => {
+        const cuisineLower = cuisine.toLowerCase();
+        // Don't forbid if it matches any selected cuisine
+        return !selectedCuisinesLower.some(
+          (selected) => cuisineLower.includes(selected) || selected.includes(cuisineLower)
+        );
+      });
+
+      // Show a few examples of forbidden cuisines
+      const exampleForbidden = forbiddenCuisines.slice(0, 5);
+      prompt += `   - ❌ NO dishes from OTHER regions: ${exampleForbidden.join(', ')}, etc.\n`;
+
+      // ⭐ ADD EXPLICIT FORBIDDEN DISH KEYWORDS based on what's NOT selected
+      const forbiddenDishKeywords = {
+        'south-indian': [
+          'idli',
+          'dosa',
+          'sambar',
+          'rasam',
+          'appam',
+          'puttu',
+          'upma',
+          'vada',
+          'pongal',
+          'uttapam',
+          'coconut chutney',
+        ],
+        'north-indian': [
+          'chole',
+          'rajma',
+          'makki',
+          'sarson',
+          'tandoor',
+          'naan',
+          'kulcha',
+          'paratha',
+        ],
+        'west-indian': ['dhokla', 'thepla', 'undhiyu', 'khandvi', 'pav bhaji', 'vada pav'],
+        bengali: ['shukto', 'chingri', 'ilish', 'machher jhol', 'mishti doi'],
+      };
+
+      // Build list of EXPLICITLY FORBIDDEN dishes
+      const forbiddenDishes = [];
+      for (const [region, dishes] of Object.entries(forbiddenDishKeywords)) {
+        // Check if this region is in the forbidden list (NOT selected)
+        const regionIsForbidden = forbiddenCuisines.some((cuisine) => {
+          const cuisineLower = cuisine.toLowerCase();
+          return (
+            region.includes(cuisineLower) || cuisineLower.includes(region.replace('-indian', ''))
+          );
+        });
+
+        if (regionIsForbidden) {
+          forbiddenDishes.push(...dishes);
+        }
+      }
+
+      // Add explicit forbidden dishes to prompt
+      if (forbiddenDishes.length > 0) {
+        const dishExamples = forbiddenDishes.slice(0, 10).join(', ');
+        prompt += `   - ❌ FORBIDDEN DISHES (DO NOT USE): ${dishExamples}${
+          forbiddenDishes.length > 10 ? ', etc.' : ''
+        }\n`;
+        prompt += `   - 🚨 CRITICAL: If you use ANY of these forbidden dishes, the meal plan will be REJECTED!\n`;
+      }
+
+      prompt += `   - ❌ NO generic pan-Indian dishes unless they're authentic to selected cuisines\n`;
+      prompt += `   - ❌ DO NOT hallucinate or make up dish names - use RAG templates!\n`;
+      prompt += `\n`;
+      prompt += `   🚨 IF RAG HAS LIMITED OPTIONS:\n`;
+      prompt += `   - Limited templates due to diet/allergen restrictions is OK\n`;
+      prompt += `   - CREATE VARIATIONS of ${preferences.cuisines.join(
         '/'
-      )}-specific\n`;
-      prompt += `   - If RAG context has limited options due to diet restrictions, REPEAT ${preferences.cuisines.join(
-        '/'
-      )} dishes rather than inventing non-${preferences.cuisines.join('/')} dishes\n`;
-      prompt += `   - Better to repeat an authentic ${preferences.cuisines.join(
-        '/'
-      )} dish than use a non-${preferences.cuisines.join('/')} dish!\n\n`;
+      )} dishes rather than using wrong cuisines\n`;
+      prompt += `   - Example: If only 3 Manipuri meals available, create variations:\n`;
+      prompt += `     • "Eromba (Manipuri)" → "Eromba with Pumpkin (Manipuri)", "Eromba with Bamboo Shoots (Manipuri)"\n`;
+      prompt += `     • SAME BASE DISH + DIFFERENT VEGETABLES/PROTEINS = VARIATION (✅ Allowed)\n`;
+      prompt += `     • EXACT SAME MEAL NAME + SAME INGREDIENTS = REPETITION (❌ NOT allowed)\n`;
+      prompt += `   - AUTHENTICITY > VARIETY: Better to create authentic variations than use wrong cuisines!\n\n`;
     }
 
     // ⭐ NEW: Add strict diet type enforcement
@@ -2025,7 +2361,12 @@ class MealPlanChain {
       prompt += `     • Dairy milk → Coconut milk, almond milk, soy milk\n`;
       prompt += `     • Ghee → Coconut oil, vegetable oil\n`;
       prompt += `     • Eggs → Flax eggs (1 tbsp ground flaxseed + 3 tbsp water)\n`;
-      prompt += `   - Keep the dish name authentic but add "(Vegan Version)" to clarify\n`;
+      prompt += `   - 🚨 DISH NAMING RULE: Replace animal protein in the dish name with the substitute\n`;
+      prompt += `     ✅ CORRECT: "Fish Curry" → "Tofu Curry" or "Banana Curry"\n`;
+      prompt += `     ❌ WRONG: "Fish Curry (Vegan Version)" - This is confusing!\n`;
+      prompt += `     ✅ CORRECT: "Chepala Pulusu" → "Tofu Pulusu" (replace fish with tofu)\n`;
+      prompt += `     ❌ WRONG: "Chepala Pulusu (Fish Curry) (Vegan Version)" - Don't mention fish!\n`;
+      prompt += `   - Only add "(Vegan Version)" if the original dish name doesn't mention the animal product\n`;
       prompt += `   - THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE IT!\n\n`;
     } else if (dietType === 'vegetarian') {
       prompt += `2b. 🚨 VEGETARIAN DIET REQUIREMENT (STRICT):\n`;
@@ -2045,7 +2386,12 @@ class MealPlanChain {
       prompt += `     • Fish → Paneer cubes, tofu, or mixed vegetables\n`;
       prompt += `     • Chicken → Paneer, soy chunks, or legumes\n`;
       prompt += `     • Eggs → Can be omitted or replaced with paneer scramble\n`;
-      prompt += `   - Keep the dish name authentic but add "(Vegetarian Version)" to clarify\n\n`;
+      prompt += `   - 🚨 DISH NAMING RULE: Replace animal protein in the dish name with the substitute\n`;
+      prompt += `     ✅ CORRECT: "Fish Curry" → "Paneer Curry" or "Mixed Vegetable Curry"\n`;
+      prompt += `     ❌ WRONG: "Fish Curry (Vegetarian Version)" - This is confusing!\n`;
+      prompt += `     ✅ CORRECT: "Chicken Cafreal" → "Paneer Cafreal" or "Mushroom Cafreal"\n`;
+      prompt += `     ❌ WRONG: "Chicken Cafreal (Vegetarian Version)" - Don't mention chicken!\n`;
+      prompt += `   - Only add "(Vegetarian Version)" if the original dish name doesn't mention the animal product\n\n`;
     } else if (dietType === 'eggetarian') {
       prompt += `2b. EGGETARIAN DIET:\n`;
       prompt += `   - Eggs are ALLOWED\n`;
@@ -2230,9 +2576,10 @@ class MealPlanChain {
     } UNIQUE dishes for ${preferences.duration} days × ${preferences.mealsPerDay} meals/day\n`;
     prompt += `   - IF the RAG context has fewer dishes than needed:\n`;
     prompt += `     🚨 STRATEGY 1 (PREFERRED): Adapt non-${dietType} dishes to ${dietType} using INGREDIENT SUBSTITUTION GUIDE\n`;
-    prompt += `     • Example: "Goan Fish Curry" (non-veg) → "Goan Tofu Curry (Vegan Version)" using substitution guide\n`;
-    prompt += `     • Example: "Prawn Balchão" (non-veg) → "Jackfruit Balchão (Vegan Version)" using substitution guide\n`;
-    prompt += `     • Example: "Chicken Cafreal" (non-veg) → "Paneer Cafreal (Vegetarian Version)" using substitution guide\n`;
+    prompt += `     • Example: "Goan Fish Curry" (non-veg) → "Goan Tofu Curry" (replace fish with tofu in name)\n`;
+    prompt += `     • Example: "Prawn Balchão" (non-veg) → "Jackfruit Balchão" (replace prawn with jackfruit in name)\n`;
+    prompt += `     • Example: "Chicken Cafreal" (non-veg) → "Paneer Cafreal" (replace chicken with paneer in name)\n`;
+    prompt += `     • 🚨 IMPORTANT: Replace the animal protein in the dish NAME, don't add "(Vegan/Vegetarian Version)"\n`;
     prompt += `     • CHECK the "🔧 INGREDIENT SUBSTITUTION GUIDE" section in RAG context for appropriate replacements\n`;
 
     // Conditional variety strategies based on keto
@@ -2522,6 +2869,122 @@ class MealPlanChain {
     } catch (e) {
       logger.error('Fix structure failed', { error: e.message });
       return null;
+    }
+  }
+
+  /**
+   * Validate that LLM output adheres to selected cuisines
+   * Catches hallucinations and wrong regional dishes
+   */
+  validateCuisineAdherence(mealPlan, requestedCuisines, dietType) {
+    const logger = new Logger('CuisineValidation');
+
+    // Map of forbidden cuisine indicators for different regional selections
+    const forbiddenCuisineKeywords = {
+      'south-indian': [
+        'idli',
+        'dosa',
+        'sambar',
+        'rasam',
+        'appam',
+        'puttu',
+        'upma',
+        'vada',
+        'pongal',
+      ],
+      'north-indian': ['chole', 'rajma', 'makki', 'sarson', 'tandoor', 'naan', 'kulcha'],
+      'west-indian': ['dhokla', 'thepla', 'undhiyu', 'khandvi', 'pav bhaji'],
+      bengali: ['shukto', 'chingri', 'ilish', 'machher jhol', 'mishti'],
+    };
+
+    // Determine which cuisines are FORBIDDEN based on selection
+    const requestedRegions = requestedCuisines.map((c) => c.toLowerCase());
+    const violations = [];
+
+    mealPlan.days.forEach((day, dayIdx) => {
+      day.meals.forEach((meal, mealIdx) => {
+        const mealName = (meal.name || '').toLowerCase();
+
+        // Check if meal name contains requested cuisine/state name (GOOD)
+        const hasRequestedCuisineInName = requestedCuisines.some((cuisine) => {
+          const cuisineLower = cuisine.toLowerCase();
+          // Check for exact cuisine mention: "(Bihari)", "(Manipuri)", "(Sikkimese)"
+          const hasParenthetical =
+            mealName.includes(`(${cuisineLower})`) ||
+            mealName.includes(`${cuisineLower} style`) ||
+            mealName.includes(`${cuisineLower}-style`);
+
+          // Also check if cuisine name appears anywhere in meal name
+          const hasCuisineMention = mealName.includes(cuisineLower);
+
+          return hasParenthetical || hasCuisineMention;
+        });
+
+        // Check for forbidden cuisine keywords (BAD)
+        let foundForbiddenCuisine = null;
+        for (const [region, keywords] of Object.entries(forbiddenCuisineKeywords)) {
+          // Skip if this region is in the requested list
+          if (requestedRegions.some((r) => region.includes(r) || r.includes(region))) {
+            continue;
+          }
+
+          // Check if meal contains forbidden keywords from this region
+          const hasForbiddenKeyword = keywords.some((keyword) => mealName.includes(keyword));
+          if (hasForbiddenKeyword) {
+            foundForbiddenCuisine = region;
+            break;
+          }
+        }
+
+        // Log violations
+        if (foundForbiddenCuisine) {
+          violations.push({
+            day: dayIdx + 1,
+            mealType: meal.mealType,
+            mealName: meal.name,
+            issue: `Contains ${foundForbiddenCuisine} dish (forbidden)`,
+            severity: 'ERROR',
+          });
+        } else if (!hasRequestedCuisineInName) {
+          // Warn if meal name doesn't mention the cuisine (might be generic)
+          violations.push({
+            day: dayIdx + 1,
+            mealType: meal.mealType,
+            mealName: meal.name,
+            issue: `Meal name doesn't mention requested cuisines [${requestedCuisines.join(', ')}]`,
+            severity: 'WARNING',
+          });
+        }
+      });
+    });
+
+    // Report violations
+    if (violations.length > 0) {
+      const errors = violations.filter((v) => v.severity === 'ERROR');
+      const warnings = violations.filter((v) => v.severity === 'WARNING');
+
+      if (errors.length > 0) {
+        logger.error(`🚨 CUISINE VALIDATION FAILED: ${errors.length} meals from WRONG cuisines!`, {
+          requestedCuisines,
+          violations: errors.map((v) => `Day ${v.day} ${v.mealType}: ${v.mealName} - ${v.issue}`),
+        });
+      }
+
+      if (warnings.length > 0) {
+        logger.warn(
+          `⚠️  CUISINE VALIDATION WARNING: ${warnings.length} meals lack cuisine labels`,
+          {
+            requestedCuisines,
+            warnings: warnings.slice(0, 3).map((v) => `Day ${v.day} ${v.mealType}: ${v.mealName}`),
+          }
+        );
+      }
+    } else {
+      logger.info(
+        `✅ CUISINE VALIDATION PASSED: All meals match requested cuisines [${requestedCuisines.join(
+          ', '
+        )}]`
+      );
     }
   }
 

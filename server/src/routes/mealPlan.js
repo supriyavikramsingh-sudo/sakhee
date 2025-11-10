@@ -166,9 +166,11 @@ router.post('/generate', async (req, res) => {
       weightGoal, // NEW: Pass weight goal for context
     });
 
-    // Extract RAG metadata
+    // Extract RAG metadata and performance metrics
     const ragMetadata = mealPlan.ragMetadata || null;
+    const performanceMetrics = mealPlan.performanceMetrics || null;
     delete mealPlan.ragMetadata; // Remove from plan data
+    delete mealPlan.performanceMetrics; // Remove from plan data
 
     // Store plan with metadata
     const planId = 'plan_' + Date.now();
@@ -231,6 +233,13 @@ router.post('/generate', async (req, res) => {
       cuisinesUsed: cuisines,
       isKeto: finalIsKeto, // NEW: Log keto status
       ragQuality: ragMetadata?.retrievalQuality,
+      performanceMetrics: performanceMetrics
+        ? {
+            total: `${performanceMetrics.totalDuration}ms`,
+            llm: `${performanceMetrics.llmDuration}ms (${performanceMetrics.llmPercentage}%)`,
+            rag: `${performanceMetrics.ragDuration}ms (${performanceMetrics.ragPercentage}%)`,
+          }
+        : null,
       personalizationSources: Object.keys(planData.personalizationSources).filter(
         (k) => planData.personalizationSources[k]
       ),
@@ -247,6 +256,7 @@ router.post('/generate', async (req, res) => {
         budget,
         plan: mealPlan,
         ragMetadata,
+        performanceMetrics, // NEW: Include performance metrics in response
         personalizationSources: planData.personalizationSources,
       },
     });
