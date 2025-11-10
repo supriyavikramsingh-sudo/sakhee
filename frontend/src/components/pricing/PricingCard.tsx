@@ -10,11 +10,16 @@ interface PricingCardProps {
   onCTAClick: () => void;
 }
 
-export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userState, onCTAClick }) => {
+export const PricingCard: FC<PricingCardProps> = ({
+  plan,
+  billingCycle,
+  userState,
+  onCTAClick,
+}) => {
   const navigate = useNavigate();
   const isCurrentPlan = userState?.currentPlan === plan.id;
   const isCanceled = userState?.isCanceled && isCurrentPlan;
-  
+
   const getCTAButton = () => {
     if (!userState?.isAuthenticated) {
       // Not logged in - show standard CTA
@@ -51,7 +56,7 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
             disabled
             className="w-full py-3 px-6 rounded-lg font-semibold bg-gray-200 text-gray-500 cursor-not-allowed"
           >
-            CURRENT PLAN
+            Current Plan
           </button>
         </div>
       );
@@ -114,7 +119,7 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
       {/* Badge */}
       {plan.isPopular && !plan.badge && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">
-          MOST POPULAR
+          Most Popular
         </div>
       )}
       {plan.badge && (
@@ -123,9 +128,7 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
             {plan.badge}
           </div>
           {plan.badgeSubtext && (
-            <div className="text-xs text-gray-500 text-center mt-1">
-              {plan.badgeSubtext}
-            </div>
+            <div className="text-xs text-gray-500 text-center mt-1">{plan.badgeSubtext}</div>
           )}
         </div>
       )}
@@ -133,19 +136,22 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
       {/* Header */}
       <div className="text-center mb-6 mt-2">
         <h3 className="text-2xl font-bold text-gray-800 mb-2">{plan.name}</h3>
-        
+
         <div className="mb-2">
           <span className="text-4xl font-bold text-primary">
-            ₹{billingCycle === 'monthly' ? plan.price.monthly : plan.price.yearly}
+            ₹
+            {billingCycle === 'monthly'
+              ? `${plan.price.monthly}/month`
+              : `${plan.price.yearly}/year`}
           </span>
         </div>
-        
+
         <p className="text-gray-600 text-sm">{plan.subtitle[billingCycle]}</p>
       </div>
 
       {/* Tagline */}
       <p className="text-center text-gray-500 text-sm mb-4">{plan.tagline}</p>
-      
+
       {/* Plan Description */}
       {plan.planDescription && (
         <p className="text-center text-gray-600 text-sm mb-6 px-2 leading-relaxed">
@@ -157,23 +163,24 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
       <div className="flex-1 mb-4">
         <ul className="space-y-4">
           {plan.features.map((feature, index) => (
-            <li
-              key={index}
-              className="flex items-start gap-3"
-            >
+            <li key={index} className="flex items-start gap-3">
               <span className="mt-0.5">{getFeatureIcon(feature)}</span>
               <div className="flex-1">
-                <div className={`text-sm font-medium ${
-                  feature.comingSoon ? 'text-gray-400 opacity-60' : 'text-gray-700'
-                }`}>
+                <div
+                  className={`text-sm font-medium ${
+                    feature.comingSoon ? 'text-gray-400 opacity-60' : 'text-gray-700'
+                  }`}
+                >
                   {feature.text}
                   {getPremiumStars(feature)}
                   {feature.comingSoon && <span className="ml-1 text-xs">(Coming Soon)</span>}
                 </div>
                 {feature.description && (
-                  <div className={`text-xs mt-1 leading-relaxed ${
-                    feature.comingSoon ? 'text-gray-400 opacity-60' : 'text-gray-500'
-                  }`}>
+                  <div
+                    className={`text-xs mt-1 leading-relaxed ${
+                      feature.comingSoon ? 'text-gray-400 opacity-60' : 'text-gray-500'
+                    }`}
+                  >
                     {feature.description}
                   </div>
                 )}
@@ -181,7 +188,7 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
             </li>
           ))}
         </ul>
-        
+
         {/* See all features link */}
         <div className="mt-4 text-center">
           <button
@@ -192,7 +199,7 @@ export const PricingCard: FC<PricingCardProps> = ({ plan, billingCycle, userStat
           </button>
         </div>
       </div>
-      
+
       {/* Value Props */}
       {plan.valueProps && plan.valueProps.length > 0 && (
         <div className="mb-6 p-4 bg-gray-50 rounded-lg">

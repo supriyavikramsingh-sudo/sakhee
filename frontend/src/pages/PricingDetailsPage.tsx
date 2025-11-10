@@ -1,5 +1,6 @@
-import { Check, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BlocksIcon, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/common/PageHeader';
 import Navbar from '../components/layout/Navbar';
 
 const PricingDetailsPage = () => {
@@ -208,14 +209,16 @@ const PricingDetailsPage = () => {
 
   const renderCell = (value: boolean, isComingSoonSection: boolean = false) => {
     return value ? (
-      <Check className={`w-5 h-5 mx-auto ${isComingSoonSection ? 'text-green-400' : 'text-green-500'}`} />
+      <Check
+        className={`w-5 h-5 mx-auto ${isComingSoonSection ? 'text-green-400' : 'text-green-500'}`}
+      />
     ) : (
       <span className="text-gray-300">—</span>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-white to-peach-100">
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -229,33 +232,26 @@ const PricingDetailsPage = () => {
         </button>
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            What's Included in Our Plans?
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Affordable PCOS Management for Every Stage of Your Journey
-          </p>
-        </div>
+        <PageHeader
+          title={"What's Included in Our Plans?"}
+          description={'Affordable PCOS Management for Every Stage of Your Journey'}
+          icon={<BlocksIcon size={30} className="text-primary" strokeWidth={3} />}
+        />
 
         {/* Comparison Table */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-12">
+        <div className="bg-white rounded-b-xl shadow-lg overflow-hidden mb-12">
           <div className="overflow-x-auto">
             <table className="w-full">
               {/* Table Header */}
               <thead className="bg-gray-50 border-b-2 border-gray-200">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">
-                    Feature
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
-                    FREE
-                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Feature</th>
+                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">Free</th>
                   <th className="px-6 py-4 text-center text-sm font-bold text-primary bg-pink-50">
-                    SAKHEE PRO
+                    Sakhee Pro
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-bold text-gray-400">
-                    SAKHEE MAX
+                    Sakhee Max
                     <div className="text-xs font-normal mt-1">(Coming Soon)</div>
                   </th>
                 </tr>
@@ -266,23 +262,20 @@ const PricingDetailsPage = () => {
                 {featureCategories.map((category, catIndex) => (
                   <>
                     {/* Category Header */}
-                    <tr key={`cat-${catIndex}`} className="bg-gradient-to-r from-gray-100 to-gray-50">
-                      <td
-                        colSpan={4}
-                        className="px-6 py-3 text-base font-bold text-gray-800"
-                      >
+                    <tr
+                      key={`cat-${catIndex}`}
+                      className="bg-gradient-to-r from-gray-100 to-gray-50"
+                    >
+                      <td colSpan={4} className="px-6 py-3 text-base font-bold text-gray-800">
                         {category.title}
                       </td>
                     </tr>
-                    
+
                     {/* Available Now Section */}
                     {category.availableNow.length > 0 && (
                       <>
                         <tr key={`available-${catIndex}`} className="bg-white">
-                          <td
-                            colSpan={4}
-                            className="px-6 py-2 text-sm font-medium text-gray-600"
-                          >
+                          <td colSpan={4} className="px-6 py-2 text-sm font-medium text-gray-600">
                             Available Now
                           </td>
                         </tr>
@@ -292,20 +285,16 @@ const PricingDetailsPage = () => {
                             className="border-b border-gray-100 hover:bg-gray-50"
                           >
                             <td className="px-6 py-4 text-sm text-gray-700">{row.feature}</td>
-                            <td className="px-6 py-4 text-center">
-                              {renderCell(row.free, false)}
-                            </td>
+                            <td className="px-6 py-4 text-center">{renderCell(row.free, false)}</td>
                             <td className="px-6 py-4 text-center bg-pink-50/30">
                               {renderCell(row.pro, false)}
                             </td>
-                            <td className="px-6 py-4 text-center">
-                              {renderCell(row.max, false)}
-                            </td>
+                            <td className="px-6 py-4 text-center">{renderCell(row.max, false)}</td>
                           </tr>
                         ))}
                       </>
                     )}
-                    
+
                     {/* Coming Soon Section */}
                     {category.comingSoon.length > 0 && (
                       <>
@@ -323,17 +312,14 @@ const PricingDetailsPage = () => {
                             className="border-b border-gray-100 hover:bg-gray-50 opacity-70"
                           >
                             <td className="px-6 py-4 text-sm text-gray-600">
-                              {row.feature} <span className="text-amber-600 text-xs ml-1">(Coming Soon)</span>
+                              {row.feature}{' '}
+                              <span className="text-amber-600 text-xs ml-1">(Coming Soon)</span>
                             </td>
-                            <td className="px-6 py-4 text-center">
-                              {renderCell(row.free, true)}
-                            </td>
+                            <td className="px-6 py-4 text-center">{renderCell(row.free, true)}</td>
                             <td className="px-6 py-4 text-center bg-pink-50/30">
                               {renderCell(row.pro, true)}
                             </td>
-                            <td className="px-6 py-4 text-center">
-                              {renderCell(row.max, true)}
-                            </td>
+                            <td className="px-6 py-4 text-center">{renderCell(row.max, true)}</td>
                           </tr>
                         ))}
                       </>
@@ -347,24 +333,26 @@ const PricingDetailsPage = () => {
 
         {/* Who It's For */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Who It's For
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Who It's For</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="text-4xl mb-3">🌱</div>
-              <h4 className="font-semibold text-gray-800 mb-2">FREE</h4>
+              <h4 className="font-semibold text-gray-800 mb-2">Free</h4>
               <p className="text-sm text-gray-600">First-time users exploring PCOS management</p>
             </div>
             <div className="text-center">
               <div className="text-4xl mb-3">💪</div>
-              <h4 className="font-semibold text-gray-800 mb-2">SAKHEE PRO</h4>
-              <p className="text-sm text-gray-600">Active daily users committed to their health journey</p>
+              <h4 className="font-semibold text-gray-800 mb-2">Sakhee Pro</h4>
+              <p className="text-sm text-gray-600">
+                Active daily users committed to their health journey
+              </p>
             </div>
             <div className="text-center opacity-60">
               <div className="text-4xl mb-3">⚕️</div>
-              <h4 className="font-semibold text-gray-800 mb-2">SAKHEE MAX</h4>
-              <p className="text-sm text-gray-600">Coming Soon - Medical-grade care with professional support</p>
+              <h4 className="font-semibold text-gray-800 mb-2">Sakhee Max</h4>
+              <p className="text-sm text-gray-600">
+                Coming Soon - Medical-grade care with professional support
+              </p>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { Alert } from 'antd';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import firestoreService from '../../services/firestoreService';
@@ -13,7 +14,7 @@ const CalorieDisclaimer = () => {
       try {
         // Try to get user profile if not already loaded
         let profile = userProfile;
-        
+
         if (!profile && user?.uid) {
           const result = await firestoreService.getUserProfile(user.uid);
           if (result.success) {
@@ -23,10 +24,7 @@ const CalorieDisclaimer = () => {
 
         // Check if we have calculated metrics
         if (profile?.daily_calorie_requirement && profile?.profileData) {
-          const {
-            daily_calorie_requirement,
-            profileData,
-          } = profile;
+          const { daily_calorie_requirement, profileData } = profile;
 
           const height = profileData.height_cm || 'N/A';
           const weight = profileData.current_weight_kg || 'N/A';
@@ -86,14 +84,14 @@ const CalorieDisclaimer = () => {
   }
 
   return (
-    <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
-      <div className="flex items-start gap-3">
-        <Info className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+    <Alert
+      showIcon
+      description={
         <p className="text-sm text-gray-700">
           <strong>Note:</strong> {disclaimerText}
         </p>
-      </div>
-    </div>
+      }
+    />
   );
 };
 

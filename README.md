@@ -72,6 +72,7 @@ curl -sS -X POST http://localhost:5000/api/chat \
 ```
 
 - What to look for:
+
   - Backend logs show `needsCommunityInsights()` triggered and `fetchRedditContext()` returned top posts.
   - Assistant reply contains a short empathic opening, a 3–5 bullet set of RAG-backed recommendations, and a `📚 Community discussions` section with markdown links.
   - Links in the frontend chat UI are clickable (open in a new tab). If links are plain URLs, see the Troubleshooting section about frontend markdown rendering.
@@ -177,7 +178,7 @@ npm run ingest:meals
 
 The server will work without this step but will use fallback templates instead of RAG retrieval.
 
-  4. **Start development servers**
+4. **Start development servers**
 
 ```bash
 npm run dev
@@ -297,10 +298,12 @@ This project includes targeted logic for extracting nutrition facts from web sea
 Quick test cases and what to expect:
 
 - Query: `nutrition info on quinoa salad`
+
   - SERP should be called with `quinoa salad` (cleaned); logs show `cleanQuery: "quinoa salad"`.
   - Substitutes should target toppings/dressings (e.g., "Instead of mayonnaise, use Greek yogurt-based dressing because..."), not rice/maida.
 
 - Query: `nutrition info on white rice biryani`
+
   - System should detect rice as the problematic main ingredient and the substitutes should include whole-grain or lower-GI options (quinoa, brown rice, cauliflower rice).
 
 - Query: `nutrition info on magnolia bakery banana pudding cookies confetti`
@@ -629,12 +632,14 @@ server/
 **Overview**: Optional keto modifier that works with all diet types for improved insulin sensitivity and hormone balance in PCOS management.
 
 #### **Supported Diet Combinations** (8 total):
+
 1. **Vegetarian** (baseline) + **Vegetarian Keto** (with keto modifier)
 2. **Non-Vegetarian** (baseline) + **Non-Veg Keto** (with keto modifier)
 3. **Vegan** (strictest - no animal products) + **Vegan Keto** (plant-based high-fat)
 4. **Jain** (strictest - no root vegetables) + **Jain Keto** (most restrictive combination)
 
 #### **Keto Implementation**:
+
 - **Macro Targets**: 70% fat, 25% protein, 5% carbs (20-50g net carbs/day)
 - **Grain Elimination**: ALL grains replaced automatically
   - Rice → Cauliflower rice (pulse raw cauliflower in food processor)
@@ -651,12 +656,14 @@ server/
 #### **Diet-Specific Keto Adaptations**:
 
 **Vegan Keto**:
+
 - High-fat plant sources: Coconut oil, coconut cream, avocado, nuts, seeds
 - Protein: Firm tofu, tempeh, hemp seeds, chia seeds, pumpkin seeds
 - NO dairy: Use coconut milk, coconut yogurt, almond milk
 - Example: Tofu Curry with Cauliflower Rice
 
 **Jain Keto** (Most Restrictive):
+
 - NO root vegetables: potato, onion, garlic, carrot, radish, turnip, ginger
 - Focus on above-ground vegetables: cauliflower, zucchini, bell peppers, leafy greens
 - Protein: Paneer, full-fat cheese, nuts, seeds
@@ -664,17 +671,20 @@ server/
 - Example: Paneer Tikka with Cauliflower Rice (no onion/garlic)
 
 **Vegetarian Keto**:
+
 - Emphasize full-fat dairy: paneer, cheese, Greek yogurt, heavy cream
 - Include eggs liberally (if eggetarian)
 - Fats: Ghee, butter, coconut oil
 - Example: Palak Paneer with extra ghee + Cauliflower Rice
 
 **Non-Vegetarian Keto**:
+
 - Prioritize fatty cuts: chicken thighs (not breast), salmon, sardines, mutton
 - Include bone broth, eggs, fatty fish
 - Example: Butter Chicken (real butter & cream) with Cauliflower Rice
 
 #### **RAG Knowledge Base**:
+
 - **6,400+ word Keto Substitutes section** in `pcos_ingredient_substitutes_RAG.txt`
 - Categories covered:
   - Grain/carb replacements for all Indian dishes
@@ -689,6 +699,7 @@ server/
   - PCOS synergy benefits
 
 #### **Frontend UI**:
+
 - **Checkbox**: Pink/purple gradient "Enable Ketogenic Diet" checkbox with "New" badge
 - **Info Banner (when enabled)**: Blue banner explaining:
   - What keto means (grain replacements, no starchy veg)
@@ -705,12 +716,14 @@ server/
     - Medical disclaimer
 
 #### **Backend Processing**:
+
 1. **RAG Query Stage**: If `isKeto=true`, fetches keto-specific substitutes (20+ targeted queries)
 2. **System Prompt**: Conditional keto instructions override standard PCOS macros
 3. **LLM Adaptation**: GPT-4o-mini adapts meal templates using keto substitutes
 4. **Validation**: Ensures no grains, proper macro ratios
 
 #### **API Endpoint**:
+
 ```json
 POST /api/meals/generate
 {
@@ -727,6 +740,7 @@ POST /api/meals/generate
 ```
 
 #### **PCOS Benefits**:
+
 - **Improved insulin sensitivity**: Low carb reduces insulin spikes
 - **Better hormone balance**: Reduced insulin = reduced androgen production
 - **Weight management**: Fat burning (ketosis) supports healthy weight
@@ -734,6 +748,7 @@ POST /api/meals/generate
 - **Reduced inflammation**: Anti-inflammatory effects support hormone regulation
 
 #### **Medical Disclaimers**:
+
 - Ketogenic diet should be undertaken with healthcare provider supervision
 - Initial "keto flu" (fatigue, headache) is normal in first 1-2 weeks
 - CRITICAL: Increase salt intake (1-2 tsp/day) and stay well-hydrated (3-4L water)
@@ -976,25 +991,25 @@ npm run format:check
 
 ### API Endpoints
 
-| Endpoint                  | Method   | Description                              |
-| ------------------------- | -------- | ---------------------------------------- |
-| `/api/health`             | GET      | Health check                             |
-| `/api/chat`               | POST     | Send chat message with RAG context       |
-| `/api/meals/generate`     | POST     | Generate personalized meal plan with RAG |
-| `/api/meals/:planId`      | GET      | Get specific meal plan                   |
-| `/api/meals/user/:userId` | GET      | Get user's meal plan history             |
-| `/api/meals/:planId`      | PUT      | Update meal plan (feedback, ratings)     |
-| `/api/meals/:planId`      | DELETE   | Delete meal plan                         |
-| `/api/subscription`       | GET      | Get user's subscription details          |
-| `/api/subscription/upgrade` | PUT    | Upgrade subscription plan                |
-| `/api/subscription/cancel` | PUT     | Cancel subscription (retains access)     |
-| `/api/subscription/reactivate` | PUT | Reactivate cancelled subscription        |
-| `/api/subscription/usage` | GET      | Get meal plan usage statistics           |
-| `/api/upload`             | POST     | Upload medical report (PDF/DOCX/image)   |
-| `/api/progress`           | GET/POST | Get/update progress data                 |
-| `/api/onboarding/create`  | POST     | Complete onboarding                      |
-| `/api/rag/status`         | GET      | Get RAG system status and metrics        |
-| `/api/rag/health`         | GET      | Quick RAG health check                   |
+| Endpoint                       | Method   | Description                              |
+| ------------------------------ | -------- | ---------------------------------------- |
+| `/api/health`                  | GET      | Health check                             |
+| `/api/chat`                    | POST     | Send chat message with RAG context       |
+| `/api/meals/generate`          | POST     | Generate personalized meal plan with RAG |
+| `/api/meals/:planId`           | GET      | Get specific meal plan                   |
+| `/api/meals/user/:userId`      | GET      | Get user's meal plan history             |
+| `/api/meals/:planId`           | PUT      | Update meal plan (feedback, ratings)     |
+| `/api/meals/:planId`           | DELETE   | Delete meal plan                         |
+| `/api/subscription`            | GET      | Get user's subscription details          |
+| `/api/subscription/upgrade`    | PUT      | Upgrade subscription plan                |
+| `/api/subscription/cancel`     | PUT      | Cancel subscription (retains access)     |
+| `/api/subscription/reactivate` | PUT      | Reactivate cancelled subscription        |
+| `/api/subscription/usage`      | GET      | Get meal plan usage statistics           |
+| `/api/upload`                  | POST     | Upload medical report (PDF/DOCX/image)   |
+| `/api/progress`                | GET/POST | Get/update progress data                 |
+| `/api/onboarding/create`       | POST     | Complete onboarding                      |
+| `/api/rag/status`              | GET      | Get RAG system status and metrics        |
+| `/api/rag/health`              | GET      | Quick RAG health check                   |
 
 ---
 
@@ -1078,7 +1093,7 @@ Common issues and fixes:
 - Headers not rendered: ensure `boldify()` converts `#`, `##`, `###` and smaller header patterns before converting line breaks.
 - Double bullets (`• • item`): normalize leading bullets/dashes by stripping all leading `•`/`-` characters from the captured content and re-inserting a single bullet.
 - Missing bullets for indented lists: allow optional leading whitespace in the bullet regex (use `^\s*[-•]`).
-- Disclaimer formatting (⚠️ *text*): if the backend emits `⚠️ *This is educational guidance*` but you want it bold, either change the backend to use `**text**` or add a frontend special-case rule to convert `⚠️ *text*` to bold.
+- Disclaimer formatting (⚠️ _text_): if the backend emits `⚠️ *This is educational guidance*` but you want it bold, either change the backend to use `**text**` or add a frontend special-case rule to convert `⚠️ *text*` to bold.
 
 Minimal example snippet (from `frontend/src/utils/helper.ts`):
 
@@ -1113,7 +1128,6 @@ npm run dev
 ```
 
 Remove any temporary `console.log` debug lines after confirming the fix.
-
 
 ### Prerequisites
 
@@ -1274,26 +1288,29 @@ For questions, issues, or suggestions:
 
 Sakhee implements a three-tier subscription model with usage-based access control for meal plan generation:
 
-| Plan | Price | Meal Plans | Features |
-|------|-------|------------|----------|
-| **FREE** | ₹0 | 1 lifetime | Try the platform, limited access |
-| **PRO** | ₹500/month or ₹5000/year | 3 per week | Regional meal plans, PDF export, medical report integration |
-| **MAX** | ₹1000/month | Unlimited | Coming soon - all PRO features + unlimited generation |
+| Plan     | Price                    | Meal Plans | Features                                                    |
+| -------- | ------------------------ | ---------- | ----------------------------------------------------------- |
+| **FREE** | ₹0                       | 1 lifetime | Try the platform, limited access                            |
+| **PRO**  | ₹500/month or ₹5000/year | 3 per week | Regional meal plans, PDF export, medical report integration |
+| **MAX**  | ₹1000/month              | Unlimited  | Coming soon - all PRO features + unlimited generation       |
 
 ### Usage Limits & Reset Logic
 
 **FREE Plan**:
+
 - 1 meal plan total (lifetime limit)
 - Once used, redirected to upgrade page
 - No reset mechanism
 
 **PRO Plan**:
+
 - 3 meal plans per week
 - Resets every **Monday at 00:00** (weekly reset)
 - Counter: `meal_plans_generated_this_week` (0-3)
 - After 3 plans, redirected to upgrade or wait until Monday
 
 **MAX Plan** (Coming Soon):
+
 - Unlimited meal plans
 - No usage restrictions
 - Premium support
@@ -1315,6 +1332,7 @@ node src/scripts/setupTestUser.js
 ```
 
 This creates/updates the user in Firestore with:
+
 ```json
 {
   "subscription_plan": "pro",
@@ -1340,7 +1358,7 @@ async function canGenerateMealPlan(userId) {
   }
 
   const user = await getUserProfile(userId);
-  
+
   // Check subscription status
   if (user.subscription_status !== 'active') {
     return { allowed: false, reason: 'SUBSCRIPTION_INACTIVE' };
@@ -1357,7 +1375,7 @@ async function canGenerateMealPlan(userId) {
   if (user.subscription_plan === 'pro') {
     // Check if weekly reset needed
     await checkAndResetWeeklyLimit(userId, user);
-    
+
     if (user.meal_plans_generated_this_week >= 3) {
       return { allowed: false, reason: 'WEEKLY_LIMIT_REACHED' };
     }
@@ -1370,6 +1388,7 @@ async function canGenerateMealPlan(userId) {
 **Frontend Access Control** (`MealPlanGenerator.jsx`):
 
 When meal generation is blocked, users see:
+
 - Modal with upgrade message
 - Current usage stats (e.g., "2/3 plans used this week")
 - Clear CTA to upgrade or pricing page link
@@ -1381,6 +1400,7 @@ When meal generation is blocked, users see:
 **Settings Page** (`/settings/subscription`):
 
 Users can:
+
 - ✅ View current plan and billing details
 - ✅ See usage statistics (X/Y plans used)
 - ✅ Upgrade to PRO/MAX
@@ -1390,6 +1410,7 @@ Users can:
 - ✅ See subscription end date (if cancelled)
 
 **Cancellation Behavior**:
+
 - Subscription remains active until `next_billing_date`
 - Status changes to `cancelled` but user retains access
 - At end date, status changes to `expired` and access is blocked
@@ -1400,6 +1421,7 @@ Users can:
 **Public Routes** (accessible without login):
 
 1. **`/pricing`** - Main pricing page
+
    - Three pricing cards (FREE, PRO, MAX)
    - Monthly/Yearly billing toggle (17% discount for annual)
    - Feature comparison with checkmarks
@@ -1414,6 +1436,7 @@ Users can:
    - Detailed explanations of all features
 
 **Navigation**:
+
 - Pricing link added to main navbar
 - Accessible from meal plan blocked modal
 - Settings page upgrade buttons link to pricing
@@ -1421,6 +1444,7 @@ Users can:
 ### API Endpoints
 
 #### Get Subscription
+
 ```bash
 GET /api/subscription?userId={userId}
 Response: {
@@ -1435,6 +1459,7 @@ Response: {
 ```
 
 #### Upgrade Subscription
+
 ```bash
 PUT /api/subscription/upgrade
 Body: {
@@ -1446,6 +1471,7 @@ Response: { success: true, message: 'Subscription upgraded' }
 ```
 
 #### Cancel Subscription
+
 ```bash
 PUT /api/subscription/cancel
 Body: { userId: 'user123' }
@@ -1457,6 +1483,7 @@ Response: {
 ```
 
 #### Reactivate Subscription
+
 ```bash
 PUT /api/subscription/reactivate
 Body: { userId: 'user123' }
@@ -1464,6 +1491,7 @@ Response: { success: true, message: 'Subscription reactivated' }
 ```
 
 #### Get Usage Statistics
+
 ```bash
 GET /api/subscription/usage?userId={userId}
 Response: {
@@ -1479,25 +1507,27 @@ Response: {
 ### Weekly Reset Logic
 
 **Implementation**:
+
 ```javascript
 async function checkAndResetWeeklyLimit(userId, user) {
   const lastReset = new Date(user.last_meal_plan_reset_date);
   const now = new Date();
-  
+
   // Get last Monday
   const lastMonday = getLastMonday(now);
-  
+
   // Reset if last reset was before last Monday
   if (lastReset < lastMonday) {
     await updateUserProfile(userId, {
       meal_plans_generated_this_week: 0,
-      last_meal_plan_reset_date: now.toISOString()
+      last_meal_plan_reset_date: now.toISOString(),
     });
   }
 }
 ```
 
 **Reset Schedule**:
+
 - Trigger: Every Monday at 00:00 (user's first request after Monday)
 - Action: Sets `meal_plans_generated_this_week` to 0
 - Counter: Increments after each successful meal generation
@@ -1505,13 +1535,14 @@ async function checkAndResetWeeklyLimit(userId, user) {
 ### Database Schema (Firestore)
 
 **Users Collection**:
+
 ```javascript
 users/{userId}: {
   // Existing fields
   email: string,
   displayName: string,
   photoURL: string,
-  
+
   // Subscription fields (new)
   subscription_plan: 'free' | 'pro' | 'max',
   subscription_status: 'active' | 'cancelled' | 'expired',
@@ -1519,12 +1550,12 @@ users/{userId}: {
   subscription_start_date: timestamp,
   subscription_end_date: timestamp | null,
   next_billing_date: timestamp,
-  
+
   // Usage tracking
   meal_plans_generated_count: number,          // Total lifetime
   meal_plans_generated_this_week: number,      // This week only
   last_meal_plan_reset_date: timestamp,        // Last Monday reset
-  
+
   // Timestamps
   createdAt: timestamp,
   updatedAt: timestamp
@@ -1536,17 +1567,21 @@ users/{userId}: {
 **Test Cases**:
 
 1. **FREE User - First Meal Plan**:
+
    - Generate 1 meal plan → Success
    - Try 2nd meal plan → Blocked with upgrade modal
 
 2. **PRO User - Weekly Limit**:
+
    - Generate 3 meal plans → All succeed
    - Try 4th meal plan → Blocked until Monday reset
 
 3. **Test User - Bypass**:
+
    - Generate 100 meal plans → All succeed (no limits)
 
 4. **Cancellation**:
+
    - Cancel PRO subscription
    - Continue generating until `next_billing_date`
    - After end date → Access blocked
@@ -1574,6 +1609,7 @@ curl http://localhost:5000/api/subscription/usage?userId=test123
 ### Future Enhancements
 
 **Payment Integration** (Planned):
+
 - [ ] Razorpay integration for Indian payments
 - [ ] Stripe for international payments
 - [ ] Automatic subscription renewal
@@ -1582,6 +1618,7 @@ curl http://localhost:5000/api/subscription/usage?userId=test123
 - [ ] Refund processing
 
 **Analytics** (Planned):
+
 - [ ] Revenue dashboard
 - [ ] Conversion tracking (FREE → PRO)
 - [ ] Churn analysis
@@ -1589,6 +1626,7 @@ curl http://localhost:5000/api/subscription/usage?userId=test123
 - [ ] Cohort analysis
 
 **Features** (Planned):
+
 - [ ] Family plans (multi-user subscriptions)
 - [ ] Gift subscriptions
 - [ ] Promotional codes & discounts
@@ -1598,6 +1636,7 @@ curl http://localhost:5000/api/subscription/usage?userId=test123
 ### Documentation
 
 For complete implementation details, see:
+
 - **`PRICING_SYSTEM_DOCS.md`** - Full technical specification
 - **`server/src/utils/subscriptionUtils.js`** - Access control logic
 - **`server/src/routes/subscription.js`** - API endpoints
@@ -1627,11 +1666,13 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### New Features
 
 **💎 Three-Tier Subscription Model**:
+
 - **FREE Plan**: 1 lifetime meal plan for trial users (₹0)
 - **PRO Plan**: 3 meal plans per week with weekly Monday reset (₹500/month or ₹5000/year)
 - **MAX Plan**: Unlimited meal plans - coming soon (₹1000/month)
 
 **📄 Public Pricing Pages**:
+
 - `/pricing` - Main pricing page with 3 cards, monthly/yearly toggle, feature comparison
 - `/pricing-details` - Comprehensive feature table, FAQ, and detailed comparison
 - Dynamic CTAs based on authentication state
@@ -1639,6 +1680,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 - Added "Pricing" link to main navigation bar
 
 **⚙️ Settings Page Redesign**:
+
 - New sidebar navigation with Preferences and Subscription sections
 - Subscription management UI showing plan details, billing info, usage stats
 - Action buttons: Upgrade, Cancel, Reactivate
@@ -1647,6 +1689,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 - Next billing date and subscription end date display
 
 **🔒 Access Control System**:
+
 - Backend middleware checks subscription limits before meal generation
 - FREE users blocked after 1 meal plan (lifetime)
 - PRO users blocked after 3 weekly meal plans (resets Monday)
@@ -1655,12 +1698,14 @@ Major feature release introducing a comprehensive three-tier subscription system
 - Increments counters after successful generation
 
 **🔄 Weekly Reset Logic**:
+
 - Automatic Monday reset for PRO plan weekly limits
 - Sets `meal_plans_generated_this_week` to 0 every Monday
 - Tracks `last_meal_plan_reset_date` to determine if reset needed
 - First API call after Monday triggers reset
 
 **🧪 Test User Configuration**:
+
 - Hard-coded test user with unlimited access
 - Bypasses all subscription checks for demos/development
 - Setup script: `server/src/scripts/setupTestUser.js`
@@ -1669,6 +1714,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Backend APIs
 
 **New Endpoints**:
+
 - `GET /api/subscription` - Get user's subscription details
 - `PUT /api/subscription/upgrade` - Upgrade to PRO/MAX
 - `PUT /api/subscription/cancel` - Cancel subscription (retains access until end date)
@@ -1676,6 +1722,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 - `GET /api/subscription/usage` - Get meal plan usage statistics
 
 **Access Control**:
+
 - `canGenerateMealPlan(userId)` - Check if user can generate
 - `incrementMealPlanCounter(userId)` - Update counters after generation
 - `checkAndResetWeeklyLimit(userId)` - Monday reset logic
@@ -1684,6 +1731,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Frontend Components
 
 **New Files**:
+
 - `frontend/src/types/subscription.type.ts` - TypeScript types
 - `frontend/src/config/pricingConfig.ts` - Pricing data
 - `frontend/src/services/subscriptionApi.ts` - API client
@@ -1696,6 +1744,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 - `frontend/src/pages/SettingsPageNew.tsx` - Redesigned settings
 
 **Modified Files**:
+
 - `frontend/src/app/App.tsx` - Added public pricing routes, protected settings routes
 - `frontend/src/components/layout/Navbar.tsx` - Added Pricing menu item
 - `frontend/src/types/firebase.type.ts` - Extended UserProfileData with subscription fields
@@ -1704,6 +1753,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Database Schema Changes
 
 **Firestore Users Collection** (new fields):
+
 ```javascript
 {
   subscription_plan: 'free' | 'pro' | 'max',
@@ -1721,18 +1771,21 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Subscription Behaviors
 
 **Cancellation**:
+
 - Status changes to `cancelled` but user retains access until `next_billing_date`
 - Shows "Subscription ends on [date]" in settings
 - At end date, status changes to `expired` and access is blocked
 - Users can reactivate anytime before expiration
 
 **Upgrade Flow**:
+
 - FREE → PRO: Immediate access to 3 weekly meal plans
 - PRO → MAX: Immediate unlimited access (when MAX launches)
 - Billing cycle selection (monthly vs yearly)
 - 17% discount for annual plans (₹5000/year vs ₹6000)
 
 **Usage Tracking**:
+
 - `meal_plans_generated_count` - Total lifetime (never resets)
 - `meal_plans_generated_this_week` - Weekly counter (resets Monday)
 - Displayed in settings: "2 of 3 meal plans used this week"
@@ -1740,6 +1793,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Known Issues & Limitations
 
 **🚧 Not Yet Implemented**:
+
 - ❌ Payment integration (Razorpay/Stripe) - upgrade is manual API call
 - ❌ Automatic subscription renewal
 - ❌ MAX plan features (still "Coming Soon")
@@ -1748,6 +1802,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 - ❌ Promotional codes / discounts
 
 **⚠️ Current Upgrade Flow**:
+
 - Clicking "Upgrade to Pro" navigates to pricing page
 - Clicking "UPGRADE TO PRO" on pricing page navigates back to settings
 - **Circular navigation loop** - no actual API call to upgrade
@@ -1756,6 +1811,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 #### Testing
 
 **Manual Test Flows**:
+
 1. FREE user generates 1 meal plan → succeeds
 2. FREE user tries 2nd meal plan → blocked with upgrade modal
 3. PRO user generates 3 meal plans → all succeed
@@ -1765,6 +1821,7 @@ Major feature release introducing a comprehensive three-tier subscription system
 7. User reactivates subscription → full access restored
 
 **Backend API Tests** (cURL):
+
 ```bash
 # Get subscription
 curl http://localhost:5000/api/subscription?userId=test123
@@ -1783,25 +1840,30 @@ curl -X PUT http://localhost:5000/api/subscription/cancel \
 #### Documentation
 
 **New Files**:
+
 - `PRICING_SYSTEM_DOCS.md` - Complete technical specification (300+ lines)
 - `server/src/scripts/setupTestUser.js` - Test user setup script
 
 **Updated Files**:
+
 - `README.md` - Added subscription system section, API endpoints, feature list
 
 #### Files Changed Summary
 
 **Frontend** (11 new files, 3 modified):
+
 - New: 4 types files, 3 page files, 3 component files, 1 config file, 1 service file
 - Modified: App.tsx, Navbar.tsx, firebase.type.ts
 
 **Backend** (4 new files, 2 modified):
+
 - New: subscription.js (routes), subscriptionUtils.js (utils), setupTestUser.js (script), PRICING_SYSTEM_DOCS.md (docs)
 - Modified: mealPlan.js (access control), index.js (route registration)
 
 #### Impact & Benefits
 
 **User Benefits**:
+
 - ✅ Clear pricing transparency (public pricing pages)
 - ✅ Free trial (1 meal plan) before commitment
 - ✅ Weekly reset prevents bill shock (3/week limit)
@@ -1809,6 +1871,7 @@ curl -X PUT http://localhost:5000/api/subscription/cancel \
 - ✅ Usage tracking visibility
 
 **Business Benefits**:
+
 - ✅ Monetization path for meal plan feature
 - ✅ Prevents abuse (unlimited free generation)
 - ✅ Encourages conversion (FREE → PRO)
@@ -1816,6 +1879,7 @@ curl -X PUT http://localhost:5000/api/subscription/cancel \
 - ✅ Foundation for payment integration
 
 **Developer Benefits**:
+
 - ✅ Test user for demos without limits
 - ✅ Comprehensive documentation
 - ✅ Clean separation: access control in backend, UI in frontend
@@ -1825,12 +1889,14 @@ curl -X PUT http://localhost:5000/api/subscription/cancel \
 #### Migration Notes
 
 **Existing Users**:
+
 - All existing users default to FREE plan (1 meal plan limit)
 - No retroactive charges
 - Existing meal plan counts preserved in `meal_plans_generated_count`
 - Users must upgrade to continue generating meal plans
 
 **Database Migration**:
+
 - No migration script required (Firestore handles missing fields gracefully)
 - New fields set to defaults on first access:
   - `subscription_plan`: 'free'
@@ -1841,11 +1907,13 @@ curl -X PUT http://localhost:5000/api/subscription/cancel \
 #### Next Steps
 
 **Immediate Priorities**:
+
 1. **Fix upgrade flow** - Implement billing cycle selection modal and subscriptionApi.upgrade() call
 2. **Test complete flow** - End-to-end testing of all user journeys
 3. **Payment integration** - Razorpay for Indian users, Stripe for international
 
 **Future Enhancements**:
+
 - Family plans (multi-user subscriptions)
 - Gift subscriptions
 - Promotional codes & referral program
@@ -2160,6 +2228,7 @@ Critical fixes to RAG retrieval and diet filtering for personalized meal plan ge
 **Impact**: All vegetarian meals were being filtered out (0 matches) despite having 20 Goan vegetarian meals in the database.
 
 **Fix Applied**:
+
 - Updated regex from `/Type:\*\*\s*Vegetarian/i` to `/Type:\s*Vegetarian/i`
 - Updated ingredients extraction from `/\*\*Ingredients:\*\*(.*?)(?:\n\*\*|$)/s` to `/Ingredients:\s*(.+?)(?:\n|$)/`
 - Now correctly matches plain text RAG document structure generated by `ingestMealTemplates.js`
@@ -2171,6 +2240,7 @@ Critical fixes to RAG retrieval and diet filtering for personalized meal plan ge
 **Problem**: Stage 4 (ingredient substitutes) only triggered when "PCOS-problematic ingredients" were found, but never retrieved animal protein substitutes needed for vegan/vegetarian diet adaptations.
 
 **Fix Applied**:
+
 - For vegan/vegetarian/jain diets, ALWAYS retrieve animal protein substitutes (fish→tofu, chicken→paneer, prawn→baby corn, etc.)
 - Added 6 targeted protein substitute queries executed before PCOS-problematic ingredient checks
 - Queries include: `fish tofu paneer substitute`, `chicken paneer soy substitute`, `egg tofu besan substitute`, etc.
@@ -2186,15 +2256,15 @@ Critical fixes to RAG retrieval and diet filtering for personalized meal plan ge
 
 #### Performance Comparison
 
-| Stage | Before (Broken) | After (Fixed) | Improvement |
-|-------|-----------------|---------------|-------------|
-| Breakfast | 0 meals | 6 meals | ✅ +6 |
-| Lunch | 0 meals | 9 meals | ✅ +9 |
-| Dinner | 0 meals | 3-5 meals | ✅ +3-5 |
-| Snacks | 0 meals | 1 meal | ✅ +1 |
-| General | 0 meals | 9 meals | ✅ +9 |
-| **Total Templates** | **0** | **25-30** | ✅ **25-30x** |
-| **Ingredient Subs** | **0** | **11** | ✅ **+11** |
+| Stage               | Before (Broken) | After (Fixed) | Improvement   |
+| ------------------- | --------------- | ------------- | ------------- |
+| Breakfast           | 0 meals         | 6 meals       | ✅ +6         |
+| Lunch               | 0 meals         | 9 meals       | ✅ +9         |
+| Dinner              | 0 meals         | 3-5 meals     | ✅ +3-5       |
+| Snacks              | 0 meals         | 1 meal        | ✅ +1         |
+| General             | 0 meals         | 9 meals       | ✅ +9         |
+| **Total Templates** | **0**           | **25-30**     | ✅ **25-30x** |
+| **Ingredient Subs** | **0**           | **11**        | ✅ **+11**    |
 
 #### RAG Document Format (Technical Details)
 
@@ -2227,6 +2297,7 @@ The regex patterns now correctly parse this format instead of looking for markdo
 #### Files Modified (v1.8.0)
 
 - **`server/src/langchain/chains/mealPlanChain.js`**:
+
   - Lines 508-509: Fixed Type: tag regex (removed markdown escaping)
   - Lines 515-516, 533-534: Fixed Ingredients: extraction regex
   - Line 467: Improved dinner query with semantic variations
@@ -2245,6 +2316,7 @@ npm run dev
 ```
 
 Generate a **Vegetarian + Goan + 3 days** meal plan and verify logs show:
+
 - ✅ Each query: `"filtered to X vegetarian meals"` where X > 0
 - ✅ Total meal templates: 25-30 (not 0)
 - ✅ Ingredient substitutes: ~11 documents
@@ -2316,7 +2388,7 @@ This release standardizes meal template metadata format across all regional file
     - Extracts state from section headers (`## ANDHRA PRADESH`)
     - Adds `- **State:**` and `- **Type:**` metadata fields
     - Creates backup before conversion (`south_indian.txt.backup`)
-  - **Result**: 
+  - **Result**:
     - Vegetarian: 0 → 219 meals
     - Non-Vegetarian: 0 → 164 meals
     - States: Andhra Pradesh, Karnataka, Kerala, Tamil Nadu, Telangana, Puducherry, Lakshadweep
@@ -2335,7 +2407,7 @@ This release standardizes meal template metadata format across all regional file
   - **Lines 128-218**: New `validateMealTemplates()` method added
   - **Validation Checks**:
     - ✅ Missing State warnings
-    - ✅ Missing Type warnings  
+    - ✅ Missing Type warnings
     - ✅ Missing Ingredients warnings
     - ✅ Content format validation (checks for `Type:` field in document content)
   - **Statistics Logged**:
@@ -2350,11 +2422,11 @@ This release standardizes meal template metadata format across all regional file
        Missing State: 7
        Missing Type: 0
        Missing Ingredients: 7
-       
+
        Diet Type Distribution:
          - Vegetarian: 219
          - Non-Vegetarian: 164
-       
+
        State Distribution:
          - Lakshadweep: 81
          - Puducherry: 60
@@ -2367,6 +2439,7 @@ All meal template files now follow this format:
 
 ```markdown
 #### Meal Name (GI Rating)
+
 - **State:** State Name
 - **Type:** Vegetarian | Non-Vegetarian | Vegan | Jain | Eggetarian
 - **Ingredients:** ingredient1 quantity, ingredient2 quantity, ...
@@ -2378,6 +2451,7 @@ All meal template files now follow this format:
 ```
 
 **Key Requirements**:
+
 - `- **State:**` must be present for regional filtering
 - `- **Type:**` must be present for diet filtering (RAG content uses plain text `Type:` after ingestion)
 - `- **Ingredients:**` required for ingredient substitution logic
@@ -2386,31 +2460,34 @@ All meal template files now follow this format:
 
 #### Current Meal Coverage
 
-| Region | Total | Vegetarian | Non-Veg | Vegan | Jain | Format |
-|--------|-------|-----------|---------|-------|------|--------|
-| North Indian | 298 | 164 | 121 | 0 | 0 | ✅ Standard |
-| East Indian | 441 | 254 | 186 | 0 | 0 | ✅ Standard |
-| Central Indian | 65 | 36 | 24 | 0 | 0 | ✅ Standard |
-| West Indian | 125 | 65 | 60 | 0 | 0 | ✅ Standard |
-| South Indian | 383 | 219 | 164 | 0 | 0 | ✅ Standard |
-| **TOTAL** | **1312** | **757** | **555** | **0** | **0** | **100%** |
+| Region         | Total    | Vegetarian | Non-Veg | Vegan | Jain  | Format      |
+| -------------- | -------- | ---------- | ------- | ----- | ----- | ----------- |
+| North Indian   | 298      | 164        | 121     | 0     | 0     | ✅ Standard |
+| East Indian    | 441      | 254        | 186     | 0     | 0     | ✅ Standard |
+| Central Indian | 65       | 36         | 24      | 0     | 0     | ✅ Standard |
+| West Indian    | 125      | 65         | 60      | 0     | 0     | ✅ Standard |
+| South Indian   | 383      | 219        | 164     | 0     | 0     | ✅ Standard |
+| **TOTAL**      | **1312** | **757**    | **555** | **0** | **0** | **100%**    |
 
 #### Vegan & Jain Meal Strategy
 
 **Design Decision**: Instead of creating separate vegan/jain meal entries, the system uses a hybrid approach:
 
 1. **LLM Adaptation**: When users request vegan or jain meals, the LLM:
+
    - Retrieves vegetarian meal templates
    - Applies ingredient substitution rules from `pcos_ingredient_substitutes_RAG.txt`
    - Adapts recipes to meet diet requirements
 
 2. **Benefits**:
+
    - ✅ Maintains single source of truth for regional recipes
    - ✅ Reduces data duplication (no need for 2-3x meal entries)
    - ✅ Leverages existing 67 ingredient substitute documents
    - ✅ LLM can intelligently adapt based on regional cuisine
 
 3. **Example Adaptations**:
+
    - **Vegan**: Paneer → Tofu, Ghee → Coconut oil, Curd → Cashew yogurt
    - **Jain**: Potato → Sweet potato, Onion/Garlic → Hing (asafoetida), Ginger → Dry ginger
 
@@ -2425,23 +2502,26 @@ All meal template files now follow this format:
 **After pulling these changes:**
 
 1. **Re-ingest meal templates** (required):
+
    ```bash
    cd server
    npm run ingest:meals
    ```
 
 2. **Verify validation output**:
+
    - Check for "✅ Validation Summary" for each file
    - Confirm no "⚠️ Found X metadata issues" warnings
    - Review diet type distribution matches expectations
 
 3. **Test meal generation**:
+
    ```bash
    # South Indian vegetarian (should work now)
    curl -X POST http://localhost:3000/api/meal-plan \
      -H "Content-Type: application/json" \
      -d '{"preferences":{"cuisines":["South Indian"],"dietType":"vegetarian","mealsPerDay":3}}'
-   
+
    # Vegan adaptation test
    curl -X POST http://localhost:3000/api/meal-plan \
      -H "Content-Type: application/json" \
@@ -2457,18 +2537,21 @@ All meal template files now follow this format:
 #### Impact Metrics
 
 **Before Standardization**:
+
 - South Indian meals properly indexed: **0**
 - West Indian State field extraction: **0/125**
 - Validation: **None** (silent failures)
 - Total properly tagged meals: **929** (~71%)
 
 **After Standardization**:
+
 - South Indian meals properly indexed: **383** (100%)
 - West Indian State field extraction: **120/125** (96%)
 - Validation: **Comprehensive** (warns on all issues)
 - Total properly tagged meals: **1312** (100%)
 
 **User Impact**:
+
 - ✅ South Indian meal plans now generate correctly
 - ✅ All regional cuisines have proper State/Type metadata
 - ✅ Vegan/Jain users get intelligently adapted meals

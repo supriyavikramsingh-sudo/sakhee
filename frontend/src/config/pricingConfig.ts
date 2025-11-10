@@ -3,7 +3,7 @@ import type { PricingCardData } from '../types/subscription.type';
 export const pricingData: PricingCardData[] = [
   {
     id: 'free',
-    name: 'FREE',
+    name: 'Free',
     price: {
       monthly: 0,
       yearly: 0,
@@ -13,8 +13,9 @@ export const pricingData: PricingCardData[] = [
       yearly: 'Start with Sakhee for free',
     },
     tagline: 'Perfect for exploring',
-    planDescription: 'Start your PCOS journey with zero commitment. Experience AI-powered guidance and personalized meal planning — completely free, forever.',
-    ctaText: 'START FREE',
+    planDescription:
+      'Start your PCOS journey with zero commitment. Experience AI-powered guidance and personalized meal planning — completely free, forever.',
+    ctaText: 'Start Free',
     features: [
       {
         text: 'Unlimited AI chatbot',
@@ -43,25 +44,23 @@ export const pricingData: PricingCardData[] = [
         description: 'Snap and analyze your meals with AI',
       },
     ],
-    valueProps: [
-      '₹0 forever—no credit card needed',
-      'Perfect for exploring Sakhee',
-    ],
+    valueProps: ['₹0 forever—no credit card needed', 'Perfect for exploring Sakhee'],
   },
   {
     id: 'pro',
-    name: 'SAKHEE PRO',
+    name: 'Sakhee Pro',
     price: {
       monthly: 500,
       yearly: 5000,
     },
     subtitle: {
-      monthly: '/month or ₹17/day',
-      yearly: '/year (₹417/month—Get 2 months FREE!)',
+      monthly: 'or ₹17/day',
+      yearly: '(₹417/month—Get 2 months FREE!)',
     },
     tagline: 'Best for daily management',
-    planDescription: 'Your 24/7 AI PCOS companion with unlimited personalized meal plans. Get AI-powered insights from your progress tracking and lab report analysis.',
-    ctaText: 'UPGRADE NOW',
+    planDescription:
+      'Your 24/7 AI PCOS companion with unlimited personalized meal plans. Get AI-powered insights from your progress tracking and lab report analysis.',
+    ctaText: 'Upgrade Now',
     isPopular: true,
     features: [
       {
@@ -103,19 +102,20 @@ export const pricingData: PricingCardData[] = [
   },
   {
     id: 'max',
-    name: 'SAKHEE MAX',
+    name: 'Sakhee Max',
     price: {
       monthly: 1000,
       yearly: 10000,
     },
     subtitle: {
-      monthly: '/month or ₹33/day',
-      yearly: '/year (₹833/month—Get 2 months FREE!)',
+      monthly: 'or ₹33/day',
+      yearly: '(₹833/month—Get 2 months FREE!)',
     },
     tagline: 'Medical-grade care',
-    planDescription: 'Premium care with expert validation. Every meal plan reviewed by PCOS nutritionists, plus priority access to medical consultations and prescriptions.',
-    ctaText: 'COMING SOON',
-    badge: 'COMING SOON',
+    planDescription:
+      'Premium care with expert validation. Every meal plan reviewed by PCOS nutritionists, plus priority access to medical consultations and prescriptions.',
+    ctaText: 'Coming Soon',
+    badge: 'Coming Soon',
     badgeSubtext: 'Launching in 6 months',
     isDisabled: true,
     features: [

@@ -1,5 +1,5 @@
 import { Alert, Slider } from 'antd';
-import { AlertCircle, Crown, Loader } from 'lucide-react';
+import { AlertCircle, Crown, FlameIcon, Loader } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
@@ -515,37 +515,38 @@ const MealPlanGenerator = ({
 
         {/* Keto Information Banner - Show when enabled */}
         {formData.isKeto && (
-          <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0">
-                <AlertCircle className="text-blue-500" size={20} />
-              </div>
-              <div className="flex-1">
-                <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                  🔥 Ketogenic Diet for PCOS
-                </h4>
-                <ul className="text-xs text-blue-800 space-y-1.5">
-                  <li>
-                    <strong>What it means:</strong> All grains (rice, roti, bread) replaced with
-                    cauliflower rice & almond flour. No starchy vegetables (potato, corn).
-                  </li>
-                  <li>
-                    <strong>PCOS Benefits:</strong> Improved insulin sensitivity, better hormone
-                    balance, reduced inflammation, stable blood sugar.
-                  </li>
-                  <li>
-                    <strong>Compatible with:</strong> Works with all diet types - Veg Keto, Non-Veg
-                    Keto, Vegan Keto, Jain Keto.
-                  </li>
-                  <li>
-                    <strong>Medical Note:</strong> Consult your healthcare provider before starting
-                    keto, especially if on medication. Initial 1-2 weeks may have "keto flu" (stay
-                    hydrated, increase salt).
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <Alert
+            showIcon
+            icon={
+              <FlameIcon
+                color="#e85a5a"
+                strokeWidth={3}
+                className="border-[2px] border-primaryDark p-1 rounded-full"
+              />
+            }
+            message="Ketogenic Diet for PCOS"
+            description={
+              <ul className="text-xs text-blue-800 space-y-1.5">
+                <li>
+                  <strong>What it means:</strong> All grains (rice, roti, bread) replaced with
+                  cauliflower rice & almond flour. No starchy vegetables (potato, corn).
+                </li>
+                <li>
+                  <strong>PCOS Benefits:</strong> Improved insulin sensitivity, better hormone
+                  balance, reduced inflammation, stable blood sugar.
+                </li>
+                <li>
+                  <strong>Compatible with:</strong> Works with all diet types - Veg Keto, Non-Veg
+                  Keto, Vegan Keto, Jain Keto.
+                </li>
+                <li>
+                  <strong>Medical Note:</strong> Consult your healthcare provider before starting
+                  keto, especially if on medication. Initial 1-2 weeks may have "keto flu" (stay
+                  hydrated, increase salt).
+                </li>
+              </ul>
+            }
+          />
         )}
 
         {/* Daily Budget */}

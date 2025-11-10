@@ -33,7 +33,7 @@ html {
 }
 
 body {
-  @apply text-gray-900 inter-regular antialiased bg-gradient-to-br from-pink-100 via-white to-fuchsia-200;
+  @apply text-gray-900 inter-regular antialiased bg-gradient-to-r from-pink-100 via-red-50 to-rose-100;
 }
 
 h1,h2,h3,h4,h5,h6 {

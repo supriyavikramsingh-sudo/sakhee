@@ -2,11 +2,11 @@ import { Alert, Spin } from 'antd';
 import { ChevronDown, ChevronUp, Edit2, Save, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import QuestionField from '../onboarding/QuestionField';
 import { regionalCuisineConfig } from '../../config/regionalCuisineConfig';
 import apiClient from '../../services/apiClient';
 import { useAuthStore } from '../../store/authStore';
 import { calculateBMI, validateBMI } from '../../utils/calorieCalculations';
+import QuestionField from '../onboarding/QuestionField';
 
 const PreferencesSection = () => {
   const { t } = useTranslation();
@@ -16,16 +16,16 @@ const PreferencesSection = () => {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  
+
   // Edit state
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editedData, setEditedData] = useState<any>({});
   const [validationErrors, setValidationErrors] = useState<any>({});
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Available states for regional cuisine
   const [availableStates, setAvailableStates] = useState<any[]>([]);
-  
+
   // Expanded sections
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['personalInfo', 'healthProfile', 'dietLifestyle', 'goalsBudget', 'preferences'])
@@ -38,13 +38,13 @@ const PreferencesSection = () => {
 
   const loadUserProfile = async () => {
     if (!user?.uid) return;
-    
+
     setIsLoadingProfile(true);
     setErrorMessage(null);
-    
+
     try {
       const response: any = await apiClient.getUserProfileSettings(user.uid);
-      
+
       if (response.success) {
         setUserProfile(response.data);
       } else {
@@ -63,7 +63,7 @@ const PreferencesSection = () => {
     if (editingSection === 'preferences' && editedData.regions) {
       const states = regionalCuisineConfig.getStatesForRegions(editedData.regions);
       setAvailableStates(states);
-      
+
       // Remove selected states that are no longer available
       if (editedData.cuisineStates && editedData.cuisineStates.length > 0) {
         const availableStateIds = states.map((s) => s.id);
@@ -94,15 +94,15 @@ const PreferencesSection = () => {
 
   const startEditing = (section: string) => {
     if (!userProfile) return;
-    
+
     setEditingSection(section);
     setValidationErrors({});
     setSuccessMessage(null);
     setErrorMessage(null);
-    
+
     // Pre-populate edit data based on section
     const profileData = userProfile.profileData || {};
-    
+
     switch (section) {
       case 'personalInfo':
         setEditedData({
@@ -185,7 +185,7 @@ const PreferencesSection = () => {
         if (height && value) {
           const bmi = calculateBMI(parseFloat(value), parseFloat(height));
           const validation = validateBMI(bmi);
-          
+
           if (!validation.isHealthy) {
             setValidationErrors((prev) => ({
               ...prev,
@@ -209,34 +209,34 @@ const PreferencesSection = () => {
 
     // Final validation
     const errors: any = {};
-    
+
     // Section-specific validation
     if (editingSection === 'personalInfo') {
       if (!editedData.age) errors.age = 'Age is required';
     }
-    
+
     if (editingSection === 'healthProfile') {
       if (!editedData.diagnosisTime) errors.diagnosisTime = 'Diagnosis date is required';
       if (!editedData.height_cm) errors.height_cm = 'Height is required';
       if (!editedData.current_weight_kg) errors.current_weight_kg = 'Weight is required';
     }
-    
+
     if (editingSection === 'dietLifestyle') {
       if (!editedData.dietType) errors.dietType = 'Diet type is required';
       if (!editedData.activityLevel) errors.activityLevel = 'Activity level is required';
     }
-    
+
     if (editingSection === 'goalsBudget') {
       if (!editedData.goals || editedData.goals.length === 0) {
         errors.goals = 'At least one goal is required';
       }
       if (!editedData.income) errors.income = 'Income range is required';
-      
+
       if (editedData.goals?.includes('weight-management') && !editedData.weight_goal) {
         errors.weight_goal = 'Weight goal is required when weight management is selected';
       }
     }
-    
+
     if (editingSection === 'preferences') {
       if (!editedData.language) errors.language = 'Language is required';
       if (!editedData.regions || editedData.regions.length === 0) {
@@ -256,7 +256,7 @@ const PreferencesSection = () => {
     try {
       // Convert cuisineStates to cuisines array if in preferences section
       let finalData = { ...editedData };
-      
+
       if (editingSection === 'preferences' && editedData.cuisineStates) {
         const cuisines = regionalCuisineConfig.getCuisinesFromStates(editedData.cuisineStates);
         finalData.cuisines = cuisines;
@@ -267,9 +267,9 @@ const PreferencesSection = () => {
       if (response.success) {
         setUserProfile(response.data);
         setSuccessMessage('✓ Changes saved successfully');
-        
+
         // Check for metric changes that affect meal plans
-        const metricsChanged = 
+        const metricsChanged =
           editedData.height_cm !== undefined ||
           editedData.current_weight_kg !== undefined ||
           editedData.activityLevel !== undefined ||
@@ -291,7 +291,7 @@ const PreferencesSection = () => {
       }
     } catch (error: any) {
       console.error('Save error:', error);
-      
+
       // Handle field validation errors from backend
       if (error.status === 400 && error.response?.error?.fieldErrors) {
         setValidationErrors(error.response.error.fieldErrors);
@@ -306,7 +306,7 @@ const PreferencesSection = () => {
 
   const getSectionQuestions = (section: string) => {
     if (!userProfile) return [];
-    
+
     const profileData = userProfile.profileData || {};
     const data = editingSection === section ? editedData : profileData;
 
@@ -483,7 +483,7 @@ const PreferencesSection = () => {
 
         // Conditional weight goal fields
         const hasWeightGoal = data.goals?.includes('weight-management');
-        
+
         if (hasWeightGoal) {
           questions.push({
             key: 'weight_goal',
@@ -501,7 +501,7 @@ const PreferencesSection = () => {
           });
 
           const needsTargetWeight = data.weight_goal === 'lose' || data.weight_goal === 'gain';
-          
+
           if (needsTargetWeight) {
             questions.push({
               key: 'target_weight_kg',
@@ -590,11 +590,7 @@ const PreferencesSection = () => {
     }
   };
 
-  const renderSectionCard = (
-    sectionKey: string,
-    title: string,
-    description: string
-  ) => {
+  const renderSectionCard = (sectionKey: string, title: string, description: string) => {
     const isExpanded = expandedSections.has(sectionKey);
     const isEditing = editingSection === sectionKey;
     const questions = getSectionQuestions(sectionKey);
@@ -613,7 +609,7 @@ const PreferencesSection = () => {
             <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
             <p className="text-sm text-gray-500 mt-1">{description}</p>
           </div>
-          
+
           <div className="flex items-center gap-3">
             {!isEditing && isExpanded && (
               <button
@@ -628,7 +624,7 @@ const PreferencesSection = () => {
                 Edit
               </button>
             )}
-            
+
             {!isEditing && (
               <button className="text-gray-400 hover:text-gray-600">
                 {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -650,7 +646,7 @@ const PreferencesSection = () => {
                 className="mb-4"
               />
             )}
-            
+
             {isEditing && errorMessage && (
               <Alert
                 type="error"
@@ -662,13 +658,18 @@ const PreferencesSection = () => {
             )}
 
             {/* Display calculated calorie info for health profile */}
-            {sectionKey === 'healthProfile' && !isEditing && userProfile?.daily_calorie_requirement && (
-              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 mb-4">
-                <p className="text-sm font-medium text-gray-700">
-                  Daily Calorie Target: <span className="text-primary font-semibold">{userProfile.daily_calorie_requirement} kcal</span>
-                </p>
-              </div>
-            )}
+            {sectionKey === 'healthProfile' &&
+              !isEditing &&
+              userProfile?.daily_calorie_requirement && (
+                <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 my-4">
+                  <p className="text-sm font-medium text-gray-700">
+                    Daily Calorie Target:{' '}
+                    <span className="text-primary font-semibold">
+                      {userProfile.daily_calorie_requirement} kcal
+                    </span>
+                  </p>
+                </div>
+              )}
 
             {/* Info message during editing */}
             {isEditing && (sectionKey === 'healthProfile' || sectionKey === 'dietLifestyle') && (
@@ -760,35 +761,23 @@ const PreferencesSection = () => {
   return (
     <div>
       {/* Section Cards */}
-      {renderSectionCard(
-        'personalInfo',
-        'Personal Information',
-        'Basic details about you'
-      )}
-      
-      {renderSectionCard(
-        'healthProfile',
-        'Health Profile',
-        'Your health metrics and symptoms'
-      )}
-      
+      {renderSectionCard('personalInfo', 'Personal Information', 'Basic details about you')}
+
+      {renderSectionCard('healthProfile', 'Health Profile', 'Your health metrics and symptoms')}
+
       {renderSectionCard(
         'dietLifestyle',
         'Diet & Lifestyle',
         'Your dietary preferences and activity level'
       )}
-      
+
       {renderSectionCard(
         'goalsBudget',
         'Goals & Budget',
         'Your health goals and budget preferences'
       )}
-      
-      {renderSectionCard(
-        'preferences',
-        'Preferences',
-        'Language and cuisine preferences'
-      )}
+
+      {renderSectionCard('preferences', 'Preferences', 'Language and cuisine preferences')}
     </div>
   );
 };

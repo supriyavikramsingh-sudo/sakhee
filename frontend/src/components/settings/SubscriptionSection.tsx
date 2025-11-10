@@ -273,10 +273,7 @@ const SubscriptionSection = () => {
 
         {isPro && !isCanceled && (
           <div className="flex gap-4">
-            <button
-              onClick={handleChangePlan}
-              className="px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition"
-            >
+            <button onClick={handleChangePlan} className="btn-primary px-6 py-3">
               Change Plan
             </button>
             <button

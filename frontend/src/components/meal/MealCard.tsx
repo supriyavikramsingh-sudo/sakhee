@@ -21,7 +21,7 @@ const MealCard = ({ meal }: MealCardProps) => {
   const cookingTime = meal.time || '20 mins';
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+    <div className="bg-white rounded-lg shadow-md border border-primary p-6 hover:shadow-lg transition">
       {/* Meal Header */}
       <div className="flex items-start justify-between mb-4">
         <div>

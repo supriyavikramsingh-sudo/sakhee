@@ -1,4 +1,4 @@
-import { AlertCircle, Calendar, Download, Info } from 'lucide-react';
+import { AlertCircle, Calendar, ChevronLeft, ChevronRight, Download, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import firestoreService from '../../services/firestoreService';
@@ -60,12 +60,6 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
 
   // Handle both parsed and raw plans
   let parsedPlan = plan.plan;
-  let isFallback = false;
-
-  // Check if using fallback
-  if (parsedPlan.fallback) {
-    isFallback = true;
-  }
 
   // Extract days array
   const days = parsedPlan.days || [];
@@ -85,31 +79,18 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
   const currentDay = days[selectedDay] || days[0];
 
   return (
-    <div className="space-y-6">
-      {/* Fallback Notice */}
-      {isFallback && (
-        <div className="bg-info bg-opacity-10 border-l-4 border-info p-4 rounded-lg">
-          <div className="flex items-start gap-3">
-            <Info className="text-info flex-shrink-0" size={20} />
-            <p className="text-sm text-gray-700">
-              💡 We've created a PCOS-friendly meal plan using our expert templates. All meals are
-              low-GI and suitable for your preferences.
-            </p>
-          </div>
-        </div>
-      )}
-
+    <div className="space-y-6 bg-white p-4">
       {/* Keto Diet Notice */}
       {plan.isKeto && (
-        <div className="bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-300 rounded-lg p-5">
+        <div className="bg-gradient-to-r from-pink-100 to-rose-100 border-2 border-pink-300 rounded-lg p-5">
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+            <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
               <span className="text-white text-lg font-bold">⚡</span>
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
                 🔥 Ketogenic Diet Meal Plan
-                <span className="px-2 py-0.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs rounded-full">
+                <span className="px-2 py-0.5 bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xs rounded-full">
                   {plan.dietType === 'vegan'
                     ? 'Vegan Keto'
                     : plan.dietType === 'jain'
@@ -152,46 +133,30 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
         </div>
       )}
 
-      {/* Summary Cards */}
-      <div className="grid md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg p-4 shadow">
-          <p className="text-sm text-muted mb-1">Duration</p>
-          <p className="text-2xl font-bold text-primary">{days.length || '3'} Days</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow">
-          <p className="text-sm text-muted mb-1">Daily Budget</p>
-          <p className="text-2xl font-bold text-success">₹{plan.budget || '200'}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow">
-          <p className="text-sm text-muted mb-1">Diet Type</p>
-          <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-lg font-bold capitalize">{plan.dietType || 'Vegetarian'}</p>
-            {plan.isKeto && (
-              <span className="px-2 py-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-full flex items-center gap-1">
-                ⚡ Keto
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-4 shadow">
-          <p className="text-sm text-muted mb-1">Region</p>
-          <p className="text-lg font-bold capitalize">
-            {plan.regions.map((region) => region.replace('-', ' ')).join() || 'Indian'}
-          </p>
-        </div>
-      </div>
-
       {/* Calorie Disclaimer - Personalized */}
       <CalorieDisclaimer />
 
       {/* REPLACE THE ENTIRE HEADER/ACTIONS SECTION WITH THIS: */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <div className="bg-gradient-to-r from-pink-100 to-rose-100 rounded-lg border border-primary p-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-primary mb-2">Your Meal Plan</h2>
-            <p className="text-sm text-muted">
-              {days.length} days • {plan.dietType || 'Custom'} • ₹{plan.budget || 'N/A'}/day
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-neutral-900 capitalize">{days.length || '3'} Days</p>•
+              <p className="text-neutral-900 capitalize flex gap-1 items-center">
+                {plan.dietType || 'Vegetarian'}{' '}
+                {plan.isKeto && (
+                  <span className="px-2 py-1 bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xs font-bold rounded-full flex items-center gap-1">
+                    ⚡ Keto
+                  </span>
+                )}
+              </p>
+              •
+              <p className="text-neutral-900 capitalize">
+                {plan.regions.map((region) => region.replace('-', ' ')).join() || 'Indian'}
+              </p>
+              •<p className="text-neutral-900 capitalize">₹{plan.budget || '200'}/day</p>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -199,7 +164,7 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
             <button
               onClick={downloadPDF}
               disabled={isDownloading}
-              className={`flex items-center gap-2 px-4 py-2 bg-surface rounded-lg hover:bg-accent hover:text-white transition ${
+              className={`btn-outline flex gap-2 px-4 py-2 bg-surface ${
                 isDownloading ? 'opacity-60 pointer-events-none' : ''
               }`}
             >
@@ -227,32 +192,28 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
         </div>
       </div>
 
-      {/* Day Selector */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="font-bold mb-4 flex items-center gap-2">
-          <Calendar size={20} className="text-primary" />
-          Select Day
-        </h3>
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {days.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSelectedDay(i)}
-              className={`px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
-                selectedDay === i
-                  ? 'bg-primary text-white'
-                  : 'bg-surface text-gray-700 hover:bg-accent hover:text-white'
-              }`}
-            >
-              Day {i + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Meals for Selected Day */}
       <div className="space-y-4">
-        <h3 className="text-2xl font-bold text-primary">Day {selectedDay + 1} Meals</h3>
+        <div className="flex gap-2 items-center">
+          <ChevronLeft
+            className={selectedDay === 0 ? 'text-muted' : `text-primary hover:text-primaryDark`}
+            onClick={selectedDay === 0 ? () => {} : () => setSelectedDay(selectedDay - 1)}
+          />
+          <h3 className="text-2xl font-bold flex items-center gap-2 text-primary">
+            <Calendar size={20} className="text-primary" strokeWidth={3} /> Day {selectedDay + 1}{' '}
+            Meals
+          </h3>
+          <ChevronRight
+            className={
+              selectedDay === days.length - 1
+                ? 'text-muted'
+                : `text-primary hover:text-primaryDark `
+            }
+            onClick={
+              selectedDay === days.length - 1 ? () => {} : () => setSelectedDay(selectedDay + 1)
+            }
+          />
+        </div>
 
         {currentDay && currentDay.meals && currentDay.meals.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-4">
