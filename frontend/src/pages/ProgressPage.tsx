@@ -37,13 +37,11 @@ const ProgressPage = () => {
     <div className="min-h-screen">
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-start justify-between">
-          <PageHeader
-            title={t('progress.title')}
-            description={t('progress.subtitle')}
-            icon={<TrendingUp size={30} className="text-primary" strokeWidth={3} />}
-          />
-
+        <PageHeader
+          title={t('progress.title')}
+          description={t('progress.subtitle')}
+          icon={<TrendingUp size={30} className="text-primary" strokeWidth={3} />}
+        >
           <button
             onClick={() => setShowLogger(true)}
             className="btn-primary flex items-center gap-2"
@@ -51,7 +49,7 @@ const ProgressPage = () => {
             <Plus size={20} />
             {t('progress.logToday')}
           </button>
-        </div>
+        </PageHeader>
 
         {/* Logger Modal */}
         {showLogger && (

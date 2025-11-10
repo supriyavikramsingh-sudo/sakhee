@@ -68,3 +68,23 @@ export interface RagSources {
   labGuidance: number;
   symptomRecommendations: boolean;
 }
+
+export interface UserProfileData {
+  target_weight_kg: number;
+  email: string;
+  income: string;
+  dietType: string;
+  regions: string[];
+  goals: string[];
+  activityLevel: string;
+  current_weight_kg: number;
+  height_cm: number;
+  diagnosisTime: string;
+  age: string;
+  language: string;
+  location: string;
+  symptoms: string[];
+  cuisines: string[];
+  cuisineStates: string[];
+  weight_goal: string;
+}

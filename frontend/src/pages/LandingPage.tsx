@@ -1,12 +1,24 @@
-import { Cpu, FileHeart, Heart, Leaf, Zap } from 'lucide-react';
+import {
+  Cpu,
+  FileHeart,
+  FlaskConicalIcon,
+  Heart,
+  Leaf,
+  MessageCircle,
+  TrendingUpIcon,
+  Utensils,
+  Zap,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/common/Footer';
 import Logo from '/images/logo.svg';
 
 interface FeatureCardProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
+  index?: number;
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
@@ -16,6 +28,22 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
       <h3 className="font-bold text-lg mb-1">{title}</h3>
       <p className="para">{description}</p>
     </div>
+  </div>
+);
+
+const Cards = ({ index, title, description }: FeatureCardProps) => (
+  <div className="px-6 py-4 shadow-[0_0_1px_#ff8d8d,0_0_2px_#171a1f14] shadow-xs rounded-lg">
+    <p className="text-primary text-[48px] lora-600">{index}.</p>
+    <h3 className="font-semibold text-2xl mb-[10px]">{title}</h3>
+    <p className="text-muted">{description}</p>
+  </div>
+);
+
+const Section2Cards = ({ icon, title, description }: FeatureCardProps) => (
+  <div className="px-6 py-4 shadow-[0_0_1px_#ff8d8d,0_0_2px_#171a1f14] gap-4 flex-1 bg-white shadow-xs flex flex-col items-center rounded-lg">
+    <p className="text-primary text-[48px] lora-600">{icon}</p>
+    <h3 className="font-semibold text-2xl text-center">{title}</h3>
+    <p className="text-muted text-center">{description}</p>
   </div>
 );
 
@@ -31,14 +59,14 @@ const LandingPage = () => {
           <button onClick={() => navigate('/login')} className="btn-outline">
             Sign in
           </button>
-          <button onClick={() => navigate('/login')} className="btn-primary">
-            Get started
-          </button>
+          <a href="#section2" className="btn-primary">
+            Learn More
+          </a>
         </div>
       </header>
 
-      <main className="mx-auto px-4 pt-20">
-        <section className="min-h-screen snap-start flex items-center px-4">
+      <main className="mx-auto px-4">
+        <section className="min-h-screen snap-start flex items-center pt-[80px] px-4">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
               Your PCOS journey, supported every step of the way
@@ -52,7 +80,7 @@ const LandingPage = () => {
               <button onClick={() => navigate('/login')} className="btn-primary px-6 py-3">
                 Start for Free
               </button>
-              <button onClick={() => navigate('/login')} className="btn-secondary px-6 py-3">
+              <button onClick={() => navigate('/login')} className="btn-outline px-6 py-3">
                 Already a member? Sign in
               </button>
             </div>
@@ -60,32 +88,82 @@ const LandingPage = () => {
           <img src="/images/login-avatar.svg" />
         </section>
 
-        <section id="section2" className="min-h-screen snap-start flex items-center px-4">
-          <div className="bg-white/70 rounded-lg p-8 shadow-lg mx-auto max-w-3xl">
-            <h3 className="font-bold text-xl mb-4">
-              Everything you need to manage PCOS confidently
-            </h3>
-            <ul className="space-y-3 text-sm text-muted">
-              <li>
-                ✨ <strong>AI health companion</strong> trained on medical research + real PCOS
-                experiences
-              </li>
-              <li>
-                🍽️ <strong>Personalized Indian meal plans</strong> that fit your taste, diet, and
-                budget
-              </li>
-              <li>
-                📊 <strong>Smart symptom tracking</strong> with visual progress reports
-              </li>
-              <li>
-                🩺 <strong>Lab report analysis</strong> in simple language to help you understand
-                your PCOS better
-              </li>
-            </ul>
+        <section id="section2" className="min-h-screen snap-start flex items-center pt-[80px] px-4">
+          <div className="bg-[#FAFAFAFF] p-12 rounded-xl flex flex-col gap-11">
+            <div className="flex flex-col items-center justify-center gap-[30px]">
+              <h3 className="font-bold text-center text-[40px]">Discover Our Powerful Features</h3>
+              <p className="text-center text-lg max-w-[650px]">
+                Harness the power of AI to gain deeper insights into your health, personalize your
+                wellness journey, and achieve your goals with confidence.
+              </p>
+            </div>
+            <div className="flex gap-[30px]">
+              <Section2Cards
+                icon={<MessageCircle size={48} />}
+                title={'AI Chat Assistant'}
+                description={
+                  'AI health companion trained on medical research + real PCOS experiences'
+                }
+              />
+              <Section2Cards
+                icon={<Utensils size={48} />}
+                title={'Personalized Meal Plans'}
+                description={'Personalized Indian meal plans that fit your taste, diet, and budget'}
+              />
+              <Section2Cards
+                icon={<TrendingUpIcon size={48} />}
+                title={'Progress Tracking'}
+                description={'Smart symptom tracking with visual progress reports'}
+              />
+              <Section2Cards
+                icon={<FlaskConicalIcon size={48} />}
+                title={'Lab Report Analysis'}
+                description={
+                  'Lab report analysis in simple language to help you understand your PCOS better'
+                }
+              />
+            </div>
           </div>
         </section>
 
-        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center px-4">
+        <section className="min-h-screen snap-start flex items-center pt-[80px] px-4">
+          <div className="flex flex-col gap-11">
+            <div className="flex flex-col items-center justify-center gap-[30px]">
+              <h3 className="font-bold text-center text-[40px]">
+                Your Path to Better Health, Simplified
+              </h3>
+              <p className="text-center text-lg max-w-[600px]">
+                Getting started with AISakhee is easy. Follow these simple steps to unlock a world
+                of personalized wellness insights.
+              </p>
+            </div>
+            <div className="flex gap-[30px]">
+              <Cards
+                title={'Sign Up for Free'}
+                description={
+                  'Create your free account in minutes to begin your personalized health journey.'
+                }
+                index={1}
+              />
+              <Cards
+                title={'Personalize Your Profile'}
+                description={
+                  'Tell us about your unique health goals, dietary preferences, and any specific needs.'
+                }
+                index={2}
+              />
+              <Cards
+                title={'Explore & Thrive'}
+                description={
+                  'Access AI chat, generate meal plans, track progress, and analyze reports effortlessly.'
+                }
+                index={3}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center pt-[80px] px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
             Why women across India choose Sakhee?
           </h1>
@@ -127,12 +205,23 @@ const LandingPage = () => {
           </div>
         </section>
       </main>
-      <footer className="bg-white min-h-[120px] snap-end flex items-center justify-center mt-8 w-full">
-        <p className="text-center text-sm text-muted max-w-2xl font-semibold">
-          By creating an account you agree to our Terms of Service and Privacy Policy. Your health
-          data is stored securely and never shared without your consent.
-        </p>
-      </footer>
+
+      <section className="flex flex-col gap-8 text-white items-center justify-center px-4 mt-10">
+        <div className="bg-primary flex flex-col items-center gap-2 justify-center py-12 max-w-7xl w-full rounded-xl">
+          <h2 className="text-center text-[36px]">Ready to Transform Your Health?</h2>
+          <p className="text-center text-lg">
+            Join thousands of women who are taking charge of their well-being with AI Sakhee. Get
+            started today with a free trial!
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            className="btn-outline text-lg rounded-lg w-fit mt-2"
+          >
+            Start Your Free Trial
+          </button>
+        </div>
+      </section>
+      <Footer />
     </div>
   );
 };

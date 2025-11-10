@@ -18,7 +18,7 @@ const ProgressDashboard = ({ progressData, loading }) => {
 
   if (!analytics) {
     return (
-      <div className="bg-white rounded-lg shadow p-12 text-center">
+      <div className="bg-white rounded-b-lg shadow p-12 text-center">
         <Activity className="mx-auto mb-4 text-muted" size={64} />
         <h3 className="text-xl font-bold mb-2">No Data Yet</h3>
         <p className="text-muted mb-6">

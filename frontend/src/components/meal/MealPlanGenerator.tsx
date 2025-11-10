@@ -7,12 +7,13 @@ import { apiClient } from '../../services/apiClient';
 import firestoreService from '../../services/firestoreService';
 import { useMealStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
+import type { UserProfileData } from '../../types/meal.type';
 import SelectInput from '../common/SelectInput';
 import MealInfoTipSection from './MealInfoTipSection';
 import RAGMetadataDisplay from './RAGMetadataDisplay';
 
 interface MealPlanGeneratorProps {
-  userProfile: any;
+  userProfile: UserProfileData;
   userId: string;
   onGenerated: () => void;
   isRegenerating?: boolean;
@@ -165,7 +166,7 @@ const MealPlanGenerator = ({
     setError(null);
 
     try {
-      const profileData = userProfile?.profileData || userProfile || {};
+      const profileData = userProfile || {};
 
       // Fetch latest medical report
       let latestReport = null;
@@ -187,8 +188,8 @@ const MealPlanGenerator = ({
       setPersonalizationSources(null);
 
       // Determine final regions and cuisines
-      let finalRegions = [];
-      let finalCuisines = [];
+      let finalRegions: string[] = [];
+      let finalCuisines: string[] = [];
 
       // If user selected override regions/states
       if (
@@ -341,7 +342,7 @@ const MealPlanGenerator = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="bg-white rounded-b-lg shadow-lg p-6">
       {/* Error Display */}
       {error && (
         <div className="mb-4 p-4 bg-danger bg-opacity-10 border-l-4 border-danger rounded-lg">
@@ -391,7 +392,7 @@ const MealPlanGenerator = ({
             <p className="text-xs text-gray-500 mt-1">
               {formData.regions.length === 0
                 ? `Will use your onboarding preference${
-                    profileData.cuisines ? `: ${profileData.cuisines.slice(0, 2).join(', ')}` : ''
+                    profileData.region ? `: ${profileData.cuisines.slice(0, 2).join(', ')}` : ''
                   }`
                 : `${formData.regions.length} region${
                     formData.regions.length > 1 ? 's' : ''
@@ -408,6 +409,15 @@ const MealPlanGenerator = ({
               handleInputChange={(value) => {
                 setFormData((prev) => ({ ...prev, cuisineStates: value }));
               }}
+              placeholder={
+                formData.cuisineStates.length === 0
+                  ? `Will use your onboarding cuisines${
+                      profileData.cuisines ? `: ${profileData.cuisines.join(', ')}` : ''
+                    }`
+                  : `${formData.cuisineStates.length} cuisine${
+                      formData.cuisineStates.length > 1 ? 's' : ''
+                    } selected`
+              }
               mode="multiple"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -429,6 +439,8 @@ const MealPlanGenerator = ({
               options={dietTypes.map((diet) => {
                 return { value: diet.value, label: diet.label };
               })}
+              placeholder="Use my onboarding preference"
+              defaultValue={dietTypes[0].value}
               handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: val }))}
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -446,7 +458,7 @@ const MealPlanGenerator = ({
                 { value: '3', label: '3 Meals' },
                 { value: '4', label: '4 Meals (with snack)' },
               ]}
-              defaultValue={'3'}
+              defaultValue="3"
               handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: val }))}
             />
           </div>
@@ -455,7 +467,7 @@ const MealPlanGenerator = ({
             <SelectInput
               required
               label={'Duration'}
-              defaultValue={3}
+              defaultValue="3"
               options={[
                 { value: '3', label: '3 Days' },
                 { value: '5', label: '5 Days' },
@@ -477,12 +489,16 @@ const MealPlanGenerator = ({
               className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer"
             />
             <div className="flex-1">
-              <label htmlFor="isKeto" className="text-sm font-semibold text-gray-800 cursor-pointer flex items-center gap-2">
+              <label
+                htmlFor="isKeto"
+                className="text-sm font-semibold text-gray-800 cursor-pointer flex items-center gap-2"
+              >
                 ⚡ Enable Ketogenic Diet
                 <span className="px-2 py-0.5 bg-primary text-white text-xs rounded-full">New</span>
               </label>
               <p className="text-xs text-gray-600 mt-1">
-                High-fat (70%), moderate-protein (25%), very low-carb (5%) - optimized for PCOS insulin sensitivity
+                High-fat (70%), moderate-protein (25%), very low-carb (5%) - optimized for PCOS
+                insulin sensitivity
               </p>
             </div>
           </div>
@@ -501,16 +517,21 @@ const MealPlanGenerator = ({
                 </h4>
                 <ul className="text-xs text-blue-800 space-y-1.5">
                   <li>
-                    <strong>What it means:</strong> All grains (rice, roti, bread) replaced with cauliflower rice & almond flour. No starchy vegetables (potato, corn).
+                    <strong>What it means:</strong> All grains (rice, roti, bread) replaced with
+                    cauliflower rice & almond flour. No starchy vegetables (potato, corn).
                   </li>
                   <li>
-                    <strong>PCOS Benefits:</strong> Improved insulin sensitivity, better hormone balance, reduced inflammation, stable blood sugar.
+                    <strong>PCOS Benefits:</strong> Improved insulin sensitivity, better hormone
+                    balance, reduced inflammation, stable blood sugar.
                   </li>
                   <li>
-                    <strong>Compatible with:</strong> Works with all diet types - Veg Keto, Non-Veg Keto, Vegan Keto, Jain Keto.
+                    <strong>Compatible with:</strong> Works with all diet types - Veg Keto, Non-Veg
+                    Keto, Vegan Keto, Jain Keto.
                   </li>
                   <li>
-                    <strong>Medical Note:</strong> Consult your healthcare provider before starting keto, especially if on medication. Initial 1-2 weeks may have "keto flu" (stay hydrated, increase salt).
+                    <strong>Medical Note:</strong> Consult your healthcare provider before starting
+                    keto, especially if on medication. Initial 1-2 weeks may have "keto flu" (stay
+                    hydrated, increase salt).
                   </li>
                 </ul>
               </div>

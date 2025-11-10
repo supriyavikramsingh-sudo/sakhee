@@ -170,11 +170,16 @@ class FirestoreService {
   async completeOnboarding(userId, profileData) {
     try {
       const userRef = doc(db, 'users', userId);
-      
+
       // Calculate user metrics if height and weight are provided
       let calculatedMetrics = {};
-      
-      if (profileData.height_cm && profileData.current_weight_kg && profileData.age && profileData.activityLevel) {
+
+      if (
+        profileData.height_cm &&
+        profileData.current_weight_kg &&
+        profileData.age &&
+        profileData.activityLevel
+      ) {
         // Import calculation utilities
         const {
           getAgeFromRange,
@@ -183,7 +188,7 @@ class FirestoreService {
           calculateDailyCalories,
           calculateBMI,
         } = await import('../utils/calorieCalculations');
-        
+
         const calculated_age = getAgeFromRange(profileData.age);
         const bmr = calculateBMR(
           profileData.current_weight_kg,
@@ -191,15 +196,15 @@ class FirestoreService {
           calculated_age
         );
         const tdee = calculateTDEE(bmr, profileData.activityLevel);
-        
+
         // Determine weight goal (default to maintain if not specified)
         const weight_goal = profileData.weight_goal || 'maintain';
         const target_weight_kg = profileData.target_weight_kg || profileData.current_weight_kg;
-        
+
         const daily_calorie_requirement = calculateDailyCalories(tdee, weight_goal);
         const current_bmi = calculateBMI(profileData.current_weight_kg, profileData.height_cm);
         const target_bmi = calculateBMI(target_weight_kg, profileData.height_cm);
-        
+
         calculatedMetrics = {
           calculated_age,
           bmr,
@@ -210,7 +215,7 @@ class FirestoreService {
           calculated_at: serverTimestamp(),
         };
       }
-      
+
       await setDoc(
         userRef,
         {

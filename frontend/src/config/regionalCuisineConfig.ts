@@ -68,7 +68,9 @@ export const regionalCuisineConfig = {
    * @param {string[]} selectedRegionIds - Array of region IDs
    * @returns {object[]} Array of state objects
    */
-  getStatesForRegions(selectedRegionIds) {
+  getStatesForRegions(
+    selectedRegionIds: string[]
+  ): { id: string; label: string; cuisine: string }[] {
     if (!selectedRegionIds || selectedRegionIds.length === 0) {
       return [];
     }
@@ -83,12 +85,12 @@ export const regionalCuisineConfig = {
    * @param {string[]} selectedStateIds - Array of state IDs
    * @returns {string[]} Array of cuisine names
    */
-  getCuisinesFromStates(selectedStateIds) {
+  getCuisinesFromStates(selectedStateIds: string[]): string[] {
     if (!selectedStateIds || selectedStateIds.length === 0) {
       return [];
     }
 
-    const cuisines = [];
+    const cuisines: string[] = [];
     this.regions.forEach((region) => {
       region.states.forEach((state) => {
         if (selectedStateIds.includes(state.id)) {
@@ -105,7 +107,7 @@ export const regionalCuisineConfig = {
    * @param {string} stateId - State ID
    * @returns {string|null} Region ID
    */
-  getRegionFromState(stateId) {
+  getRegionFromState(stateId: string): string | null {
     for (const region of this.regions) {
       if (region.states.some((state) => state.id === stateId)) {
         return region.id;
@@ -119,12 +121,12 @@ export const regionalCuisineConfig = {
    * @param {string[]} stateIds - Array of state IDs
    * @returns {string[]} Array of unique region IDs
    */
-  getRegionsFromStates(stateIds) {
+  getRegionsFromStates(stateIds: string[]): string[] {
     if (!stateIds || stateIds.length === 0) {
       return [];
     }
 
-    const regionIds = new Set();
+    const regionIds = new Set<string>();
     stateIds.forEach((stateId) => {
       const regionId = this.getRegionFromState(stateId);
       if (regionId) {

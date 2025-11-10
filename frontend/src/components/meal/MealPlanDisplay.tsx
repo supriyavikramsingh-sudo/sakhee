@@ -110,10 +110,13 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
               <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
                 🔥 Ketogenic Diet Meal Plan
                 <span className="px-2 py-0.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs rounded-full">
-                  {plan.dietType === 'vegan' ? 'Vegan Keto' : 
-                   plan.dietType === 'jain' ? 'Jain Keto' : 
-                   plan.dietType === 'vegetarian' ? 'Veg Keto' : 
-                   'Non-Veg Keto'}
+                  {plan.dietType === 'vegan'
+                    ? 'Vegan Keto'
+                    : plan.dietType === 'jain'
+                    ? 'Jain Keto'
+                    : plan.dietType === 'vegetarian'
+                    ? 'Veg Keto'
+                    : 'Non-Veg Keto'}
                 </span>
               </h3>
               <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-700">
@@ -139,7 +142,9 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
               <p className="text-xs text-gray-600 mt-3 flex items-start gap-1">
                 <AlertCircle className="flex-shrink-0 mt-0.5" size={14} />
                 <span>
-                  <strong>Medical Note:</strong> Stay well-hydrated and increase salt intake. Initial 1-2 weeks may have "keto flu" symptoms. Consult your healthcare provider for monitoring.
+                  <strong>Medical Note:</strong> Stay well-hydrated and increase salt intake.
+                  Initial 1-2 weeks may have "keto flu" symptoms. Consult your healthcare provider
+                  for monitoring.
                 </span>
               </p>
             </div>

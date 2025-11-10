@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
-import { SettingsSidebar } from '../components/settings/SettingsSidebar';
 import PreferencesSection from '../components/settings/PreferencesSection';
+import { SettingsSidebar } from '../components/settings/SettingsSidebar';
 import SubscriptionSection from '../components/settings/SubscriptionSection';
 
 const SettingsPageNew = () => {

@@ -8,9 +8,11 @@ interface TextInputProps {
   handleInputChange: (value: string | number) => void;
   disable?: boolean;
   placeholder?: string;
+  className?: string;
 }
 
 const TextInput = ({
+  className,
   label,
   required = false,
   defaultValue,
@@ -21,14 +23,16 @@ const TextInput = ({
 }: TextInputProps) => {
   return (
     <>
-      <label className="block text-sm font-medium mb-2">
-        {label} {required && <span className="text-danger">*</span>}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium mb-2">
+          {label} {required && <span className="text-danger">*</span>}
+        </label>
+      )}
       <Input
         placeholder={placeholder}
         value={value || defaultValue}
         disabled={disable}
-        style={{ width: 400, height: 40 }}
+        className={`w-[400px] h-[40px] ${className}`}
         onChange={(e) => handleInputChange(e.target.value)}
       />
     </>

@@ -8,7 +8,9 @@ interface MealStoreState {
   addToHistory: (plan: any) => void;
 }
 
-export const useChatStore = create((set) => ({
+interface ChatStoreState {}
+
+export const useChatStore = create<ChatStoreState>((set) => ({
   messages: [],
   allMessages: [], // Store all messages
   isLoading: false,

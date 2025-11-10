@@ -2,6 +2,8 @@ import { Alert } from 'antd';
 import { Cpu, FileHeart, Heart, Leaf, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/common/Footer';
+import Qoutes from '../components/common/Qoutes';
 import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
 
@@ -32,10 +34,9 @@ const HomePage = () => {
 
       <main className="max-w-7xl mx-auto px-4 pt-20">
         <section className="min-h-screen snap-start flex justify-between items-center px-4">
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl md:text-5xl text-center font-bold text-primary mb-4">
-              Welcome back,
-              {userProfile?.displayName || user?.displayName}! <br />
+              Welcome, {userProfile?.displayName || user?.displayName}! <br />
             </h1>
             <p className="text-lg text-muted text-center mb-6 max-w-2xl">{t('home.subtitle')}</p>
 
@@ -43,37 +44,26 @@ const HomePage = () => {
               <button onClick={() => navigate('/chat')} className="btn-primary text-lg px-8 py-3">
                 {t('home.openChat')}
               </button>
-              <button
-                onClick={() => navigate('/meals')}
-                className="btn-secondary text-lg px-8 py-3"
-              >
+              <button onClick={() => navigate('/meals')} className="btn-outline text-lg px-8 py-3">
                 {t('home.viewMeals')}
               </button>
             </div>
+            <Qoutes />
           </div>
-          <img src="/images/undraw_confident_9v38.svg" className="max-w-[500px]" />
+          <img src="/images/undraw_confident_9v38.png" className="max-w-[550px]" />
         </section>
 
-        <section className="min-h-screen snap-start flex items-center px-4">
-          <div className="bg-white/70 rounded-lg p-8 shadow-lg mx-auto max-w-3xl">
-            <h3 className="font-bold text-xl mb-4">What you get</h3>
-            <ul className="space-y-3 text-sm text-muted">
-              <li>• AI-driven, medically-informed guidance tailored to your needs.</li>
-              <li>• Personalized meal plans and nutrition suggestions.</li>
-              <li>• Symptom and progress tracking with visual reports.</li>
-              <li>• Secure upload and intelligent parsing of lab reports.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">Key features</h1>
+        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center pt-[80px] px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
+            Why women across India choose Sakhee?
+          </h1>
           <div className="grid align-middle place-items-center md:grid-cols-3 gap-6 px-4 w-full max-w-6xl">
             <FeatureCard
               icon={<Cpu className="w-8 h-8" />}
-              title={t('home.features.ai') || 'AI insights'}
+              title={t('home.features.ai') || 'AI That Actually Understands PCOS'}
               description={
-                t('home.features.aiDesc') || 'Personalized suggestions powered by research.'
+                t('home.features.aiDesc') ||
+                'Get answers instantly—backed by medical research, personalized to your symptoms, available 24/7.'
               }
             />
             <FeatureCard
@@ -106,16 +96,16 @@ const HomePage = () => {
         </section>
       </main>
 
-      <footer className="snap-end flex items-center justify-center mt-8 pb-4 w-full">
+      <Footer>
         <Alert
           message={t('common.disclaimer')}
           description={t('common.disclaimerText')}
           type="warning"
           showIcon
           closable
-          className="mt-12 w-full max-w-7xl"
+          className="w-full max-w-7xl"
         />
-      </footer>
+      </Footer>
     </div>
   );
 };

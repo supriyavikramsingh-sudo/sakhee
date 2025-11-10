@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +10,20 @@
   font-style: normal;
 }
 
+.lora-600 {
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.lora-700 {
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
 * {
   @apply m-0 p-0 box-border;
 }
@@ -18,13 +32,12 @@ html {
   scroll-behavior: smooth;
 }
 
-.main-bg {
-  background: #FFE5F5;
-  background: linear-gradient(90deg,rgba(255, 229, 245, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(254, 225, 194, 1) 100%);
+body {
+  @apply text-gray-900 inter-regular antialiased bg-gradient-to-br from-pink-100 via-white to-fuchsia-200;
 }
 
-body {
-  @apply main-bg text-gray-900 inter-regular antialiased;
+h1,h2,h3,h4,h5,h6 {
+  @apply lora-700;
 }
 
 /* Custom scrollbar */
@@ -121,7 +134,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 320px;
+  width: 340px;
   border-radius: 24px;
   line-height: 1.6;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
@@ -135,6 +148,7 @@ body {
   padding: 36px;
   border-radius: 22px;
   color: #ff8d8d;
+  box-shadow: 1px 4px 8px -2px #700e0f;
   overflow: hidden;
   background: #fff;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);

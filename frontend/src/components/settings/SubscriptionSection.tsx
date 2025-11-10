@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Alert, Modal, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Alert, Modal, Spin } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
-import subscriptionApi from '../../services/subscriptionApi';
-import type { SubscriptionData, SubscriptionPlan } from '../../types/subscription.type';
 import { getPlanName } from '../../config/pricingConfig';
+import subscriptionApi from '../../services/subscriptionApi';
+import { useAuthStore } from '../../store/authStore';
+import type { SubscriptionData, SubscriptionPlan } from '../../types/subscription.type';
 
 const SubscriptionSection = () => {
   const { user } = useAuthStore();
@@ -181,8 +181,11 @@ const SubscriptionSection = () => {
               <p className="font-semibold">Your subscription is canceled</p>
               <p className="mt-1">
                 Your Sakhee Pro subscription will end on{' '}
-                <strong>{new Date(subscriptionData.subscription_end_date).toLocaleDateString()}</strong>.
-                You'll continue to have access until then. You can reactivate anytime before this date.
+                <strong>
+                  {new Date(subscriptionData.subscription_end_date).toLocaleDateString()}
+                </strong>
+                . You'll continue to have access until then. You can reactivate anytime before this
+                date.
               </p>
             </div>
           }
@@ -199,9 +202,7 @@ const SubscriptionSection = () => {
           <div className="flex items-center gap-3">
             <span
               className={`inline-block px-4 py-2 rounded-lg font-semibold ${
-                isFree
-                  ? 'bg-gray-100 text-gray-700'
-                  : 'bg-green-100 text-green-700'
+                isFree ? 'bg-gray-100 text-gray-700' : 'bg-green-100 text-green-700'
               }`}
             >
               {getPlanName(currentPlan)}
