@@ -59,8 +59,8 @@ const MealPlanGenerator = ({
     dietType: '', // Optional - defaults to onboarding
     isKeto: false, // NEW: Keto diet modifier
     budget: 200,
-    mealsPerDay: 3, // Required
-    duration: 7, // Required
+    mealsPerDay: '3', // Required
+    duration: '3', // Required
   });
 
   // Update available states when regions change
