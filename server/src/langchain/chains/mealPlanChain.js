@@ -286,21 +286,122 @@ class MealPlanChain {
   compressMealForLLM(doc) {
     const m = doc.metadata || {};
 
-    // Compact format: Name (State): Ingredients | Macros | GI | Budget | Type
+    // ⚡ ANTI-HALLUCINATION OPTIMIZED FORMAT:
+    // Keeps CRITICAL fields for LLM to reference: meal name, state, region, ingredients
+    // Compresses less critical fields: macros (abbreviated), budget (range), type (abbrev)
+    // Format: "Name (State/Region): Ingredients | Macros | GI | Budget | Type"
+
+    const mealName = m.mealName || 'Unknown Meal';
+    const state = m.state || 'Unknown';
+    const region = m.region || '';
+    const ingredients = m.ingredients || 'N/A';
+
+    // Include region in parentheses for better cuisine context
+    // Example: "Jadoh (Meghalaya/east-indian)" instead of just "(Meghalaya)"
+    const stateLabel = region ? `${state}/${region}` : state;
+
     return [
-      m.mealName || 'Unknown Meal',
-      `(${m.state || 'Unknown'})`,
+      mealName, // ✅ KEEP FULL - Critical for anti-hallucination
+      `(${stateLabel})`, // ✅ KEEP FULL - Critical for cuisine validation
       ':',
-      m.ingredients || 'N/A',
+      ingredients, // ✅ KEEP FULL - Critical for adaptation
       '|',
-      `P${m.protein || 0}g C${m.carbs || 0}g F${m.fats || 0}g`,
+      `P${m.protein || 0}g C${m.carbs || 0}g F${m.fats || 0}g`, // ⚡ Compressed
       '|',
-      `${m.gi || 'Medium'}GI`,
+      `${m.gi || 'Med'}GI`, // ⚡ Compressed: "Low" → "Low", "Medium" → "Med"
       '|',
-      `₹${m.budgetMin || 0}-${m.budgetMax || 999}`,
+      `₹${m.budgetMin || 0}-${m.budgetMax || 999}`, // ⚡ Compressed
       '|',
-      m.dietType || 'Veg',
+      m.dietType || 'Veg', // ⚡ Abbreviated
     ].join(' ');
+  }
+
+  /**
+   * 🔍 Infer meal type from meal name (since metadata doesn't have mealType field)
+   * Returns: 'breakfast', 'lunch', 'dinner', 'snack', or 'unknown'
+   */
+  inferMealType(doc) {
+    const metadata = doc.metadata || {};
+    const mealName = (metadata.mealName || '').toLowerCase();
+    const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+    // Check for explicit meal type in content
+    if (content.includes('meal type: breakfast') || content.includes('mealtype: breakfast')) {
+      return 'breakfast';
+    }
+    if (
+      content.includes('meal type: lunch') ||
+      content.includes('mealtype: lunch') ||
+      content.includes('meal type: dinner') ||
+      content.includes('mealtype: dinner')
+    ) {
+      return 'lunch'; // Group lunch and dinner together (interchangeable)
+    }
+    if (content.includes('meal type: snack') || content.includes('mealtype: snack')) {
+      return 'snack';
+    }
+
+    // Infer from meal name keywords
+    const breakfastKeywords = [
+      'poha',
+      'upma',
+      'idli',
+      'dosa',
+      'paratha',
+      'toast',
+      'oats',
+      'smoothie',
+      'egg',
+      'uttapam',
+      'chilla',
+      'dhokla',
+      'pancake',
+      'porridge',
+      'cheela',
+    ];
+    const snackKeywords = [
+      'snack',
+      'chaat',
+      'samosa',
+      'pakora',
+      'vada',
+      'cutlet',
+      'tikki',
+      'chips',
+      'namkeen',
+      'mixture',
+    ];
+    const lunchDinnerKeywords = [
+      'curry',
+      'biryani',
+      'pulao',
+      'dal',
+      'rice',
+      'roti',
+      'sabzi',
+      'thali',
+      'khichdi',
+      'soup',
+      'stew',
+    ];
+
+    // Check breakfast keywords
+    if (breakfastKeywords.some((keyword) => mealName.includes(keyword))) {
+      return 'breakfast';
+    }
+
+    // Check snack keywords
+    if (snackKeywords.some((keyword) => mealName.includes(keyword))) {
+      return 'snack';
+    }
+
+    // Check lunch/dinner keywords
+    if (lunchDinnerKeywords.some((keyword) => mealName.includes(keyword))) {
+      return 'lunch';
+    }
+
+    // Default: assume lunch/dinner if can't determine
+    return 'unknown';
   }
 
   /**
@@ -318,6 +419,59 @@ class MealPlanChain {
       `💾 Compressed ${meals.length} meals for LLM (saved ~${meals.length * 260} tokens)`
     );
     return compressed.join('\n');
+  }
+
+  /**
+   * 🆕 Format meals grouped by meal type for better LLM guidance
+   * Returns: Object with breakfast, lunch, snack, unknown meal lists
+   */
+  formatMealsByType(meals) {
+    if (!meals || !Array.isArray(meals) || meals.length === 0) {
+      return { breakfast: '', lunch: '', snack: '', unknown: '' };
+    }
+
+    // Group meals by inferred type
+    const grouped = {
+      breakfast: [],
+      lunch: [],
+      snack: [],
+      unknown: [],
+    };
+
+    meals.forEach((meal) => {
+      const type = this.inferMealType(meal);
+      if (type === 'breakfast') {
+        grouped.breakfast.push(meal);
+      } else if (type === 'snack') {
+        grouped.snack.push(meal);
+      } else if (type === 'lunch') {
+        grouped.lunch.push(meal);
+      } else {
+        grouped.unknown.push(meal);
+      }
+    });
+
+    logger.info(
+      `📊 Meal type distribution: ${grouped.breakfast.length} breakfast, ${grouped.lunch.length} lunch/dinner, ${grouped.snack.length} snacks, ${grouped.unknown.length} unknown`
+    );
+
+    // Format each group
+    const formatted = {
+      breakfast: grouped.breakfast
+        .map((meal, idx) => `${idx + 1}. ${this.compressMealForLLM(meal)}`)
+        .join('\n'),
+      lunch: grouped.lunch
+        .map((meal, idx) => `${idx + 1}. ${this.compressMealForLLM(meal)}`)
+        .join('\n'),
+      snack: grouped.snack
+        .map((meal, idx) => `${idx + 1}. ${this.compressMealForLLM(meal)}`)
+        .join('\n'),
+      unknown: grouped.unknown
+        .map((meal, idx) => `${idx + 1}. ${this.compressMealForLLM(meal)}`)
+        .join('\n'),
+    };
+
+    return formatted;
   }
 
   /**
@@ -389,9 +543,9 @@ class MealPlanChain {
       ingredientSubstitutes: ingredientSubstituteDocs.length,
     });
 
-    // ✅ OPTIMIZATION: Use compressed format instead of full context
-    // Impact: -54% context size, -53% costs
-    const mealTemplatesContext = this.formatMealsForLLM(mealTemplates);
+    // ✅ OPTIMIZATION: Use compressed format grouped by meal type
+    // Impact: Better LLM guidance by separating breakfast/lunch/dinner/snack templates
+    const mealsByType = this.formatMealsByType(mealTemplates);
 
     // ===== STEP 2: RETRIEVE PCOS NUTRITION GUIDELINES =====
     const nutritionQuery = this.buildNutritionQuery(healthContext);
@@ -406,7 +560,8 @@ class MealPlanChain {
     // ===== STEP 4: BUILD COMPREHENSIVE CONTEXT =====
     let enhancedContext = '';
 
-    if (mealTemplatesContext) {
+    // Build meal templates context with type grouping
+    if (mealTemplates.length > 0) {
       enhancedContext += '📋 MEAL TEMPLATES FROM KNOWLEDGE BASE:\n';
 
       // ⭐ KETO MODE: Add special instructions for adapting high-carb meals
@@ -434,7 +589,7 @@ class MealPlanChain {
             '  1. REPLACE rice → cauliflower rice (pulse raw cauliflower in food processor)\n';
           enhancedContext +=
             '  2. REPLACE dal/lentils → high-fat protein (paneer, chicken, fish, eggs)\n';
-          enhancedContext += '  3. REPLACE roti/bread → almond flour roti or coconut flour bread\n';
+          enhancedContext += '  3. REPLACE roto/bread → almond flour roti or coconut flour bread\n';
           enhancedContext += '  4. REPLACE potato → cauliflower, zucchini, turnip\n';
           enhancedContext += '  5. ADD extra fat (2-3 tbsp ghee, coconut oil, butter per meal)\n';
           enhancedContext +=
@@ -456,7 +611,27 @@ class MealPlanChain {
 
       enhancedContext +=
         '(Adapt the templates below to user preferences while maintaining regional authenticity)\n\n';
-      enhancedContext += mealTemplatesContext + '\n\n';
+
+      // 🆕 Group templates by meal type for better LLM understanding
+      if (mealsByType.breakfast) {
+        enhancedContext += '🌅 BREAKFAST TEMPLATES (use for breakfast/morning meals only):\n';
+        enhancedContext += mealsByType.breakfast + '\n\n';
+      }
+
+      if (mealsByType.lunch) {
+        enhancedContext += '🍛 LUNCH/DINNER TEMPLATES (use for lunch/dinner meals only):\n';
+        enhancedContext += mealsByType.lunch + '\n\n';
+      }
+
+      if (mealsByType.snack) {
+        enhancedContext += '🥤 SNACK TEMPLATES (use for snack meals only):\n';
+        enhancedContext += mealsByType.snack + '\n\n';
+      }
+
+      if (mealsByType.unknown) {
+        enhancedContext += '🍽️ OTHER MEAL TEMPLATES (flexible usage):\n';
+        enhancedContext += mealsByType.unknown + '\n\n';
+      }
     }
 
     if (nutritionContext) {
@@ -2107,6 +2282,30 @@ class MealPlanChain {
         logger.info('Stage 6: No dietary restrictions specified, skipping allergy substitutes');
       }
 
+      // ===== ANTI-HALLUCINATION STRATEGY: LIMIT SUBSTITUTE DOCS =====
+      // 🔥 CRITICAL FIX: Reduce substitute docs to prevent prompt noise and "lost in middle" problem
+      // Too many substitutes (84+) dilute LLM attention, causing it to ignore forbidden dishes
+      const MAX_SUBSTITUTES = 40; // Balanced: enough context, not overwhelming
+
+      if (retrievalResults.ingredientSubstitutes.length > MAX_SUBSTITUTES) {
+        const originalCount = retrievalResults.ingredientSubstitutes.length;
+
+        // Keep only the most relevant substitutes (already sorted by relevance from retrieval)
+        retrievalResults.ingredientSubstitutes = retrievalResults.ingredientSubstitutes.slice(
+          0,
+          MAX_SUBSTITUTES
+        );
+
+        const tokensReduced = (originalCount - MAX_SUBSTITUTES) * 350; // ~350 chars per substitute
+        logger.warn(
+          `⚡ ANTI-HALLUCINATION: Reduced substitutes from ${originalCount} → ${MAX_SUBSTITUTES} (saved ~${tokensReduced} tokens)`
+        );
+      } else {
+        logger.info(
+          `✅ Substitute count (${retrievalResults.ingredientSubstitutes.length}) within optimal range (<= ${MAX_SUBSTITUTES})`
+        );
+      }
+
       // ===== FINAL VALIDATION & SUMMARY =====
 
       // ⭐ KETO MODE: Log meals that need adaptation (but don't remove them!)
@@ -2297,10 +2496,12 @@ class MealPlanChain {
           );
         }
 
-        // ⚠️ CRITICAL: Hard limit on meal templates to prevent token overflow
-        // Each meal ~2K tokens → 103 meals = 206K tokens (exceeds 128K limit!)
-        // Solution: Limit to top 40 meals (already re-ranked by hybrid scoring)
-        const MAX_MEALS_FOR_LLM = 40;
+        // ⚠️ ANTI-HALLUCINATION: Increase meal templates to reduce LLM hallucination
+        // More examples = Less need to make up dishes!
+        // Each meal ~400 tokens (after compression) → 70 meals = 28K tokens (well within limit)
+        // Previous: 40 meals = 13 per cuisine (too few, causes hallucination)
+        // New: 70 meals = 23 per cuisine (sufficient examples)
+        const MAX_MEALS_FOR_LLM = 70; // Increased from 40
         if (retrievalResults.mealTemplates.length > MAX_MEALS_FOR_LLM) {
           const originalCount = retrievalResults.mealTemplates.length;
           retrievalResults.mealTemplates = retrievalResults.mealTemplates.slice(
@@ -2779,7 +2980,259 @@ class MealPlanChain {
    * Generate meal plan prompt (UPDATED for multiple cuisines)
    */
   buildMealPlanPrompt(preferences, healthContext, enhancedContext) {
-    let prompt = `You are an expert nutritionist specializing in PCOS management and Indian cuisine.\n\n`;
+    // ⭐ DECLARE COMMON VARIABLES EARLY for reuse throughout
+    const dietType = preferences.dietType || 'vegetarian';
+    const targetCalories = preferences.userCalories || 2000;
+    const mealsCount = preferences.mealsPerDay || 3;
+
+    // =================================================================
+    // 🚨🚨🚨 CRITICAL CONSTRAINTS SECTION - LLM READS THIS FIRST! 🚨🚨🚨
+    // =================================================================
+    // Anti-hallucination strategy: Place most important constraints at the
+    // very top where LLM attention is highest (not buried in middle)
+
+    let prompt = `🚨🚨🚨 ============================================ 🚨🚨🚨\n`;
+    prompt += `🚨 CRITICAL CONSTRAINTS - READ THESE FIRST (ABSOLUTE PRIORITY) 🚨\n`;
+    prompt += `🚨🚨🚨 ============================================ 🚨🚨🚨\n\n`;
+
+    // 1. FORBIDDEN DISHES (anti-hallucination - highest priority)
+    if (preferences.cuisines && preferences.cuisines.length > 0) {
+      const forbiddenDishes = this.buildForbiddenDishList(preferences.cuisines);
+
+      if (forbiddenDishes.length > 0) {
+        prompt += `1️⃣ ❌ FORBIDDEN DISHES - DO NOT USE THESE UNDER ANY CIRCUMSTANCES:\n`;
+        prompt += `   Requested cuisines: ${preferences.cuisines.join(', ')}\n`;
+        prompt += `   BANNED dishes: ${forbiddenDishes.slice(0, 15).join(', ')}${
+          forbiddenDishes.length > 15 ? ', etc.' : ''
+        }\n`;
+        prompt += `   \n`;
+        prompt += `   🚨 IF YOU USE ANY FORBIDDEN DISH, THE ENTIRE MEAL PLAN WILL BE REJECTED!\n`;
+        prompt += `   🚨 Examples of VIOLATIONS:\n`;
+        prompt += `      - User selects "Manipuri" but you suggest "Vegetable Upma" (South Indian dish)\n`;
+        prompt += `      - User selects "Naga" but you suggest "Idli" (South Indian dish)\n`;
+        prompt += `      - User selects "Rajasthani" but you suggest "Dosa" (South Indian dish)\n`;
+        prompt += `   ✅ ONLY use dishes from meal templates that match selected cuisines!\n\n`;
+      }
+    }
+
+    // 2. MEAL TEMPLATE ADHERENCE (anti-hallucination)
+    prompt += `2️⃣ 🚨 MEAL TEMPLATE ADHERENCE (MANDATORY - NO EXCEPTIONS):\n`;
+    prompt += `   ✅ ONLY use meals from "📋 MEAL TEMPLATES FROM KNOWLEDGE BASE" section below\n`;
+    prompt += `   ✅ EVERY meal name MUST match a template exactly (including state label)\n`;
+    prompt += `   ❌ DO NOT create new dishes from scratch\n`;
+    prompt += `   ❌ DO NOT hallucinate dish names not in templates\n`;
+    prompt += `   ❌ DO NOT use generic dishes (upma, idli, dosa, poha) unless in your cuisine's templates\n`;
+    prompt += `   ❌ DO NOT use meal examples from "Substitution Guide" as complete meals\n`;
+    prompt += `   \n`;
+    prompt += `   ✅ IF templates contain high-carb ingredients → ADAPT using substitution guide\n`;
+    prompt += `   ✅ KEEP regional authenticity (state labels, traditional preparation)\n\n`;
+
+    // 3. DIET TYPE ENFORCEMENT
+    if (dietType === 'vegan') {
+      prompt += `3️⃣ 🌱 VEGAN DIET (ABSOLUTE MUST - NO ANIMAL PRODUCTS):\n`;
+      prompt += `   ❌ NO meat, fish, seafood, eggs, dairy, honey\n`;
+      prompt += `   ❌ IF template has "Fish", "Prawn", "Chicken", "Egg" → REPLACE with tofu/chickpea/mushroom\n`;
+      prompt += `   ❌ RENAME meal after substitution (see constraint 7️⃣ below)\n`;
+      prompt += `   ✅ ONLY plant-based: vegetables, fruits, grains, legumes, nuts, seeds\n`;
+      prompt += `   ✅ Adapt non-vegan templates using "Ingredient Substitution Guide"\n\n`;
+    } else if (dietType === 'jain') {
+      prompt += `3️⃣ 🙏 JAIN DIET (STRICTEST RESTRICTIONS - STRICTER THAN VEGAN):\n`;
+      prompt += `   🚨 CRITICAL: Jain = VEGETARIAN + NO root vegetables + NO onion/garlic\n`;
+      prompt += `   \n`;
+      prompt += `   ❌ ABSOLUTELY NO MEAT/FISH/SEAFOOD:\n`;
+      prompt += `      - NO chicken, mutton, lamb, pork, beef, fish, prawns, shrimp, crab, seafood\n`;
+      prompt += `      - IF template has "Fish", "Prawn", "Chicken", "Meat" → REPLACE with paneer/tofu/chickpea\n`;
+      prompt += `      - RENAME meal after substitution: "Fish Stew" → "Paneer Stew" or "Tofu Stew"\n`;
+      prompt += `   \n`;
+      prompt += `   ❌ NO EGGS in any form (whole eggs, egg whites, egg-based products)\n`;
+      prompt += `   \n`;
+      prompt += `   ❌ NO ROOT VEGETABLES (critical Jain principle):\n`;
+      prompt += `      - NO potato, sweet potato, yam, cassava\n`;
+      prompt += `      - NO onion, garlic, ginger root, shallots, leek, scallions\n`;
+      prompt += `      - NO carrot, radish, beetroot, turnip, parsnip\n`;
+      prompt += `      - IF template has these → REPLACE with above-ground vegetables\n`;
+      prompt += `   \n`;
+      prompt += `   ❌ NO MUSHROOMS (fungi are considered non-vegetarian in Jain diet)\n`;
+      prompt += `   \n`;
+      prompt += `   ❌ NO HONEY (produced by bees, involves harming insects)\n`;
+      prompt += `   \n`;
+      prompt += `   ✅ ALLOWED PROTEINS: Paneer, chhena, tofu, milk, yogurt, dals, chickpeas, beans, nuts, seeds\n`;
+      prompt += `   ✅ ALLOWED VEGETABLES: Only above-ground (cauliflower, broccoli, cabbage, pumpkin, etc.)\n`;
+      prompt += `   ✅ FLAVOR: Use hing (asafoetida) + ginger powder (saunth) instead of onion/garlic\n`;
+      prompt += `   \n`;
+      prompt += `   🚨 IF YOU INCLUDE FISH/PRAWN/CHICKEN/EGG IN JAIN MEAL, PLAN IS REJECTED!\n\n`;
+    }
+
+    // 4. KETO MODE (if applicable)
+    if (preferences.isKeto) {
+      prompt += `4️⃣ 🔥 KETOGENIC MODE (OVERRIDES STANDARD PCOS RULES):\n`;
+      prompt += `   ❌ ZERO grains (rice, wheat, millets, oats)\n`;
+      prompt += `   ❌ ZERO legumes/dals (too high in carbs)\n`;
+      prompt += `   ❌ ZERO starchy vegetables (potato, corn, peas)\n`;
+      prompt += `   ❌ NO RICE in meal names (check names: "Rice Soup", "Fish Rice", "Vegetable Rice" = FORBIDDEN)\n`;
+      prompt += `   ❌ NO DAL/LENTILS in meal names or ingredients\n`;
+      prompt += `   ❌ NO SOUP with grains (check names: "Rice Soup", "Dal Soup", "Wheat Soup" = FORBIDDEN)\n`;
+      prompt += `   ✅ ADAPT templates: rice→cauliflower rice, roti→almond flour roti\n`;
+      prompt += `   ✅ NET CARBS: Maximum 20-50g per day (${Math.round(
+        50 / mealsCount
+      )}g per meal)\n\n`;
+    }
+
+    // 5. INGREDIENT VARIETY (anti-repetition for ALL food categories)
+    prompt += `5️⃣ 🌈 INGREDIENT VARIETY (MANDATORY - ROTATE ALL FOOD CATEGORIES):\n\n`;
+
+    prompt += `   A. PROTEIN VARIETY (NO repetition in consecutive meals):\n`;
+    if (dietType === 'vegan') {
+      prompt += `   ✅ Vegan proteins: tofu, tempeh, chickpeas, black beans, kidney beans, lentils (red/green/black),\n`;
+      prompt += `      mushrooms (button/shiitake/oyster), jackfruit, soya chunks, peanuts, almonds, walnuts, cashews\n`;
+    } else if (dietType === 'jain') {
+      prompt += `   ✅ Jain proteins (NO onion/garlic/root veg): paneer, chhena, tofu, chickpeas, moong dal,\n`;
+      prompt += `      urad dal, masoor dal, toor dal, above-ground beans, pumpkin seeds, sunflower seeds,\n`;
+      prompt += `      almonds, cashews, walnuts, pistachios, peanuts, sesame seeds\n`;
+      prompt += `   ⚠️ Jain-specific: Focus on dairy proteins (paneer, chhena) and legumes (dals, beans)\n`;
+    } else if (dietType === 'vegetarian') {
+      prompt += `   ✅ Vegetarian proteins: paneer, chhena, tofu, eggs, chickpeas, black beans, kidney beans,\n`;
+      prompt += `      lentils (red/green/black), mushrooms, peanuts, almonds, walnuts, cashews, Greek yogurt\n`;
+    } else {
+      prompt += `   ✅ All proteins: chicken, fish, prawns, eggs, paneer, tofu, chickpeas, lentils, beans, nuts\n`;
+    }
+    prompt += `   ❌ WRONG: Tofu in all 3 meals (Day 1: Tofu Singju, Day 2: Tofu Wrap, Day 3: Tofu Bowl)\n`;
+    prompt += `   ✅ RIGHT: Day 1 tofu, Day 2 chickpeas, Day 3 mushrooms, Day 4 lentils, Day 5 paneer\n\n`;
+
+    prompt += `   B. VEGETABLE VARIETY (NO repetition - use diverse colors/types):\n`;
+    if (dietType === 'jain') {
+      prompt += `   ✅ Jain vegetables (NO root veg/onion/garlic): cauliflower, broccoli, cabbage, bottle gourd (lauki),\n`;
+      prompt += `      ridge gourd (turai), bitter gourd (karela), pumpkin, tomatoes, bell peppers (red/yellow/green),\n`;
+      prompt += `      spinach, fenugreek (methi), zucchini, eggplant (brinjal), okra (bhindi), green beans, peas (pods)\n`;
+      prompt += `   ⚠️ Jain FORBIDDEN: NO potato, onion, garlic, carrot, radish, beetroot, ginger, turnip\n`;
+    } else {
+      prompt += `   ✅ Mix colors daily: green (spinach, beans), orange (carrots, pumpkin), red (tomatoes, beets),\n`;
+      prompt += `      white (cauliflower, mushrooms), purple (eggplant, cabbage), yellow (bell peppers, squash)\n`;
+      prompt += `   ✅ Vary types: leafy greens, cruciferous (broccoli/cabbage), gourds (lauki/turai), root veg (carrots/beets)\n`;
+    }
+    prompt += `   ❌ WRONG: Spinach every day (Day 1-7: all meals with spinach)\n`;
+    prompt += `   ✅ RIGHT: Day 1 spinach, Day 2 broccoli, Day 3 bell peppers, Day 4 eggplant, Day 5 beans\n\n`;
+
+    prompt += `   C. GRAIN/CARB VARIETY (rotate across days):\n`;
+    if (preferences.isKeto) {
+      prompt += `   ✅ Keto carbs ONLY: cauliflower rice, zucchini noodles, almond flour roti, coconut flour bread,\n`;
+      prompt += `      shirataki noodles, lettuce wraps, cheese-based bread\n`;
+      prompt += `   ❌ NO regular grains (rice, wheat, millets, oats, quinoa, dal)\n`;
+    } else if (dietType === 'jain') {
+      prompt += `   ✅ Jain grains: rice (white/brown), wheat roti, bajra roti, jowar roti, buckwheat (kuttu),\n`;
+      prompt += `      amaranth (rajgira), water chestnut flour (singhara), sabudana (tapioca pearls)\n`;
+      prompt += `   ✅ Vary daily: Day 1 rice, Day 2 wheat roti, Day 3 bajra, Day 4 sabudana, Day 5 buckwheat\n`;
+    } else {
+      prompt += `   ✅ Healthy grains: brown rice, quinoa, millets (ragi/bajra/jowar), oats, whole wheat roti,\n`;
+      prompt += `      barley, buckwheat, amaranth, red rice, black rice\n`;
+      prompt += `   ✅ Vary daily: Day 1 brown rice, Day 2 quinoa, Day 3 ragi, Day 4 oats, Day 5 whole wheat\n`;
+    }
+    prompt += `   ❌ WRONG: White rice every single day for 7 days\n`;
+    prompt += `   ✅ RIGHT: Rotate grains across days for diverse nutrients\n\n`;
+
+    prompt += `   D. HEALTHY FAT VARIETY (rotate cooking oils and fat sources):\n`;
+    if (dietType === 'jain') {
+      prompt += `   ✅ Jain fats: ghee, butter, coconut oil, sesame oil, peanut oil, sunflower oil, olive oil,\n`;
+      prompt += `      avocado (if available), nuts (almonds/cashews/walnuts), seeds (sesame/pumpkin/sunflower)\n`;
+    } else if (dietType === 'vegan') {
+      prompt += `   ✅ Vegan fats: coconut oil, olive oil, sesame oil, peanut oil, sunflower oil, avocado oil,\n`;
+      prompt += `      nuts (almonds/cashews/walnuts), seeds (chia/flax/hemp/pumpkin), tahini, nut butters\n`;
+      prompt += `   ❌ NO ghee, butter, dairy-based fats\n`;
+    } else {
+      prompt += `   ✅ All fats: ghee, coconut oil, olive oil, sesame oil, mustard oil, peanut oil,\n`;
+      prompt += `      nuts (almonds/cashews/walnuts), seeds (chia/flax/pumpkin), avocado, tahini\n`;
+    }
+    prompt += `   ✅ Vary cooking oils: Day 1 coconut oil, Day 2 ghee, Day 3 olive oil, Day 4 sesame oil\n`;
+    prompt += `   ❌ WRONG: Only coconut oil for all 7 days\n`;
+    prompt += `   ✅ RIGHT: Rotate oils and fat sources for omega-3/6/9 balance\n\n`;
+
+    prompt += `   E. FLAVOR ENHANCER VARIETY (avoid onion/garlic repetition for Jain):\n`;
+    if (dietType === 'jain') {
+      prompt += `   ✅ Jain flavor bases: hing (asafoetida), ginger powder (saunth), curry leaves, fresh herbs,\n`;
+      prompt += `      tomatoes, tamarind, kokum, amchur (dry mango powder), lemon/lime, cumin, coriander seeds,\n`;
+      prompt += `      fennel seeds, ajwain, fenugreek seeds, black pepper, green chili\n`;
+      prompt += `   ⚠️ CRITICAL: ALWAYS use hing as onion/garlic replacement in tempering (tadka)\n`;
+      prompt += `   ❌ ABSOLUTELY FORBIDDEN: NO onion, garlic, ginger root, leek, scallions, shallots\n`;
+      prompt += `   ✅ Vary flavor profiles: Day 1 hing+cumin, Day 2 curry leaves+mustard, Day 3 tamarind+kokum\n`;
+    } else {
+      prompt += `   ✅ Regular flavor bases: onion, garlic, ginger, tomatoes, curry leaves, fresh herbs,\n`;
+      prompt += `      tamarind, kokum, lemon/lime, various spices\n`;
+      prompt += `   ✅ Vary combinations daily for diverse taste profiles\n`;
+    }
+    prompt += `\n`;
+
+    // 6. MEAL TYPE ENFORCEMENT
+    prompt += `6️⃣ 🍽️ MEAL TYPE ENFORCEMENT (STRICT MATCHING):\n`;
+    prompt += `   ✅ Use ONLY breakfast templates for breakfast slots (7-9 AM meals)\n`;
+    prompt += `   ✅ Use ONLY lunch/dinner templates for lunch slots (12-2 PM meals)\n`;
+    prompt += `   ✅ Use ONLY dinner/lunch templates for dinner slots (7-9 PM meals)\n`;
+    prompt += `   ✅ Use ONLY snack templates for snack slots\n`;
+    prompt += `   \n`;
+    prompt += `   ❌ BREAKFAST FORBIDDEN ITEMS (these are lunch/dinner foods):\n`;
+    prompt += `      - NO curry of any kind (dal curry, vegetable curry, paneer curry, pumpkin curry, etc.)\n`;
+    prompt += `      - NO soup (fish soup, vegetable soup, dal soup, chamthong, etc.)\n`;
+    prompt += `      - NO rice dishes (biryani, pulao, fried rice, fish rice, etc.)\n`;
+    prompt += `      - NO heavy gravied dishes (butter masala, korma, rogan josh, etc.)\n`;
+    prompt += `      - NO dal/lentil-based main dishes (dal tadka, dal makhani - these are lunch/dinner)\n`;
+    prompt += `   \n`;
+    prompt += `   ✅ BREAKFAST APPROPRIATE ITEMS (Indian context):\n`;
+    prompt += `      - Light grain dishes: Poha, Upma, Idli, Dosa, Uttapam, Dhokla, Chilla\n`;
+    prompt += `      - Stuffed breads: Paratha (stuffed), Thepla\n`;
+    prompt += `      - Protein options: Eggs (if diet allows), Sprouts, Light paneer dishes\n`;
+    prompt += `      - Modern: Oats preparations, Smoothie bowls, Whole grain toast\n`;
+    prompt += `      - Accompaniments: Chutney, Sambhar (as side), Fresh fruit, Curd\n`;
+    prompt += `   \n`;
+    prompt += `   🚨 IF BREAKFAST HAS "CURRY" OR "SOUP" IN NAME → REJECTED!\n\n`;
+
+    // 7. VEGAN/JAIN NAME ADAPTATION
+    if (dietType === 'vegan') {
+      prompt += `7️⃣ 🌱 VEGAN MEAL NAME ADAPTATION (MANDATORY):\n`;
+      prompt += `   ✅ If adapting non-vegan template, RENAME meal to reflect vegan protein used\n`;
+      prompt += `   ❌ WRONG: "Herb Chicken Roast (Vegan Adaptation)" - still has "Chicken" in name\n`;
+      prompt += `   ✅ RIGHT: "Herb Tofu Roast" or "Herb Chickpea Roast" - actual protein in name\n`;
+      prompt += `   ❌ WRONG: "Lite Prawn Stew (Vegan)" - still has "Prawn" in name\n`;
+      prompt += `   ✅ RIGHT: "Lite Mushroom Stew" or "Lite Jackfruit Stew" - actual protein in name\n`;
+      prompt += `   📝 Name replacement guide:\n`;
+      prompt += `      - Chicken/Fish/Prawn → Tofu, Chickpea, Mushroom, Jackfruit (based on actual substitute)\n`;
+      prompt += `      - Mutton/Lamb → Jackfruit, Soya Chunks, Mushroom\n`;
+      prompt += `      - Egg → Tofu Scramble, Chickpea Flour (based on dish type)\n\n`;
+    } else if (dietType === 'jain') {
+      prompt += `7️⃣ 🙏 JAIN MEAL NAME ADAPTATION (MANDATORY):\n`;
+      prompt += `   ✅ If template has meat/fish/seafood, RENAME meal to reflect Jain protein used\n`;
+      prompt += `   ❌ ABSOLUTELY WRONG: "Prawn Chili Tawa" for Jain diet - FISH/SEAFOOD FORBIDDEN!\n`;
+      prompt += `   ❌ ABSOLUTELY WRONG: "Hill Herb Fish Stew" for Jain diet - FISH FORBIDDEN!\n`;
+      prompt += `   ❌ ABSOLUTELY WRONG: "Herb Chicken Roast (Jain)" - CHICKEN FORBIDDEN!\n`;
+      prompt += `   \n`;
+      prompt += `   ✅ RIGHT: Replace with Jain proteins and rename:\n`;
+      prompt += `      - "Prawn Chili Tawa" → "Paneer Chili Tawa" or "Tofu Chili Tawa"\n`;
+      prompt += `      - "Hill Herb Fish Stew" → "Hill Herb Paneer Stew" or "Hill Herb Tofu Stew"\n`;
+      prompt += `      - "Chicken Roast" → "Paneer Roast" or "Chickpea Roast"\n`;
+      prompt += `   \n`;
+      prompt += `   📝 Jain name replacement guide:\n`;
+      prompt += `      - Fish/Prawn/Seafood → Paneer, Tofu, Chickpea (NO mushroom - fungi forbidden)\n`;
+      prompt += `      - Chicken/Meat → Paneer, Tofu, Chickpea\n`;
+      prompt += `      - Egg → Skip or use Paneer/Tofu\n`;
+      prompt += `   \n`;
+      prompt += `   🚨 CRITICAL: Jain diet is VEGETARIAN + stricter rules. NO meat/fish/seafood EVER!\n\n`;
+    }
+
+    // 8. ACCOMPANIMENTS MANDATE
+    prompt += `8️⃣ 🍛 ACCOMPANIMENTS MANDATE (COMPLETE MEALS ONLY):\n`;
+    prompt += `   ✅ ALWAYS include chutneys, pickles, or sides with meals\n`;
+    prompt += `   ✅ Breakfast: Main dish + chutney/curd/fruit\n`;
+    prompt += `   ✅ Lunch/Dinner: Main dish + dal/curry + chutney + salad\n`;
+    prompt += `   ❌ WRONG: "Vegetable Stir Fry" alone (incomplete, missing accompaniments)\n`;
+    prompt += `   ✅ RIGHT: "Vegetable Stir Fry with Coconut Chutney and Cucumber Salad"\n`;
+    prompt += `   📋 Include accompaniments in ingredients list and recipe steps\n\n`;
+
+    prompt += `🚨 VIOLATING ANY CONSTRAINT ABOVE = MEAL PLAN REJECTION 🚨\n`;
+    prompt += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+    // =================================================================
+    // NOW ADD REGULAR PROMPT CONTENT
+    // =================================================================
+
+    prompt += `You are an expert nutritionist specializing in PCOS management and Indian cuisine.\n\n`;
 
     // Add user context
     prompt += this.buildUserContext(preferences, healthContext);
@@ -2813,12 +3266,7 @@ class MealPlanChain {
       preferences.budget || 300
     }/day using affordable, locally available ingredients.\n\n`;
 
-    // ⭐ Declare common variables early so they can be reused throughout
-    const dietType = preferences.dietType || 'vegetarian';
-    const targetCalories = preferences.userCalories || 2000;
-    const mealsCount = preferences.mealsPerDay || 3;
-
-    // ⭐⭐⭐ KETO INSTRUCTIONS AT TOP (HIGHEST PRIORITY)
+    // ⭐⭐⭐ KETO INSTRUCTIONS (already covered in critical constraints above, details here)
     if (preferences.isKeto) {
       prompt += `\n🔥🔥🔥 ============================================\n`;
       prompt += `🔥🔥🔥 KETOGENIC DIET MODE ACTIVATED (ABSOLUTE PRIORITY)\n`;
@@ -3508,14 +3956,8 @@ class MealPlanChain {
         }
       }
 
-      // Add explicit forbidden dishes to prompt
-      if (forbiddenDishes.length > 0) {
-        const dishExamples = forbiddenDishes.slice(0, 10).join(', ');
-        prompt += `   - ❌ FORBIDDEN DISHES (DO NOT USE): ${dishExamples}${
-          forbiddenDishes.length > 10 ? ', etc.' : ''
-        }\n`;
-        prompt += `   - 🚨 CRITICAL: If you use ANY of these forbidden dishes, the meal plan will be REJECTED!\n`;
-      }
+      // ⚠️ Forbidden dishes already added at prompt TOP for maximum LLM attention
+      // No need to repeat here - reduces prompt length and prevents dilution
 
       prompt += `   - ❌ NO generic pan-Indian dishes unless they're authentic to selected cuisines\n`;
       prompt += `   - ❌ DO NOT hallucinate or make up dish names - use RAG templates!\n`;
