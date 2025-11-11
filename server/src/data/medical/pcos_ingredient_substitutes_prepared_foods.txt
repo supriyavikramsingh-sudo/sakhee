@@ -9,18 +9,18 @@ Usage: Query by ingredient name, cooking method, or diet restriction to retrieve
 ## SECTION 7: COOKING METHODS ###
 
 --- DEEP FRYING ---
-PROBLEMATIC METHOD: Deep frying samosas, pakoras, puris, kachoris, vadai, bonda
+PROBLEMATIC METHOD: Deep frying stuffed snacks, fritters, breaded items
 PCOS CONCERNS: Extremely high fat content, oxidized oils, inflammation, insulin resistance
 UNIVERSAL SUBSTITUTE: Air frying (180°C, 12-15 min) OR baking (200°C) OR shallow fry with 1 tbsp oil
 REGIONAL ALTERNATIVES:
-  - North India: Baked samosas, air-fried pakoras, baked kachoris
-  - South India: Steamed idli instead of vadai, air-fried bonda, baked murukku
-  - East India: Steamed luchi (not fried), air-fried beguni, baked fish
-  - West India: Steamed dhokla (already good), baked khandvi, air-fried chakli
+  - North India: Baked stuffed items, air-fried fritters, baked breaded items
+  - South India: Steamed fermented batters, air-fried snacks, baked crackers
+  - East India: Steamed bread, air-fried fritters, baked items
+  - West India: Steamed preparations, baked items, air-fried snacks
 DIET-TYPE MODIFICATIONS:
   - All: Air fry or bake with minimal oil spray
 ALLERGY ALTERNATIVES: N/A
-COOKING TIP: Spray oil lightly; preheat air fryer; coat with besan for crispy texture
+COOKING TIP: Spray oil lightly; preheat air fryer; coat with chickpea flour for crispy texture
 
 --- PRESSURE COOKING (EXCESSIVE) ---
 PROBLEMATIC METHOD: Overcooking grains, dals (10+ whistles)
@@ -256,189 +256,6 @@ DIET-TYPE MODIFICATIONS:
   - All: Avoid or extreme moderation
 ALLERGY ALTERNATIVES: N/A
 COOKING TIP: If drinking (rare), choose dry wine over beer/cocktails; eat protein/fat first
-
-
-
-## SECTION 11: REGIONAL SPECIALTY MODIFICATIONS ###
-
---- NORTH INDIA: DAL BATI CHURMA ---
-PROBLEMATIC ASPECTS: Deep-fried baati, excessive ghee, sugar in churma
-PCOS-FRIENDLY MODIFICATIONS:
-- Bake baati in oven (200°C, 25-30 min) instead of frying
-- Brush with 1 tsp ghee instead of dunking in ghee
-- Churma: Use jaggery powder (1 tsp) + dates paste OR stevia
-- Increase dal proportion, reduce baati count (1 instead of 3)
-- Use whole wheat flour + bajra (50:50) for baati
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Above modifications
-- Vegan: Skip ghee, use coconut oil spray on baati
-- Non-Vegetarian: Pair with protein curry, reduce baati count
-
---- NORTH INDIA: CHOLE BHATURE ---
-PROBLEMATIC ASPECTS: Deep-fried bhature (maida), large portions
-PCOS-FRIENDLY MODIFICATIONS:
-- Replace bhature with whole wheat tandoori roti OR baked whole wheat kulcha
-- Keep chole as-is (already good protein source)
-- Serve with onion-tomato salad
-DIET-TYPE MODIFICATIONS:
-- Vegetarian: Whole wheat roti
-- Vegan: Same
-- Jain: Chole without onion/garlic, whole wheat roti
-- Non-Vegetarian: Same
-
---- NORTH INDIA: RAJASTHANI KACHORI ---
-PROBLEMATIC ASPECTS: Deep-fried, maida, spicy moong dal filling
-PCOS-FRIENDLY MODIFICATIONS:
-- Bake kachori with whole wheat + besan dough (70:30)
-- Air fry at 180°C for 15 min, spray oil lightly
-- Filling: Spiced moong dal (already good)
-- Serve 1-2 kachoris with mint chutney + vegetable curry
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Baked version
-- Vegan: Same
-- Non-Vegetarian: Same
-
---- GUJARAT: DHOKLA ---
-PROBLEMATIC ASPECTS: White rice flour, sugar in batter
-PCOS-FRIENDLY MODIFICATIONS:
-- Use 100% besan (chickpea flour) dhokla OR ragi + besan (50:50)
-- Replace sugar with 1/4 tsp stevia in batter
-- Steam as usual (already good cooking method)
-- Tempering with 1 tsp oil (not excess)
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Above modifications
-- Vegan: Same (already vegan)
-- Non-Vegetarian: Same
-
---- GUJARAT: THEPLA ---
-PROBLEMATIC ASPECTS: Excessive oil in cooking
-PCOS-FRIENDLY MODIFICATIONS:
-- Make with whole wheat + methi (fenugreek) leaves
-- Cook on tawa with 1/2 tsp oil per thepla (spray if possible)
-- Add grated vegetables (bottle gourd, spinach)
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Above modifications
-- Vegan: Same
-- Non-Vegetarian: Same
-
---- GUJARAT: UNDHIYU ---
-PROBLEMATIC ASPECTS: Fried dumplings (muthiya), some recipes use sugar
-PCOS-FRIENDLY MODIFICATIONS:
-- Steam muthiya instead of frying
-- Skip sugar completely
-- Increase green beans, cluster beans (gavar)
-- Use 1 tbsp groundnut oil for cooking (not deep frying)
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Above modifications
-- Vegan: Same (already vegan)
-- Non-Vegetarian: Same
-
---- SOUTH INDIA: DOSA (WHITE RICE BATTER) ---
-PROBLEMATIC ASPECTS: White rice in batter, fermentation increases GI
-PCOS-FRIENDLY MODIFICATIONS:
-- Use brown rice OR millets (ragi, jowar) with urad dal (60:40 ratio)
-- Increase dal proportion for more protein
-- Make thin dosa, use minimal oil (spray if possible)
-- Pair with sambar (high protein) and coconut chutney
-DIET-TYPE MODIFICATIONS:
-- Vegetarian: Millet dosa
-- Vegan: Same (already vegan)
-- Jain: Same
-- Non-Vegetarian: Add egg dosa (spread beaten egg on dosa), stuff with chicken
-
---- SOUTH INDIA: IDLI ---
-PROBLEMATIC ASPECTS: White rice in batter
-PCOS-FRIENDLY MODIFICATIONS:
-- Use brown rice OR ragi with urad dal (60:40 ratio)
-- Increase dal proportion to 50% for protein boost
-- Steam as usual
-- Pair with sambar + vegetable curry
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Millet idli
-- Vegan: Same (already vegan)
-- Non-Vegetarian: Serve with egg curry
-
---- SOUTH INDIA: VADA/MEDU VADA ---
-PROBLEMATIC ASPECTS: Deep-fried
-PCOS-FRIENDLY MODIFICATIONS:
-- Air fry OR bake vada at 180°C with oil spray
-- Use urad dal batter (already high protein)
-- Make mini vadas (smaller size)
-- Serve 2 vadas max with sambar
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Air-fried version
-- Vegan: Same (already vegan)
-- Non-Vegetarian: Same
-
---- SOUTH INDIA: PONGAL ---
-PROBLEMATIC ASPECTS: White rice, ghee in excess
-PCOS-FRIENDLY MODIFICATIONS:
-- Use brown rice + moong dal (50:50)
-- Use 1 tsp ghee for tempering (not mixed throughout)
-- Add cashews, pepper, cumin generously
-DIET-TYPE MODIFICATIONS:
-- Vegetarian: Above modifications
-- Vegan: Replace ghee with coconut oil
-- Jain: Same as vegetarian
-- Non-Vegetarian: Same
-
---- MAHARASHTRA: VADA PAV ---
-PROBLEMATIC ASPECTS: Deep-fried vada, white bread pav, potato
-PCOS-FRIENDLY MODIFICATIONS:
-- Bake/air fry vada with besan coating
-- Use whole wheat pav OR skip pav, eat vada with chutney
-- Reduce potato, add cauliflower in vada filling
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Baked version
-- Vegan: Same (already vegan)
-- Non-Vegetarian: Same
-
---- MAHARASHTRA: PURAN POLI ---
-PROBLEMATIC ASPECTS: Jaggery filling, ghee, refined flour
-PCOS-FRIENDLY MODIFICATIONS:
-- Use whole wheat flour
-- Reduce jaggery in filling by 70%, use stevia + minimal jaggery
-- Increase dal proportion in filling
-- Serve 1 small poli with minimal ghee
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Above modifications
-- Vegan: Skip ghee, use coconut oil
-- Non-Vegetarian: Same
-
---- WEST BENGAL: LUCHI ---
-PROBLEMATIC ASPECTS: Deep-fried, maida
-PCOS-FRIENDLY MODIFICATIONS:
-- Use whole wheat flour instead of maida
-- Bake in oven OR shallow fry with 1 tbsp oil
-- Serve 1-2 luchis with aloo dum (use sweet potato)
-DIET-TYPE MODIFICATIONS:
-- Vegetarian: Whole wheat baked luchi
-- Vegan: Same
-- Jain: Whole wheat version (no potato), serve with paneer curry
-- Non-Vegetarian: Serve with egg curry
-
---- WEST BENGAL: MISHTI DOI ---
-PROBLEMATIC ASPECTS: Sugar, condensed milk
-PCOS-FRIENDLY MODIFICATIONS:
-- Make with low-fat milk + stevia
-- Add cardamom for flavor
-- Reduce sweetness by 80%
-DIET-TYPE MODIFICATIONS:
-- Vegetarian: Sugar-free version
-- Vegan: Use coconut milk + stevia
-- Jain: Same as vegetarian
-- Non-Vegetarian: Same
-
---- EAST INDIA: SANDESH ---
-PROBLEMATIC ASPECTS: Sugar
-PCOS-FRIENDLY MODIFICATIONS:
-- Make with paneer (chhana) + stevia
-- Add cardamom, saffron for flavor
-- Use minimal jaggery powder (1/2 tsp) if needed
-DIET-TYPE MODIFICATIONS:
-- Vegetarian/Jain: Sugar-free version
-- Vegan: Use tofu instead of paneer + stevia
-- Non-Vegetarian: Same
 
 
 

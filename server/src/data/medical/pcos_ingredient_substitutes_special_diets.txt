@@ -12,7 +12,7 @@ Usage: Query by ingredient name, cooking method, or diet restriction to retrieve
 AVOID: Wheat, maida, atta, suji, barley
 SAFE GRAINS: Rice (brown, red), millets (ragi, jowar, bajra), quinoa, amaranth, buckwheat
 FLOURS: Besan (chickpea), ragi flour, jowar flour, bajra flour, rice flour, almond flour
-BREADS: Ragi roti, besan chilla, rice dosa, millet rotis
+BREADS: Ragi-based, besan-based, rice-based, millet-based flatbreads
 NOTES: Check for cross-contamination; use separate utensils
 
 --- DAIRY ALLERGY/LACTOSE INTOLERANCE ---
@@ -122,28 +122,28 @@ AVOID: Multiple fruits per day, fruit juices
 ## SECTION 15: COOKING EQUIPMENT RECOMMENDATIONS ###
 
 --- AIR FRYER ---
-USE FOR: Samosas, pakoras, kachoris, vadas, chicken tikka, fish fry
+USE FOR: Fried snacks, protein items (chicken, paneer, fish), breaded items
 TEMPERATURE: 180°C for most items
 TIME: 12-18 minutes depending on item
 OIL: Spray lightly or brush 1 tsp oil
 BENEFIT: 70-80% less oil than deep frying
 
 --- PRESSURE COOKER (MINIMAL USE) ---
-USE FOR: Dal (2-3 whistles only), brown rice (1 whistle + simmer), chickpeas
+USE FOR: Dal (2-3 whistles only), brown rice (1 whistle + simmer), chickpeas, legumes
 AVOID: Overcooking (10+ whistles)
 BENEFIT: Fast cooking but don't overcook to mush
 
 --- NON-STICK TAWA ---
-USE FOR: Rotis, dosas, parathas with minimal oil
+USE FOR: Flatbreads, fermented batters, pan-cooked items with minimal oil
 OIL: Spray or use 1/2 tsp per item
 BENEFIT: Requires less fat
 
 --- STEAMER ---
-USE FOR: Idli, dhokla, muthiya, vegetables, fish
+USE FOR: Fermented batters, lentil-based preparations, vegetables, fish
 BENEFIT: Zero added fat, retains nutrients
 
 --- OVEN ---
-USE FOR: Baking samosas, kachoris, tandoori items, roasting vegetables
+USE FOR: Baking stuffed snacks, tandoori-marinated items, roasting vegetables
 TEMPERATURE: 180-200°C
 BENEFIT: Batch cooking, less oil
 

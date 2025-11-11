@@ -223,9 +223,12 @@ const MealPlanGenerator = ({
       const finalDietType = formData.dietType || profileData.dietType || 'vegetarian';
 
       // Build restrictions from onboarding + diet type
+      // ⭐ NOTE: Jain dietary requirements are NOT allergens - they're handled via LLM substitution
+      // The backend receives dietType='jain' and uses comprehensive prompts to substitute prohibited ingredients
+      // Only vegan restrictions (dairy, eggs, honey) are treated as allergens because they can't be substituted
       const restrictions = [
         ...(profileData.allergies || []),
-        ...(finalDietType === 'jain' ? ['onion', 'garlic', 'root-vegetables'] : []),
+        // ❌ REMOVED: Jain restrictions (onion, garlic, root-vegetables) - not allergens, handled by LLM
         ...(finalDietType === 'vegan' ? ['dairy', 'eggs', 'honey'] : []),
       ];
 

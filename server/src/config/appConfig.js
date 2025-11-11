@@ -21,10 +21,10 @@ export const appConfig = {
   // Note: HNSW returns DISTANCE (1 - similarity), not similarity
   // minScore=0.5 means "distance ≤ 0.5" → similarity ≥ 0.5
   // Previous 0.3 was too strict (required similarity ≥ 0.7)
+  // NOTE: chunkSize/chunkOverlap removed - using semantic chunking by document structure instead
+  // (meals chunked per meal, medical by sections, nutritional by topics)
   rag: {
-    chunkSize: 1000,
-    chunkOverlap: 200,
-    topK: 15, // ✅ Reduced from 25 (fewer but higher quality results)
+    topK: 10, // ✅ OPTIMIZED: Reduced from 15 to 10 for token efficiency (was causing 237K prompt)
     minScore: 0.5, // ✅ FIXED: Raised from 0.3 to allow similarity ≥ 0.5 (was blocking breakfast queries)
   },
 

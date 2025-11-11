@@ -14,11 +14,13 @@ class Retriever {
   /**
    * Retrieve relevant documents for a query
    * ✅ FIXED: Returns normalized document structure
+   * ✅ ENHANCED: Added metadata filter support for two-phase retrieval
    */
   async retrieve(query, options = {}) {
     try {
       const topK = options.topK || appConfig.rag.topK;
       const minScore = options.minScore || appConfig.rag.minScore;
+      const filter = options.filter || null;
 
       // Validate query
       if (!query || typeof query !== 'string') {
@@ -26,8 +28,8 @@ class Retriever {
         return [];
       }
 
-      // Get similar documents from vector store
-      const results = await vectorStoreManager.similaritySearch(query, topK);
+      // Get similar documents from vector store with optional metadata filter
+      const results = await vectorStoreManager.similaritySearch(query, topK, filter);
 
       // ✅ CRITICAL FIX: Filter by minimum score
       // Pinecone returns SIMILARITY scores (higher=better, range 0-1)
@@ -38,7 +40,15 @@ class Retriever {
         return score >= minScore; // ✅ FIXED: Use >= for Pinecone similarity scores (higher is better)
       });
 
-      logger.info(`🔍 Retrieved ${filtered.length} relevant documents`);
+      if (filter) {
+        logger.info(
+          `🔍 Retrieved ${filtered.length} relevant documents (with filter: ${JSON.stringify(
+            filter
+          )})`
+        );
+      } else {
+        logger.info(`🔍 Retrieved ${filtered.length} relevant documents`);
+      }
 
       // ✅ FIXED: Normalize document structure
       return filtered.map((doc) => this.normalizeDocument(doc));

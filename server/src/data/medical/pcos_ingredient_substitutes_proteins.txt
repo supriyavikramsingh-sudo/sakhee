@@ -252,11 +252,11 @@ DIET-TYPE MODIFICATIONS:
 FLAVOR TIP: Add black salt (kala namak) to tofu scramble for eggy sulfur flavor
 COOKING TIP: For tofu scramble - use firm tofu, crumble with hands, cook with turmeric and black salt
 
-SPECIFIC DISH EXAMPLES:
-  - "Egg Bhurji" → "Tofu Bhurji" OR "Paneer Bhurji" OR "Besan Bhurji"
-  - "Egg Curry" → "Paneer Curry" OR "Tofu Curry" OR "Aloo Curry" (not Jain)
-  - "Egg Poi" (Goan) → "Paneer Poi" OR "Tofu Poi"
-  - "Egg Dosa" → "Paneer Dosa" OR "Vegetable Dosa"
+SPECIFIC INGREDIENT SUBSTITUTIONS:
+  - Egg (as protein) → Tofu OR Paneer OR Besan (chickpea flour)
+  - Egg (in curry) → Paneer cubes OR Tofu cubes OR Potato (not Jain-friendly)
+  - Egg (scrambled) → Tofu scrambled OR Paneer crumbled OR Besan cooked
+  - Egg (as filling) → Paneer OR Tofu OR mixed vegetables
 
 --- GENERAL PROTEIN ADAPTATION PRINCIPLES ---
 

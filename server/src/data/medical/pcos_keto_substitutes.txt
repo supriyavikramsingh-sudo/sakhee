@@ -94,11 +94,11 @@ Rice → Cauliflower rice (pulse raw cauliflower in food processor), shirataki r
 ### BREAD/ROTI SUBSTITUTES ###
 Wheat flour/Atta → Use keto flours above
 Bread → Cloud bread (eggs + cream cheese + baking powder), almond flour bread, lettuce wraps
-Roti/Chapati → Coconut flour roti, almond flour roti, flaxseed meal roti (50% flax + 50% coconut), cheese wraps, cabbage wraps
+Roti/Chapati → Coconut flour-based, almond flour-based, flaxseed meal-based (50% flax + 50% coconut), cheese wraps, cabbage wraps
   - BUDGET TIP: Mix flaxseed meal (₹600/kg) + coconut flour (₹745/kg) = ₹672/kg average = cheapest keto roti!
-Paratha → Almond flour paratha, coconut flour paratha, cauliflower paratha
-Poha → Cauliflower poha (grated cauliflower sautéed with spices) = CHEAP & AUTHENTIC
-Upma → Cauliflower upma (grated cauliflower cooked upma-style) = CHEAP & FAMILIAR TASTE
+Paratha → Almond flour-based, coconut flour-based, cauliflower-based
+Poha → Cauliflower (grated, sautéed with spices) = CHEAP & AUTHENTIC
+Upma → Cauliflower (grated, cooked with traditional spices) = CHEAP & FAMILIAR TASTE
 Idli → Coconut flour idli (fermented with curd), almond flour idli
 Dosa → Coconut flour dosa, almond flour dosa, egg dosa (whisked eggs cooked thin - CHEAPEST OPTION!)
 Khichdi → Cauliflower rice khichdi with ghee = COMFORT FOOD ON BUDGET
@@ -588,22 +588,22 @@ COOKING METHODS:
 
 #### INDIAN KETO-SPECIFIC SWAPS ####
 Samosa filling → Cauliflower and paneer filling in almond flour crust
-Paratha → Almond flour paratha, cauliflower paratha, cheese wraps
-Dosa → Coconut flour dosa, almond flour dosa, egg dosa
-Idli → Almond flour idli (fermented with curd), coconut flour idli
-Khichdi → Cauliflower rice khichdi with ghee (no dal)
-Biryani rice → Cauliflower rice biryani (same spices, no rice)
+Paratha → Almond flour-based, cauliflower-based, cheese wraps
+Dosa → Coconut flour-based, almond flour-based, egg-based
+Idli → Almond flour-based (fermented with curd), coconut flour-based
+Khichdi → Cauliflower rice-based with ghee (no dal)
+Biryani rice → Cauliflower rice (same spices, no rice)
 Raita with potato → Cucumber raita with full-fat yogurt
 Pakora batter → Almond flour or coconut flour batter (no besan - too high carb)
-Poha → Cauliflower poha (grated cauliflower with peanuts, curry leaves)
-Upma → Cauliflower upma (riced cauliflower, ghee, mustard seeds)
-Rava dosa → Egg dosa, coconut flour dosa
-Puri → Cheese crisps, almond flour puri (baked)
+Poha → Cauliflower (grated with peanuts, curry leaves)
+Upma → Cauliflower (riced, ghee, mustard seeds)
+Rava dosa → Egg-based, coconut flour-based
+Puri → Cheese crisps, almond flour-based (baked)
 Dal → Small portion black soy beans OR skip and increase ghee/protein
 Rajma chawal → Black soybean curry with cauliflower rice
 Chole bhature → Skip (too high carb) OR make cauliflower tikki with almond flour bhature
-Aloo paratha → Cauliflower paratha, paneer paratha
-Sabudana khichdi → Avoid (tapioca too high carb) OR cauliflower khichdi
+Aloo paratha → Cauliflower-based, paneer-based
+Sabudana khichdi → Avoid (tapioca too high carb) OR cauliflower-based
 Pav bhaji → Vegetable bhaji (no potato) with almond flour pav or lettuce wraps
 
 #### SNACK SUBSTITUTES ####
@@ -1013,12 +1013,12 @@ GLUTEN-FREE ROTI/BREAD SUBSTITUTES:
 - Cauliflower flatbreads - For keto
 
 GLUTEN-FREE ALTERNATIVES FOR COMMON INDIAN FOODS:
-- Regular roti → Jowar/bajra/ragi roti, besan chilla
-- Paratha → Millet parathas (not keto)
+- Regular roti → Jowar/bajra/ragi-based, besan-based
+- Paratha → Millet-based (not keto)
 - Poori → Skip (fried, high carb) or make with besan
-- Upma → Quinoa upma, vegetable upma with besan
-- Dosa → Ragi dosa, quinoa dosa, besan dosa
-- Idli → Ragi idli, quinoa idli
+- Upma → Quinoa-based, vegetable-based with besan
+- Dosa → Ragi-based, quinoa-based, besan-based
+- Idli → Ragi-based, quinoa-based
 - Pasta → Rice pasta (moderate GI), quinoa pasta, spiralized vegetables (zoodles)
 - Noodles → Rice noodles (moderate), kelp noodles (keto)
 - Bread → Gluten-free bread (check labels for sugar), almond flour bread (keto)
@@ -1110,10 +1110,10 @@ EGG PROTEIN SUBSTITUTES (to compensate for lost protein):
 - Nuts, seeds (if no nut allergy)
 
 EGG-FREE BREAKFAST IDEAS:
-- Besan chilla (chickpea flour pancakes) - naturally egg-free
+- Besan-based (chickpea flour pancakes) - naturally egg-free
 - Poha (rice flakes with vegetables)
-- Upma (semolina/millet upma)
-- Idli, dosa (fermented rice-lentil)
+- Upma (semolina/millet-based)
+- Fermented rice-lentil batters
 - Ragi porridge
 - Smoothie with protein powder, fruits, nut/seed butter
 - Tofu scramble (spiced tofu crumbles)
@@ -1127,9 +1127,9 @@ EGG-FREE BINDING AGENTS (for keto bread, fritters):
 INDIAN DISHES ADAPTATION:
 - Egg curry → Paneer curry, tofu curry
 - Egg bhurji → Paneer bhurji, tofu scramble
-- Omelette → Besan chilla (chickpea flour omelette)
+- Omelette → Besan-based (chickpea flour)
 - Egg-fried rice → Vegetable fried rice
-- Egg paratha → Aloo paratha (if not keto), cauliflower paratha (keto)
+- Egg in flatbread → Potato-based (if not keto), cauliflower-based (keto)
 
 #### COMBINATION ALLERGIES GUIDANCE ####
 
@@ -1164,7 +1164,7 @@ EXAMPLE: Gluten-free + Egg-free:
 - Flour: Millet flours, besan, coconut flour
 - Binding: Flax/chia eggs, psyllium husk
 - Protein: Tofu, paneer (if not dairy-free), legumes
-- Breakfast: Besan chilla, poha, upma, idli
+- Breakfast: Besan-based, poha, semolina/millet-based, fermented rice-lentil batters
 
 EXAMPLE: Dairy-free + Nut-free (Vegan-friendly):
 - Fats: Coconut oil, olive oil, seeds

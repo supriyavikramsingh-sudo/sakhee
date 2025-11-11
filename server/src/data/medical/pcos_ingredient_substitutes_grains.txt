@@ -18,10 +18,10 @@ REGIONAL ALTERNATIVES:
   - East India: Red rice, gobindobhog brown rice, barnyard millet (jhangora)
   - West India: Brown rice, foxtail millet (kang/rala), pearl millet (bajra)
 DIET-TYPE MODIFICATIONS:
-  - Vegetarian: All alternatives work
-  - Vegan: All alternatives work
-  - Jain: All grain alternatives acceptable
-  - Non-Vegetarian: Pair with protein (chicken, fish, eggs) to reduce portion by 30%
+  - Vegetarian: Use flax egg (1 tbsp ground flax + 3 tbsp water)
+  - Vegan: Chickpea flour breads (besan-based), psyllium husk binders
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Can use regular eggs for binding
 ALLERGY ALTERNATIVES: Quinoa (gluten-free), buckwheat (gluten-free), amaranth
 COOKING TIP: Soak overnight, cook with 1 tsp ghee/coconut oil, cool before eating (increases resistant starch)
 
@@ -30,9 +30,9 @@ PROBLEMATIC INGREDIENT: Maida, all-purpose flour, refined white flour
 PCOS CONCERNS: Very high GI (85+), zero fiber, strips nutrients, causes inflammation, insulin spikes
 UNIVERSAL SUBSTITUTE: Whole wheat flour (atta) + 25% besan (chickpea flour) OR 100% whole wheat
 REGIONAL ALTERNATIVES:
-  - North India: Whole wheat atta, multigrain atta (wheat + bajra + jowar), besan (chickpea flour)
-  - South India: Ragi flour (finger millet), whole wheat atta, rice flour + urad dal (50:50 for dosa/idli)
-  - East India: Whole wheat atta, sattu (roasted gram flour), rice flour + moong dal mix
+  - North India: Whole wheat roti, multigrain roti, bajra roti, jowar roti, besan roti/chilla
+  - South India: Fermented dal-rice batters (higher dal ratio), whole grain flour blends
+  - East India: Whole wheat roti, multigrain flour, sattu roti
   - West India: Jowar (sorghum) flour, bajra (pearl millet) flour, whole wheat + besan mix
 DIET-TYPE MODIFICATIONS:
   - Vegetarian: All alternatives work
@@ -47,9 +47,9 @@ PROBLEMATIC INGREDIENT: Whole wheat flour in excess (5+ rotis/meal)
 PCOS CONCERNS: Moderate GI (60-70), can spike insulin if eaten in large quantities, gluten sensitivity in some
 UNIVERSAL SUBSTITUTE: Reduce to 2 rotis + replace rest with millet rotis OR vegetable-based alternatives
 REGIONAL ALTERNATIVES:
-  - North India: Bajra roti, makki (corn) roti, cauliflower roti, palak roti
-  - South India: Ragi roti, jowar roti, akki roti (rice + vegetables)
-  - East India: Sattu roti (roasted gram), mixed millet roti
+  - North India: Bajra-based, makki (corn)-based, cauliflower-based, palak-based
+  - South India: Ragi-based, jowar-based, akki (rice + vegetables)-based
+  - East India: Sattu (roasted gram)-based, mixed millet-based
   - West India: Bajra bhakri, jowar bhakri, nachni (ragi) bhakri
 DIET-TYPE MODIFICATIONS:
   - Vegetarian: All alternatives work
@@ -65,12 +65,12 @@ PCOS CONCERNS: High GI (75+), preservatives, added sugar, low fiber, rapid gluco
 UNIVERSAL SUBSTITUTE: Homemade whole wheat bread OR cloud bread (eggs + cream cheese)
 REGIONAL ALTERNATIVES:
   - North India: Whole wheat roti, multigrain bread, tandoori roti
-  - South India: Idli (fermented dal-rice, higher dal ratio), whole grain dosa
+  - South India: Fermented dal-rice batters (higher dal ratio), whole grain flour blends
   - East India: Whole wheat luchi (baked not fried), roti
   - West India: Whole wheat pav, multigrain bread, jowar bhakri
 DIET-TYPE MODIFICATIONS:
   - Vegetarian: All alternatives work
-  - Vegan: Cloud bread → Chickpea flour bread (besan chilla rolled)
+  - Vegan: Chickpea flour-based breads, psyllium husk binders
   - Jain: All alternatives work
   - Non-Vegetarian: Egg-based cloud bread, protein bread
 ALLERGY ALTERNATIVES (Gluten-free): Almond flour bread, coconut flour bread, besan chilla
@@ -81,15 +81,15 @@ PROBLEMATIC INGREDIENT: Semolina, rava, sooji (fine wheat)
 PCOS CONCERNS: High GI (65-70), refined, low fiber despite being wheat-based
 UNIVERSAL SUBSTITUTE: Broken wheat (dalia/lapsi) OR oats OR quinoa
 REGIONAL ALTERNATIVES:
-  - North India: Dalia (broken wheat), quinoa, oats upma
-  - South India: Oats upma, ragi upma, quinoa upma, mixed millet rava
+  - North India: Dalia (broken wheat), quinoa, oats
+  - South India: Oats, ragi flour, quinoa, mixed millet rava
   - East India: Broken wheat (dalia), oats
   - West India: Broken wheat, pearl millet rava, foxtail millet
 DIET-TYPE MODIFICATIONS:
   - Vegetarian: All alternatives work
   - Vegan: All alternatives work
   - Jain: All alternatives work
-  - Non-Vegetarian: Add egg scrambled into upma for protein
+  - Non-Vegetarian: Add egg or protein powder for extra protein
 ALLERGY ALTERNATIVES (Gluten-free): Quinoa, rice flakes (thick poha), millet rava
 COOKING TIP: Roast substitute lightly before cooking; add vegetables generously
 
@@ -98,8 +98,8 @@ PROBLEMATIC INGREDIENT: White poha, thin rice flakes
 PCOS CONCERNS: Moderate-high GI (65-70), processed rice, quick digesting
 UNIVERSAL SUBSTITUTE: Brown rice poha OR thick poha + peanuts/dal
 REGIONAL ALTERNATIVES:
-  - North India: Brown poha, thick white poha with extra peanuts, dalia upma
-  - South India: Brown poha, vermicelli made from millets, oats
+  - North India: Brown poha, thick white poha with extra peanuts, dalia (broken wheat)
+  - South India: Brown poha, millet-based vermicelli, oats
   - East India: Thick white poha (chira), muri mix with peanuts and jaggery (small amount)
   - West India: Brown poha, thick kanda poha with extra vegetables
 DIET-TYPE MODIFICATIONS:

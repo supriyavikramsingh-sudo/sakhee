@@ -15,13 +15,11 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 import { vectorStoreManager } from '../langchain/vectorStore.js';
 import { Logger } from '../utils/logger.js';
 
-const logger = new Logger('RAG-Ingestion');
+const logger = new Logger('MealTemplateIngestion');
 
-class EnhancedRAGIngester {
+class MealTemplateIngester {
   constructor() {
     this.templatesDir = path.join(__dirname, '../data/meal_templates');
-    this.medicalDir = path.join(__dirname, '../data/medical');
-    this.nutritionalDir = path.join(__dirname, '../data/nutritional');
     this.documents = [];
   }
 
@@ -113,6 +111,7 @@ Tip: ${tip}
             metadata: {
               source: filename,
               type: 'meal_template',
+              documentType: 'meal_template', // ⭐ CRITICAL: Add documentType for Pinecone filtering
               region: region,
               state: state,
               regionalSection: regionalSection.toLowerCase(),
@@ -237,124 +236,6 @@ Tip: ${tip}
     }
   }
 
-  /**
-   * Parse medical guidance files (ingredient substitutes, symptom guidance, lab guidance)
-   * These files use section-based structure with === markers
-   */
-  parseMedicalGuidance(content, filename) {
-    const docs = [];
-
-    // Determine document type from filename
-    let docType = 'medical_info';
-    if (filename.includes('ingredient_substitutes')) {
-      docType = 'ingredient_substitute';
-    } else if (filename.includes('symptom_dietary_guidance') || filename.includes('symptom')) {
-      docType = 'symptom_guidance';
-    } else if (filename.includes('lab_guidance')) {
-      docType = 'lab_guidance';
-    }
-
-    logger.info(`   Parsing as type: ${docType}`);
-
-    // Split by major sections (depends on file structure)
-    let sections = [];
-
-    if (docType === 'ingredient_substitute') {
-      // Split by "--- INGREDIENT NAME ---" markers
-      sections = content.split(/\n---\s+([A-Z\s\/&()]+)\s+---\n/);
-    } else if (docType === 'symptom_guidance') {
-      // Split by "--- SYMPTOM NAME ---" markers
-      sections = content.split(/\n---\s+([A-Z\s\/&()]+)\s+---\n/);
-    } else if (docType === 'lab_guidance') {
-      // Split by "=== LAB: NAME ===" markers
-      sections = content.split(/\n===\s+LAB:\s+([A-Z\s_()]+)\s+===\n/);
-    } else {
-      // For other medical files, split by major headers or chunk by paragraphs
-      sections = this.chunkTextByParagraphs(content, 1500);
-    }
-
-    // Process sections
-    if (Array.isArray(sections) && sections.length > 1) {
-      for (let i = 1; i < sections.length; i += 2) {
-        const sectionTitle = sections[i]?.trim();
-        const sectionContent = sections[i + 1]?.trim();
-
-        if (!sectionTitle || !sectionContent) continue;
-
-        // Further chunk if content is too large (>2000 chars)
-        if (sectionContent.length > 2000) {
-          const chunks = this.chunkTextByParagraphs(sectionContent, 1500);
-          chunks.forEach((chunk, idx) => {
-            docs.push({
-              content: `${sectionTitle}\n\n${chunk}`,
-              metadata: {
-                source: filename,
-                type: docType,
-                section: sectionTitle.toLowerCase(),
-                chunkIndex: idx,
-                totalChunks: chunks.length,
-              },
-            });
-          });
-        } else {
-          docs.push({
-            content: `${sectionTitle}\n\n${sectionContent}`,
-            metadata: {
-              source: filename,
-              type: docType,
-              section: sectionTitle.toLowerCase(),
-            },
-          });
-        }
-      }
-    } else {
-      // Fallback: chunk the entire content
-      const chunks = this.chunkTextByParagraphs(content, 1500);
-      chunks.forEach((chunk, idx) => {
-        docs.push({
-          content: chunk,
-          metadata: {
-            source: filename,
-            type: docType,
-            chunkIndex: idx,
-            totalChunks: chunks.length,
-          },
-        });
-      });
-    }
-
-    return docs;
-  }
-
-  /**
-   * Chunk text by paragraphs to maintain semantic coherence
-   */
-  chunkTextByParagraphs(text, maxChunkSize = 1500) {
-    const paragraphs = text.split(/\n\n+/);
-    const chunks = [];
-    let currentChunk = '';
-
-    for (const paragraph of paragraphs) {
-      const trimmedParagraph = paragraph.trim();
-      if (!trimmedParagraph) continue;
-
-      // If adding this paragraph would exceed max size, save current chunk
-      if (currentChunk.length + trimmedParagraph.length > maxChunkSize && currentChunk.length > 0) {
-        chunks.push(currentChunk.trim());
-        currentChunk = trimmedParagraph;
-      } else {
-        currentChunk += (currentChunk ? '\n\n' : '') + trimmedParagraph;
-      }
-    }
-
-    // Add the last chunk
-    if (currentChunk.trim()) {
-      chunks.push(currentChunk.trim());
-    }
-
-    return chunks.length > 0 ? chunks : [text]; // Fallback to full text if no chunks
-  }
-
   // Extraction helpers for meal templates
   extractState(content) {
     // Match both "- State:" and "- **State:**" formats (strips markdown)
@@ -468,139 +349,11 @@ Tip: ${tip}
   }
 
   /**
-   * Read all .txt files from medical guidance directory
-   */
-  async loadMedicalGuidance() {
-    try {
-      logger.info('🏥 Reading medical guidance files...');
-
-      if (!fs.existsSync(this.medicalDir)) {
-        logger.warn(`⚠️  Medical directory not found: ${this.medicalDir}`);
-        logger.info(
-          '💡 Skipping medical guidance ingestion. Create the directory and add files to enable this feature.'
-        );
-        return [];
-      }
-
-      const files = fs.readdirSync(this.medicalDir).filter((file) => file.endsWith('.txt'));
-
-      if (files.length === 0) {
-        logger.warn('⚠️  No .txt files found in medical directory');
-        logger.info('💡 Add medical guidance files to enable enhanced personalization.');
-        return [];
-      }
-
-      logger.info(`Found ${files.length} medical guidance files: ${files.join(', ')}`);
-
-      let medicalDocs = [];
-      for (const file of files) {
-        const filePath = path.join(this.medicalDir, file);
-        const content = fs.readFileSync(filePath, 'utf-8');
-
-        logger.info(`📄 Processing ${file}...`);
-        const docs = this.parseMedicalGuidance(content, file);
-        medicalDocs.push(...docs);
-        logger.info(`   ✓ Extracted ${docs.length} guidance documents`);
-      }
-
-      logger.info(`✅ Total medical documents extracted: ${medicalDocs.length}`);
-      return medicalDocs;
-    } catch (error) {
-      logger.error('Failed to load medical guidance', { error: error.message, stack: error.stack });
-      throw error;
-    }
-  }
-
-  /**
-   * Load nutritional guidelines documents
-   * Read all .txt files from nutritional directory
-   */
-  async loadNutritionalGuidelines() {
-    try {
-      logger.info('🥗 Reading nutritional guidelines files...');
-
-      if (!fs.existsSync(this.nutritionalDir)) {
-        logger.warn(`⚠️  Nutritional directory not found: ${this.nutritionalDir}`);
-        logger.info(
-          '💡 Skipping nutritional guidelines ingestion. Create the directory and add files to enable this feature.'
-        );
-        return [];
-      }
-
-      const files = fs.readdirSync(this.nutritionalDir).filter((file) => file.endsWith('.txt'));
-
-      if (files.length === 0) {
-        logger.warn('⚠️  No .txt files found in nutritional directory');
-        return [];
-      }
-
-      logger.info(`Found ${files.length} nutritional guidelines files: ${files.join(', ')}`);
-
-      let nutritionalDocs = [];
-      for (const file of files) {
-        const filePath = path.join(this.nutritionalDir, file);
-        const content = fs.readFileSync(filePath, 'utf-8');
-
-        logger.info(`📄 Processing ${file}...`);
-        // Parse as simple sections (## headers)
-        const docs = this.parseNutritionalGuidelines(content, file);
-        nutritionalDocs.push(...docs);
-        logger.info(`   ✓ Extracted ${docs.length} guideline documents`);
-      }
-
-      logger.info(`✅ Total nutritional documents extracted: ${nutritionalDocs.length}`);
-      return nutritionalDocs;
-    } catch (error) {
-      logger.error('Failed to load nutritional guidelines', {
-        error: error.message,
-        stack: error.stack,
-      });
-      throw error;
-    }
-  }
-
-  /**
-   * Parse nutritional guidelines document into sections
-   * Split by ## headers
-   */
-  parseNutritionalGuidelines(content, filename) {
-    const docs = [];
-
-    // Split by ## headers (main sections)
-    const sections = content.split(/\n## /g);
-
-    // First section is the title, skip it
-    for (let i = 1; i < sections.length; i++) {
-      const section = sections[i];
-      const lines = section.split('\n');
-      const sectionTitle = lines[0].trim();
-      const sectionContent = lines.slice(1).join('\n').trim();
-
-      if (sectionContent.length > 100) {
-        // Only create document if has substantial content
-        const doc = new Document({
-          pageContent: `${sectionTitle}\n\n${sectionContent}`,
-          metadata: {
-            type: 'nutritional_guidance',
-            source: filename,
-            section: sectionTitle,
-            title: sectionTitle,
-          },
-        });
-
-        docs.push(doc);
-      }
-    }
-
-    return docs;
-  }
-
-  /**
-   * Ingest all documents into vector store
+   * Ingest meal templates into vector store
    */
   async ingest() {
     try {
-      logger.info('🚀 Starting enhanced RAG ingestion...');
+      logger.info('🚀 Starting meal template ingestion...');
       logger.info('='.repeat(60));
 
       // embeddings are already initialized as a singleton, no need to call initialize()
@@ -610,29 +363,22 @@ Tip: ${tip}
       await vectorStoreManager.initialize();
       logger.info('✅ Vector store initialized');
 
-      // Load meal templates
+      // Load ONLY meal templates
       const mealDocs = await this.loadMealTemplates();
 
-      // Load medical guidance
-      const medicalDocs = await this.loadMedicalGuidance();
-
-      // Load nutritional guidelines
-      const nutritionalDocs = await this.loadNutritionalGuidelines();
-
-      // Combine all documents
-      this.documents = [...mealDocs, ...medicalDocs, ...nutritionalDocs];
+      this.documents = mealDocs;
 
       if (this.documents.length === 0) {
-        logger.warn('⚠️  No documents to ingest');
-        logger.info('💡 Add meal template or medical guidance files and re-run this script.');
+        logger.warn('⚠️  No meal template documents to ingest');
+        logger.info(
+          '💡 Add meal template files to src/data/meal_templates/ and re-run this script.'
+        );
         return false;
       }
 
       logger.info('='.repeat(60));
       logger.info('📊 Ingestion Summary:');
       logger.info(`   Meal Templates: ${mealDocs.length} documents`);
-      logger.info(`   Medical Guidance: ${medicalDocs.length} documents`);
-      logger.info(`   Nutritional Guidelines: ${nutritionalDocs.length} documents`);
       logger.info(`   Total: ${this.documents.length} documents`);
       logger.info('='.repeat(60));
 
@@ -801,7 +547,7 @@ Tip: ${tip}
 }
 
 // Main execution
-const ingester = new EnhancedRAGIngester();
+const ingester = new MealTemplateIngester();
 
 ingester
   .ingest()
@@ -809,13 +555,13 @@ ingester
   .then(() => ingester.testRetrieval())
   .then(() => {
     logger.info('\n' + '🎉'.repeat(30));
-    logger.info('🎉 SUCCESS! Enhanced RAG system is ready! 🎉');
+    logger.info('🎉 SUCCESS! Meal templates ingested successfully! 🎉');
     logger.info('🎉'.repeat(30));
     logger.info('\n📝 Next Steps:');
     logger.info('  1. Review the retrieval test results above');
-    logger.info('  2. Update your meal plan controller to use multi-stage RAG retrieval');
-    logger.info('  3. Test meal plan generation with the enhanced system');
-    logger.info('  4. Monitor RAG quality metrics in generated meal plans\n');
+    logger.info('  2. Run npm run ingest:medical for medical knowledge');
+    logger.info('  3. Run npm run ingest:nutritional for nutritional data');
+    logger.info('  4. Or run npm run ingest:all to ingest everything\n');
     process.exit(0);
   })
   .catch((error) => {

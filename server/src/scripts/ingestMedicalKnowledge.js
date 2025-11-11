@@ -85,6 +85,7 @@ ${subsectionContent}
                 metadata: {
                   source: filename,
                   type: 'medical_knowledge',
+                  documentType: 'medical_knowledge', // ⭐ CRITICAL: Add documentType for Pinecone filtering
                   topic: topic,
                   section: sectionTitle,
                   subsection: subsectionTitle,
@@ -115,6 +116,7 @@ ${finalContent}
             metadata: {
               source: filename,
               type: 'medical_knowledge',
+              documentType: 'medical_knowledge', // ⭐ CRITICAL: Add documentType for Pinecone filtering
               topic: topic,
               section: sectionTitle,
               subsection: subsectionTitle,

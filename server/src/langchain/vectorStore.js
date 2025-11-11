@@ -182,8 +182,9 @@ class VectorStoreManager {
   /**
    * Perform similarity search with Pinecone
    * Returns documents with normalized output structure
+   * ✅ ENHANCED: Added metadata filter support for two-phase retrieval
    */
-  async similaritySearch(query, k = 5) {
+  async similaritySearch(query, k = 5, filter = null) {
     try {
       // Validate query
       if (!query || typeof query !== 'string' || query.trim().length === 0) {
@@ -202,8 +203,15 @@ class VectorStoreManager {
         return [];
       }
 
-      // Perform similarity search using LangChain's PineconeStore
-      const results = await this.vectorStore.similaritySearchWithScore(query, k);
+      // Perform similarity search with optional metadata filter
+      // Pinecone supports metadata filtering at query time
+      let results;
+      if (filter) {
+        logger.debug('Performing filtered similarity search', { filter });
+        results = await this.vectorStore.similaritySearchWithScore(query, k, filter);
+      } else {
+        results = await this.vectorStore.similaritySearchWithScore(query, k);
+      }
 
       // ✅ Return normalized document structure
       // This ensures compatibility with both chatChain (expects pageContent)

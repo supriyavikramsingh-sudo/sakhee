@@ -59,6 +59,7 @@ ${sectionContent}
         metadata: {
           source: filename,
           type: 'nutritional_data',
+          documentType: 'nutritional_data', // ⭐ CRITICAL: Add documentType for Pinecone filtering
           topic: topic,
           section: sectionTitle,
           category: category,
@@ -308,8 +309,14 @@ ${sectionContent}
           logger.info(`  ${idx + 1}. ${result.metadata.section}`);
           logger.info(`     Score: ${result.score?.toFixed(4) || 'N/A'}`);
           logger.info(`     Category: ${result.metadata.category}`);
-          if (result.metadata.nutrients?.length) {
-            logger.info(`     Nutrients: ${result.metadata.nutrients.slice(0, 3).join(', ')}`);
+          if (result.metadata.nutrients) {
+            // Handle both array and string formats
+            const nutrients = Array.isArray(result.metadata.nutrients)
+              ? result.metadata.nutrients.slice(0, 3).join(', ')
+              : typeof result.metadata.nutrients === 'string'
+              ? result.metadata.nutrients
+              : JSON.stringify(result.metadata.nutrients);
+            logger.info(`     Nutrients: ${nutrients}`);
           }
         });
       }

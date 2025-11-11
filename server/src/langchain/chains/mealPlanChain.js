@@ -10,6 +10,52 @@ import { performanceMetrics } from '../../utils/performanceMetrics.js';
 const logger = new Logger('MealPlanChain');
 
 /**
+ * Map cuisines to their parent regions for cuisine contamination prevention
+ * Used by buildForbiddenDishList and validation methods
+ */
+const CUISINE_TO_REGION_MAP = {
+  // South Indian cuisines
+  tamil: 'south-indian',
+  telugu: 'south-indian',
+  kerala: 'south-indian',
+  karnataka: 'south-indian',
+  andhra: 'south-indian',
+  puducherry: 'south-indian',
+
+  // East Indian cuisines
+  bengali: 'east-indian',
+  odia: 'east-indian',
+  assamese: 'east-indian',
+  manipuri: 'east-indian',
+  bihari: 'east-indian',
+  mizo: 'east-indian',
+  naga: 'east-indian',
+  sikkimese: 'east-indian',
+  meghalayan: 'east-indian',
+  jharkhandi: 'east-indian',
+  arunachali: 'east-indian',
+  tripuri: 'east-indian',
+
+  // North Indian cuisines
+  punjabi: 'north-indian',
+  rajasthani: 'north-indian',
+  'uttar pradesh': 'north-indian',
+  uttarakhand: 'north-indian',
+  haryanvi: 'north-indian',
+  kashmiri: 'north-indian',
+  himachali: 'north-indian',
+
+  // West Indian cuisines
+  gujarati: 'west-indian',
+  maharashtrian: 'west-indian',
+  goan: 'west-indian',
+
+  // Central Indian cuisines
+  chhattisgarh: 'central-indian',
+  'madhya pradesh': 'central-indian',
+};
+
+/**
  * Helper function to get meal structure description based on meals per day
  */
 function getMealStructure(mealsPerDay) {
@@ -369,10 +415,21 @@ class MealPlanChain {
           (doc) => doc.metadata?.needsKetoAdaptation === true
         );
 
+        enhancedContext += '🚨 CRITICAL: MEAL TEMPLATE USAGE RULES:\n';
+        enhancedContext += `REQUESTED CUISINES: ${cuisines.join(', ')}\n`;
+        enhancedContext += 'YOU MUST:\n';
+        enhancedContext += `  1. ✅ SELECT MEALS ONLY FROM THE "${mealTemplates.length} MEAL TEMPLATES" SECTION BELOW\n`;
+        enhancedContext += `  2. ✅ EVERY MEAL MUST BE FROM: ${cuisines.join(' OR ')}\n`;
+        enhancedContext += '  3. ❌ DO NOT create meals from scratch\n';
+        enhancedContext +=
+          '  4. ❌ DO NOT use meal examples from the INGREDIENT SUBSTITUTION section as full meals\n';
+        enhancedContext +=
+          '  5. ❌ DO NOT use generic Indian meals (dosa, idli, upma) unless they appear in the MEAL TEMPLATES section with the correct state label\n\n';
+
         if (mealsNeedingAdaptation.length > 0) {
-          enhancedContext += '⚡ KETO ADAPTATION REQUIRED:\n';
+          enhancedContext += '⚡ KETO ADAPTATION INSTRUCTIONS:\n';
           enhancedContext += `${mealsNeedingAdaptation.length} meals below contain high-carb ingredients (rice, dal, wheat, potato).\n`;
-          enhancedContext += 'YOU MUST adapt them for keto by:\n';
+          enhancedContext += 'ADAPT them for keto by:\n';
           enhancedContext +=
             '  1. REPLACE rice → cauliflower rice (pulse raw cauliflower in food processor)\n';
           enhancedContext +=
@@ -380,12 +437,25 @@ class MealPlanChain {
           enhancedContext += '  3. REPLACE roti/bread → almond flour roti or coconut flour bread\n';
           enhancedContext += '  4. REPLACE potato → cauliflower, zucchini, turnip\n';
           enhancedContext += '  5. ADD extra fat (2-3 tbsp ghee, coconut oil, butter per meal)\n';
-          enhancedContext += '  6. KEEP the cooking method, spices, and flavors authentic\n';
-          enhancedContext += '  7. VERIFY final meal has <20g net carbs, >70% fat\n\n';
+          enhancedContext +=
+            '  6. KEEP the cooking method, spices, and authentic regional flavors\n';
+          enhancedContext += '  7. VERIFY final meal has <20g net carbs, >70% fat\n';
+          enhancedContext +=
+            '  8. PRESERVE the state/regional origin (Jharkhand → still Jharkhandi, Sikkim → still Sikkimese)\n\n';
         }
+      } else {
+        // Non-keto mode also needs cuisine adherence rules
+        enhancedContext += '🚨 CRITICAL: MEAL TEMPLATE USAGE RULES:\n';
+        enhancedContext += `REQUESTED CUISINES: ${cuisines.join(', ')}\n`;
+        enhancedContext += 'YOU MUST:\n';
+        enhancedContext += `  1. ✅ SELECT MEALS ONLY FROM THE "${mealTemplates.length} MEAL TEMPLATES" SECTION BELOW\n`;
+        enhancedContext += `  2. ✅ EVERY MEAL MUST BE FROM: ${cuisines.join(' OR ')}\n`;
+        enhancedContext += '  3. ❌ DO NOT create meals from scratch\n';
+        enhancedContext += '  4. ❌ DO NOT use meals from other regional cuisines\n\n';
       }
 
-      enhancedContext += '(Use these as inspiration and adapt to user preferences)\n\n';
+      enhancedContext +=
+        '(Adapt the templates below to user preferences while maintaining regional authenticity)\n\n';
       enhancedContext += mealTemplatesContext + '\n\n';
     }
 
@@ -416,12 +486,84 @@ class MealPlanChain {
 
     // NEW: Add ingredient substitutes
     if (ingredientSubstituteDocs.length > 0) {
+      // ⚡ OPTIMIZATION: Truncate substitute docs to avoid prompt bloat
+      // ⚡ CRITICAL FIX: Remove meal example lines before truncation
       const substituteContext = ingredientSubstituteDocs
-        .map((doc) => doc.pageContent || doc.content)
+        .map((doc) => {
+          let content = doc.pageContent || doc.content || '';
+
+          // 🔥 REMOVE MEAL EXAMPLES to prevent LLM confusion
+          // These patterns match meal names in substitute docs that LLM might treat as valid templates
+          const mealExamplePatterns = [
+            // Match capitalized dish names with common meal keywords
+            /- [A-Z][a-z]+ [A-Z][a-z]+ (?:Dosa|Idli|Upma|Chilla|Paratha|Roti|Biryani|Khichdi|Pulao)/gi,
+            /- [A-Z][a-z]+ (?:Flour|Rice) (?:Dosa|Idli|Upma|Chilla|Paratha|Roti)/gi,
+
+            // Match "Example:" or "Example dishes:" lines
+            /Example dishes?:.*$/gim,
+            /Examples?:.*$/gim,
+            /Try:.*$/gim,
+
+            // Match arrows with capitalized dish names
+            /→ [A-Z][a-z]+ [A-Z]?[a-z]* (?:dosa|idli|upma|chilla|paratha|roti|biryani|khichdi)/gi,
+            /→ [A-Z][a-z]+ (?:flour|rice) (?:dosa|idli|upma|chilla|paratha)/gi,
+
+            // Match "Try <Meal Name>" patterns
+            /Try [A-Z][a-z]+ [a-z]+ (?:dosa|idli|upma|chilla|paratha|roti)/gi,
+
+            // Match dish variations like "Cauliflower Upma", "Coconut Dosa"
+            /\b(?:Cauliflower|Coconut|Almond|Ragi|Jowar) (?:Upma|Dosa|Idli|Chilla|Paratha|Roti)\b/gi,
+
+            // Match "South Indian style:" or similar regional mentions with dishes
+            /(?:South Indian|North Indian|Regional) style:.*(?:upma|dosa|idli)/gi,
+
+            // Match bullet points with dish names
+            /• [A-Z][a-z]+ (?:Upma|Dosa|Idli|Chilla|Paratha|Roti)/gi,
+          ];
+
+          // Apply all patterns to remove meal examples
+          mealExamplePatterns.forEach((pattern) => {
+            content = content.replace(pattern, '');
+          });
+
+          // Clean up multiple newlines left by removals
+          content = content.replace(/\n{3,}/g, '\n\n');
+
+          // Extract only the most relevant part (first 800 chars after cleaning)
+          const truncated = content.substring(0, 800);
+
+          // If truncated, add marker
+          return (
+            truncated +
+            (content.length > 800 ? '\n[... additional details omitted for brevity ...]' : '')
+          );
+        })
         .join('\n\n');
 
-      enhancedContext += '� INGREDIENT SUBSTITUTION GUIDE:\n';
-      enhancedContext += '(Use these to modify non-PCOS-friendly meals from templates)\n\n';
+      const originalSize = ingredientSubstituteDocs.reduce((sum, doc) => {
+        return sum + (doc.pageContent || doc.content || '').length;
+      }, 0);
+
+      const savedTokens = Math.round((originalSize - substituteContext.length) / 4); // ~4 chars per token
+
+      logger.info(
+        `💾 Compressed ${ingredientSubstituteDocs.length} substitute docs (saved ~${savedTokens} tokens, removed meal examples)`
+      );
+
+      enhancedContext += '🔄 INGREDIENT SUBSTITUTION GUIDE:\n';
+      enhancedContext += '⚠️⚠️⚠️ CRITICAL INSTRUCTIONS - READ CAREFULLY:\n';
+      enhancedContext += '1. ❌ These are INGREDIENT SUBSTITUTES ONLY - NOT meal templates!\n';
+      enhancedContext +=
+        '2. ❌ DO NOT use any dish names mentioned here (e.g., "Cauliflower upma", "Coconut dosa")\n';
+      enhancedContext +=
+        '3. ❌ These examples show HOW to substitute ingredients, NOT WHAT meals to cook\n';
+      enhancedContext += '4. ✅ ALWAYS select meals from "📋 MEAL TEMPLATES" section above FIRST\n';
+      enhancedContext +=
+        '5. ✅ THEN apply these ingredient substitutions to those template meals\n';
+      enhancedContext +=
+        '6. ✅ Example: Template "Jharkhandi Rice Curry" → Apply substitute: rice→cauliflower rice → "Jharkhandi Cauliflower Rice Curry"\n';
+      enhancedContext +=
+        '7. ⚠️  Any meal name NOT in templates section = FORBIDDEN (even if it seems adapted)\n\n';
       enhancedContext += substituteContext + '\n\n';
     }
 
@@ -632,6 +774,114 @@ class MealPlanChain {
     });
 
     return Array.from(problematic);
+  }
+
+  /**
+   * ⭐ NEW: Get region from cuisine name for context-aware substitute retrieval
+   */
+  getRegionFromCuisine(cuisine) {
+    const regionMap = {
+      // North India
+      Punjabi: 'North India',
+      Haryanvi: 'North India',
+      Himachali: 'North India',
+      Uttarakhandi: 'North India',
+      Kashmiri: 'North India',
+
+      // South India
+      Tamil: 'South India',
+      Karnataka: 'South India',
+      Kerala: 'South India',
+      Andhra: 'South India',
+      Telangana: 'South India',
+
+      // East India
+      Bengali: 'East India',
+      Odia: 'East India',
+      Assamese: 'East India',
+      Jharkhandi: 'East India',
+      Bihari: 'East India',
+
+      // West India
+      Gujarati: 'West India',
+      Maharashtrian: 'West India',
+      Goan: 'West India',
+      Rajasthani: 'West India',
+
+      // Northeast
+      Sikkimese: 'Northeast India',
+      Manipuri: 'Northeast India',
+      Naga: 'Northeast India',
+      Tripuri: 'Northeast India',
+      Mizo: 'Northeast India',
+      Arunachali: 'Northeast India',
+      Meghalayan: 'Northeast India',
+    };
+
+    return regionMap[cuisine] || '';
+  }
+
+  /**
+   * ⭐ NEW: Identify priority substitutes based on user's symptoms and lab values
+   * This diversifies substitute retrieval beyond just problematic meal ingredients
+   */
+  identifyPrioritySubstitutes(healthContext) {
+    const priorities = [];
+    const symptoms = healthContext?.symptoms || [];
+    const labValues = healthContext?.labValues || {};
+
+    // Symptom-based substitute priorities
+    if (symptoms.includes('weight-gain')) {
+      priorities.push({
+        ingredient: 'high calorie oils healthy fats',
+        reason: 'weight management low calorie',
+      });
+    }
+
+    if (symptoms.includes('hair-loss')) {
+      priorities.push({
+        ingredient: 'iron-rich protein biotin',
+        reason: 'hair growth nutrient-rich',
+      });
+    }
+
+    if (symptoms.includes('acne')) {
+      priorities.push({
+        ingredient: 'anti-inflammatory omega-3',
+        reason: 'skin health inflammation',
+      });
+    }
+
+    if (symptoms.includes('irregular-periods') || symptoms.includes('mood-swings')) {
+      priorities.push({
+        ingredient: 'hormone-balancing adaptogenic',
+        reason: 'hormone balance mood stabilizing',
+      });
+    }
+
+    // Lab-based substitute priorities
+    if (labValues.ferritin && labValues.ferritin.value < 15) {
+      priorities.push({
+        ingredient: 'iron-rich foods heme iron',
+        reason: 'anemia iron deficiency',
+      });
+    }
+
+    if (labValues.vitamin_d && labValues.vitamin_d.value < 30) {
+      priorities.push({
+        ingredient: 'vitamin D sources fortified',
+        reason: 'vitamin D deficiency',
+      });
+    }
+
+    if (labValues.glucose_fasting && labValues.glucose_fasting.value > 100) {
+      priorities.push({
+        ingredient: 'low glycemic complex carbs',
+        reason: 'blood sugar control insulin',
+      });
+    }
+
+    return priorities;
   }
 
   /**
@@ -871,13 +1121,32 @@ class MealPlanChain {
         ]);
 
         for (const query of templateQueries) {
-          const results = await retriever.retrieve(query, { topK: 25 }); // Increased to 25 for better coverage
+          // ⭐ TWO-PHASE RETRIEVAL: Add documentType filter at Pinecone query level
+          // This prevents substitute/medical docs from even being retrieved
+          // More efficient than post-retrieval filtering
+          const results = await retriever.retrieve(query, {
+            topK: 25, // Increased to 25 for better coverage
+            filter: { documentType: 'meal_template' }, // ⭐ PINECONE METADATA FILTER
+          });
 
           // ⭐ FILTER: By cuisine/region AND diet type AND keto/allergens
           const filteredResults = results.filter((doc) => {
             const content = doc.pageContent || doc.content || '';
             const contentLower = content.toLowerCase();
             const metadata = doc.metadata || {};
+
+            // 🔍 PRIORITY CHECK: Only accept meal_template documents in Stage 1
+            // This prevents ingredient substitute docs from contaminating meal template retrieval
+            // NOTE: With Pinecone filter above, this is now a backup check
+            const docType = (metadata.documentType || metadata.type || '').toLowerCase();
+            if (docType && docType !== 'meal_template') {
+              logger.debug(
+                `  ⏭️  Skipping non-template document type: ${docType} - "${
+                  metadata.mealName || metadata.title || 'Unknown'
+                }"`
+              );
+              return false; // Reject substitute docs, medical_knowledge docs, etc.
+            }
 
             // 🔍 FIRST: Filter by cuisine/region match
             // Check if document matches the requested cuisine(s)
@@ -988,10 +1257,30 @@ class MealPlanChain {
               // Bug: "Egg Paratha" has "Egg" in the name, not just ingredients
               // Solution: Check meal name first, then ingredients, then full content as fallback
               const mealNameLower = (metadata.mealName || '').toLowerCase();
-              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
-              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
 
-              // Allergen keywords
+              // ⭐ IMPROVED: Try multiple ingredient extraction patterns
+              let ingredientsText = '';
+
+              // Pattern 1: Standard "Ingredients:" section
+              let ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
+              if (ingredientsMatch) {
+                ingredientsText = ingredientsMatch[1].toLowerCase();
+              } else {
+                // Pattern 2: Try finding ingredients list without colon
+                ingredientsMatch = content.match(/Ingredients\s+(.+?)(?:\n\n|\n[A-Z]|$)/s);
+                if (ingredientsMatch) {
+                  ingredientsText = ingredientsMatch[1].toLowerCase();
+                } else {
+                  // Pattern 3: Fallback to content if no clear ingredients section
+                  logger.debug(
+                    `  ⚠️  No "Ingredients:" section found in "${metadata.mealName}" - using full content for allergen check`
+                  );
+                  ingredientsText = contentLower;
+                }
+              }
+
+              // ⭐ FIX: Use word boundaries to prevent false matches
+              // "buckwheat" should NOT match "wheat", "protein" should NOT match "roti"
               const allergenMap = {
                 dairy: [
                   'milk',
@@ -1006,7 +1295,17 @@ class MealPlanChain {
                   'khoya',
                   'malai',
                 ],
-                gluten: ['wheat', 'maida', 'atta', 'roti', 'chapati', 'paratha', 'bread', 'naan'],
+                // Use word boundaries (\b) to match whole words only
+                gluten: [
+                  '\\bwheat\\b',
+                  '\\bmaida\\b',
+                  '\\batta\\b',
+                  '\\broti\\b',
+                  '\\bchapati\\b',
+                  '\\bparatha\\b',
+                  '\\bbread\\b',
+                  '\\bnaan\\b',
+                ],
                 nuts: [
                   'almond',
                   'cashew',
@@ -1018,7 +1317,7 @@ class MealPlanChain {
                   'badam',
                   'kaju',
                 ],
-                eggs: ['egg', 'omelette', 'anda'],
+                eggs: ['\\begg\\b', '\\bomelette\\b', '\\banda\\b'],
               };
 
               // Check each restriction
@@ -1027,16 +1326,35 @@ class MealPlanChain {
                 const allergens = allergenMap[normalizedRestriction];
 
                 if (allergens) {
-                  // ⭐ COMPREHENSIVE CHECK: Meal name → Ingredients → Full content
+                  // ⭐ IMPROVED: Use regex for word boundary matching
                   const hasAllergen = allergens.some((allergen) => {
-                    // Check meal name (catches "Egg Paratha", "Paneer Tikka", etc.)
-                    if (mealNameLower.includes(allergen)) return true;
+                    // Create regex with word boundaries for gluten/eggs (marked with \b)
+                    // For others, use simple includes
+                    const useRegex = allergen.includes('\\b');
 
-                    // Check ingredients section (most accurate)
-                    if (ingredientsText.includes(allergen)) return true;
+                    if (useRegex) {
+                      const regex = new RegExp(allergen, 'i');
 
-                    // Fallback: Check full content (catches mentions in preparation, etc.)
-                    if (contentLower.includes(allergen)) return true;
+                      // Check meal name
+                      if (regex.test(mealNameLower)) {
+                        logger.debug(
+                          `  🔍 Allergen "${allergen}" found in meal name: "${metadata.mealName}"`
+                        );
+                        return true;
+                      }
+
+                      // Check ingredients section
+                      if (regex.test(ingredientsText)) {
+                        logger.debug(
+                          `  🔍 Allergen "${allergen}" found in ingredients: "${metadata.mealName}"`
+                        );
+                        return true;
+                      }
+                    } else {
+                      // Simple includes for dairy/nuts
+                      if (mealNameLower.includes(allergen)) return true;
+                      if (ingredientsText.includes(allergen)) return true;
+                    }
 
                     return false;
                   });
@@ -1128,25 +1446,20 @@ class MealPlanChain {
             const hasNonVegTag = /Type:\s*Non-Vegetarian/i.test(content);
 
             if (dietType === 'jain') {
-              // Jain: Must be vegetarian AND no root vegetables
-              if (!hasVegetarianTag || hasNonVegTag) return false;
+              // ⭐ JAIN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
+              // The LLM will adapt them using ingredient substitutes from RAG
+              // Similar to vegan strategy - provides variety and allows adaptation of popular dishes
+              // Non-veg proteins (chicken, fish, eggs) → Paneer, tofu, legumes
+              // Prohibited ingredients (root vegetables, mushrooms, etc.) → Allowed vegetables
 
-              // Check for root vegetables in ingredients section only
-              // Note: RAG format uses "Ingredients: ..." (not markdown **Ingredients:**)
-              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n|$)/);
-              const ingredientsText = ingredientsMatch ? ingredientsMatch[1].toLowerCase() : '';
-
-              const jainProhibited = [
-                'potato',
-                'onion',
-                'garlic',
-                'carrot',
-                'radish',
-                'beetroot',
-                'turnip',
-                'ginger',
-              ];
-              return !jainProhibited.some((keyword) => ingredientsText.includes(keyword));
+              // Accept ALL templates (veg and non-veg) - LLM will substitute
+              // No filtering for prohibited ingredients here - LLM handles substitutions
+              logger.info(
+                `    ✅ Jain mode: Accepting template "${
+                  metadata.mealName || 'Unknown'
+                }" for LLM adaptation`
+              );
+              return true; // Accept all templates for Jain adaptation
             } else if (dietType === 'vegan') {
               // ⭐ VEGAN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
               // The LLM will adapt them using ingredient substitutes from RAG
@@ -1287,7 +1600,9 @@ class MealPlanChain {
         const symptomResults = await Promise.all(
           symptomQueries.map(async ({ symptom, query }) => {
             logger.info(`  Querying symptom: "${query}"`);
-            const results = await retriever.retrieve(query, 5);
+            // ⚡ OPTIMIZED: topK=4 per symptom (was using default 15!)
+            // Rationale: 3 symptoms × 4 docs = 12 total (vs 45 before)
+            const results = await retriever.retrieve(query, { topK: 4 });
 
             // Log what we got
             logger.info(`  Retrieved ${results.length} results for ${symptom}`);
@@ -1379,7 +1694,9 @@ class MealPlanChain {
             const query = `${marker.name} PCOS dietary guidance nutrition recommendations`;
             logger.info(`  Querying lab marker: "${query}"`);
 
-            const results = await retriever.retrieve(query, 5);
+            // ⚡ OPTIMIZED: topK=3 per lab marker (was using default 15!)
+            // Rationale: Usually 1-2 abnormal markers, 3 docs each = 3-6 total
+            const results = await retriever.retrieve(query, { topK: 3 });
 
             // Log what we got
             const types = results.map((r) => r.metadata?.type).filter(Boolean);
@@ -1425,20 +1742,32 @@ class MealPlanChain {
           `Diet type '${dietType}' requires protein substitutes - retrieving animal protein alternatives`
         );
 
-        // Retrieve comprehensive animal protein substitutes for diet adaptation
-        const proteinSubstituteQueries = [
-          `fish tofu paneer substitute ${dietType} PCOS`,
-          `chicken paneer soy substitute ${dietType} PCOS`,
-          `prawn seafood vegetarian substitute ${dietType}`,
-          `egg tofu besan substitute ${dietType} PCOS`,
-          `meat mutton jackfruit soy substitute ${dietType}`,
-          `animal protein plant-based substitute ${dietType} PCOS`,
-        ];
+        // ⚠️ OPTIMIZATION: Reduce queries for Jain to avoid token limit (especially with Keto)
+        // LLM already has comprehensive Jain prompts, so fewer examples needed
+        const proteinSubstituteQueries =
+          dietType === 'jain'
+            ? [
+                // Core protein substitutes (combined query for efficiency)
+                `fish chicken egg meat protein substitute jain paneer tofu PCOS`,
+                // Root vegetables and prohibited ingredients (combined)
+                `potato onion garlic mushroom substitute jain hing cauliflower`,
+              ]
+            : [
+                // Non-Jain diets get more detailed queries
+                `fish tofu paneer substitute ${dietType} PCOS`,
+                `chicken paneer soy substitute ${dietType} PCOS`,
+                `prawn seafood vegetarian substitute ${dietType}`,
+                `egg tofu besan substitute ${dietType} PCOS`,
+                `meat mutton jackfruit soy substitute ${dietType}`,
+                `animal protein plant-based substitute ${dietType} PCOS`,
+              ];
 
         for (const query of proteinSubstituteQueries) {
           logger.info(`  Querying protein substitutes: "${query}"`);
 
-          const results = await retriever.retrieve(query, { topK: 5 });
+          // ⚠️ OPTIMIZATION: Reduce topK for Jain (has comprehensive prompts already)
+          const topK = dietType === 'jain' ? 3 : 5;
+          const results = await retriever.retrieve(query, { topK });
 
           // Log what we got
           const types = results.map((r) => r.metadata?.type).filter(Boolean);
@@ -1481,15 +1810,36 @@ class MealPlanChain {
           } PCOS-problematic ingredients: ${problematicIngredients.join(', ')}`
         );
 
-        // Limit to top 5 most important
-        const topIngredients = problematicIngredients.slice(0, 5);
+        // ⚠️ OPTIMIZATION: Limit to top ingredients based on diet
+        const maxIngredients = dietType === 'jain' ? 2 : 5;
+        const topIngredients = problematicIngredients.slice(0, maxIngredients);
+
+        // ⭐ INTELLIGENT: Build context-aware queries with region, diet, and symptom info
+        const cuisineContext = preferences.cuisines?.[0] || '';
+        const regionContext = this.getRegionFromCuisine(cuisineContext);
+        const symptomContext = (healthContext?.symptoms || []).slice(0, 2).join(' ');
 
         for (const ingredient of topIngredients) {
-          // Query for PCOS-friendly substitutes
-          const query = `${ingredient} PCOS substitute alternative healthy`;
+          // ⭐ IMPROVED: Context-rich query for diverse, relevant substitutes
+          // Includes: ingredient, diet type, region, and symptom keywords
+          const queryParts = [ingredient, 'PCOS substitute alternative', dietType];
+
+          // Add regional context for location-specific alternatives
+          if (regionContext) {
+            queryParts.push(regionContext);
+          }
+
+          // Add symptom-specific context (e.g., "anti-inflammatory" for acne)
+          if (symptomContext) {
+            queryParts.push(symptomContext);
+          }
+
+          const query = queryParts.join(' ');
           logger.info(`  Querying PCOS substitute: "${query}"`);
 
-          const results = await retriever.retrieve(query, { topK: 3 });
+          // ⚠️ OPTIMIZATION: Reduce topK for Jain (2 instead of 3)
+          const topK = dietType === 'jain' ? 2 : 3;
+          const results = await retriever.retrieve(query, { topK });
 
           // Filter to substitute docs
           const substituteDocs = results.filter((doc) => {
@@ -1506,70 +1856,113 @@ class MealPlanChain {
         }
       }
 
+      // ⭐ NEW: Diversify substitutes based on symptom/lab priorities
+      // Instead of only querying problematic ingredients from meals,
+      // also proactively retrieve substitutes for user's specific health priorities
+      const prioritySubstitutes = this.identifyPrioritySubstitutes(healthContext);
+
+      if (prioritySubstitutes.length > 0) {
+        logger.info(
+          `🎯 Retrieving priority substitutes for health goals: ${prioritySubstitutes.join(', ')}`
+        );
+
+        for (const priority of prioritySubstitutes.slice(0, 2)) {
+          const query = `${priority.ingredient} substitute ${dietType} ${priority.reason} PCOS`;
+          logger.info(`  Querying priority substitute: "${query}"`);
+
+          const results = await retriever.retrieve(query, { topK: 2 });
+          const substituteDocs = results.filter(
+            (doc) =>
+              doc.metadata?.type === 'ingredient_substitute' ||
+              doc.metadata?.type === 'nutritional_data'
+          );
+
+          retrievalResults.ingredientSubstitutes.push(...substituteDocs);
+        }
+      }
+
       logger.info(`Total substitute docs: ${retrievalResults.ingredientSubstitutes.length}`);
 
       // ===== STAGE 5: Retrieve KETO substitutes (if isKeto enabled) =====
       if (preferences.isKeto) {
         logger.info('Stage 5: Retrieving KETO substitutes (isKeto=true)');
 
+        // ⚠️ OPTIMIZATION: Reduce queries for Jain Keto to avoid token limit
+        // Jain already has comprehensive prompts (70+ lines), so fewer RAG examples needed
+        const isJainKeto = dietType === 'jain';
+
+        // ⭐ INTELLIGENT: Build context-aware keto queries
+        const cuisineContext = preferences.cuisines?.[0] || '';
+        const regionContext = this.getRegionFromCuisine(cuisineContext);
+        const budgetContext = preferences.budget === 'low' ? 'budget affordable' : '';
+
         // Comprehensive keto substitute queries covering all food categories
-        const ketoSubstituteQueries = [
-          // General keto substitutes
-          `keto substitutes grain alternatives cauliflower rice almond flour`,
-          `ketogenic diet low carb substitutes Indian cuisine`,
+        let ketoSubstituteQueries = [];
 
-          // Grain replacements (most important for Indian cuisine)
-          `rice substitute keto cauliflower rice low carb`,
-          `roti chapati bread substitute keto almond flour coconut flour`,
-          `wheat flour substitute keto baking almond coconut`,
+        if (isJainKeto) {
+          // JAIN KETO: Consolidated queries with regional context
+          ketoSubstituteQueries = [
+            // Core keto substitutes with regional awareness
+            `keto substitutes cauliflower rice almond flour Indian cuisine ${regionContext}`,
+            // Jain-specific keto (no root vegetables, no onion/garlic)
+            `jain keto paneer tofu cauliflower low carb no root vegetables ${budgetContext}`,
+            // Sugar substitutes
+            `sugar substitute stevia erythritol keto Indian ${budgetContext}`,
+          ];
+        } else if (dietType === 'vegan') {
+          // VEGAN KETO: Plant-based keto with regional options
+          ketoSubstituteQueries = [
+            // Vegan protein sources
+            `vegan keto protein substitutes tofu tempeh nuts seeds ${regionContext}`,
+            // Vegan dairy alternatives
+            `vegan keto dairy substitute coconut almond milk ${regionContext} ${budgetContext}`,
+            // Plant-based fats
+            `plant-based keto high fat low carb ${regionContext} coconut oil`,
+            // General keto grains
+            `keto substitutes grain alternatives cauliflower rice almond flour ${budgetContext}`,
+            // Sugar substitutes
+            `sugar substitute keto stevia erythritol vegan ${budgetContext}`,
+          ];
+        } else if (dietType === 'vegetarian') {
+          // VEGETARIAN KETO: Includes dairy and eggs
+          ketoSubstituteQueries = [
+            // Vegetarian keto proteins
+            `vegetarian keto paneer cheese eggs low carb ${regionContext}`,
+            // Indian vegetarian keto
+            `vegetarian ketogenic diet Indian high fat ${regionContext} ${budgetContext}`,
+            // Grain replacements
+            `rice substitute keto cauliflower rice low carb ${regionContext}`,
+            `roti chapati bread substitute keto almond flour coconut flour ${budgetContext}`,
+            // Sugar substitutes
+            `sugar substitute keto stevia erythritol monk fruit ${budgetContext}`,
+          ];
+        } else {
+          // NON-VEGETARIAN KETO: Most flexible options
+          ketoSubstituteQueries = [
+            // General keto substitutes with regional context
+            `keto substitutes grain alternatives cauliflower rice almond flour ${regionContext}`,
+            // Protein sources
+            `keto non-vegetarian fatty fish chicken thighs ${regionContext}`,
+            `ketogenic meat protein high fat low carb ${regionContext}`,
+            // Grain replacements
+            `rice substitute keto cauliflower rice low carb ${regionContext}`,
+            `roti chapati bread substitute keto almond flour coconut flour ${budgetContext}`,
+            // Vegetable replacements
+            `potato substitute keto cauliflower zucchini turnip ${regionContext}`,
+            // Sugar and condiments
+            `sugar substitute keto stevia erythritol monk fruit ${budgetContext}`,
+            // Fat sources
+            `keto healthy fats ghee coconut oil MCT ${regionContext} ${budgetContext}`,
+          ];
+        }
 
-          // Vegetable replacements
-          `potato substitute keto cauliflower zucchini turnip`,
-          `starchy vegetables keto substitute low carb`,
-
-          // Diet-specific keto queries
-          ...(dietType === 'vegan'
-            ? [
-                `vegan keto protein substitutes tofu tempeh nuts seeds`,
-                `vegan keto dairy substitute coconut almond milk`,
-                `plant-based keto high fat low carb`,
-              ]
-            : []),
-
-          ...(dietType === 'jain'
-            ? [
-                `jain keto diet no root vegetables cauliflower`,
-                `jain ketogenic diet paneer nuts low carb`,
-              ]
-            : []),
-
-          ...(dietType === 'vegetarian'
-            ? [
-                `vegetarian keto paneer cheese eggs low carb`,
-                `vegetarian ketogenic diet Indian high fat`,
-              ]
-            : []),
-
-          ...(dietType === 'non-vegetarian'
-            ? [
-                `keto non-vegetarian fatty fish chicken thighs`,
-                `ketogenic meat protein high fat low carb`,
-              ]
-            : []),
-
-          // Sweetener and condiment replacements
-          `sugar substitute keto stevia erythritol monk fruit`,
-          `keto condiments sauces low carb Indian`,
-
-          // Fat sources
-          `keto healthy fats ghee coconut oil MCT butter`,
-          `high fat low carb Indian keto`,
-        ];
-
+        // Execute keto substitute queries
         for (const query of ketoSubstituteQueries) {
           logger.info(`  Querying keto substitutes: "${query}"`);
 
-          const results = await retriever.retrieve(query, { topK: 5 });
+          // ⚠️ OPTIMIZATION: Reduce topK for Jain Keto
+          const topK = isJainKeto ? 3 : 5;
+          const results = await retriever.retrieve(query, { topK });
 
           // Log what we got
           const types = results.map((r) => r.metadata?.type).filter(Boolean);
@@ -1647,7 +2040,17 @@ class MealPlanChain {
         // Supported allergies list
         const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
 
-        for (const restriction of restrictions) {
+        // ⚡ OPTIMIZATION: Remove duplicate restrictions to avoid redundant RAG queries
+        const uniqueRestrictions = [...new Set(restrictions)];
+        if (uniqueRestrictions.length < restrictions.length) {
+          logger.warn(
+            `  ⚠️  Removed ${
+              restrictions.length - uniqueRestrictions.length
+            } duplicate restrictions (${restrictions.length} → ${uniqueRestrictions.length})`
+          );
+        }
+
+        for (const restriction of uniqueRestrictions) {
           const normalizedRestriction = restriction.toLowerCase().trim();
 
           // Only process if it's one of the 4 supported allergies
@@ -1736,7 +2139,6 @@ class MealPlanChain {
           );
         }
       }
-
       // ⭐ ALLERGEN MODE: Final validation to ensure NO allergen-containing meals slipped through
       // This should NEVER catch anything if Stage 1 filtering works correctly
       if (restrictions && restrictions.length > 0 && retrievalResults.mealTemplates.length > 0) {
@@ -1894,6 +2296,119 @@ class MealPlanChain {
             } duplicates)`
           );
         }
+
+        // ⚠️ CRITICAL: Hard limit on meal templates to prevent token overflow
+        // Each meal ~2K tokens → 103 meals = 206K tokens (exceeds 128K limit!)
+        // Solution: Limit to top 40 meals (already re-ranked by hybrid scoring)
+        const MAX_MEALS_FOR_LLM = 40;
+        if (retrievalResults.mealTemplates.length > MAX_MEALS_FOR_LLM) {
+          const originalCount = retrievalResults.mealTemplates.length;
+          retrievalResults.mealTemplates = retrievalResults.mealTemplates.slice(
+            0,
+            MAX_MEALS_FOR_LLM
+          );
+          logger.warn(
+            `⚠️ Token limit protection: Reduced meals from ${originalCount} → ${MAX_MEALS_FOR_LLM} (top re-ranked meals only)`
+          );
+        }
+
+        // 🛡️ CRITICAL: Pre-generation cuisine validation
+        // LAST DEFENSE: Filter out contaminated templates before LLM sees them
+        // Even if Stage 1 filters missed them, catch forbidden dishes here
+        // Prevents: "Cauliflower Upma (Tripuri Keto Jain)" from reaching prompt
+        if (preferences.cuisines && preferences.cuisines.length > 0) {
+          const forbiddenDishes = this.buildForbiddenDishList(preferences.cuisines);
+
+          if (forbiddenDishes.length > 0) {
+            const beforeValidation = retrievalResults.mealTemplates.length;
+            retrievalResults.mealTemplates = retrievalResults.mealTemplates.filter((doc) => {
+              const mealName = (doc.metadata?.mealName || '').toLowerCase();
+              const ingredients = (doc.pageContent || '').toLowerCase();
+
+              // Check for forbidden dish names in meal name or ingredients
+              const hasForbiddenDish = forbiddenDishes.some((dish) => {
+                return mealName.includes(dish) || ingredients.includes(dish);
+              });
+
+              if (hasForbiddenDish) {
+                logger.warn(
+                  `🚫 Pre-generation validation: Removed "${doc.metadata?.mealName}" - contains forbidden cuisine keyword`,
+                  {
+                    requestedCuisines: preferences.cuisines,
+                    forbiddenKeywords: forbiddenDishes.filter(
+                      (dish) => mealName.includes(dish) || ingredients.includes(dish)
+                    ),
+                  }
+                );
+              }
+
+              return !hasForbiddenDish;
+            });
+
+            const afterValidation = retrievalResults.mealTemplates.length;
+            if (beforeValidation !== afterValidation) {
+              logger.info(
+                `✅ Pre-generation validation: ${beforeValidation} → ${afterValidation} meal templates (-${
+                  beforeValidation - afterValidation
+                } forbidden dishes removed)`
+              );
+            }
+          }
+        }
+      }
+
+      // ⚡ NEW OPTIMIZATION: Cross-category deduplication for symptom/lab/substitute docs
+      // Remove duplicate content across different retrieval categories to reduce tokens
+      // This is critical because the same nutritional guidance often appears in multiple categories
+      const allGuidanceDocs = [
+        ...retrievalResults.symptomGuidance,
+        ...retrievalResults.labGuidance,
+        ...retrievalResults.ingredientSubstitutes,
+      ];
+
+      if (allGuidanceDocs.length > 0) {
+        const beforeGuidanceCount = allGuidanceDocs.length;
+
+        // Deduplicate based on content similarity (first 200 chars as fingerprint)
+        const deduplicatedGuidance = deduplicator.deduplicateDocuments(allGuidanceDocs, {
+          keyFields: ['metadata.title', 'contentHash'], // Use title + content hash
+          keepFirst: true, // Keep first occurrence (best semantic match)
+          logStats: false,
+        });
+
+        const afterGuidanceCount = deduplicatedGuidance.length;
+
+        // Redistribute back to categories (preserve ratios)
+        if (beforeGuidanceCount !== afterGuidanceCount) {
+          const symptomRatio = retrievalResults.symptomGuidance.length / beforeGuidanceCount;
+          const labRatio = retrievalResults.labGuidance.length / beforeGuidanceCount;
+          const substituteRatio =
+            retrievalResults.ingredientSubstitutes.length / beforeGuidanceCount;
+
+          const symptomCount = Math.ceil(afterGuidanceCount * symptomRatio);
+          const labCount = Math.ceil(afterGuidanceCount * labRatio);
+          const substituteCount = afterGuidanceCount - symptomCount - labCount;
+
+          retrievalResults.symptomGuidance = deduplicatedGuidance.slice(0, symptomCount);
+          retrievalResults.labGuidance = deduplicatedGuidance.slice(
+            symptomCount,
+            symptomCount + labCount
+          );
+          retrievalResults.ingredientSubstitutes = deduplicatedGuidance.slice(
+            symptomCount + labCount
+          );
+
+          logger.info(
+            `✅ Cross-category deduplication: ${beforeGuidanceCount} → ${afterGuidanceCount} guidance docs (-${
+              beforeGuidanceCount - afterGuidanceCount
+            } duplicates)`,
+            {
+              symptom: `${retrievalResults.symptomGuidance.length}`,
+              lab: `${retrievalResults.labGuidance.length}`,
+              substitute: `${retrievalResults.ingredientSubstitutes.length}`,
+            }
+          );
+        }
       }
 
       return retrievalResults;
@@ -1901,6 +2416,67 @@ class MealPlanChain {
       logger.error('Multi-stage retrieval failed', { error: error.message, stack: error.stack });
       return retrievalResults;
     }
+  }
+
+  /**
+   * Build forbidden dish list based on requested cuisines
+   * Uses region-based dish keywords to find dishes NOT in allowed cuisines
+   * Example: If user requests "Naga", forbid all South Indian dishes (idli, dosa, upma, etc.)
+   */
+  buildForbiddenDishList(requestedCuisines) {
+    const forbiddenDishes = [];
+
+    // Define forbidden dish keywords by region
+    const forbiddenDishKeywords = {
+      'south-indian': [
+        'idli',
+        'dosa',
+        'sambar',
+        'rasam',
+        'appam',
+        'puttu',
+        'upma',
+        'vada',
+        'pongal',
+        'uttapam',
+        'coconut chutney',
+      ],
+      'north-indian': ['chole', 'rajma', 'makki', 'sarson', 'tandoor', 'naan', 'kulcha', 'paratha'],
+      'west-indian': ['dhokla', 'thepla', 'undhiyu', 'khandvi', 'pav bhaji', 'vada pav'],
+      bengali: ['shukto', 'chingri', 'ilish', 'machher jhol', 'mishti doi'],
+    };
+
+    // Check if ANY cuisine from each region is selected
+    const selectedRegions = new Set();
+    requestedCuisines.forEach((cuisine) => {
+      const cuisineLower = cuisine.toLowerCase();
+      const region = CUISINE_TO_REGION_MAP[cuisineLower];
+      if (region) {
+        selectedRegions.add(region);
+      }
+    });
+
+    // Build list of EXPLICITLY FORBIDDEN dishes from regions NOT selected
+    for (const [region, dishes] of Object.entries(forbiddenDishKeywords)) {
+      // Only forbid if NO cuisine from this region is selected
+      const regionIsSelected = selectedRegions.has(region);
+      if (!regionIsSelected) {
+        forbiddenDishes.push(...dishes);
+      }
+    }
+
+    // Legacy logic to prevent issues - keep the original iteration structure
+    // This section was trying to iterate but cuisineToRegionMap had wrong structure
+    // Replaced with simpler region-based approach above
+
+    logger.debug('Built forbidden dish list', {
+      requestedCuisines,
+      selectedRegions: Array.from(selectedRegions),
+      forbiddenDishesCount: forbiddenDishes.length,
+      forbiddenSample: forbiddenDishes.slice(0, 10), // First 10 for debugging
+    });
+
+    return forbiddenDishes;
   }
 
   /**
@@ -2250,6 +2826,17 @@ class MealPlanChain {
 
       prompt += `⚡ THIS IS A KETO MEAL PLAN - STANDARD PCOS RULES ARE OVERRIDDEN:\n\n`;
 
+      // ✅ ADD CRITICAL MEAL TEMPLATE ADHERENCE RULE AT TOP
+      prompt += `🚨🚨🚨 CRITICAL MEAL TEMPLATE RULE (ABSOLUTE PRIORITY):\n`;
+      prompt += `✅ YOU MUST SELECT ALL MEALS FROM THE "📋 MEAL TEMPLATES FROM KNOWLEDGE BASE" SECTION ABOVE\n`;
+      prompt += `✅ REQUESTED CUISINES: ${preferences.cuisines?.join(', ') || 'Indian'}\n`;
+      prompt += `✅ EVERY MEAL NAME MUST MATCH A MEAL TEMPLATE WITH THE CORRECT STATE LABEL (e.g., "(Sikkim)", "(Jharkhand)", "(Manipur)")\n`;
+      prompt += `❌ DO NOT create meals from scratch\n`;
+      prompt += `❌ DO NOT use meal examples from the "INGREDIENT SUBSTITUTION GUIDE" section as complete meals\n`;
+      prompt += `❌ DO NOT use generic Indian meals (idli, dosa, upma, poha) UNLESS they appear in the meal templates with your requested cuisines\n`;
+      prompt += `✅ IF a meal template contains rice/dal/grains → ADAPT IT using the keto substitution rules below (e.g., "Manipuri Fish Rice" → "Manipuri Fish with Cauliflower Rice")\n`;
+      prompt += `✅ KEEP the state/regional label in the meal name to show authenticity (e.g., "Jharkhandi Cauliflower Rice Biryani (Jain Keto)")\n\n`;
+
       prompt += `⚡ KETO MACRO TARGETS (NON-NEGOTIABLE):\n`;
       prompt += `- Fat: 70% of calories (approximately ${Math.round(
         (targetCalories * 0.7) / 9
@@ -2284,13 +2871,13 @@ class MealPlanChain {
       prompt += `   - NO sugar, jaggery, honey\n`;
       prompt += `   - Use stevia, erythritol, monk fruit ONLY\n\n`;
 
-      prompt += `✅ KETO GRAIN REPLACEMENTS (MANDATORY - USE THESE INSTEAD):\n`;
+      prompt += `✅ KETO GRAIN REPLACEMENTS (MANDATORY - USE THESE TO ADAPT MEAL TEMPLATES):\n`;
       prompt += `   - Rice → CAULIFLOWER RICE (pulse raw cauliflower in food processor)\n`;
       prompt += `   - Roti/Chapati → ALMOND FLOUR ROTI, coconut flour roti, cheese wraps\n`;
-      prompt += `   - Upma → Cauliflower upma\n`;
-      prompt += `   - Poha → Cauliflower poha\n`;
-      prompt += `   - Idli/Dosa → Coconut flour dosa, egg dosa\n`;
-      prompt += `   - Biryani → Cauliflower rice biryani\n\n`;
+      prompt += `   - Upma → Cauliflower upma (only if Upma appears in meal templates)\n`;
+      prompt += `   - Poha → Cauliflower poha (only if Poha appears in meal templates)\n`;
+      prompt += `   - Idli/Dosa → Coconut flour dosa, egg dosa (only if Idli/Dosa appears in meal templates for your cuisine)\n`;
+      prompt += `   - Biryani → Cauliflower rice biryani (adapt template biryani recipes)\n\n`;
 
       prompt += `✅ KETO FAT SOURCES (ADD TO EVERY MEAL):\n`;
       prompt += `   - Cook in: Ghee, coconut oil, butter (2-3 tbsp per serving)\n`;
@@ -2307,7 +2894,17 @@ class MealPlanChain {
       if (dietType === 'vegan') {
         prompt += `🌿 VEGAN KETO: NO dairy, use coconut (oil, cream, milk), tofu, tempeh, nuts, seeds\n\n`;
       } else if (dietType === 'jain') {
-        prompt += `🙏 JAIN KETO: NO root vegetables (potato, onion, garlic), NO grains. Use cauliflower, paneer, nuts, above-ground vegetables only\n\n`;
+        prompt += `🙏 JAIN KETO (MOST RESTRICTIVE COMBINATION):\n`;
+        prompt += `   - You will receive ALL meal templates (vegetarian + non-vegetarian)\n`;
+        prompt += `   - STEP 1: Convert non-veg proteins to vegetarian (chicken→paneer, fish→tofu)\n`;
+        prompt += `   - STEP 2: Remove ALL Jain-prohibited ingredients (root vegetables, mushrooms, eggs, honey)\n`;
+        prompt += `   - STEP 3: Apply keto substitutions to vegetarian version (grains→cauliflower, high-carb→low-carb)\n`;
+        prompt += `   - NO root vegetables: potato, onion, garlic, ginger, carrot, radish, beetroot, turnip\n`;
+        prompt += `   - NO mushrooms, NO eggs, NO honey\n`;
+        prompt += `   - NO grains (rice, wheat, millets), NO high-carb legumes (chickpeas, kidney beans)\n`;
+        prompt += `   - USE: Cauliflower, paneer, tofu, nuts, seeds, above-ground vegetables, coconut products\n`;
+        prompt += `   - USE: Hing (asafoetida) for onion/garlic flavor, dry ginger powder instead of fresh ginger\n`;
+        prompt += `   - Example: "Butter Chicken" → "Butter Paneer (Jain)" → use cauliflower rice, coconut cream, hing\n\n`;
       } else if (dietType === 'vegetarian') {
         prompt += `🌱 VEGETARIAN KETO: Emphasize paneer, cheese, eggs, ghee, butter, nuts\n\n`;
       } else {
@@ -2315,13 +2912,17 @@ class MealPlanChain {
       }
 
       prompt += `�🚨🚨 CRITICAL KETO RULES - MUST FOLLOW EXACTLY:\n`;
-      prompt += `1. CALCULATE NET CARBS: Every meal must show NET carbs (total carbs - fiber)\n`;
-      prompt += `2. DAILY NET CARBS LIMIT: Maximum 20-50g per day (divide by ${mealsCount} meals = ~${Math.round(
+      prompt += `1. ✅ USE ONLY THE 40 MEAL TEMPLATES PROVIDED IN "📋 MEAL TEMPLATES" SECTION - MANDATORY!\n`;
+      prompt += `2. ✅ ADAPT high-carb templates to keto (rice→cauliflower rice, dal→paneer, grains→almond flour)\n`;
+      prompt += `3. ❌ DO NOT REJECT templates with rice/dal/grains - ADAPT THEM TO KETO using substitution rules!\n`;
+      prompt += `4. ❌ DO NOT CREATE meals from scratch - ALWAYS start with a provided template\n`;
+      prompt += `5. ❌ FORBIDDEN: "Ragi Dosa", "Moong Dal Chilla", "Palak Paneer" (generic names not in templates)\n`;
+      prompt += `6. CALCULATE NET CARBS: Total carbs minus fiber\n`;
+      prompt += `7. DAILY NET CARBS LIMIT: Maximum 20-50g per day (divide by ${mealsCount} meals = ~${Math.round(
         50 / mealsCount
       )}g net carbs per meal MAX)\n`;
-      prompt += `3. REJECT HIGH-CARB RAG TEMPLATES: If RAG suggests "Ragi Idli" or "Moong Dal Chilla" - IGNORE IT\n`;
-      prompt += `4. ONLY USE KETO-COMPATIBLE RAG TEMPLATES: Paneer dishes, vegetable curries, non-veg dishes\n`;
-      prompt += `5. IF NO KETO TEMPLATE FOUND: CREATE from scratch using keto ingredients\n\n`;
+      prompt += `8. MEAL NAME FORMAT: Template name + state label + "(Keto Jain)"\n`;
+      prompt += `   Example: "81. Dhuska" → "Dhuska with Cauliflower (Jharkhandi Keto Jain)"\n\n`;
 
       prompt += `🌍 CUISINE-SPECIFIC KETO ADAPTATIONS (RESPECT REGIONAL AUTHENTICITY):\n`;
       prompt += `⚠️ WARNING: DO NOT mix cuisines incorrectly!\n`;
@@ -3033,31 +3634,74 @@ class MealPlanChain {
     } else if (dietType === 'jain') {
       prompt += `2b. 🚨🚨🚨 JAIN DIET REQUIREMENT (ABSOLUTE MUST - STRICTEST DIET):\n`;
       prompt += `   - The user follows JAIN dietary principles - this is NON-NEGOTIABLE\n`;
-      prompt += `   - ABSOLUTELY NO animal products of any kind:\n`;
-      prompt += `     ❌ NO meat (chicken, mutton, pork, beef, lamb)\n`;
-      prompt += `     ❌ NO fish or seafood (tuna, prawns, crab, any sea food)\n`;
-      prompt += `     ❌ NO eggs\n`;
-      prompt += `   - ABSOLUTELY NO root vegetables or underground items:\n`;
-      prompt += `     ❌ NO potato, onion, garlic, ginger\n`;
-      prompt += `     ❌ NO carrot, radish, beetroot, turnip, sweet potato\n`;
-      prompt += `     ❌ NO underground tubers of any kind\n`;
-      prompt += `   - ALLOWED: Above-ground vegetables, fruits, grains, legumes, nuts, seeds, dairy\n`;
-      prompt += `   - Examples of ALLOWED vegetables: spinach, tomato, cucumber, beans, peas, capsicum, cauliflower, cabbage, broccoli, bottle gourd, pumpkin\n`;
+      prompt += `   - You will receive BOTH vegetarian AND non-vegetarian meal templates\n`;
+      prompt += `   - You MUST adapt ALL templates to be 100% Jain-compliant using substitutions\n`;
       prompt += `\n`;
-      prompt += `   🔧 ADAPTING NON-JAIN DISHES TO JAIN:\n`;
-      prompt += `   - If a traditional dish contains prohibited items, you MUST adapt it\n`;
+      prompt += `   📋 COMPLETE LIST OF PROHIBITED FOODS:\n`;
+      prompt += `   1. ❌ ALL ANIMAL PRODUCTS:\n`;
+      prompt += `      • NO meat (chicken, mutton, pork, beef, lamb, any poultry)\n`;
+      prompt += `      • NO fish or seafood (tuna, salmon, prawns, shrimp, crab, any sea food)\n`;
+      prompt += `      • NO eggs (in any form - whole, powder, as ingredient)\n`;
+      prompt += `\n`;
+      prompt += `   2. ❌ ALL ROOT VEGETABLES & UNDERGROUND ITEMS:\n`;
+      prompt += `      • NO potato, sweet potato, yam\n`;
+      prompt += `      • NO onion, garlic, ginger (fresh)\n`;
+      prompt += `      • NO carrot, radish, beetroot, turnip\n`;
+      prompt += `      • NO any underground tubers or bulbs\n`;
+      prompt += `      • REASON: Harvesting kills the plant and microorganisms (nigoda) in soil\n`;
+      prompt += `\n`;
+      prompt += `   3. ❌ MUSHROOMS, FUNGI & FERMENTED FOODS:\n`;
+      prompt += `      • NO mushrooms (button, shiitake, portobello, any variety)\n`;
+      prompt += `      • NO yeast or yeast-based products\n`;
+      prompt += `      • NO fermented foods (unless specifically Jain-approved)\n`;
+      prompt += `      • NO alcoholic beverages (beer, wine, spirits)\n`;
+      prompt += `\n`;
+      prompt += `   4. ❌ HONEY:\n`;
+      prompt += `      • NO honey or honey-based products\n`;
+      prompt += `      • REASON: Involves harm to bees\n`;
+      prompt += `\n`;
+      prompt += `   ✅ ALLOWED FOODS:\n`;
+      prompt += `   - Above-ground vegetables: spinach, tomato, cucumber, beans, peas, capsicum, cauliflower, cabbage, broccoli, bottle gourd, pumpkin, zucchini, okra, eggplant\n`;
+      prompt += `   - Fruits: all fruits that don't harm the plant (apples, bananas, berries, etc.)\n`;
+      prompt += `   - Grains: rice, wheat, millets (but NOT for Jain Keto)\n`;
+      prompt += `   - Legumes: lentils, chickpeas, kidney beans, moong, masoor, chana\n`;
+      prompt += `   - Nuts & Seeds: almonds, cashews, walnuts, peanuts, chia, flax, sesame, pumpkin seeds\n`;
+      prompt += `   - Dairy: milk, paneer, cheese, yogurt, butter, ghee, cream\n`;
+      prompt += `   - Dry ginger powder (sunth) is acceptable as it's dried\n`;
+      prompt += `\n`;
+      prompt += `   🔧 MANDATORY SUBSTITUTION STRATEGY:\n`;
       prompt += `   - REFER TO the "🔧 INGREDIENT SUBSTITUTION GUIDE" in the RAG context above\n`;
-      prompt += `   - Look for Jain-friendly substitutes for: fish, meat, eggs, root vegetables, onion, garlic\n`;
-      prompt += `   - Examples (use substitution guide for more options):\n`;
-      prompt += `     • "Goan Fish Curry" → "Goan Paneer Curry (Jain)" or "Goan Mixed Vegetable Curry (Jain)" (check substitution guide)\n`;
-      prompt += `     • "Fish Recheado" → "Paneer Recheado (Jain)" - no onion/garlic, use hing for flavor (check substitution guide)\n`;
-      prompt += `     • "Tendli Batata Bhaji" → "Tendli Pumpkin Bhaji (Jain)" - replace potato with pumpkin (check substitution guide)\n`;
-      prompt += `     • Fish/Meat → Paneer, tofu, legumes, or above-ground vegetables\n`;
-      prompt += `     • Potato → Pumpkin, bottle gourd, raw banana (plantain), yam (if considered above-ground)\n`;
-      prompt += `     • Onion/Garlic → Asafoetida (hing) for flavor, use more tomatoes, green chilies\n`;
-      prompt += `     • Ginger → Can sometimes be replaced with dry ginger powder (check Jain preferences)\n`;
-      prompt += `   - Keep the dish name authentic but add "(Jain Version)" to clarify\n`;
-      prompt += `   - THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE JAIN PRINCIPLES!\n\n`;
+      prompt += `   - For EVERY non-vegetarian dish, substitute proteins:\n`;
+      prompt += `     • Chicken/Mutton/Meat → Paneer, tofu, soya chunks, legumes (rajma, chana)\n`;
+      prompt += `     • Fish/Prawns/Seafood → Paneer, tofu, cottage cheese, baby corn\n`;
+      prompt += `     • Eggs → Tofu scramble, chickpea flour (besan) for binding\n`;
+      prompt += `\n`;
+      prompt += `   - For EVERY dish with prohibited vegetables:\n`;
+      prompt += `     • Potato → Pumpkin, bottle gourd (lauki), raw banana (plantain), cauliflower\n`;
+      prompt += `     • Onion → Asafoetida (hing) + extra tomatoes, green chilies for flavor\n`;
+      prompt += `     • Garlic → Asafoetida (hing), cumin, fennel for aroma\n`;
+      prompt += `     • Fresh Ginger → Dry ginger powder (sunth)\n`;
+      prompt += `     • Carrot → Pumpkin, red bell pepper, tomato\n`;
+      prompt += `     • Mushrooms → Paneer cubes, tofu, baby corn, above-ground vegetables\n`;
+      prompt += `\n`;
+      prompt += `   - NAMING CONVENTION:\n`;
+      prompt += `     • Keep dish name authentic but add "(Jain)" or "(Jain Version)"\n`;
+      prompt += `     • Examples:\n`;
+      prompt += `       "Goan Fish Curry" → "Goan Paneer Curry (Jain)"\n`;
+      prompt += `       "Butter Chicken" → "Butter Paneer (Jain)"\n`;
+      prompt += `       "Fish Recheado" → "Paneer Recheado (Jain)"\n`;
+      prompt += `       "Tendli Batata Bhaji" → "Tendli Pumpkin Bhaji (Jain)"\n`;
+      prompt += `       "Mushroom Masala" → "Paneer Masala (Jain)"\n`;
+      prompt += `\n`;
+      prompt += `   ⚠️  VERIFICATION CHECKLIST (Check EVERY meal):\n`;
+      prompt += `   □ Contains NO meat, fish, seafood, or eggs\n`;
+      prompt += `   □ Contains NO root vegetables (potato, onion, garlic, ginger, carrot, etc.)\n`;
+      prompt += `   □ Contains NO mushrooms, fungi, or yeast products\n`;
+      prompt += `   □ Contains NO honey\n`;
+      prompt += `   □ All substitutions are from the ALLOWED foods list\n`;
+      prompt += `   □ Dish name includes "(Jain)" or "(Jain Version)"\n`;
+      prompt += `\n`;
+      prompt += `   THIS IS THE MOST IMPORTANT CONSTRAINT - NEVER VIOLATE JAIN PRINCIPLES!\n\n`;
     }
 
     if (preferences.cuisines && preferences.cuisines.length > 1) {
