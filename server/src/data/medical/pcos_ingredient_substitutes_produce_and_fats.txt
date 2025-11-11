@@ -1,0 +1,111 @@
+PCOS-FRIENDLY INGREDIENT SUBSTITUTES - PRODUCE & FATS
+Version: 2025-11-11 (Split from main file)
+Purpose: RAG file for LangChain embeddings - PRODUCE category
+Format: Ingredient → Substitute mapping with regional alternatives and diet-type considerations
+Usage: Query by ingredient name, cooking method, or diet restriction to retrieve PCOS-friendly alternatives
+
+================================================================================
+
+## SECTION 2: COOKING OILS & FATS ###
+
+--- EXCESSIVE GHEE ---
+PROBLEMATIC INGREDIENT: Ghee/clarified butter in excess (>1-1.5 tbsp/day)
+PCOS CONCERNS: High saturated fat, can worsen insulin resistance if consumed excessively, inflammation
+UNIVERSAL SUBSTITUTE: Measured ghee (1 tsp/meal) OR blend with cold-pressed oils
+REGIONAL ALTERNATIVES:
+  - North India: Mustard oil (for cooking), ghee (tadka only 1 tsp)
+  - South India: Coconut oil (small amount), gingelly (sesame) oil, ghee (tadka only)
+  - East India: Mustard oil, rice bran oil
+  - West India: Groundnut oil, ghee (minimal), coconut oil
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: Replace ghee completely with coconut oil, mustard oil, sesame oil
+  - Jain: All alternatives work
+  - Non-Vegetarian: All alternatives work
+ALLERGY ALTERNATIVES: Olive oil, avocado oil (not traditional but PCOS-friendly)
+COOKING TIP: Use ghee for flavor in tadka only; for cooking use mustard/coconut oil
+
+--- DEEP FRYING OIL (REUSED) ---
+PROBLEMATIC INGREDIENT: Reused vegetable oil, palm oil, vanaspati (hydrogenated oil)
+PCOS CONCERNS: Trans fats, oxidized fats, extreme inflammation, worsens insulin resistance, hormonal imbalance
+UNIVERSAL SUBSTITUTE: AIR FRYING or BAKING with light oil spray (cold-pressed oils)
+REGIONAL ALTERNATIVES:
+  - North India: Bake samosas, kachoris with 1 tbsp mustard oil brushed; air fry
+  - South India: Bake vadai, bonda with coconut oil spray; steam instead of fry
+  - East India: Steam or shallow fry with mustard oil (minimal)
+  - West India: Bake dhokla, khandvi (already steamed), air fry pakoras
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: Air fry or bake with oil spray
+  - Non-Vegetarian: Same methods
+ALLERGY ALTERNATIVES: Olive oil spray (not traditional but works)
+COOKING TIP: For crispy texture, use besan coating + air fry at 180°C; spray oil lightly
+
+--- REFINED VEGETABLE OILS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Refined sunflower oil, refined soybean oil, refined corn oil (in excess)
+PCOS CONCERNS: High omega-6 fatty acids, pro-inflammatory, processed, low antioxidants
+UNIVERSAL SUBSTITUTE: Cold-pressed oils in moderation (1-2 tbsp/meal total)
+REGIONAL ALTERNATIVES:
+  - North India: Cold-pressed mustard oil, ghee (limited)
+  - South India: Cold-pressed coconut oil, sesame (gingelly) oil
+  - East India: Mustard oil (kachi ghani), rice bran oil
+  - West India: Cold-pressed groundnut oil, coconut oil
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: All cold-pressed plant oils
+  - Non-Vegetarian: Same, can add omega-3 from fish
+ALLERGY ALTERNATIVES: Olive oil, avocado oil
+COOKING TIP: Store cold-pressed oils in dark bottles; don't overheat; use for tadka/light sauté
+
+
+
+## SECTION 6: VEGETABLES & FRUITS ###
+
+--- POTATO (EXCESS, ESPECIALLY FRIED) ---
+PROBLEMATIC INGREDIENT: White potato (especially fried, mashed, or excessive amounts)
+PCOS CONCERNS: High GI (85+ when mashed/fried), rapid starch digestion, blood sugar spike
+UNIVERSAL SUBSTITUTE: Sweet potato (small amount), cauliflower, turnip (shalgam)
+REGIONAL ALTERNATIVES:
+  - North India: Sweet potato (shakarkandi) 50g, turnip (shalgam), cauliflower for aloo
+  - South India: Raw banana (limited), yam (suran) 50g, elephant yam, cauliflower
+  - East India: Sweet potato, elephant yam (ol), arbi (colocasia) - small portions
+  - West India: Sweet potato, suran (yam), cauliflower
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All vegetable alternatives
+  - Vegan: Same
+  - Jain: Avoid all root vegetables → Use cauliflower, pumpkin, raw banana
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES: Cauliflower rice, turnip, pumpkin
+COOKING TIP: If using potato, boil with skin, cool before eating (resistant starch); limit to 50g
+
+--- HIGH-GI FRUITS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Mango, banana (ripe), grapes, watermelon (in excess), fruit juices
+PCOS CONCERNS: High natural sugars, rapid glucose spike, low fiber when juiced
+UNIVERSAL SUBSTITUTE: Berries, apple with skin, pear, guava (limited 1 serving/day)
+REGIONAL ALTERNATIVES:
+  - North India: Apple, pear, guava, pomegranate (small amount)
+  - South India: Papaya (small), guava, Indian gooseberry (amla)
+  - East India: Guava, papaya (small), jamun (Indian blackberry)
+  - West India: Guava, papaya (small), custard apple (sitaphal) - very small amount
+DIET-TYPE MODIFICATIONS:
+  - All: Limit high-GI fruits; prefer berries, guava, apple
+ALLERGY ALTERNATIVES: Rotate fruits; avoid allergenic ones
+COOKING TIP: Eat whole fruit with skin; pair with nuts; avoid fruit juices completely
+
+--- DRIED FRUITS (EXCESS) ---
+PROBLEMATIC INGREDIENT: Raisins (kishmish), dried figs, dried apricots in excess
+PCOS CONCERNS: Concentrated sugars, lack of water content, easy to overeat, GI spike
+UNIVERSAL SUBSTITUTE: 3-4 pieces soaked overnight as occasional treat OR fresh fruit
+REGIONAL ALTERNATIVES:
+  - North India: Soaked almonds, walnuts instead of raisins in dishes
+  - South India: Fresh coconut pieces, roasted peanuts instead of dry fruits
+  - East India: Roasted chana instead of raisins
+  - West India: Roasted peanuts, fresh fruits
+DIET-TYPE MODIFICATIONS:
+  - All: Limit to 3-4 pieces if used; prefer fresh fruits
+ALLERGY ALTERNATIVES: Seeds (pumpkin, sunflower) for crunch instead
+COOKING TIP: If using in cooking, soak dried fruits; use minimal quantities
+
+
+
+================================================================================
+END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES - PRODUCE & FATS
+================================================================================

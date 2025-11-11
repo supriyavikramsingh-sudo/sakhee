@@ -28,6 +28,7 @@ logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
+chroma.log
 
 # Runtime data
 pids/
@@ -37,9 +38,12 @@ pids/
 # Temp files
 /server/src/storage/tmpUploads/*
 !/server/src/storage/tmpUploads/.gitkeep
-src/storage/*
-backups/*
+/server/src/storage/localCache/*
 
 # Testing
 coverage/
 .nyc_output/
+
+# Vector Database
+# Note: Using Pinecone (cloud-hosted), no local vector database files needed
+# Legacy HNSWLib and ChromaDB files are ignored above

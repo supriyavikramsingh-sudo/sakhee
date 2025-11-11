@@ -1,0 +1,301 @@
+PCOS-FRIENDLY INGREDIENT SUBSTITUTES - PROTEINS & DAIRY
+Version: 2025-11-11 (Split from main file)
+Purpose: RAG file for LangChain embeddings - PROTEINS category
+Format: Ingredient → Substitute mapping with regional alternatives and diet-type considerations
+Usage: Query by ingredient name, cooking method, or diet restriction to retrieve PCOS-friendly alternatives
+
+================================================================================
+
+## SECTION 4: DAIRY PRODUCTS ###
+
+--- FULL-FAT MILK (EXCESS) ---
+PROBLEMATIC INGREDIENT: Full-fat cow milk, buffalo milk (in excess quantities)
+PCOS CONCERNS: High in natural sugars (lactose), can trigger insulin, some women react to dairy hormones
+UNIVERSAL SUBSTITUTE: Low-fat milk (limited 1 cup/day) OR unsweetened almond/soy milk
+REGIONAL ALTERNATIVES:
+  - North India: Diluted low-fat milk, unsweetened almond milk
+  - South India: Coconut milk (small amount), diluted low-fat milk
+  - East India: Low-fat milk, soy milk
+  - West India: Low-fat milk, coconut milk
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Low-fat dairy milk or plant milk
+  - Vegan: Almond milk, soy milk, coconut milk (all unsweetened)
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Same options
+ALLERGY ALTERNATIVES (Lactose intolerant): Almond milk, coconut milk, oat milk (unsweetened)
+COOKING TIP: Use milk in tea/coffee; avoid drinking glasses of milk alone
+
+--- PANEER (FULL-FAT) ---
+PROBLEMATIC INGREDIENT: Full-fat paneer, high-fat cottage cheese
+PCOS CONCERNS: High saturated fat, can worsen insulin resistance if consumed in excess
+UNIVERSAL SUBSTITUTE: Low-fat paneer (homemade from low-fat milk) OR tofu
+REGIONAL ALTERNATIVES:
+  - North India: Low-fat paneer, hung curd (Greek yogurt style), tofu in paneer recipes
+  - South India: Tofu, low-fat paneer
+  - East India: Tofu (chhana), low-fat paneer
+  - West India: Low-fat paneer, tofu
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Low-fat paneer, tofu
+  - Vegan: Tofu (soy paneer), tempeh
+  - Jain: Low-fat paneer, tofu
+  - Non-Vegetarian: Replace with chicken breast, fish (higher protein, lower fat)
+ALLERGY ALTERNATIVES (Dairy allergy): Tofu, tempeh, legume-based paneer
+COOKING TIP: Make paneer from low-fat milk; press tofu well before cooking
+
+--- CREAM/MALAI ---
+PROBLEMATIC INGREDIENT: Heavy cream, malai, cooking cream
+PCOS CONCERNS: Very high saturated fat, inflammation, insulin resistance
+UNIVERSAL SUBSTITUTE: Greek yogurt OR cashew cream OR coconut cream (small amount)
+REGIONAL ALTERNATIVES:
+  - North India: Hung low-fat yogurt, cashew paste (soaked + blended)
+  - South India: Coconut milk (first press, small amount), cashew cream
+  - East India: Hung low-fat yogurt, poppy seed paste (posto) for thickness
+  - West India: Hung yogurt, cashew cream
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Hung yogurt, cashew cream
+  - Vegan: Cashew cream, coconut cream, almond cream
+  - Jain: Same as vegetarian
+  - Non-Vegetarian: Hung Greek yogurt
+ALLERGY ALTERNATIVES: Coconut cream (for nut allergy), sunflower seed cream (for nut/coconut allergy)
+COOKING TIP: Blend soaked cashews with water for cream consistency
+
+--- FLAVORED YOGURT ---
+PROBLEMATIC INGREDIENT: Sweetened yogurt, fruit yogurt, flavored dahi
+PCOS CONCERNS: Added sugars, high GI, defeats probiotic benefits
+UNIVERSAL SUBSTITUTE: Plain unsweetened yogurt (dahi) OR Greek yogurt + fresh berries
+REGIONAL ALTERNATIVES:
+  - North India: Homemade plain dahi, lassi without sugar (use stevia + cardamom)
+  - South India: Homemade curd, buttermilk (chaas) unsweetened
+  - East India: Plain doi (curd), homemade mishti doi with stevia
+  - West India: Homemade dahi, buttermilk (mattha) unsweetened
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Plain dairy yogurt
+  - Vegan: Coconut yogurt (unsweetened), almond yogurt
+  - Jain: Plain dairy yogurt
+  - Non-Vegetarian: Plain Greek yogurt (high protein)
+ALLERGY ALTERNATIVES: Coconut yogurt, cashew yogurt (unsweetened)
+COOKING TIP: Make yogurt at home; add fresh fruit if needed, no sugar
+
+
+
+## SECTION 5: PROTEINS & LEGUMES ###
+
+--- OVERCOOKED DALS (MUSHY) ---
+PROBLEMATIC INGREDIENT: Pressure-cooked dal (10+ whistles), very soft dal
+PCOS CONCERNS: Higher GI when overcooked, rapid digestion, less fiber benefit
+UNIVERSAL SUBSTITUTE: Al dente dal (firm texture) - 2-3 whistles OR sprouted lentils
+REGIONAL ALTERNATIVES:
+  - North India: Whole urad, whole moong, rajma (kidney beans) - firmer texture
+  - South India: Whole green gram, toor dal (not overcooked), sambar with firm dal
+  - East India: Whole moong, masoor dal (firm), ghugni (firmer chickpeas)
+  - West India: Whole moong, varan (toor dal firm), usal (sprouted)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All dal types, pressure cook less
+  - Vegan: Same
+  - Jain: Same
+  - Non-Vegetarian: Mix dal with chicken/fish for protein boost
+ALLERGY ALTERNATIVES: Lentils generally low allergen; rotate types if needed
+COOKING TIP: Cook dal just until soft, not mushy; add vegetables for bulk
+
+--- CANNED/PROCESSED LEGUMES ---
+PROBLEMATIC INGREDIENT: Canned chickpeas, canned kidney beans with added salt/sugar
+PCOS CONCERNS: Added sodium, preservatives, BPA in can lining, sometimes added sugars
+UNIVERSAL SUBSTITUTE: Dried legumes soaked overnight and cooked fresh
+REGIONAL ALTERNATIVES:
+  - All regions: Soak dried chana, rajma, whole moong overnight; pressure cook fresh
+DIET-TYPE MODIFICATIONS:
+  - All: Use dried legumes
+ALLERGY ALTERNATIVES: N/A (if legume allergy, replace with seeds, nuts, fish, chicken)
+COOKING TIP: Soak legumes 8-12 hours; cook with kombu seaweed to reduce gas
+
+--- SOY PRODUCTS (EXCESSIVE) ---
+PROBLEMATIC INGREDIENT: Soy chunks, soy milk (excessive amounts), textured soy protein
+PCOS CONCERNS: Phytoestrogens may affect hormones in some women; controversial in PCOS
+UNIVERSAL SUBSTITUTE: Moderate amounts (2-3x/week) OR replace with chickpeas, paneer, eggs
+REGIONAL ALTERNATIVES:
+  - North India: Rajma, black chana, paneer, eggs instead of soy chunks
+  - South India: Toor dal, moong dal, sambar instead of soy
+  - East India: Fish, eggs, lentils
+  - West India: Sprouted moong, varan, groundnuts
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Rotate soy with other protein sources
+  - Vegan: Moderate soy; include hemp seeds, pumpkin seeds
+  - Jain: Moderate soy or replace with dairy/nuts
+  - Non-Vegetarian: Replace soy with chicken, fish, eggs
+ALLERGY ALTERNATIVES (Soy allergy): Pea protein, hemp protein, egg, chicken
+COOKING TIP: If using soy, choose fermented (tempeh) and limit to 2x/week
+
+
+
+## SECTION 17: ANIMAL PROTEIN SUBSTITUTES (FOR VEGETARIAN/VEGAN/JAIN ADAPTATIONS) ###
+
+--- FISH (ALL TYPES) ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Paneer (vegetarian), Tofu (vegan), or Mixed vegetables (Jain)
+REGIONAL ALTERNATIVES BY CUISINE:
+  - North India: Paneer cubes/chunks marinated similarly to fish
+  - South India: Jackfruit (young, green) for texture; raw banana (plaintain)
+  - East India: Tofu, mushrooms, or cauliflower florets
+  - West India: Raw banana, jackfruit, or firm tofu
+  - Coastal Cuisines (Goan, Kerala, Bengali): Banana stem, raw banana, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - FIRM FISH (like salmon, tuna): Firm tofu (pressed), paneer slabs, portobello mushrooms
+  - FLAKY FISH (like tilapia, cod): Crumbled paneer, jackfruit, hearts of palm
+  - SEAFOOD CURRY: Mixed vegetables (cauliflower, beans, carrots) with coconut milk
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Paneer (best texture match), cottage cheese, firm tofu
+  - Vegan: Firm tofu (pressed 30 min), tempeh, jackfruit (young green), banana blossoms
+  - Jain: Paneer (if dairy allowed), pumpkin chunks, bottle gourd chunks, raw banana
+
+MARINADE ADJUSTMENTS: Keep same spices/marinades; fish marinades work perfectly for tofu/paneer
+COOKING TIP: For tofu - press 30 min, cut into cubes, shallow fry until golden before adding to curry; For paneer - lightly pan-fry to prevent crumbling
+
+SPECIFIC DISH EXAMPLES:
+  - "Goan Fish Curry" → "Goan Tofu Curry" OR "Goan Paneer Curry" OR "Goan Raw Banana Curry"
+  - "Fish Recheado" → "Tofu Recheado" OR "Paneer Recheado" OR "Mushroom Recheado"
+  - "Bengali Fish Jhol" → "Bengali Paneer Jhol" OR "Bengali Mixed Vegetable Jhol"
+  - "Macher Jhol" → "Paneer Jhol" OR "Fulkopi Jhol" (Cauliflower Jhol)
+
+--- PRAWNS/SHRIMP ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Baby corn pieces (vegetarian/vegan), small paneer cubes (vegetarian)
+REGIONAL ALTERNATIVES:
+  - Coastal: Hearts of palm, baby corn, water chestnuts
+  - All regions: Diced paneer, button mushrooms, jackfruit pieces
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Small paneer cubes, baby corn
+  - Vegan: Baby corn, hearts of palm, water chestnuts, young jackfruit pieces
+  - Jain: Baby corn, pumpkin pieces (cut small), paneer cubes
+
+TEXTURE TIP: Baby corn has similar bite and sweetness to prawns
+COOKING TIP: Marinate baby corn/paneer in same prawn marinade (turmeric, chili, lime)
+
+SPECIFIC DISH EXAMPLES:
+  - "Prawn Balchão" → "Baby Corn Balchão" OR "Paneer Balchão" OR "Jackfruit Balchão"
+  - "Prawn Curry" → "Baby Corn Curry" OR "Paneer Curry" OR "Mixed Vegetable Curry"
+
+--- CHICKEN ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Paneer chunks (vegetarian), Soy chunks/Tofu (vegan), Mixed legumes (Jain)
+REGIONAL ALTERNATIVES:
+  - North India: Paneer tikka, soy chunks, mushrooms (large pieces)
+  - South India: Firm tofu, jackfruit chunks, soy chunks
+  - East India: Paneer, mushrooms, firm vegetables
+  - West India: Paneer, soy chunks, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - CHICKEN BREAST (firm): Large paneer slabs, firm tofu blocks, portobello mushrooms
+  - CHICKEN CHUNKS (curries): Paneer cubes, soy chunks (rehydrated), jackfruit pieces
+  - MINCED CHICKEN: Crumbled paneer, crumbled tofu, soya granules, mashed legumes
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Paneer (best), soy chunks, large mushrooms (portobello, king oyster)
+  - Vegan: Firm tofu, tempeh, soy chunks, seitan, jackfruit, large mushrooms
+  - Jain: Paneer, large beans (rajma pieces), firm pumpkin chunks
+
+MARINADE TIP: Chicken marinades work perfectly for paneer/tofu; yogurt-based marinades use coconut yogurt for vegan
+COOKING TIP: For soy chunks - boil 5 min, squeeze out water, then marinate; For tofu - press 30 min before marinating
+
+SPECIFIC DISH EXAMPLES:
+  - "Chicken Tikka" → "Paneer Tikka" OR "Tofu Tikka" OR "Mushroom Tikka"
+  - "Chicken Curry" → "Paneer Curry" OR "Tofu Curry" OR "Mixed Dal Curry"
+  - "Chicken Cafreal" → "Paneer Cafreal" OR "Tofu Cafreal" OR "Mushroom Cafreal"
+  - "Chicken Biryani" → "Paneer Biryani" OR "Vegetable Biryani" OR "Soy Chunk Biryani"
+
+--- MUTTON/LAMB ---
+PROBLEMATIC FOR: Vegetarian, Vegan, Jain diets
+UNIVERSAL SUBSTITUTE: Soy chunks (large), jackfruit chunks, large legumes (rajma, chole)
+REGIONAL ALTERNATIVES:
+  - North India: Large soy chunks, jackfruit, rajma (kidney beans)
+  - South India: Jackfruit chunks, black chickpeas
+  - East India: Large mushrooms, firm vegetables
+  - West India: Soy chunks, jackfruit
+
+TEXTURE-SPECIFIC SUBSTITUTES:
+  - MUTTON CHUNKS: Large soy chunks (rehydrated), jackfruit pieces, rajma (whole kidney beans)
+  - MINCED MUTTON: Soya granules, crumbled tofu, mashed black chickpeas
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Large soy chunks, rajma, black chickpeas
+  - Vegan: Jackfruit (young green), soy chunks, large mushrooms, seitan
+  - Jain: Large beans (rajma), pumpkin chunks, large paneer pieces
+
+COOKING TIP: Jackfruit mimics pulled meat texture; cook low and slow for best results
+MARINADE TIP: Use same spices; mutton spices (garam masala, bay leaf) work great with jackfruit
+
+SPECIFIC DISH EXAMPLES:
+  - "Mutton Curry" → "Jackfruit Curry" OR "Soy Chunk Curry" OR "Rajma Masala"
+  - "Mutton Rogan Josh" → "Jackfruit Rogan Josh" OR "Soy Chunk Rogan Josh"
+  - "Mutton Keema" → "Soya Granules Keema" OR "Mixed Dal Keema" (mashed mixed lentils)
+
+--- EGGS ---
+PROBLEMATIC FOR: Vegan, Jain, Vegetarian (strict) diets
+UNIVERSAL SUBSTITUTE: Tofu scramble (vegan), Paneer bhurji (vegetarian Jain-friendly)
+REGIONAL ALTERNATIVES:
+  - All regions: Tofu scramble (firm tofu crumbled), besan (chickpea flour) scramble
+
+EGG-SPECIFIC SUBSTITUTES BY USE:
+  - BOILED EGGS (whole): No direct substitute; use paneer cubes or small tofu blocks
+  - SCRAMBLED EGGS: Tofu scramble (crumbled firm tofu with turmeric), besan scramble
+  - OMELETTE: Besan chilla (chickpea flour pancake), moong dal chilla
+  - EGG CURRY: Paneer cubes in curry OR small potato pieces (not Jain) OR firm tofu cubes
+  - BAKING (binding): 1 tbsp ground flaxseed + 3 tbsp water = 1 egg OR mashed banana
+
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian (lacto): Paneer bhurji, paneer cubes in curry
+  - Vegan: Tofu scramble (with black salt for egg flavor), besan chilla
+  - Jain: Paneer bhurji, besan chilla, moong dal chilla
+
+FLAVOR TIP: Add black salt (kala namak) to tofu scramble for eggy sulfur flavor
+COOKING TIP: For tofu scramble - use firm tofu, crumble with hands, cook with turmeric and black salt
+
+SPECIFIC DISH EXAMPLES:
+  - "Egg Bhurji" → "Tofu Bhurji" OR "Paneer Bhurji" OR "Besan Bhurji"
+  - "Egg Curry" → "Paneer Curry" OR "Tofu Curry" OR "Aloo Curry" (not Jain)
+  - "Egg Poi" (Goan) → "Paneer Poi" OR "Tofu Poi"
+  - "Egg Dosa" → "Paneer Dosa" OR "Vegetable Dosa"
+
+--- GENERAL PROTEIN ADAPTATION PRINCIPLES ---
+
+PORTION ADJUSTMENTS:
+  - Fish 150g → Paneer/Tofu 150g (same protein content)
+  - Chicken 150g → Paneer/Tofu 150g + 1 cup dal (combined protein)
+  - Eggs 2 (12g protein) → Tofu 100g (10g protein) + handful nuts
+
+COOKING METHOD PRESERVATION:
+  - If fish is FRIED → Fry paneer/tofu the same way
+  - If chicken is GRILLED → Grill paneer/tofu with same marinade
+  - If eggs are BOILED → Use paneer cubes or small tofu blocks in curry
+
+SPICE/MARINADE COMPATIBILITY:
+  - ALL fish marinades work for tofu/paneer
+  - ALL chicken marinades work for paneer/soy chunks/tofu
+  - ALL egg spice mixes work for tofu scramble
+
+REGIONAL AUTHENTICITY:
+  - Keep the dish name authentic: "Goan Fish Curry" becomes "Goan Tofu Curry" (not just "Tofu Curry")
+  - Use regional vegetables: Goan dishes add kokum, Kerala adds coconut milk, Bengali adds mustard
+  - Maintain traditional spice profiles exactly
+
+TEXTURE MATCHING:
+  - For FIRM texture → Pressed tofu, paneer slabs
+  - For SOFT texture → Soft tofu, crumbled paneer
+  - For CHUNKY texture → Large vegetable pieces, jackfruit
+  - For MINCED texture → Crumbled tofu, soya granules, mashed legumes
+
+VARIETY CREATION STRATEGY:
+When limited dishes available, create multiple variations:
+  - "Goan Fish Curry" → 3 VARIATIONS:
+    1. "Goan Tofu Curry (Vegan Version)" - firm tofu cubes
+    2. "Goan Paneer Curry (Vegetarian Version)" - paneer cubes
+    3. "Goan Mixed Vegetable Curry (Jain Version)" - cauliflower, beans, pumpkin, no onion/garlic
+
+================================================================================
+
+
+================================================================================
+END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES - PROTEINS & DAIRY
+================================================================================

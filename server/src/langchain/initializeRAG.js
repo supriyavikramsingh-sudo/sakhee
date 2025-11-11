@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { vectorStoreManager } from './vectorStore.js';
 import { embeddingsManager } from './embeddings.js';
 import { Logger } from '../utils/logger.js';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 const logger = new Logger('RAG-Init');
 
@@ -12,17 +13,15 @@ const __dirname = path.dirname(__filename);
 
 /**
  * Initialize RAG system on server startup
- * Checks if vector store exists, if not - triggers ingestion
+ * Connects to Pinecone and verifies documents are indexed
  */
 export async function initializeRAG() {
   try {
     logger.info('🚀 Initializing RAG system...');
 
-    const vectorDbPath = path.join(__dirname, '../storage/localCache/vectordb');
     const templatesPath = path.join(__dirname, '../data/meal_templates');
 
-    // Check if vector store exists
-    const vectorStoreExists = fs.existsSync(vectorDbPath);
+    // Check if data files exist
     const templatesExist = fs.existsSync(templatesPath);
 
     if (!templatesExist) {
@@ -37,37 +36,46 @@ export async function initializeRAG() {
 
     if (templateFiles.length === 0) {
       logger.warn('⚠️  No .txt template files found in meal_templates/');
-      logger.info('💡 Add template files and run: npm run ingest:meals');
+      logger.info('💡 Add template files and run: npm run ingest:all');
       return false;
     }
 
     logger.info(`📂 Found ${templateFiles.length} template files: ${templateFiles.join(', ')}`);
 
-    // Initialize embeddings and vector store
+    // Initialize embeddings and Pinecone vector store
     await embeddingsManager.initialize();
     await vectorStoreManager.initialize();
 
-    if (!vectorStoreExists) {
-      logger.warn('⚠️  Vector store not found. Run ingestion script first:');
-      logger.info('   npm run ingest:meals');
-      logger.info('💡 Server will start but meal plan generation may use fallback templates');
-      return false;
-    }
-
-    // Test retrieval to verify vector store is working
+    // Check Pinecone document count
     try {
+      const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
+      const index = pinecone.index(process.env.PINECONE_INDEX_NAME || 'pcos-sakhee-rag');
+      const stats = await index.describeIndexStats();
+      const totalDocs = stats.totalRecordCount || 0;
+
+      if (totalDocs === 0) {
+        logger.warn('⚠️  Pinecone index is empty. Run ingestion scripts:');
+        logger.info('   npm run ingest:all');
+        logger.info('💡 Server will start but meal plan generation may use fallback templates');
+        return false;
+      }
+
+      logger.info(`✅ RAG system initialized successfully`);
+      logger.info(`📊 Pinecone index contains ${totalDocs} documents`);
+
+      // Test retrieval to verify vector store is working
       const testResults = await vectorStoreManager.similaritySearch('breakfast', 1);
       if (testResults.length > 0) {
-        logger.info('✅ RAG system initialized successfully');
-        logger.info(`📊 Vector store loaded with indexed meal templates`);
+        logger.info('✅ Retrieval test successful');
         return true;
       } else {
-        logger.warn('⚠️  Vector store exists but appears empty. Consider re-ingesting:');
-        logger.info('   npm run ingest:meals');
+        logger.warn('⚠️  Retrieval test returned no results. Consider re-ingesting:');
+        logger.info('   npm run ingest:all');
         return false;
       }
     } catch (error) {
-      logger.error('Vector store test failed', { error: error.message });
+      logger.error('Pinecone connection failed', { error: error.message });
+      logger.warn('⚠️  Server will continue with fallback templates');
       return false;
     }
   } catch (error) {
@@ -79,13 +87,11 @@ export async function initializeRAG() {
 
 /**
  * Get RAG system status
+ * Checks Pinecone index stats and data files
  */
 export async function getRAGStatus() {
   try {
-    const vectorDbPath = path.join(__dirname, '../storage/localCache/vectordb');
     const templatesPath = path.join(__dirname, '../data/meal_templates');
-
-    const vectorStoreExists = fs.existsSync(vectorDbPath);
     const templatesExist = fs.existsSync(templatesPath);
 
     let templateCount = 0;
@@ -96,28 +102,37 @@ export async function getRAGStatus() {
       templateCount = templateFiles.length;
     }
 
+    // Get Pinecone stats
     let indexedDocuments = 0;
     let testQuery = null;
+    let pineconeConnected = false;
 
-    if (vectorStoreExists && vectorStoreManager.vectorStore) {
-      try {
+    try {
+      const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
+      const index = pinecone.index(process.env.PINECONE_INDEX_NAME || 'pcos-sakhee-rag');
+      const stats = await index.describeIndexStats();
+      indexedDocuments = stats.totalRecordCount || 0;
+      pineconeConnected = true;
+
+      // Test retrieval
+      if (vectorStoreManager.vectorStore) {
         const results = await vectorStoreManager.similaritySearch('test', 1);
         testQuery = results.length > 0;
-        // Approximate document count (not directly available in HNSWLib)
-        indexedDocuments = '~' + templateCount * 25; // Estimate based on avg meals per template
-      } catch (error) {
-        testQuery = false;
       }
+    } catch (error) {
+      logger.error('Failed to get Pinecone stats', { error: error.message });
+      pineconeConnected = false;
+      testQuery = false;
     }
 
     return {
-      vectorStoreExists,
+      pineconeConnected,
       templatesExist,
       templateCount,
       templateFiles,
       indexedDocuments,
       retrievalWorks: testQuery,
-      status: vectorStoreExists && testQuery ? 'ready' : 'needs-ingestion',
+      status: pineconeConnected && indexedDocuments > 0 && testQuery ? 'ready' : 'needs-ingestion',
     };
   } catch (error) {
     logger.error('Failed to get RAG status', { error: error.message });
@@ -129,32 +144,43 @@ export async function getRAGStatus() {
 }
 
 /**
- * Check if vector store needs refresh
- * Compares last modified time of templates vs vector store
+ * Check if data files have been modified
+ * Compares template file timestamps to determine if re-ingestion is needed
  */
 export async function needsRefresh() {
   try {
-    const vectorDbPath = path.join(__dirname, '../storage/localCache/vectordb');
     const templatesPath = path.join(__dirname, '../data/meal_templates');
 
-    if (!fs.existsSync(vectorDbPath) || !fs.existsSync(templatesPath)) {
+    if (!fs.existsSync(templatesPath)) {
       return true;
     }
 
-    const vectorStats = fs.statSync(vectorDbPath);
+    // Get Pinecone stats to check last update time
+    const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
+    const index = pinecone.index(process.env.PINECONE_INDEX_NAME || 'pcos-sakhee-rag');
+    const stats = await index.describeIndexStats();
+
+    // If no documents, definitely needs refresh
+    if (!stats.totalRecordCount || stats.totalRecordCount === 0) {
+      logger.info('🔄 Pinecone index is empty - needs ingestion');
+      return true;
+    }
+
+    // Check if template files exist
     const templateFiles = fs
       .readdirSync(templatesPath)
       .filter((file) => file.endsWith('.txt'))
       .map((file) => path.join(templatesPath, file));
 
-    // Check if any template file is newer than vector store
-    for (const templateFile of templateFiles) {
-      const templateStats = fs.statSync(templateFile);
-      if (templateStats.mtime > vectorStats.mtime) {
-        logger.info(`🔄 Template file ${path.basename(templateFile)} is newer than vector store`);
-        return true;
-      }
+    if (templateFiles.length === 0) {
+      logger.info('🔄 No template files found - needs ingestion');
+      return true;
     }
+
+    // Note: Without a local timestamp for Pinecone updates, we can't automatically
+    // detect if templates have been modified. This would require storing ingestion
+    // timestamps in Pinecone metadata or a separate database.
+    // For now, we'll just check if documents exist.
 
     return false;
   } catch (error) {

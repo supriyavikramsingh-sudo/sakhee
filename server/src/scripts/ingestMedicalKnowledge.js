@@ -54,31 +54,75 @@ class MedicalKnowledgeIngester {
 
         if (!subsectionContent) return;
 
-        // Create structured document
-        const structuredContent = `
+        // Further split into sub-subsections by #### headers
+        const subsubsections = subsectionContent.split(/\n#### /);
+
+        subsubsections.forEach((subsubsection, subsubIdx) => {
+          if (!subsubsection.trim()) return;
+
+          const subsubLines = subsubsection.split('\n');
+          const subsubsectionTitle =
+            subsubIdx === 0 ? subsubLines[0].replace(/^#### /, '') : subsubLines[0];
+          const finalContent = subsubLines.slice(1).join('\n').trim();
+
+          if (!finalContent) {
+            // No #### subsections, use the whole subsection content
+            if (subsubIdx === 0) {
+              const structuredContent = `
 Topic: ${topic}
 Section: ${sectionTitle}
 Subsection: ${subsectionTitle}
 
 Content:
 ${subsectionContent}
-        `.trim();
+              `.trim();
 
-        // Extract key information for metadata
-        const keywords = this.extractKeywords(subsectionContent);
-        const category = this.categorizeContent(sectionTitle, subsectionTitle);
+              const keywords = this.extractKeywords(subsectionContent);
+              const category = this.categorizeContent(sectionTitle, subsectionTitle);
 
-        docs.push({
-          content: structuredContent,
-          metadata: {
-            source: filename,
-            type: 'medical_knowledge',
-            topic: topic,
-            section: sectionTitle,
-            subsection: subsectionTitle,
-            category: category,
-            keywords: keywords,
-          },
+              docs.push({
+                content: structuredContent,
+                metadata: {
+                  source: filename,
+                  type: 'medical_knowledge',
+                  topic: topic,
+                  section: sectionTitle,
+                  subsection: subsectionTitle,
+                  category: category,
+                  keywords: keywords,
+                },
+              });
+            }
+            return;
+          }
+
+          // Create structured document with sub-subsection
+          const structuredContent = `
+Topic: ${topic}
+Section: ${sectionTitle}
+Subsection: ${subsectionTitle}
+Sub-subsection: ${subsubsectionTitle}
+
+Content:
+${finalContent}
+          `.trim();
+
+          const keywords = this.extractKeywords(finalContent);
+          const category = this.categorizeContent(sectionTitle, subsectionTitle);
+
+          docs.push({
+            content: structuredContent,
+            metadata: {
+              source: filename,
+              type: 'medical_knowledge',
+              topic: topic,
+              section: sectionTitle,
+              subsection: subsectionTitle,
+              subsubsection: subsubsectionTitle,
+              category: category,
+              keywords: keywords,
+            },
+          });
         });
       });
     });
@@ -226,9 +270,64 @@ ${subsectionContent}
         return false;
       }
 
-      // Add documents to vector store
+      // Add documents to vector store in batches to avoid token limit
       logger.info('📝 Adding medical documents to vector store...');
-      await vectorStoreManager.addDocuments(this.documents);
+      const BATCH_SIZE = 1; // Process 1 document at a time to identify problematic documents
+      const MAX_TOKENS = 6000; // Skip documents exceeding this token count (~75% of 8192 limit)
+      const totalDocs = this.documents.length;
+      const skippedDocs = [];
+
+      for (let i = 0; i < totalDocs; i += BATCH_SIZE) {
+        const batch = this.documents.slice(i, i + BATCH_SIZE);
+        const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+        const totalBatches = Math.ceil(totalDocs / BATCH_SIZE);
+
+        // Log document details for debugging
+        const docInfo = batch.map((doc) => {
+          const contentLength = doc.content?.length || 0;
+          const approxTokens = Math.ceil(contentLength / 4); // Rough estimate: 1 token ≈ 4 chars
+          return {
+            display: `${doc.metadata?.source || 'unknown'}:${
+              doc.metadata?.section || 'n/a'
+            } (~${approxTokens} tokens)`,
+            tokens: approxTokens,
+            doc: doc,
+          };
+        });
+
+        // Skip documents that are too large
+        const doc = docInfo[0];
+        if (doc.tokens > MAX_TOKENS) {
+          logger.warn(
+            `⚠️  Skipping batch ${batchNum}/${totalBatches} (exceeds ${MAX_TOKENS} token limit): ${doc.display}`
+          );
+          skippedDocs.push(doc.display);
+          continue;
+        }
+
+        logger.info(`📦 Batch ${batchNum}/${totalBatches}: ${doc.display}`);
+
+        try {
+          await vectorStoreManager.addDocuments([doc.doc]);
+        } catch (error) {
+          logger.error(`❌ Failed to add batch ${batchNum}`, {
+            documents: doc.display,
+            error: error.message,
+          });
+          throw error;
+        }
+      }
+
+      // Log skipped documents summary
+      if (skippedDocs.length > 0) {
+        logger.warn(
+          `⚠️  Skipped ${skippedDocs.length} large documents (exceed ${MAX_TOKENS} tokens):`
+        );
+        skippedDocs.forEach((doc) => logger.warn(`   - ${doc}`));
+        logger.warn(
+          `   💡 Consider splitting these documents into smaller sections with ### headers`
+        );
+      }
 
       logger.info('💾 Saving vector store to disk...');
       await vectorStoreManager.save();

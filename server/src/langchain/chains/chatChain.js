@@ -2648,6 +2648,9 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
     const REDDIT_DISCLAIMER =
       '💬 **Community insights are personal experiences shared on Reddit, not medical advice.**';
 
+    const SUPPLEMENT_DISCLAIMER =
+      '⚕️ *This is educational guidance only. Please consult your healthcare provider before starting any supplements. Your doctor will determine appropriate dosing based on your lab values, current medications, and individual needs.*';
+
     // ========== INTELLIGENT ROUTING LOGIC ==========
 
     // Priority 1: Lab-specific disclaimer
@@ -2689,17 +2692,263 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       });
     }
 
+    // Priority 4: Supplement disclaimer
+    // Show if:
+    // - User asked about supplements OR response mentions supplements
+    // - Supplement disclaimer not already present
+    // This can be shown ALONGSIDE other disclaimers
+    const mentionsSupplements = (text) => {
+      const supplementIndicators = [
+        'supplement',
+        'vitamin',
+        'mineral',
+        'inositol',
+        'berberine',
+        'omega-3',
+        'ashwagandha',
+        'curcumin',
+        'magnesium',
+        'zinc',
+        'coq10',
+        'chromium',
+        'spearmint',
+        'probiotics',
+      ];
+      const textLower = text.toLowerCase();
+      return supplementIndicators.some((indicator) => textLower.includes(indicator));
+    };
+
+    if (
+      (this.isDirectSupplementQuery(userMessage) || mentionsSupplements(response)) &&
+      !contains('consult your healthcare provider before starting any supplements')
+    ) {
+      disclaimers.push(SUPPLEMENT_DISCLAIMER);
+      logger.info('Adding supplement disclaimer', {
+        reason: 'Response includes supplement recommendations',
+      });
+    }
+
     // Log final disclaimer decision
     logger.info('Disclaimer routing complete', {
       disclaimersAdded: disclaimers.length,
       types: disclaimers.map((d) => {
         if (d.includes('lab values')) return 'lab';
         if (d.includes('Community insights')) return 'reddit';
+        if (d.includes('supplements')) return 'supplement';
         return 'general';
       }),
     });
 
     return disclaimers;
+  }
+
+  /**
+   * Check if user message is a symptom query (not explicitly asking about supplements)
+   * @param {string} message - User message
+   * @returns {boolean} - True if symptom query
+   */
+  isSymptomQuery(message) {
+    const messageLower = message.toLowerCase();
+    const symptomKeywords = [
+      'irregular period',
+      'irregular periods',
+      'missed period',
+      'acne',
+      'pimples',
+      'hair loss',
+      'hair fall',
+      'thinning hair',
+      'hirsutism',
+      'facial hair',
+      'unwanted hair',
+      'weight gain',
+      'obesity',
+      "can't lose weight",
+      'insulin resistance',
+      'high insulin',
+      'high blood sugar',
+      'prediabetes',
+      'diabetes',
+      'fatigue',
+      'tired',
+      'low energy',
+      'exhausted',
+      'mood swings',
+      'anxiety',
+      'depression',
+      'mood issues',
+      'infertility',
+      'trying to conceive',
+      "can't get pregnant",
+      'pcos symptoms',
+      'pcod symptoms',
+      'androgen',
+      'testosterone',
+      'hormonal imbalance',
+      'hormone issues',
+      'inflammation',
+      'cravings',
+      'sleep issues',
+      'insomnia',
+    ];
+
+    return symptomKeywords.some((keyword) => messageLower.includes(keyword));
+  }
+
+  /**
+   * Check if user is directly asking about supplements
+   * @param {string} message - User message
+   * @returns {boolean} - True if direct supplement query
+   */
+  isDirectSupplementQuery(message) {
+    const messageLower = message.toLowerCase();
+    const supplementKeywords = [
+      'supplement',
+      'supplements',
+      'vitamin',
+      'vitamins',
+      'mineral',
+      'minerals',
+      'herb',
+      'herbs',
+      'should i take',
+      'can i take',
+      'inositol',
+      'berberine',
+      'omega',
+      'omega-3',
+      'fish oil',
+      'what supplements',
+      'which supplements',
+      'natural remedies',
+      'ashwagandha',
+      'ayurvedic',
+      'shatavari',
+      'tulsi',
+      'amla',
+      'fenugreek',
+      'spearmint',
+      'curcumin',
+      'turmeric',
+      'coq10',
+      'chromium',
+      'magnesium',
+      'zinc',
+      'vitamin d',
+      'vitamin b',
+      'probiotics',
+      'nac',
+      'n-acetyl cysteine',
+      'licorice root',
+      'evening primrose',
+      'l-carnitine',
+      'cinnamon supplement',
+      'triphala',
+      'guduchi',
+    ];
+
+    return supplementKeywords.some((keyword) => messageLower.includes(keyword));
+  }
+
+  /**
+   * Check if user is responding affirmatively to supplement offer
+   * @param {string} message - User message
+   * @returns {boolean} - True if affirmative response
+   */
+  isAffirmativeResponse(message) {
+    const messageLower = message.toLowerCase().trim();
+    const affirmativeKeywords = [
+      'yes',
+      'yeah',
+      'yea',
+      'yep',
+      'yup',
+      'sure',
+      'okay',
+      'ok',
+      'k',
+      'please',
+      'tell me',
+      'show me',
+      'interested',
+      'would like',
+      "i'd like",
+      'go ahead',
+      'sounds good',
+      'that would be great',
+      'that would help',
+    ];
+
+    return affirmativeKeywords.some((keyword) => messageLower.includes(keyword));
+  }
+
+  /**
+   * Check if user is declining supplement offer
+   * @param {string} message - User message
+   * @returns {boolean} - True if declining
+   */
+  isDecliningResponse(message) {
+    const messageLower = message.toLowerCase().trim();
+    const decliningKeywords = [
+      'no',
+      'nope',
+      'no thanks',
+      'no thank you',
+      'not now',
+      'not interested',
+      'maybe later',
+      'skip',
+      'pass',
+    ];
+
+    return decliningKeywords.some((keyword) => messageLower.includes(keyword));
+  }
+
+  /**
+   * Build supplement query based on user symptoms
+   * @param {string|string[]} userInput - User message or extracted symptoms
+   * @returns {string} - Supplement query for RAG
+   */
+  buildSupplementQuery(userInput) {
+    const symptoms = typeof userInput === 'string' ? userInput : userInput.join(' ');
+    return `PCOS supplements for ${symptoms} evidence-based benefits side effects interactions`;
+  }
+
+  /**
+   * Extract symptoms from user message
+   * @param {string} message - User message
+   * @returns {string[]} - Extracted symptoms
+   */
+  extractSymptoms(message) {
+    const messageLower = message.toLowerCase();
+    const symptoms = [];
+
+    const symptomMap = {
+      'irregular period': ['irregular period', 'irregular periods', 'missed period'],
+      acne: ['acne', 'pimples'],
+      'hair loss': ['hair loss', 'hair fall', 'thinning hair'],
+      hirsutism: ['hirsutism', 'facial hair', 'unwanted hair'],
+      'weight management': ['weight gain', 'obesity', "can't lose weight"],
+      'insulin resistance': [
+        'insulin resistance',
+        'high insulin',
+        'high blood sugar',
+        'prediabetes',
+      ],
+      fatigue: ['fatigue', 'tired', 'low energy', 'exhausted'],
+      'mood issues': ['mood swings', 'anxiety', 'depression', 'mood issues'],
+      fertility: ['infertility', 'trying to conceive', "can't get pregnant"],
+      inflammation: ['inflammation'],
+      'hormonal imbalance': ['androgen', 'testosterone', 'hormonal imbalance', 'hormone issues'],
+    };
+
+    for (const [symptom, keywords] of Object.entries(symptomMap)) {
+      if (keywords.some((keyword) => messageLower.includes(keyword))) {
+        symptoms.push(symptom);
+      }
+    }
+
+    return symptoms.length > 0 ? symptoms : ['general PCOS symptoms'];
   }
 
   /**
@@ -2863,6 +3112,63 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         }
       }
 
+      // Step 5.6: Handle supplement queries (opt-in pattern)
+      let supplementContext = '';
+      let supplementOfferAdded = false;
+
+      // Check if user is directly asking about supplements
+      if (this.isDirectSupplementQuery(userMessage)) {
+        logger.info('💊 Direct supplement query detected');
+
+        const supplementQuery = this.buildSupplementQuery(userMessage);
+        logger.info('📝 Supplement query:', { query: supplementQuery });
+
+        const supplementDocs = await retriever.retrieve(supplementQuery, { topK: 8 });
+
+        if (supplementDocs && supplementDocs.length > 0) {
+          supplementContext = '💊 PCOS SUPPLEMENT INFORMATION (from Knowledge Base):\n';
+          supplementContext +=
+            '(Provide detailed information with medical disclaimers - NO DOSING)\n\n';
+          supplementContext += retriever.formatContextFromResults(supplementDocs) + '\n\n';
+
+          supplementContext += '\n🚨 CRITICAL SUPPLEMENT RESPONSE RULES:\n';
+          supplementContext += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+          supplementContext += '⛔️ NEVER provide specific dosage information\n';
+          supplementContext += '⛔️ ALWAYS include medical disclaimer at the end\n';
+          supplementContext += '⛔️ Frame side effects matter-of-factly, not alarmist\n';
+          supplementContext += '⛔️ Prioritize supplements with strong clinical evidence\n';
+          supplementContext += "⛔️ Match supplements to user's specific symptoms\n";
+          supplementContext += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+          logger.info('✅ Supplement information retrieved', {
+            docsRetrieved: supplementDocs.length,
+            query: supplementQuery,
+          });
+        } else {
+          logger.warn('⚠️ No supplement information found in RAG', {
+            query: supplementQuery,
+            hint: 'Check if pcos_supplements.txt is loaded',
+          });
+        }
+      }
+      // Check if user is asking about symptoms (offer supplements at end)
+      else if (this.isSymptomQuery(userMessage)) {
+        logger.info('🩺 Symptom query detected - will offer supplement recommendations');
+        const symptoms = this.extractSymptoms(userMessage);
+        const symptomList = symptoms.join(', ');
+
+        // Add instruction to offer supplements at the end
+        supplementOfferAdded = true;
+        supplementContext = '\n\n💊 SUPPLEMENT OFFER INSTRUCTION:\n';
+        supplementContext += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+        supplementContext += '⚠️ MANDATORY: Add this exact text at the END of your response:\n\n';
+        supplementContext +=
+          '"💊 Would you like me to suggest some evidence-based supplements that may help with ' +
+          symptomList +
+          '? I can provide information about supplements specifically for these symptoms, including how they work, potential side effects, and important interactions to discuss with your doctor."\n';
+        supplementContext += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      }
+
       // Step 6: Build comprehensive context
       let enhancedContext = '';
 
@@ -2898,6 +3204,16 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       // Add nutrition data
       if (nutritionContext) {
         enhancedContext += nutritionContext + '\n\n';
+      }
+
+      // Add supplement information/offer
+      if (supplementContext) {
+        logger.info('➕ Adding supplement context to prompt', {
+          isDirectQuery: this.isDirectSupplementQuery(userMessage),
+          isOfferOnly: supplementOfferAdded,
+        });
+
+        enhancedContext += supplementContext + '\n\n';
       }
 
       // Add ingredient substitutes from RAG
@@ -3036,6 +3352,13 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
         });
       }
 
+      if (supplementContext) {
+        sources.push({
+          type: 'supplements',
+          disclaimer: 'Educational supplement information - consult healthcare provider for dosing',
+        });
+      }
+
       if (nutritionContext) {
         // Parse the nutrition data to extract actual links
         try {
@@ -3105,6 +3428,7 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
           medical: !!medicalContext,
           reddit: !!redditContext,
           nutrition: !!nutritionContext,
+          supplements: !!supplementContext,
         },
       };
     } catch (error) {

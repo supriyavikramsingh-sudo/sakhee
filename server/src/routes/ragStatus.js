@@ -71,6 +71,10 @@ function getRecommendation(status, needsUpdate) {
     return 'Critical error in RAG system. Check logs and restart server.';
   }
 
+  if (!status.pineconeConnected) {
+    return 'Cannot connect to Pinecone. Check PINECONE_API_KEY in .env file.';
+  }
+
   if (!status.templatesExist) {
     return 'Create server/src/data/meal_templates/ folder and add .txt template files.';
   }
@@ -79,19 +83,19 @@ function getRecommendation(status, needsUpdate) {
     return 'Add meal template .txt files to server/src/data/meal_templates/.';
   }
 
-  if (!status.vectorStoreExists) {
-    return 'Run: npm run ingest:meals (vector store not created yet)';
+  if (status.indexedDocuments === 0) {
+    return 'Run: npm run ingest:all (Pinecone index is empty)';
   }
 
   if (!status.retrievalWorks) {
-    return 'Vector store exists but not working. Re-run: npm run ingest:meals';
+    return 'Pinecone has documents but retrieval not working. Re-run: npm run ingest:all';
   }
 
   if (needsUpdate) {
-    return 'Templates updated. Run: npm run ingest:meals to refresh vector store.';
+    return 'Templates updated. Run: npm run ingest:all to refresh Pinecone index.';
   }
 
-  return 'RAG system is healthy. All templates indexed and retrieval working.';
+  return 'RAG system is healthy. All documents indexed in Pinecone and retrieval working.';
 }
 
 export default router;

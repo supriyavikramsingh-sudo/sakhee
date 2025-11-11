@@ -1,0 +1,175 @@
+PCOS-FRIENDLY INGREDIENT SUBSTITUTES - GRAINS & SWEETENERS
+Version: 2025-11-11 (Split from main file)
+Purpose: RAG file for LangChain embeddings - GRAINS category
+Format: Ingredient → Substitute mapping with regional alternatives and diet-type considerations
+Usage: Query by ingredient name, cooking method, or diet restriction to retrieve PCOS-friendly alternatives
+
+================================================================================
+
+## SECTION 1: GRAINS & FLOURS ###
+
+--- WHITE RICE (POLISHED) ---
+PROBLEMATIC INGREDIENT: White rice, polished rice, steamed rice
+PCOS CONCERNS: High GI (70-80), rapid blood sugar spike, low fiber, poor satiety, increases insulin resistance
+UNIVERSAL SUBSTITUTE: Brown rice (limited 60-80g cooked) OR mixed millet rice
+REGIONAL ALTERNATIVES:
+  - North India: Brown basmati rice, quinoa, bulgur wheat (dalia), pearl millet (bajra) rice
+  - South India: Red rice (matta rice), brown rice, little millet (samai), foxtail millet (thinai)
+  - East India: Red rice, gobindobhog brown rice, barnyard millet (jhangora)
+  - West India: Brown rice, foxtail millet (kang/rala), pearl millet (bajra)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All grain alternatives acceptable
+  - Non-Vegetarian: Pair with protein (chicken, fish, eggs) to reduce portion by 30%
+ALLERGY ALTERNATIVES: Quinoa (gluten-free), buckwheat (gluten-free), amaranth
+COOKING TIP: Soak overnight, cook with 1 tsp ghee/coconut oil, cool before eating (increases resistant starch)
+
+--- REFINED WHEAT FLOUR (MAIDA) ---
+PROBLEMATIC INGREDIENT: Maida, all-purpose flour, refined white flour
+PCOS CONCERNS: Very high GI (85+), zero fiber, strips nutrients, causes inflammation, insulin spikes
+UNIVERSAL SUBSTITUTE: Whole wheat flour (atta) + 25% besan (chickpea flour) OR 100% whole wheat
+REGIONAL ALTERNATIVES:
+  - North India: Whole wheat atta, multigrain atta (wheat + bajra + jowar), besan (chickpea flour)
+  - South India: Ragi flour (finger millet), whole wheat atta, rice flour + urad dal (50:50 for dosa/idli)
+  - East India: Whole wheat atta, sattu (roasted gram flour), rice flour + moong dal mix
+  - West India: Jowar (sorghum) flour, bajra (pearl millet) flour, whole wheat + besan mix
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Mix 20% soya flour for added protein
+ALLERGY ALTERNATIVES (Gluten-free): 100% besan, ragi flour, jowar flour, bajra flour, rice flour + dal blend
+COOKING TIP: For binding, add 1 tbsp ground flaxseed or psyllium husk; for softness add yogurt
+
+--- REGULAR WHEAT ATTA (EXCESSIVE AMOUNTS) ---
+PROBLEMATIC INGREDIENT: Whole wheat flour in excess (5+ rotis/meal)
+PCOS CONCERNS: Moderate GI (60-70), can spike insulin if eaten in large quantities, gluten sensitivity in some
+UNIVERSAL SUBSTITUTE: Reduce to 2 rotis + replace rest with millet rotis OR vegetable-based alternatives
+REGIONAL ALTERNATIVES:
+  - North India: Bajra roti, makki (corn) roti, cauliflower roti, palak roti
+  - South India: Ragi roti, jowar roti, akki roti (rice + vegetables)
+  - East India: Sattu roti (roasted gram), mixed millet roti
+  - West India: Bajra bhakri, jowar bhakri, nachni (ragi) bhakri
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Reduce roti count, increase dal/protein
+ALLERGY ALTERNATIVES (Gluten-free): Millet rotis, cauliflower flatbreads, lettuce wraps
+COOKING TIP: Add fenugreek leaves (methi), spinach, or grated vegetables to dough for added fiber
+
+--- BREAD (WHITE/PACKAGED) ---
+PROBLEMATIC INGREDIENT: White bread, sandwich bread, pav, buns
+PCOS CONCERNS: High GI (75+), preservatives, added sugar, low fiber, rapid glucose spike
+UNIVERSAL SUBSTITUTE: Homemade whole wheat bread OR cloud bread (eggs + cream cheese)
+REGIONAL ALTERNATIVES:
+  - North India: Whole wheat roti, multigrain bread, tandoori roti
+  - South India: Idli (fermented dal-rice, higher dal ratio), whole grain dosa
+  - East India: Whole wheat luchi (baked not fried), roti
+  - West India: Whole wheat pav, multigrain bread, jowar bhakri
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: Cloud bread → Chickpea flour bread (besan chilla rolled)
+  - Jain: All alternatives work
+  - Non-Vegetarian: Egg-based cloud bread, protein bread
+ALLERGY ALTERNATIVES (Gluten-free): Almond flour bread, coconut flour bread, besan chilla
+COOKING TIP: Toast lightly to lower GI slightly; always pair with protein
+
+--- SUJI/SEMOLINA/RAVA ---
+PROBLEMATIC INGREDIENT: Semolina, rava, sooji (fine wheat)
+PCOS CONCERNS: High GI (65-70), refined, low fiber despite being wheat-based
+UNIVERSAL SUBSTITUTE: Broken wheat (dalia/lapsi) OR oats OR quinoa
+REGIONAL ALTERNATIVES:
+  - North India: Dalia (broken wheat), quinoa, oats upma
+  - South India: Oats upma, ragi upma, quinoa upma, mixed millet rava
+  - East India: Broken wheat (dalia), oats
+  - West India: Broken wheat, pearl millet rava, foxtail millet
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: All alternatives work
+  - Vegan: All alternatives work
+  - Jain: All alternatives work
+  - Non-Vegetarian: Add egg scrambled into upma for protein
+ALLERGY ALTERNATIVES (Gluten-free): Quinoa, rice flakes (thick poha), millet rava
+COOKING TIP: Roast substitute lightly before cooking; add vegetables generously
+
+--- POHA (WHITE RICE FLAKES) ---
+PROBLEMATIC INGREDIENT: White poha, thin rice flakes
+PCOS CONCERNS: Moderate-high GI (65-70), processed rice, quick digesting
+UNIVERSAL SUBSTITUTE: Brown rice poha OR thick poha + peanuts/dal
+REGIONAL ALTERNATIVES:
+  - North India: Brown poha, thick white poha with extra peanuts, dalia upma
+  - South India: Brown poha, vermicelli made from millets, oats
+  - East India: Thick white poha (chira), muri mix with peanuts and jaggery (small amount)
+  - West India: Brown poha, thick kanda poha with extra vegetables
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Add roasted peanuts, chana dal (2 tbsp)
+  - Vegan: Same as vegetarian
+  - Jain: Add peanuts, cashews (avoid onion in tempering)
+  - Non-Vegetarian: Add boiled egg or scrambled egg
+ALLERGY ALTERNATIVES (Nut allergy): Replace peanuts with roasted chana, sunflower seeds
+COOKING TIP: Soak briefly, add 50% vegetables, increase fat (peanuts/ghee) to lower GI
+
+
+
+## SECTION 3: SWEETENERS & SUGARS ###
+
+--- WHITE SUGAR (REFINED) ---
+PROBLEMATIC INGREDIENT: White sugar, cane sugar, table sugar
+PCOS CONCERNS: Highest GI (65), direct insulin spike, inflammation, worsens hormonal imbalance, empty calories
+UNIVERSAL SUBSTITUTE: AVOID or use stevia (liquid/powder), monk fruit sweetener
+REGIONAL ALTERNATIVES:
+  - North India: Stevia in chai, no sugar in desserts (use dates paste minimal)
+  - South India: Stevia in coffee, coconut sugar (very small amount), date syrup (minimal)
+  - East India: Stevia, date paste for sweets (small amount)
+  - West India: Stevia, minimal jaggery powder if needed (1 tsp)
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain/Non-Veg: Stevia, monk fruit, erythritol (all suitable)
+ALLERGY ALTERNATIVES: Monk fruit (for stevia sensitivity)
+COOKING TIP: Start with 1/4 tsp stevia (very sweet); in baking use erythritol 1:1 ratio
+
+--- JAGGERY (GUR) ---
+PROBLEMATIC INGREDIENT: Jaggery, gur, gud
+PCOS CONCERNS: High GI (84), similar to sugar metabolically, spikes insulin despite being "natural"
+UNIVERSAL SUBSTITUTE: Dates paste (2-3 dates blended) OR minimal jaggery powder (1 tsp max)
+REGIONAL ALTERNATIVES:
+  - North India: Dates paste, minimal jaggery in gur wale chawal (use 1 tsp for 4 servings)
+  - South India: Palm jaggery (slightly lower GI but still limit to 1 tsp), dates
+  - East India: Date palm jaggery (patali gur) - very small amount, dates paste
+  - West India: Minimal jaggery, dates paste
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian/Vegan/Jain: Dates paste, minimal jaggery
+  - Non-Vegetarian: Same
+ALLERGY ALTERNATIVES: Fig paste (for date allergy)
+COOKING TIP: Use jaggery ONLY post-meal in tiny amounts; dates have fiber so better option
+
+--- HONEY ---
+PROBLEMATIC INGREDIENT: Honey, commercial honey
+PCOS CONCERNS: Moderate-high GI (58), fructose-heavy, can spike insulin if used liberally
+UNIVERSAL SUBSTITUTE: Raw honey (1 tsp max) OR stevia OR avoid
+REGIONAL ALTERNATIVES:
+  - All regions: Limit to 1 tsp raw, unprocessed honey if needed; prefer stevia
+DIET-TYPE MODIFICATIONS:
+  - Vegetarian: Raw honey (1 tsp max)
+  - Vegan: NO honey - use maple syrup (1 tsp), date syrup, or stevia
+  - Jain: Honey controversial (some avoid) - use stevia
+  - Non-Vegetarian: Raw honey (1 tsp max)
+ALLERGY ALTERNATIVES: Monk fruit syrup, date syrup (very small)
+COOKING TIP: Never heat honey (becomes toxic in Ayurveda); add after cooking
+
+--- ARTIFICIAL SWEETENERS (ASPARTAME, SUCRALOSE) ---
+PROBLEMATIC INGREDIENT: Artificial sweeteners in packaged foods
+PCOS CONCERNS: Gut microbiome disruption, insulin response despite zero calories, cravings
+UNIVERSAL SUBSTITUTE: Stevia (plant-based), monk fruit, erythritol
+REGIONAL ALTERNATIVES:
+  - All regions: Stevia drops/powder (natural), monk fruit sweetener
+DIET-TYPE MODIFICATIONS:
+  - All: Natural sweeteners only
+ALLERGY ALTERNATIVES: Rotate stevia/monk fruit if sensitivity
+COOKING TIP: Check labels; avoid "diet" sodas
+
+
+
+================================================================================
+END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES - GRAINS & SWEETENERS
+================================================================================

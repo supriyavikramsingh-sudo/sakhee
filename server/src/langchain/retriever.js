@@ -30,13 +30,12 @@ class Retriever {
       const results = await vectorStoreManager.similaritySearch(query, topK);
 
       // ✅ CRITICAL FIX: Filter by minimum score
-      // HNSW returns DISTANCE scores (lower=better), not similarity scores
-      // For cosine distance: distance = 1 - similarity
-      // So score ≤ minScore means similarity ≥ (1 - minScore)
-      // Example: minScore=0.5 → keep documents with distance ≤ 0.5 → similarity ≥ 0.5
+      // Pinecone returns SIMILARITY scores (higher=better, range 0-1)
+      // minScore=0.5 means "keep documents with similarity ≥ 0.5"
+      // This is the OPPOSITE of HNSW distance scores
       const filtered = results.filter((r) => {
         const score = r?.score ?? 0;
-        return score <= minScore; // ✅ FIXED: Changed from >= to <= for distance scores
+        return score >= minScore; // ✅ FIXED: Use >= for Pinecone similarity scores (higher is better)
       });
 
       logger.info(`🔍 Retrieved ${filtered.length} relevant documents`);

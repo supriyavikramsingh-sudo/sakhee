@@ -1,7 +1,6 @@
-import { HNSWLib } from '@langchain/community/vectorstores/hnswlib';
+import { PineconeStore } from '@langchain/pinecone';
+import { Pinecone } from '@pinecone-database/pinecone';
 import { embeddingsManager } from './embeddings.js';
-import fs from 'fs';
-import path from 'path';
 import { Logger } from '../utils/logger.js';
 
 const logger = new Logger('VectorStore');
@@ -9,85 +8,74 @@ const logger = new Logger('VectorStore');
 class VectorStoreManager {
   constructor() {
     this.vectorStore = null;
-    this.dbPath = './src/storage/localCache/vectordb';
+    this.indexName = process.env.PINECONE_INDEX_NAME || 'pcos-sakhee-rag';
+    this.pineconeApiKey = process.env.PINECONE_API_KEY;
+    this.pineconeClient = null;
+    this.pineconeIndex = null;
     this.isInitialized = false;
   }
 
   /**
-   * Initialize vector store
-   * Loads existing vector store from disk or creates a new one
+   * Initialize vector store with Pinecone
+   * Creates or connects to existing Pinecone index
    */
   async initialize() {
     try {
       // Prevent multiple initializations
       if (this.isInitialized && this.vectorStore) {
-        logger.info('Vector store already initialized');
+        logger.info('✅ Vector store already initialized');
         return this.vectorStore;
       }
 
-      // Try to load existing vector store
-      if (fs.existsSync(this.dbPath)) {
-        logger.info('📦 Loading existing vector store...');
-        this.vectorStore = await HNSWLib.load(this.dbPath, embeddingsManager.getEmbeddings());
+      // Validate Pinecone credentials
+      if (!this.pineconeApiKey) {
+        throw new Error('Missing Pinecone API key. Please set PINECONE_API_KEY in .env');
+      }
 
-        // ✅ OPTIMIZATION: Configure efSearch for balanced quality/performance
-        // Note: Using 30 (2× topK=15) instead of 50 for more conservative search
-        if (this.vectorStore.index && this.vectorStore.index.setEf) {
-          this.vectorStore.index.setEf(30);
-          logger.info('✅ Set efSearch = 30 (2× topK=15 for balanced search)');
-        } else {
-          logger.warn('⚠️  Could not set efSearch - index.setEf() not available');
-        }
+      logger.info('📦 Initializing Pinecone vector store...', {
+        indexName: this.indexName,
+      });
 
-        this.isInitialized = true;
+      // Initialize Pinecone client
+      this.pineconeClient = new Pinecone({
+        apiKey: this.pineconeApiKey,
+      });
 
-        // Log vector store stats
-        try {
-          const docCount = this.vectorStore.index
-            ? await this.vectorStore.index.getCurrentCount()
-            : 'unknown';
-          logger.info(`✅ Vector store loaded: ${docCount} documents`);
-        } catch (e) {
-          logger.info('✅ Vector store loaded successfully');
-        }
-      } else {
-        // Create new vector store
-        logger.info('📦 Creating new vector store...');
-        this.vectorStore = new HNSWLib(embeddingsManager.getEmbeddings(), {
-          space: 'cosine',
-        });
-        this.isInitialized = true;
-        logger.info('✅ New vector store created');
+      // Get the index
+      this.pineconeIndex = this.pineconeClient.index(this.indexName);
+
+      // Create LangChain vector store with Pinecone
+      this.vectorStore = await PineconeStore.fromExistingIndex(embeddingsManager.getEmbeddings(), {
+        pineconeIndex: this.pineconeIndex,
+        namespace: '', // Use default namespace
+      });
+
+      this.isInitialized = true;
+
+      // Get index stats
+      try {
+        const stats = await this.pineconeIndex.describeIndexStats();
+        const totalVectors = stats.totalRecordCount || 0;
+        logger.info(`✅ Pinecone ready: ${totalVectors} documents in index "${this.indexName}"`);
+      } catch (e) {
+        logger.info(`✅ Pinecone ready with index "${this.indexName}"`);
       }
 
       return this.vectorStore;
     } catch (error) {
-      logger.error('Vector store initialization failed', {
+      logger.error('Pinecone initialization failed', {
         error: error.message,
         stack: error.stack,
       });
 
-      // Create fallback empty vector store
-      try {
-        this.vectorStore = new HNSWLib(embeddingsManager.getEmbeddings(), {
-          space: 'cosine',
-        });
-        this.isInitialized = true;
-        logger.warn('⚠️  Fallback vector store created');
-      } catch (fallbackError) {
-        logger.error('Fallback vector store creation failed', {
-          error: fallbackError.message,
-        });
-        this.isInitialized = false;
-      }
-
-      return this.vectorStore;
+      throw error;
     }
   }
 
   /**
-   * Add documents to vector store
-   * ✅ FIXED: Properly normalizes document structure before adding
+   * Add documents to Pinecone vector store
+   * Pinecone automatically persists data - no manual save needed
+   * Handles batching for optimal performance
    */
   async addDocuments(documents) {
     try {
@@ -102,7 +90,7 @@ class VectorStoreManager {
         await this.initialize();
       }
 
-      // ✅ FIXED: Normalize documents to LangChain format
+      // ✅ Normalize documents to LangChain format
       const docs = documents
         .map((doc, idx) => {
           // Validate document structure
@@ -117,15 +105,27 @@ class VectorStoreManager {
           // Ensure content is a string
           const normalizedContent = typeof content === 'string' ? content : String(content);
 
+          // Normalize metadata - Pinecone accepts various types
+          // Convert arrays to comma-separated strings for better queryability
+          const normalizedMetadata = {};
+          if (doc.metadata && typeof doc.metadata === 'object') {
+            for (const [key, value] of Object.entries(doc.metadata)) {
+              if (Array.isArray(value)) {
+                // Convert arrays to comma-separated strings
+                normalizedMetadata[key] = value.join(', ');
+              } else if (typeof value === 'object' && value !== null) {
+                // Convert objects to JSON strings
+                normalizedMetadata[key] = JSON.stringify(value);
+              } else {
+                // Keep scalar values as-is
+                normalizedMetadata[key] = value;
+              }
+            }
+          }
+
           return {
             pageContent: normalizedContent, // LangChain standard property
-            metadata: doc.metadata || {},
-            // metadata: {
-            //   source: doc.source || doc.metadata?.source || 'unknown',
-            //   type: doc.type || doc.metadata?.type || 'general',
-            //   id: doc.id || doc.metadata?.id || idx,
-            //   ...(doc.metadata || {}),
-            // },
+            metadata: normalizedMetadata,
           };
         })
         .filter(Boolean); // Remove null entries
@@ -135,15 +135,43 @@ class VectorStoreManager {
         return false;
       }
 
-      await this.vectorStore.addDocuments(docs);
-      logger.info(`📝 Added ${docs.length} documents to vector store`);
+      // ✅ Batch documents for optimal performance
+      const BATCH_SIZE = 100; // Pinecone recommends 100-200 per batch
+      const totalDocs = docs.length;
 
-      // Save to disk
-      await this.save();
+      if (totalDocs <= BATCH_SIZE) {
+        // Small batch - add directly
+        await this.vectorStore.addDocuments(docs);
+        logger.info(`📝 Added ${docs.length} documents to Pinecone`);
+      } else {
+        // Large batch - split into chunks
+        logger.info(
+          `📦 Batching ${totalDocs} documents (${Math.ceil(
+            totalDocs / BATCH_SIZE
+          )} batches of ${BATCH_SIZE})`
+        );
+
+        for (let i = 0; i < totalDocs; i += BATCH_SIZE) {
+          const batch = docs.slice(i, i + BATCH_SIZE);
+          const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+          const totalBatches = Math.ceil(totalDocs / BATCH_SIZE);
+
+          logger.info(
+            `📝 Uploading batch ${batchNum}/${totalBatches} (${batch.length} documents)...`
+          );
+          await this.vectorStore.addDocuments(batch);
+        }
+
+        logger.info(
+          `✅ Successfully added all ${totalDocs} documents in ${Math.ceil(
+            totalDocs / BATCH_SIZE
+          )} batches`
+        );
+      }
 
       return true;
     } catch (error) {
-      logger.error('Failed to add documents', {
+      logger.error('Failed to add documents to Pinecone', {
         error: error.message,
         stack: error.stack,
       });
@@ -152,9 +180,8 @@ class VectorStoreManager {
   }
 
   /**
-   * ✅ CRITICAL FIX: Perform similarity search with normalized output
-   * This is the key method that was causing the substring error
-   * Now returns documents with BOTH 'content' and 'pageContent' properties
+   * Perform similarity search with Pinecone
+   * Returns documents with normalized output structure
    */
   async similaritySearch(query, k = 5) {
     try {
@@ -175,10 +202,10 @@ class VectorStoreManager {
         return [];
       }
 
-      // Perform similarity search
+      // Perform similarity search using LangChain's PineconeStore
       const results = await this.vectorStore.similaritySearchWithScore(query, k);
 
-      // ✅ CRITICAL FIX: Return normalized document structure
+      // ✅ Return normalized document structure
       // This ensures compatibility with both chatChain (expects pageContent)
       // and custom code (expects content)
       return results.map(([doc, score]) => {
@@ -204,25 +231,13 @@ class VectorStoreManager {
   }
 
   /**
-   * Save vector store to disk
+   * Save vector store (no-op for Pinecone as it auto-persists)
+   * Kept for backwards compatibility with ingestion scripts
    */
   async save() {
-    try {
-      // Ensure directory exists
-      const dir = path.dirname(this.dbPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-
-      await this.vectorStore.save(this.dbPath);
-      logger.info('💾 Vector store saved to disk');
-      return true;
-    } catch (error) {
-      logger.warn('Vector store save failed (non-critical)', {
-        error: error.message,
-      });
-      return false;
-    }
+    // Pinecone automatically persists data - no manual save needed
+    logger.info('💾 Pinecone auto-persists data (no manual save needed)');
+    return true;
   }
 
   /**
@@ -233,23 +248,34 @@ class VectorStoreManager {
   }
 
   /**
-   * ✅ NEW: Check if vector store is ready
+   * Check if vector store is ready
    */
   isReady() {
     return this.isInitialized && this.vectorStore !== null;
   }
 
   /**
-   * ✅ NEW: Get vector store statistics
+   * Get vector store statistics
    */
   async getStats() {
     try {
+      let docCount = 'unknown';
+
+      if (this.pineconeIndex) {
+        try {
+          const stats = await this.pineconeIndex.describeIndexStats();
+          docCount = stats.totalRecordCount || 0;
+        } catch (e) {
+          // Ignore stats errors
+        }
+      }
+
       return {
         initialized: this.isInitialized,
         hasVectorStore: !!this.vectorStore,
-        dbPath: this.dbPath,
-        dbExists: fs.existsSync(this.dbPath),
-        embeddingCache: embeddingsManager.getCacheStats(), // ✅ Add cache stats
+        indexName: this.indexName,
+        documentCount: docCount,
+        embeddingCache: embeddingsManager.getCacheStats(),
       };
     } catch (error) {
       logger.error('Failed to get stats', { error: error.message });
@@ -262,23 +288,27 @@ class VectorStoreManager {
   }
 
   /**
-   * ✅ NEW: Get embedding cache statistics
+   * Get embedding cache statistics
    */
   getCacheStats() {
     return embeddingsManager.getCacheStats();
   }
 
   /**
-   * ✅ NEW: Clear vector store (useful for testing/debugging)
+   * Clear vector store (delete all vectors from Pinecone index)
    */
   async clear() {
     try {
-      logger.warn('Clearing vector store...');
+      logger.warn('⚠️  Clearing Pinecone index...');
 
-      // Remove saved files
-      if (fs.existsSync(this.dbPath)) {
-        fs.rmSync(this.dbPath, { recursive: true, force: true });
-        logger.info('Deleted vector store files');
+      if (this.pineconeIndex) {
+        try {
+          // Delete all vectors in the namespace
+          await this.pineconeIndex.namespace('').deleteAll();
+          logger.info(`✅ Deleted all vectors from Pinecone index "${this.indexName}"`);
+        } catch (e) {
+          logger.warn('Could not clear index:', e.message);
+        }
       }
 
       // Reset state
@@ -288,10 +318,10 @@ class VectorStoreManager {
       // Re-initialize
       await this.initialize();
 
-      logger.info('Vector store cleared and reinitialized');
+      logger.info('✅ Pinecone index cleared and reinitialized');
       return true;
     } catch (error) {
-      logger.error('Failed to clear vector store', { error: error.message });
+      logger.error('Failed to clear Pinecone index', { error: error.message });
       return false;
     }
   }

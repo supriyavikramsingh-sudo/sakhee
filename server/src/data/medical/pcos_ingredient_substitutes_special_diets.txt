@@ -1,0 +1,200 @@
+PCOS-FRIENDLY INGREDIENT SUBSTITUTES - SPECIAL DIETS & GUIDANCE
+Version: 2025-11-11 (Split from main file)
+Purpose: RAG file for LangChain embeddings - SPECIAL category
+Format: Ingredient → Substitute mapping with regional alternatives and diet-type considerations
+Usage: Query by ingredient name, cooking method, or diet restriction to retrieve PCOS-friendly alternatives
+
+================================================================================
+
+## SECTION 12: ALLERGY-SPECIFIC SUBSTITUTES ###
+
+--- GLUTEN ALLERGY/CELIAC ---
+AVOID: Wheat, maida, atta, suji, barley
+SAFE GRAINS: Rice (brown, red), millets (ragi, jowar, bajra), quinoa, amaranth, buckwheat
+FLOURS: Besan (chickpea), ragi flour, jowar flour, bajra flour, rice flour, almond flour
+BREADS: Ragi roti, besan chilla, rice dosa, millet rotis
+NOTES: Check for cross-contamination; use separate utensils
+
+--- DAIRY ALLERGY/LACTOSE INTOLERANCE ---
+AVOID: Milk, paneer, yogurt, cream, ghee, butter
+MILK SUBSTITUTES: Almond milk, coconut milk, soy milk, oat milk (all unsweetened)
+PANEER SUBSTITUTE: Tofu, tempeh
+YOGURT SUBSTITUTE: Coconut yogurt, cashew yogurt, almond yogurt
+GHEE SUBSTITUTE: Coconut oil, mustard oil, olive oil
+CREAM SUBSTITUTE: Cashew cream, coconut cream
+NOTES: Read labels carefully; many Indian sweets contain hidden dairy
+
+--- NUT ALLERGY ---
+AVOID: Almonds, cashews, walnuts, pistachios, peanuts
+PROTEIN SOURCES: Seeds (pumpkin, sunflower, sesame), legumes, paneer, eggs, chicken
+SNACKS: Roasted chana, makhana, roasted seeds
+MILK SUBSTITUTE: Oat milk, coconut milk (check processing)
+COOKING: Use seed butters instead of nut butters
+NOTES: Check for cross-contamination in packaged foods
+
+--- SOY ALLERGY ---
+AVOID: Soy milk, tofu, tempeh, soy sauce, soy chunks
+PROTEIN SOURCES: Paneer, eggs, chicken, fish, legumes (dal, chickpeas)
+MILK SUBSTITUTE: Almond milk, coconut milk, oat milk
+PANEER SUBSTITUTE: Regular dairy paneer (if no dairy allergy)
+COOKING: Use coconut aminos instead of soy sauce
+NOTES: Soy is hidden in many processed foods
+
+--- EGG ALLERGY ---
+AVOID: Eggs, mayonnaise, some baked goods
+BAKING SUBSTITUTE: Flax egg (1 tbsp ground flax + 3 tbsp water = 1 egg), chia egg, mashed banana (25g = 1 egg)
+PROTEIN SOURCES: Paneer, dal, chickpeas, chicken, fish
+BINDING AGENT: Ground flaxseed, psyllium husk
+NOTES: Many Indian dishes are naturally egg-free
+
+
+
+## SECTION 13: DIET-TYPE SPECIFIC GUIDANCE ###
+
+--- VEGETARIAN SUBSTITUTES ---
+PROTEIN SOURCES: Paneer, dal (all types), chickpeas, soy (moderate), yogurt, milk
+HIGH-PROTEIN MEALS: Paneer tikka, dal fry, sprouted moong, chana masala, rajma
+SNACKS: Roasted chana, paneer cubes, Greek yogurt with seeds
+ENSURE ADEQUATE: Protein (1.2-1.6 g/kg body weight), iron (fortified foods, vitamin C with dal)
+
+--- VEGAN SUBSTITUTES ---
+PROTEIN SOURCES: Dal, chickpeas, tofu, tempeh, soy (moderate), nuts, seeds
+MILK: Almond milk, soy milk, coconut milk, oat milk (all unsweetened)
+YOGURT: Coconut yogurt, cashew yogurt
+PANEER: Tofu, tempeh
+GHEE: Coconut oil, olive oil
+HIGH-PROTEIN MEALS: Tofu bhurji, sprouted moong salad, chickpea curry, lentil soups
+ENSURE ADEQUATE: B12 (supplement), iron, calcium (fortified plant milks), omega-3 (flax, chia, walnuts)
+
+--- JAIN DIET SUBSTITUTES ---
+AVOID: Onion, garlic, potato, root vegetables (some sects)
+PROTEIN SOURCES: Dal, paneer, milk products, nuts (if allowed)
+FLAVOR BASE: Asafoetida (hing), ginger (allowed by most), cumin, coriander
+POTATO SUBSTITUTE: Cauliflower, raw banana, pumpkin, ridge gourd
+ONION SUBSTITUTE: Asafoetida (hing) in tadka, celery leaves
+GARLIC SUBSTITUTE: Asafoetida, crushed coriander seeds
+MEALS: Dal palak (no garlic), paneer dishes, vegetable curries without root vegetables
+
+--- NON-VEGETARIAN PROTEIN OPTIMIZATION ---
+BEST PROTEINS: Chicken breast, fish (especially fatty fish), eggs, turkey
+PREPARATION: Grilled, baked, steamed (not fried)
+PORTION: 100-150g protein per meal
+FREQUENCY: Can have protein at every meal if desired
+COMBINE: With vegetables (50% plate) + small grain portion
+OMEGA-3: Focus on fatty fish 2-3x/week (salmon, mackerel, sardines)
+
+
+
+## SECTION 14: QUANTITY & PORTION GUIDANCE ###
+
+--- GRAIN PORTIONS (COOKED) ---
+RICE/MILLETS: 60-80g cooked (about 1/2 cup)
+ROTI/FLATBREADS: 1-2 medium rotis per meal
+AVOID: Large thalis with 5+ rotis or 2 cups rice
+TIP: Fill 1/4 of plate with grains
+
+--- PROTEIN PORTIONS ---
+DAL (COOKED): 150-200g (about 1 cup)
+PANEER: 50-80g (about 3-4 cubes)
+CHICKEN/FISH: 100-150g (palm-sized piece)
+EGGS: 2-3 whole eggs
+TOFU: 100-150g
+TIP: Fill 1/4 of plate with protein
+
+--- VEGETABLE PORTIONS ---
+NON-STARCHY VEG: 200-300g (about 2 cups)
+SALAD: Unlimited
+TIP: Fill 1/2 of plate with vegetables
+
+--- FAT PORTIONS ---
+OIL/GHEE: 1-2 tsp per meal for cooking
+NUTS/SEEDS: 20-30g per day (small handful)
+AVOCADO: 1/4 fruit
+TIP: Don't fear healthy fats but measure them
+
+--- FRUIT PORTIONS ---
+FRESH FRUIT: 1 serving per day (1 apple, 1 orange, 1 cup berries)
+TIMING: Mid-morning or evening snack with nuts
+AVOID: Multiple fruits per day, fruit juices
+
+
+
+## SECTION 15: COOKING EQUIPMENT RECOMMENDATIONS ###
+
+--- AIR FRYER ---
+USE FOR: Samosas, pakoras, kachoris, vadas, chicken tikka, fish fry
+TEMPERATURE: 180°C for most items
+TIME: 12-18 minutes depending on item
+OIL: Spray lightly or brush 1 tsp oil
+BENEFIT: 70-80% less oil than deep frying
+
+--- PRESSURE COOKER (MINIMAL USE) ---
+USE FOR: Dal (2-3 whistles only), brown rice (1 whistle + simmer), chickpeas
+AVOID: Overcooking (10+ whistles)
+BENEFIT: Fast cooking but don't overcook to mush
+
+--- NON-STICK TAWA ---
+USE FOR: Rotis, dosas, parathas with minimal oil
+OIL: Spray or use 1/2 tsp per item
+BENEFIT: Requires less fat
+
+--- STEAMER ---
+USE FOR: Idli, dhokla, muthiya, vegetables, fish
+BENEFIT: Zero added fat, retains nutrients
+
+--- OVEN ---
+USE FOR: Baking samosas, kachoris, tandoori items, roasting vegetables
+TEMPERATURE: 180-200°C
+BENEFIT: Batch cooking, less oil
+
+
+
+## SECTION 16: EMERGENCY QUICK SUBSTITUTES ###
+
+WHEN RECIPE CALLS FOR: USE INSTEAD:
+- 1 cup white rice → 3/4 cup brown rice + 1/4 cup quinoa
+- 3-4 rotis → 2 rotis + big salad
+- Deep fry → Air fry 180°C 15 min
+- 3 tbsp oil → 1 tbsp oil + water for moisture
+- 2 tbsp sugar → 1/4 tsp stevia liquid
+- 1 cup full-fat milk → 1 cup almond milk unsweetened
+- 100g paneer → 100g tofu (vegan) OR 2 eggs (non-veg)
+- Potato in curry → Cauliflower florets
+- Maida → Whole wheat + 25% besan
+- Sweetened yogurt → Plain yogurt + 2-3 berries
+
+
+================================================================================
+RAG USAGE NOTES FOR LLM:
+================================================================================
+
+1. QUERY BY INGREDIENT: When user's meal plan includes problematic ingredients (potato, white rice, maida, jaggery, deep-fried items), retrieve relevant substitution section
+
+2. QUERY BY CUISINE: Filter by region (North/South/East/West India) to provide culturally appropriate alternatives
+
+3. QUERY BY DIET TYPE: Filter by vegetarian/vegan/Jain/non-vegetarian to provide suitable alternatives
+
+4. QUERY BY COOKING METHOD: When meal template mentions deep frying, pressure cooking (excessive), retrieve method modification section
+
+5. QUERY BY SYMPTOM: Cross-reference with symptom guidance (separate file) to prioritize certain substitutes
+
+6. QUERY BY LAB VALUES: Cross-reference with lab guidance file to emphasize specific substitutes (e.g., high insulin → focus on low-GI substitutes)
+
+7. ALLERGY CHECK: Always query allergy section if user has specified allergies in profile
+
+8. PORTION CONTROL: Always include portion guidance when suggesting substitutes
+
+9. MULTIPLE SUBSTITUTES: Provide 2-3 options when available so user has choices
+
+10. REGIONAL AUTHENTICITY: Prioritize regional alternatives to maintain cultural connection to food
+
+11. PRACTICAL TIP: Always include cooking tip for successful preparation
+
+12. TRANSPARENCY: When making substitutions, explain briefly why (e.g., "Using brown rice instead of white rice to lower the glycemic impact and improve insulin sensitivity")
+
+================================================================================
+
+
+================================================================================
+END OF PCOS-FRIENDLY INGREDIENT SUBSTITUTES - SPECIAL DIETS & GUIDANCE
+================================================================================
