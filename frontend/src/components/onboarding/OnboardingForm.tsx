@@ -239,9 +239,7 @@ const OnboardingForm = ({
         required: true,
         options: [
           { value: 'en', label: 'English' },
-          { value: 'hi', label: 'हिंदी' },
-          { value: 'ta', label: 'தமிழ்' },
-          { value: 'te', label: 'తెలుగు' },
+          { value: 'hi', label: 'हिंदी' }
         ],
       },
       {
