@@ -53,7 +53,15 @@ const MealPlanGenerator = ({
   >([]);
 
   // Form data with new region/cuisine structure
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    regions: string[];
+    cuisineStates: string[];
+    dietType: string;
+    isKeto: boolean;
+    budget: number;
+    mealsPerDay: string;
+    duration: string;
+  }>({
     regions: [], // Multi-select regions
     cuisineStates: [], // Multi-select states/cuisines
     dietType: '', // Optional - defaults to onboarding
@@ -388,7 +396,8 @@ const MealPlanGenerator = ({
                 return { value: regions.id, label: regions.label };
               })}
               handleInputChange={(value) => {
-                setFormData((prev) => ({ ...prev, regions: value }));
+                const regionArray = Array.isArray(value) ? value : [value];
+                setFormData((prev) => ({ ...prev, regions: regionArray as string[] }));
               }}
               placeholder={
                 formData.regions.length === 0
@@ -414,12 +423,20 @@ const MealPlanGenerator = ({
           <div>
             <SelectInput
               disable={formData.regions.length === 0}
-              label={'Preferred Cuisines/States (Optional - Multi-select)'}
+              label={'Preferred Cuisines/States (Optional - Multi-select, Max 5)'}
               options={availableStates.map((state) => {
                 return { value: state.id, label: state.label };
               })}
               handleInputChange={(value) => {
-                setFormData((prev) => ({ ...prev, cuisineStates: value }));
+                // Validate max 5 cuisines
+                const cuisineArray = Array.isArray(value) ? value : [value];
+                if (cuisineArray.length > 5) {
+                  // Show warning and limit to 5
+                  alert('Maximum 5 cuisines allowed for balanced meal distribution. Keeping first 5 selected.');
+                  setFormData((prev) => ({ ...prev, cuisineStates: cuisineArray.slice(0, 5) as string[] }));
+                } else {
+                  setFormData((prev) => ({ ...prev, cuisineStates: cuisineArray as string[] }));
+                }
               }}
               placeholder={
                 formData.cuisineStates.length === 0
@@ -428,18 +445,18 @@ const MealPlanGenerator = ({
                     }`
                   : `${formData.cuisineStates.length} cuisine${
                       formData.cuisineStates.length > 1 ? 's' : ''
-                    } selected`
+                    } selected ${formData.cuisineStates.length >= 5 ? '(MAX)' : ''}`
               }
               mode="multiple"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className={`text-xs mt-1 ${formData.cuisineStates.length >= 5 ? 'text-orange-600 font-semibold' : 'text-gray-500'}`}>
               {formData.cuisineStates.length === 0
                 ? `Will use your onboarding cuisines${
                     profileData.cuisines ? `: ${profileData.cuisines.join(', ')}` : ''
                   }`
-                : `${formData.cuisineStates.length} cuisine${
+                : `${formData.cuisineStates.length}/5 cuisine${
                     formData.cuisineStates.length > 1 ? 's' : ''
-                  } selected`}
+                  } selected${formData.cuisineStates.length >= 5 ? ' - Maximum reached' : ''}`}
             </p>
           </div>
         </div>
@@ -453,7 +470,7 @@ const MealPlanGenerator = ({
               })}
               placeholder="Use my onboarding preference"
               value={formData.dietType}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: val }))}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: String(val) }))}
             />
             <p className="text-xs text-gray-500 mt-1">
               Override your onboarding diet type if needed
@@ -471,7 +488,7 @@ const MealPlanGenerator = ({
                 { value: '4', label: '4 Meals (with snack)' },
               ]}
               value={formData.mealsPerDay}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: val }))}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: String(val) }))}
             />
           </div>
 
@@ -485,7 +502,7 @@ const MealPlanGenerator = ({
                 { value: '5', label: '5 Days' },
                 { value: '7', label: '7 Days (1 Week)' },
               ]}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, duration: val }))}
+              handleInputChange={(val) => setFormData((prev) => ({ ...prev, duration: String(val) }))}
             />
           </div>
         </div>

@@ -1278,6 +1278,41 @@ class MealPlanChain {
       // ===== STAGE 1: Retrieve meal templates =====
       logger.info('Stage 1: Retrieving meal templates');
       if (cuisines.length > 0) {
+        // 🎯 MULTI-CUISINE BALANCED RETRIEVAL STRATEGY
+        // Goal: Distribute meal templates equally across selected cuisines
+        // Formula:
+        //   1 cuisine  → 70 templates (all from that cuisine)
+        //   2 cuisines → 35/35 split
+        //   3 cuisines → 23/23/24 split
+        //   4 cuisines → 17/17/18/18 split
+        //   5 cuisines → 14/14/14/14/14 split (MAX 5 cuisines allowed)
+
+        // Validate max 5 cuisines
+        if (cuisines.length > 5) {
+          logger.warn(
+            `⚠️  User selected ${cuisines.length} cuisines. Maximum allowed is 5. Using first 5 only.`
+          );
+          cuisines = cuisines.slice(0, 5);
+        }
+
+        // Calculate per-cuisine retrieval quota
+        const TOTAL_TEMPLATES = 70; // Target total templates to retrieve
+        const cuisineCount = cuisines.length;
+        const baseQuota = Math.floor(TOTAL_TEMPLATES / cuisineCount);
+        const remainder = TOTAL_TEMPLATES % cuisineCount;
+
+        // Distribute templates: base quota + 1 extra for last N cuisines
+        const cuisineQuotas = cuisines.map((cuisine, index) => {
+          const quota = index >= cuisineCount - remainder ? baseQuota + 1 : baseQuota;
+          return { cuisine, quota };
+        });
+
+        logger.info(`🎯 Multi-cuisine balanced retrieval strategy:`, {
+          totalCuisines: cuisineCount,
+          totalTemplates: TOTAL_TEMPLATES,
+          distribution: cuisineQuotas.map((c) => `${c.cuisine}: ${c.quota}`).join(', '),
+        });
+
         // ⚠️ CRITICAL FIX: DO NOT add "keto" to meal template queries!
         // Problem: Adding "keto low-carb" causes vector search to return ONLY keto docs
         //          But most regional cuisines (Bengali, South Indian) have NO keto-specific docs
@@ -1285,433 +1320,483 @@ class MealPlanChain {
         // Solution: Retrieve traditional regional meals → Filter by cuisine → LLM adapts for keto
         // The keto keywords ARE used in Stage 5 (keto substitutes) which is the right place
 
-        const templateQueries = cuisines.flatMap((cuisine) => [
-          // Enhanced queries with more specific keywords for better RAG retrieval
-          `${cuisine} breakfast meals dishes regional ${dietType}`,
-          `${cuisine} lunch traditional recipes authentic ${dietType}`,
-          `${cuisine} dinner evening meal main course ${dietType}`, // Improved: added "evening" and "main course"
-          `${cuisine} snacks traditional dishes ${dietType}`,
-          // Also include cuisine-specific context (helps with unique regional terms)
-          `${cuisine} cuisine traditional regional specialties`,
-        ]);
+        // Build queries with meal type awareness
+        const mealTypeQueries = {
+          breakfast: (cuisine) => `${cuisine} breakfast meals dishes regional ${dietType}`,
+          lunch: (cuisine) => `${cuisine} lunch traditional recipes authentic ${dietType}`,
+          dinner: (cuisine) => `${cuisine} dinner evening meal main course ${dietType}`,
+          snacks: (cuisine) => `${cuisine} snacks traditional dishes ${dietType}`,
+          general: (cuisine) => `${cuisine} cuisine traditional regional specialties`,
+        };
 
-        for (const query of templateQueries) {
-          // ⭐ TWO-PHASE RETRIEVAL: Add documentType filter at Pinecone query level
-          // This prevents substitute/medical docs from even being retrieved
-          // More efficient than post-retrieval filtering
-          const results = await retriever.retrieve(query, {
-            topK: 25, // Increased to 25 for better coverage
-            filter: { documentType: 'meal_template' }, // ⭐ PINECONE METADATA FILTER
-          });
+        // For each cuisine, retrieve according to its quota
+        for (const { cuisine, quota } of cuisineQuotas) {
+          logger.info(`  Retrieving ${quota} templates for: ${cuisine}`);
 
-          // ⭐ FILTER: By cuisine/region AND diet type AND keto/allergens
-          const filteredResults = results.filter((doc) => {
-            const content = doc.pageContent || doc.content || '';
-            const contentLower = content.toLowerCase();
-            const metadata = doc.metadata || {};
+          // Split quota across meal types based on typical usage
+          // Breakfast: 25%, Lunch/Dinner: 60%, Snacks: 10%, General: 5%
+          const breakfastQuota = Math.ceil(quota * 0.25);
+          const lunchDinnerQuota = Math.ceil(quota * 0.6);
+          const snacksQuota = Math.ceil(quota * 0.1);
+          const generalQuota = Math.max(1, quota - breakfastQuota - lunchDinnerQuota - snacksQuota);
 
-            // 🔍 PRIORITY CHECK: Only accept meal_template documents in Stage 1
-            // This prevents ingredient substitute docs from contaminating meal template retrieval
-            // NOTE: With Pinecone filter above, this is now a backup check
-            const docType = (metadata.documentType || metadata.type || '').toLowerCase();
-            if (docType && docType !== 'meal_template') {
-              logger.debug(
-                `  ⏭️  Skipping non-template document type: ${docType} - "${
-                  metadata.mealName || metadata.title || 'Unknown'
-                }"`
-              );
-              return false; // Reject substitute docs, medical_knowledge docs, etc.
-            }
+          const templateQueries = [
+            { query: mealTypeQueries.breakfast(cuisine), topK: breakfastQuota, type: 'breakfast' },
+            {
+              query: mealTypeQueries.lunch(cuisine),
+              topK: Math.ceil(lunchDinnerQuota / 2),
+              type: 'lunch',
+            },
+            {
+              query: mealTypeQueries.dinner(cuisine),
+              topK: Math.floor(lunchDinnerQuota / 2),
+              type: 'dinner',
+            },
+            { query: mealTypeQueries.snacks(cuisine), topK: snacksQuota, type: 'snacks' },
+            { query: mealTypeQueries.general(cuisine), topK: generalQuota, type: 'general' },
+          ];
 
-            // 🔍 FIRST: Filter by cuisine/region match
-            // Check if document matches the requested cuisine(s)
-            const cuisineMatch = cuisines.some((cuisine) => {
-              const cuisineLower = cuisine.toLowerCase();
+          for (const { query, topK, type } of templateQueries) {
+            // ⭐ TWO-PHASE RETRIEVAL: Add documentType filter at Pinecone query level
+            // This prevents substitute/medical docs from even being retrieved
+            // More efficient than post-retrieval filtering
+            logger.info(`    Query: "${query}" - Retrieving ${topK}, filtered to ${type} meals`);
 
-              // ⭐ FIX: Handle both "Sikkimese" (cuisine) and "Sikkim" (state) variations
-              // Map cuisine names to possible variations
-              const cuisineVariations = [cuisineLower];
+            const results = await retriever.retrieve(query, {
+              topK: topK,
+              filter: { documentType: 'meal_template' }, // ⭐ PINECONE METADATA FILTER
+            });
 
-              // Add state name variations (e.g., "Sikkimese" → also match "Sikkim")
-              if (cuisineLower.endsWith('ese')) {
-                // Sikkimese → Sikkim, Assamese → Assam
-                cuisineVariations.push(cuisineLower.replace(/ese$/, ''));
+            // ⭐ FILTER: By cuisine/region AND diet type AND keto/allergens
+            const filteredResults = results.filter((doc) => {
+              const content = doc.pageContent || doc.content || '';
+              const contentLower = content.toLowerCase();
+              const metadata = doc.metadata || {};
+
+              // 🔍 PRIORITY CHECK: Only accept meal_template documents in Stage 1
+              // This prevents ingredient substitute docs from contaminating meal template retrieval
+              // NOTE: With Pinecone filter above, this is now a backup check
+              const docType = (metadata.documentType || metadata.type || '').toLowerCase();
+              if (docType && docType !== 'meal_template') {
+                logger.debug(
+                  `  ⏭️  Skipping non-template document type: ${docType} - "${
+                    metadata.mealName || metadata.title || 'Unknown'
+                  }"`
+                );
+                return false; // Reject substitute docs, medical_knowledge docs, etc.
               }
 
-              // ⭐ COMPREHENSIVE CUISINE → STATE MAPPINGS
-              // Map all cuisine names to their corresponding state names
-              const cuisineToStateMap = {
-                // East Indian
-                manipuri: 'manipur',
-                bihari: 'bihar',
-                odia: 'odisha',
-                bengali: 'west bengal',
-                jharkhandi: 'jharkhand',
-                meghalayan: 'meghalaya',
-                mizo: 'mizoram',
-                naga: 'nagaland',
-                tripuri: 'tripura',
-                arunachali: 'arunachal pradesh',
+              // 🔍 FIRST: Filter by cuisine/region match
+              // Check if document matches the requested cuisine(s)
+              const cuisineMatch = cuisines.some((cuisine) => {
+                const cuisineLower = cuisine.toLowerCase();
 
-                // North Indian
-                rajasthani: 'rajasthan',
-                punjabi: 'punjab',
-                haryanvi: 'haryana',
+                // ⭐ FIX: Handle both "Sikkimese" (cuisine) and "Sikkim" (state) variations
+                // Map cuisine names to possible variations
+                const cuisineVariations = [cuisineLower];
 
-                // West Indian
-                gujarati: 'gujarat',
-                maharashtrian: 'maharashtra',
-                goan: 'goa',
+                // Add state name variations (e.g., "Sikkimese" → also match "Sikkim")
+                if (cuisineLower.endsWith('ese')) {
+                  // Sikkimese → Sikkim, Assamese → Assam
+                  cuisineVariations.push(cuisineLower.replace(/ese$/, ''));
+                }
 
-                // Central Indian
-                chhattisgarh: 'chhattisgarhi', // Also accepts Chhattisgarh as-is
+                // ⭐ COMPREHENSIVE CUISINE → STATE MAPPINGS
+                // Map all cuisine names to their corresponding state names
+                const cuisineToStateMap = {
+                  // East Indian
+                  manipuri: 'manipur',
+                  bihari: 'bihar',
+                  odia: 'odisha',
+                  bengali: 'west bengal',
+                  jharkhandi: 'jharkhand',
+                  meghalayan: 'meghalaya',
+                  mizo: 'mizoram',
+                  naga: 'nagaland',
+                  tripuri: 'tripura',
+                  arunachali: 'arunachal pradesh',
 
-                // South Indian
-                tamil: 'tamil nadu',
-                andhra: 'andhra pradesh',
-              };
+                  // North Indian
+                  rajasthani: 'rajasthan',
+                  punjabi: 'punjab',
+                  haryanvi: 'haryana',
 
-              // Add mapped state name if exists
-              if (cuisineToStateMap[cuisineLower]) {
-                cuisineVariations.push(cuisineToStateMap[cuisineLower]);
-                // Also add shortened versions (e.g., "bengal" for "west bengal")
-                const stateParts = cuisineToStateMap[cuisineLower].split(' ');
-                if (stateParts.length > 1) {
-                  cuisineVariations.push(stateParts[stateParts.length - 1]); // "bengal", "nadu", "pradesh"
+                  // West Indian
+                  gujarati: 'gujarat',
+                  maharashtrian: 'maharashtra',
+                  goan: 'goa',
+
+                  // Central Indian
+                  chhattisgarh: 'chhattisgarhi', // Also accepts Chhattisgarh as-is
+
+                  // South Indian
+                  tamil: 'tamil nadu',
+                  andhra: 'andhra pradesh',
+                };
+
+                // Add mapped state name if exists
+                if (cuisineToStateMap[cuisineLower]) {
+                  cuisineVariations.push(cuisineToStateMap[cuisineLower]);
+                  // Also add shortened versions (e.g., "bengal" for "west bengal")
+                  const stateParts = cuisineToStateMap[cuisineLower].split(' ');
+                  if (stateParts.length > 1) {
+                    cuisineVariations.push(stateParts[stateParts.length - 1]); // "bengal", "nadu", "pradesh"
+                  }
+                }
+
+                // Check if ANY variation matches
+                const matches = cuisineVariations.some((variation) => {
+                  // Check metadata fields
+                  const regionMatch = (metadata.regionalSection || '')
+                    .toLowerCase()
+                    .includes(variation);
+                  const stateMatch = (metadata.state || '').toLowerCase().includes(variation);
+                  const mealNameMatch = (metadata.mealName || '').toLowerCase().includes(variation);
+                  // Check content (but be more specific to avoid false positives)
+                  // Look for "State: Sikkim" or "Cuisine: Sikkimese" patterns
+                  const contentStateMatch = contentLower.includes(`state: ${variation}`);
+                  const contentCuisineMatch = contentLower.includes(`cuisine: ${variation}`);
+                  const contentMentionMatch =
+                    contentLower.includes(` ${variation} `) ||
+                    contentLower.includes(`${variation}-style`) ||
+                    contentLower.includes(`${variation} style`);
+
+                  return (
+                    regionMatch ||
+                    stateMatch ||
+                    mealNameMatch ||
+                    contentStateMatch ||
+                    contentCuisineMatch ||
+                    contentMentionMatch
+                  );
+                });
+
+                return matches;
+              });
+
+              // If no cuisine match, skip this document
+              if (!cuisineMatch) {
+                // ⭐ DEBUG: Log rejected meals to help diagnose retrieval issues
+                if (metadata.mealName) {
+                  logger.debug(
+                    `  ⏭️  Skipping "${
+                      metadata.mealName
+                    }" - doesn't match cuisines [${cuisines.join(', ')}]`,
+                    { state: metadata.state, region: metadata.regionalSection }
+                  );
+                }
+                return false;
+              }
+
+              // 🔍 MEAL TYPE FILTERING: Ensure breakfast/lunch/dinner/snacks are categorized correctly
+              // This prevents dinner curries from appearing as breakfast, etc.
+              if (type !== 'general') {
+                // Try to infer meal type from content and metadata
+                const mealType = this.inferMealType({ metadata, pageContent: content });
+
+                // Filter based on query type
+                if (type === 'breakfast' && mealType !== 'breakfast' && mealType !== 'unknown') {
+                  logger.debug(
+                    `  ⏭️  Skipping "${metadata.mealName}" - not a breakfast meal (detected: ${mealType})`
+                  );
+                  return false;
+                }
+
+                if ((type === 'lunch' || type === 'dinner') && mealType === 'breakfast') {
+                  logger.debug(
+                    `  ⏭️  Skipping "${metadata.mealName}" - breakfast meal in lunch/dinner query`
+                  );
+                  return false;
+                }
+
+                if (
+                  type === 'snacks' &&
+                  (mealType === 'breakfast' || mealType === 'lunch' || mealType === 'dinner')
+                ) {
+                  logger.debug(`  ⏭️  Skipping "${metadata.mealName}" - main meal in snacks query`);
+                  return false;
                 }
               }
 
-              // Check if ANY variation matches
-              const matches = cuisineVariations.some((variation) => {
-                // Check metadata fields
-                const regionMatch = (metadata.regionalSection || '')
-                  .toLowerCase()
-                  .includes(variation);
-                const stateMatch = (metadata.state || '').toLowerCase().includes(variation);
-                const mealNameMatch = (metadata.mealName || '').toLowerCase().includes(variation);
-                // Check content (but be more specific to avoid false positives)
-                // Look for "State: Sikkim" or "Cuisine: Sikkimese" patterns
-                const contentStateMatch = contentLower.includes(`state: ${variation}`);
-                const contentCuisineMatch = contentLower.includes(`cuisine: ${variation}`);
-                const contentMentionMatch =
-                  contentLower.includes(` ${variation} `) ||
-                  contentLower.includes(`${variation}-style`) ||
-                  contentLower.includes(`${variation} style`);
+              // 🔍 SECOND: TAG ALLERGEN-CONTAINING MEALS (instead of filtering them out)
+              // 🎯 NEW STRATEGY: Don't reject meals with allergens - TAG them for intelligent substitution
+              // Reason: Filtering out "roti" meals loses 90% of North Indian breakfast/dinner options
+              // Solution: Keep the meal template, mark which allergens need substitution, let LLM adapt it
+              // Example: "Wheat Roti" → metadata.needsAllergenSubstitution = ['gluten'] → LLM generates "Bajra Roti"
+              if (restrictions && restrictions.length > 0) {
+                const mealNameLower = (metadata.mealName || '').toLowerCase();
 
-                return (
-                  regionMatch ||
-                  stateMatch ||
-                  mealNameMatch ||
-                  contentStateMatch ||
-                  contentCuisineMatch ||
-                  contentMentionMatch
-                );
-              });
-
-              return matches;
-            });
-
-            // If no cuisine match, skip this document
-            if (!cuisineMatch) {
-              // ⭐ DEBUG: Log rejected meals to help diagnose retrieval issues
-              if (metadata.mealName) {
-                logger.debug(
-                  `  ⏭️  Skipping "${metadata.mealName}" - doesn't match cuisines [${cuisines.join(
-                    ', '
-                  )}]`,
-                  { state: metadata.state, region: metadata.regionalSection }
-                );
-              }
-              return false;
-            }
-
-            // 🔍 SECOND: Filter by ALLERGENS (if any restrictions)
-            // ⭐ CRITICAL: Check for user's allergies/intolerances BEFORE diet type
-            if (restrictions && restrictions.length > 0) {
-              // ⭐ FIX: Check BOTH meal name AND ingredients AND full content for allergens
-              // Bug: "Egg Paratha" has "Egg" in the name, not just ingredients
-              // Solution: Check meal name first, then ingredients, then full content as fallback
-              const mealNameLower = (metadata.mealName || '').toLowerCase();
-
-              // ⭐ IMPROVED: Try multiple ingredient extraction patterns
-              let ingredientsText = '';
-
-              // Pattern 1: Standard "Ingredients:" section
-              let ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
-              if (ingredientsMatch) {
-                ingredientsText = ingredientsMatch[1].toLowerCase();
-              } else {
-                // Pattern 2: Try finding ingredients list without colon
-                ingredientsMatch = content.match(/Ingredients\s+(.+?)(?:\n\n|\n[A-Z]|$)/s);
+                // Extract ingredients for allergen detection
+                let ingredientsText = '';
+                let ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
                 if (ingredientsMatch) {
                   ingredientsText = ingredientsMatch[1].toLowerCase();
                 } else {
-                  // Pattern 3: Fallback to content if no clear ingredients section
-                  logger.debug(
-                    `  ⚠️  No "Ingredients:" section found in "${metadata.mealName}" - using full content for allergen check`
-                  );
-                  ingredientsText = contentLower;
-                }
-              }
-
-              // ⭐ FIX: Use word boundaries to prevent false matches
-              // "buckwheat" should NOT match "wheat", "protein" should NOT match "roti"
-              const allergenMap = {
-                dairy: [
-                  'milk',
-                  'paneer',
-                  'cheese',
-                  'curd',
-                  'yogurt',
-                  'dahi',
-                  'ghee',
-                  'butter',
-                  'cream',
-                  'khoya',
-                  'malai',
-                ],
-                // Use word boundaries (\b) to match whole words only
-                gluten: [
-                  '\\bwheat\\b',
-                  '\\bmaida\\b',
-                  '\\batta\\b',
-                  '\\broti\\b',
-                  '\\bchapati\\b',
-                  '\\bparatha\\b',
-                  '\\bbread\\b',
-                  '\\bnaan\\b',
-                ],
-                nuts: [
-                  'almond',
-                  'cashew',
-                  'walnut',
-                  'pistachio',
-                  'peanut',
-                  'hazelnut',
-                  'pecan',
-                  'badam',
-                  'kaju',
-                ],
-                eggs: ['\\begg\\b', '\\bomelette\\b', '\\banda\\b'],
-              };
-
-              // Check each restriction
-              for (const restriction of restrictions) {
-                const normalizedRestriction = restriction.toLowerCase().trim();
-                const allergens = allergenMap[normalizedRestriction];
-
-                if (allergens) {
-                  // ⭐ IMPROVED: Use regex for word boundary matching
-                  const hasAllergen = allergens.some((allergen) => {
-                    // Create regex with word boundaries for gluten/eggs (marked with \b)
-                    // For others, use simple includes
-                    const useRegex = allergen.includes('\\b');
-
-                    if (useRegex) {
-                      const regex = new RegExp(allergen, 'i');
-
-                      // Check meal name
-                      if (regex.test(mealNameLower)) {
-                        logger.debug(
-                          `  🔍 Allergen "${allergen}" found in meal name: "${metadata.mealName}"`
-                        );
-                        return true;
-                      }
-
-                      // Check ingredients section
-                      if (regex.test(ingredientsText)) {
-                        logger.debug(
-                          `  🔍 Allergen "${allergen}" found in ingredients: "${metadata.mealName}"`
-                        );
-                        return true;
-                      }
-                    } else {
-                      // Simple includes for dairy/nuts
-                      if (mealNameLower.includes(allergen)) return true;
-                      if (ingredientsText.includes(allergen)) return true;
-                    }
-
-                    return false;
-                  });
-
-                  if (hasAllergen) {
-                    logger.info(
-                      `  ❌ Filtered out "${
-                        metadata.mealName || 'Unknown'
-                      }" - contains ${normalizedRestriction} allergen`
-                    );
-                    return false; // Reject this meal template
+                  ingredientsMatch = content.match(/Ingredients\s+(.+?)(?:\n\n|\n[A-Z]|$)/s);
+                  if (ingredientsMatch) {
+                    ingredientsText = ingredientsMatch[1].toLowerCase();
+                  } else {
+                    ingredientsText = contentLower;
                   }
                 }
+
+                // Allergen detection patterns
+                const allergenMap = {
+                  dairy: [
+                    'milk',
+                    'paneer',
+                    'cheese',
+                    'curd',
+                    'yogurt',
+                    'dahi',
+                    'ghee',
+                    'butter',
+                    'cream',
+                    'khoya',
+                    'malai',
+                  ],
+                  gluten: [
+                    '\\bwheat\\b',
+                    '\\bmaida\\b',
+                    '\\batta\\b',
+                    '\\broti\\b',
+                    '\\bchapati\\b',
+                    '\\bparatha\\b',
+                    '\\bbread\\b',
+                    '\\bnaan\\b',
+                  ],
+                  nuts: [
+                    'almond',
+                    'cashew',
+                    'walnut',
+                    'pistachio',
+                    'peanut',
+                    'hazelnut',
+                    'pecan',
+                    'badam',
+                    'kaju',
+                  ],
+                  eggs: ['\\begg\\b', '\\bomelette\\b', '\\banda\\b'],
+                };
+
+                // Track which allergens are present in this meal
+                const allergensFound = [];
+
+                for (const restriction of restrictions) {
+                  const normalizedRestriction = restriction.toLowerCase().trim();
+                  const allergens = allergenMap[normalizedRestriction];
+
+                  if (allergens) {
+                    const hasAllergen = allergens.some((allergen) => {
+                      const useRegex = allergen.includes('\\b');
+
+                      if (useRegex) {
+                        const regex = new RegExp(allergen, 'i');
+                        if (regex.test(mealNameLower) || regex.test(ingredientsText)) {
+                          logger.debug(
+                            `  🏷️  Allergen "${allergen}" detected in "${metadata.mealName}" - will substitute`
+                          );
+                          return true;
+                        }
+                      } else {
+                        if (
+                          mealNameLower.includes(allergen) ||
+                          ingredientsText.includes(allergen)
+                        ) {
+                          logger.debug(
+                            `  🏷️  Allergen "${allergen}" detected in "${metadata.mealName}" - will substitute`
+                          );
+                          return true;
+                        }
+                      }
+                      return false;
+                    });
+
+                    if (hasAllergen) {
+                      allergensFound.push(normalizedRestriction);
+                    }
+                  }
+                }
+
+                // 🎯 NEW: Tag the meal instead of rejecting it
+                if (allergensFound.length > 0) {
+                  metadata.needsAllergenSubstitution = allergensFound;
+                  logger.info(
+                    `  ✅ Tagged "${
+                      metadata.mealName || 'Unknown'
+                    }" - will substitute: ${allergensFound.join(', ')}`
+                  );
+                  // DON'T return false - keep the meal for intelligent substitution!
+                }
               }
-            }
 
-            // 🔍 THIRD: Filter by KETO requirements (if isKeto=true)
-            // ⚠️ IMPORTANT: In KETO mode, we DON'T reject high-carb meals at retrieval stage
-            // Instead, we RETRIEVE them as examples and let the LLM ADAPT them using keto substitutes
-            // Reason: Many regional cuisines (Bengali, South Indian) are rice/dal-heavy
-            //         Rejecting all of them = 0 templates = LLM has no cuisine examples
-            // Strategy: Retrieve traditional meals → LLM replaces rice with cauliflower rice, etc.
+              // 🔍 THIRD: Filter by KETO requirements (if isKeto=true)
+              // ⚠️ IMPORTANT: In KETO mode, we DON'T reject high-carb meals at retrieval stage
+              // Instead, we RETRIEVE them as examples and let the LLM ADAPT them using keto substitutes
+              // Reason: Many regional cuisines (Bengali, South Indian) are rice/dal-heavy
+              //         Rejecting all of them = 0 templates = LLM has no cuisine examples
+              // Strategy: Retrieve traditional meals → LLM replaces rice with cauliflower rice, etc.
 
+              if (preferences.isKeto) {
+                // Check ingredients for high-carb items
+                const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
+                const ingredientsText = ingredientsMatch
+                  ? ingredientsMatch[1].toLowerCase()
+                  : contentLower;
+
+                // High-carb keywords to identify (but NOT reject yet)
+                const highCarbKeywords = [
+                  'rice',
+                  'ragi',
+                  'jowar',
+                  'bajra',
+                  'wheat',
+                  'roti',
+                  'chapati',
+                  'bread',
+                  'idli',
+                  'dosa',
+                  'upma',
+                  'poha',
+                  'puttu',
+                  'appam',
+                  'dal',
+                  'lentil',
+                  'chickpea',
+                  'chana',
+                  'moong',
+                  'masoor',
+                  'toor',
+                  'urad',
+                  'potato',
+                  'sweet potato',
+                  'corn',
+                  'peas',
+                ];
+
+                const hasHighCarb = highCarbKeywords.some((keyword) =>
+                  ingredientsText.includes(keyword)
+                );
+
+                if (hasHighCarb) {
+                  // ⭐ NEW STRATEGY: Mark this meal as "needs keto adaptation" but ACCEPT it
+                  // Add metadata flag so we know it needs substitution
+                  doc.metadata = doc.metadata || {};
+                  doc.metadata.needsKetoAdaptation = true;
+                  doc.metadata.highCarbIngredients = highCarbKeywords.filter((k) =>
+                    ingredientsText.includes(k)
+                  );
+
+                  logger.info(
+                    `  ⚡ Accepting for keto adaptation: "${
+                      metadata.mealName || 'Unknown'
+                    }" - contains ${doc.metadata.highCarbIngredients.join(
+                      ', '
+                    )} (will be substituted by LLM)`
+                  );
+                  // Don't reject - let it through for LLM adaptation
+                }
+              }
+
+              // 🔍 FOURTH: Filter by diet type
+              // ⭐ IMPROVED: Check the Type: field in content FIRST (most reliable)
+              // Note: RAG content uses "Type: Vegetarian" format (not markdown **Type:**)
+              const hasVegetarianTag = /Type:\s*Vegetarian/i.test(content);
+              const hasNonVegTag = /Type:\s*Non-Vegetarian/i.test(content);
+
+              if (dietType === 'jain') {
+                // ⭐ JAIN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
+                // The LLM will adapt them using ingredient substitutes from RAG
+                // Similar to vegan strategy - provides variety and allows adaptation of popular dishes
+                // Non-veg proteins (chicken, fish, eggs) → Paneer, tofu, legumes
+                // Prohibited ingredients (root vegetables, mushrooms, etc.) → Allowed vegetables
+
+                // Accept ALL templates (veg and non-veg) - LLM will substitute
+                // No filtering for prohibited ingredients here - LLM handles substitutions
+                logger.info(
+                  `    ✅ Jain mode: Accepting template "${
+                    metadata.mealName || 'Unknown'
+                  }" for LLM adaptation`
+                );
+                return true; // Accept all templates for Jain adaptation
+              } else if (dietType === 'vegan') {
+                // ⭐ VEGAN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
+                // The LLM will adapt them using ingredient substitutes from RAG
+                // This gives more variety and allows adaptation of popular non-veg dishes
+
+                // Accept ALL templates (veg and non-veg) - LLM will substitute
+                // We don't filter by dairy here because LLM will substitute paneer→tofu, milk→almond milk, etc.
+                logger.info(
+                  `    ✅ Vegan mode: Accepting template "${
+                    metadata.mealName || 'Unknown'
+                  }" for LLM adaptation`
+                );
+                return true; // Accept all templates for vegan adaptation
+              } else if (dietType === 'vegetarian') {
+                // Vegetarian: Just check the Type: tag
+                if (hasVegetarianTag && !hasNonVegTag) {
+                  return true;
+                }
+
+                // Fallback: If no tag found, log warning and skip
+                if (!hasVegetarianTag && !hasNonVegTag) {
+                  logger.info(`    ⚠️  No diet type tag found: ${metadata.mealName || 'Unknown'}`);
+                }
+                return false;
+              } else if (dietType === 'non-vegetarian') {
+                // ⭐ NON-VEG MODE: Accept BOTH vegetarian AND non-vegetarian meals
+                // Strategy: Fetch all meals, LLM will create 70% non-veg + 30% veg mix
+                // Reason: Non-veg people DO eat vegetarian meals, they're not exclusive
+
+                // Accept explicitly tagged non-veg meals
+                if (hasNonVegTag) {
+                  logger.info(`    ✅ Non-veg meal accepted: "${metadata.mealName || 'Unknown'}"`);
+                  return true;
+                }
+
+                // ⭐ ALSO accept vegetarian meals (for the 30% vegetarian component)
+                if (hasVegetarianTag) {
+                  logger.info(
+                    `    ✅ Vegetarian meal accepted for non-veg plan: "${
+                      metadata.mealName || 'Unknown'
+                    }"`
+                  );
+                  return true;
+                }
+
+                // No tag found - ACCEPT IT (assume it can be adapted)
+                logger.info(
+                  `    ✅ Accepting "${
+                    metadata.mealName || 'Unknown'
+                  }" - no diet tag, assuming adaptable`
+                );
+                return true;
+              }
+
+              return true; // Allow all for other diet types
+            });
+
+            // ⭐ Enhanced logging for keto mode
             if (preferences.isKeto) {
-              // Check ingredients for high-carb items
-              const ingredientsMatch = content.match(/Ingredients:\s*(.+?)(?:\n\n|\n[A-Z]|$)/s);
-              const ingredientsText = ingredientsMatch
-                ? ingredientsMatch[1].toLowerCase()
-                : contentLower;
+              const ketoCompatibleCount = filteredResults.filter((doc) => {
+                const content = (doc.pageContent || doc.content || '').toLowerCase();
+                return !['rice', 'ragi', 'jowar', 'bajra', 'wheat', 'dal', 'potato'].some((k) =>
+                  content.includes(k)
+                );
+              }).length;
 
-              // High-carb keywords to identify (but NOT reject yet)
-              const highCarbKeywords = [
-                'rice',
-                'ragi',
-                'jowar',
-                'bajra',
-                'wheat',
-                'roti',
-                'chapati',
-                'bread',
-                'idli',
-                'dosa',
-                'upma',
-                'poha',
-                'puttu',
-                'appam',
-                'dal',
-                'lentil',
-                'chickpea',
-                'chana',
-                'moong',
-                'masoor',
-                'toor',
-                'urad',
-                'potato',
-                'sweet potato',
-                'corn',
-                'peas',
-              ];
-
-              const hasHighCarb = highCarbKeywords.some((keyword) =>
-                ingredientsText.includes(keyword)
+              logger.info(
+                `    Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals (${ketoCompatibleCount} keto-compatible)`
               );
-
-              if (hasHighCarb) {
-                // ⭐ NEW STRATEGY: Mark this meal as "needs keto adaptation" but ACCEPT it
-                // Add metadata flag so we know it needs substitution
-                doc.metadata = doc.metadata || {};
-                doc.metadata.needsKetoAdaptation = true;
-                doc.metadata.highCarbIngredients = highCarbKeywords.filter((k) =>
-                  ingredientsText.includes(k)
-                );
-
-                logger.info(
-                  `  ⚡ Accepting for keto adaptation: "${
-                    metadata.mealName || 'Unknown'
-                  }" - contains ${doc.metadata.highCarbIngredients.join(
-                    ', '
-                  )} (will be substituted by LLM)`
-                );
-                // Don't reject - let it through for LLM adaptation
-              }
+            } else {
+              logger.info(
+                `    Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals`
+              );
             }
 
-            // 🔍 FOURTH: Filter by diet type
-            // ⭐ IMPROVED: Check the Type: field in content FIRST (most reliable)
-            // Note: RAG content uses "Type: Vegetarian" format (not markdown **Type:**)
-            const hasVegetarianTag = /Type:\s*Vegetarian/i.test(content);
-            const hasNonVegTag = /Type:\s*Non-Vegetarian/i.test(content);
-
-            if (dietType === 'jain') {
-              // ⭐ JAIN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
-              // The LLM will adapt them using ingredient substitutes from RAG
-              // Similar to vegan strategy - provides variety and allows adaptation of popular dishes
-              // Non-veg proteins (chicken, fish, eggs) → Paneer, tofu, legumes
-              // Prohibited ingredients (root vegetables, mushrooms, etc.) → Allowed vegetables
-
-              // Accept ALL templates (veg and non-veg) - LLM will substitute
-              // No filtering for prohibited ingredients here - LLM handles substitutions
-              logger.info(
-                `    ✅ Jain mode: Accepting template "${
-                  metadata.mealName || 'Unknown'
-                }" for LLM adaptation`
-              );
-              return true; // Accept all templates for Jain adaptation
-            } else if (dietType === 'vegan') {
-              // ⭐ VEGAN STRATEGY: Fetch BOTH vegetarian AND non-vegetarian templates
-              // The LLM will adapt them using ingredient substitutes from RAG
-              // This gives more variety and allows adaptation of popular non-veg dishes
-
-              // Accept ALL templates (veg and non-veg) - LLM will substitute
-              // We don't filter by dairy here because LLM will substitute paneer→tofu, milk→almond milk, etc.
-              logger.info(
-                `    ✅ Vegan mode: Accepting template "${
-                  metadata.mealName || 'Unknown'
-                }" for LLM adaptation`
-              );
-              return true; // Accept all templates for vegan adaptation
-            } else if (dietType === 'vegetarian') {
-              // Vegetarian: Just check the Type: tag
-              if (hasVegetarianTag && !hasNonVegTag) {
-                return true;
-              }
-
-              // Fallback: If no tag found, log warning and skip
-              if (!hasVegetarianTag && !hasNonVegTag) {
-                logger.info(`    ⚠️  No diet type tag found: ${metadata.mealName || 'Unknown'}`);
-              }
-              return false;
-            } else if (dietType === 'non-vegetarian') {
-              // ⭐ NON-VEG MODE: Accept BOTH vegetarian AND non-vegetarian meals
-              // Strategy: Fetch all meals, LLM will create 70% non-veg + 30% veg mix
-              // Reason: Non-veg people DO eat vegetarian meals, they're not exclusive
-
-              // Accept explicitly tagged non-veg meals
-              if (hasNonVegTag) {
-                logger.info(`    ✅ Non-veg meal accepted: "${metadata.mealName || 'Unknown'}"`);
-                return true;
-              }
-
-              // ⭐ ALSO accept vegetarian meals (for the 30% vegetarian component)
-              if (hasVegetarianTag) {
-                logger.info(
-                  `    ✅ Vegetarian meal accepted for non-veg plan: "${
-                    metadata.mealName || 'Unknown'
-                  }"`
-                );
-                return true;
-              }
-
-              // No tag found - ACCEPT IT (assume it can be adapted)
-              logger.info(
-                `    ✅ Accepting "${
-                  metadata.mealName || 'Unknown'
-                }" - no diet tag, assuming adaptable`
-              );
-              return true;
-            }
-
-            return true; // Allow all for other diet types
-          });
-
-          // ⭐ Enhanced logging for keto mode
-          if (preferences.isKeto) {
-            const ketoCompatibleCount = filteredResults.filter((doc) => {
-              const content = (doc.pageContent || doc.content || '').toLowerCase();
-              return !['rice', 'ragi', 'jowar', 'bajra', 'wheat', 'dal', 'potato'].some((k) =>
-                content.includes(k)
-              );
-            }).length;
-
-            logger.info(
-              `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals (${ketoCompatibleCount} keto-compatible)`
-            );
-          } else {
-            logger.info(
-              `  Query: "${query}" - Retrieved ${results.length}, filtered to ${filteredResults.length} ${dietType} meals`
-            );
-          }
-
-          retrievalResults.mealTemplates.push(...filteredResults);
-        }
+            retrievalResults.mealTemplates.push(...filteredResults);
+          } // End of templateQueries loop for each cuisine
+        } // End of cuisineQuotas loop
       }
 
       // ===== STAGE 1.5: Retrieve accompaniments and complete meal suggestions =====
@@ -2893,7 +2978,8 @@ class MealPlanChain {
     // Restrictions (STRONG ENFORCEMENT) - ONLY 4 SUPPORTED: dairy, gluten, nuts, eggs
     if (preferences.restrictions && preferences.restrictions.length > 0) {
       context += `\n🚨🚨🚨 ALLERGY & INTOLERANCE RESTRICTIONS (ABSOLUTE MUST - HIGHEST PRIORITY):\n`;
-      context += `The user has the following allergies/intolerances. You MUST completely ELIMINATE these ingredients:\n\n`;
+      context += `The user has the following allergies/intolerances. You MUST completely SUBSTITUTE these ingredients:\n`;
+      context += `⚠️ IMPORTANT: DO NOT reject meals with allergens - USE INTELLIGENT SUBSTITUTION instead!\n\n`;
 
       // Filter to only supported allergies
       const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
@@ -2906,35 +2992,42 @@ class MealPlanChain {
 
         // Add detailed guidance for each restriction type
         if (normalizedRestriction === 'dairy') {
-          context += `❌ DAIRY ALLERGY/INTOLERANCE - ELIMINATE ALL:\n`;
+          context += `❌ DAIRY ALLERGY/INTOLERANCE - SUBSTITUTE ALL:\n`;
           context += `   - NO milk, paneer, cheese, curd, yogurt, ghee, butter, cream, khoya, malai, condensed milk\n`;
           context += `   - REPLACE WITH: Coconut milk, almond milk, tofu, coconut yogurt, coconut oil\n`;
+          context += `   - EXAMPLES: "Paneer Curry" → "Tofu Curry", "Dal with Ghee" → "Dal with Coconut Oil"\n`;
           context += `   - CHECK RAG "DAIRY-FREE SUBSTITUTES" section for complete alternatives\n\n`;
         } else if (normalizedRestriction === 'gluten') {
-          context += `❌ GLUTEN INTOLERANCE/CELIAC - ELIMINATE ALL:\n`;
+          context += `❌ GLUTEN INTOLERANCE/CELIAC - SUBSTITUTE ALL:\n`;
           context += `   - NO wheat, barley, rye, maida, atta, semolina (sooji), regular roti, paratha, bread, pasta\n`;
           context += `   - REPLACE WITH: Besan (chickpea flour), ragi flour, jowar flour, bajra flour, rice flour, quinoa\n`;
+          context += `   - EXAMPLES: "Wheat Roti" → "Bajra Roti", "Urad Dal Paratha" → "Urad Dal Paratha (bajra flour)"\n`;
+          context += `   - NOTE: Mandua = Ragi (already gluten-free!), Kuttu/Rajgira = gluten-free\n`;
           context += `   - CHECK RAG "GLUTEN-FREE SUBSTITUTES" section for complete alternatives\n\n`;
         } else if (normalizedRestriction === 'nuts') {
-          context += `❌ NUT ALLERGY - ELIMINATE ALL TYPES OF NUTS:\n`;
+          context += `❌ NUT ALLERGY - SUBSTITUTE ALL TYPES OF NUTS:\n`;
           context += `   - NO almonds, cashews, walnuts, pistachios, peanuts, hazelnuts, pecans, macadamia, brazil nuts\n`;
           context += `   - NO almond flour, almond milk, cashew cream, nut butters, any nut-based products\n`;
           context += `   - REPLACE WITH: Seeds (sunflower, pumpkin, chia, flax, hemp, sesame), coconut products\n`;
+          context += `   - EXAMPLES: "Cashew Garnish" → "Sunflower Seed Garnish", "Almond Milk" → "Coconut Milk"\n`;
           context += `   - NOTE: Coconut is botanically a FRUIT (not a nut) and is SAFE for nut allergies\n`;
           context += `   - CHECK RAG "NUT-FREE SUBSTITUTES" section for complete alternatives\n\n`;
         } else if (normalizedRestriction === 'eggs') {
-          context += `❌ EGG ALLERGY - ELIMINATE ALL:\n`;
+          context += `❌ EGG ALLERGY - SUBSTITUTE ALL:\n`;
           context += `   - NO eggs in any form (whole eggs, egg yolk, egg white, egg powder)\n`;
-          context += `   - REPLACE WITH: Flax egg (1 tbsp ground flaxseed + 3 tbsp water), chia egg, mashed banana, tofu\n`;
+          context += `   - REPLACE WITH: For protein → Paneer/tofu/besan chilla, For binding → Flax egg/chia egg\n`;
+          context += `   - EXAMPLES: "Egg Bhurji" → "Paneer Bhurji", "Egg Omelette" → "Besan Chilla", "Egg Curry" → "Paneer Curry"\n`;
           context += `   - CHECK RAG "EGG-FREE SUBSTITUTES" section for complete alternatives\n\n`;
         }
       });
 
       context += `⚠️ CRITICAL REMINDERS:\n`;
       context += `   - These are allergies/intolerances - NOT preferences. NEVER include restricted ingredients.\n`;
+      context += `   - DO NOT SKIP meals with allergens - SUBSTITUTE intelligently to preserve variety!\n`;
       context += `   - Check EVERY ingredient in EVERY meal to ensure it doesn't contain allergens\n`;
       context += `   - Use the RAG "ALLERGY & INTOLERANCE SUBSTITUTES" section for detailed alternatives\n`;
       context += `   - If a traditional dish contains allergens, YOU MUST adapt it using substitutes\n`;
+      context += `   - UPDATE meal names to reflect substituted ingredients (e.g., "Bajra Roti", not just "Roti")\n`;
       context += `   - For NUT ALLERGY: Eliminate ALL types of nuts (we don't specify which nuts - ALL are forbidden)\n`;
       context += `   - Allergies take ABSOLUTE PRIORITY over all other requirements (including keto, taste, cost)\n\n`;
     }
@@ -2994,6 +3087,115 @@ class MealPlanChain {
     let prompt = `🚨🚨🚨 ============================================ 🚨🚨🚨\n`;
     prompt += `🚨 CRITICAL CONSTRAINTS - READ THESE FIRST (ABSOLUTE PRIORITY) 🚨\n`;
     prompt += `🚨🚨🚨 ============================================ 🚨🚨🚨\n\n`;
+
+    // 0. ALLERGEN INTELLIGENT SUBSTITUTION (HIGHEST PRIORITY - MEDICAL SAFETY)
+    if (preferences.restrictions && preferences.restrictions.length > 0) {
+      const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
+      const validRestrictions = preferences.restrictions.filter((r) =>
+        supportedAllergies.includes(r.toLowerCase().trim())
+      );
+
+      if (validRestrictions.length > 0) {
+        prompt += `0️⃣ 🏥 ALLERGEN INTELLIGENT SUBSTITUTION (ABSOLUTE PRIORITY - MEDICAL SAFETY):\n`;
+        prompt += `   🎯 STRATEGY: DO NOT REJECT allergen-containing meals - SUBSTITUTE intelligently!\n`;
+        prompt += `   \n`;
+        prompt += `   ⚠️ USER HAS ALLERGIES: ${validRestrictions
+          .map((r) => r.toUpperCase())
+          .join(', ')}\n`;
+        prompt += `   ⚠️ Many meal templates contain these allergens - DO NOT SKIP THEM!\n`;
+        prompt += `   ✅ INSTEAD: Use intelligent substitution to preserve meal variety\n`;
+        prompt += `   \n`;
+
+        validRestrictions.forEach((r) => {
+          const normalizedRestriction = r.toLowerCase().trim();
+
+          if (normalizedRestriction === 'gluten') {
+            prompt += `   📌 GLUTEN SUBSTITUTION RULES:\n`;
+            prompt += `      ❌ Allergen ingredients: wheat flour (atta/maida), roti, paratha, chapati, bread, naan\n`;
+            prompt += `      ✅ Substitute with: Ragi flour, bajra flour, jowar flour, amaranth flour, buckwheat flour,\n`;
+            prompt += `         chickpea flour (besan), rice flour, quinoa flour, millet flour\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `         "Wheat Roti" → "Bajra Roti" (pearl millet flatbread)\n`;
+            prompt += `         "Whole Wheat Paratha" → "Ragi Paratha" (finger millet flatbread)\n`;
+            prompt += `         "Dal Paratha with wheat" → "Dal Paratha with jowar flour"\n`;
+            prompt += `         "Urad Dal Paratha" → "Urad Dal Paratha (with bajra flour)"\n`;
+            prompt += `         "Mandua Roti" → KEEP AS IS (mandua = ragi, already gluten-free!)\n`;
+            prompt += `         "Bread" → "Millet bread" or "Rice bread"\n`;
+            prompt += `      \n`;
+            prompt += `      🏷️ Update meal name: Always reflect substituted flour in name\n`;
+            prompt += `         ✅ RIGHT: "Bajra Roti with Ghee (Uttarakhand)"\n`;
+            prompt += `         ❌ WRONG: "Roti with Ghee (Uttarakhand)" - which flour?\n\n`;
+          }
+
+          if (normalizedRestriction === 'eggs') {
+            prompt += `   📌 EGG SUBSTITUTION RULES:\n`;
+            prompt += `      ❌ Allergen ingredients: eggs (whole/yolk/white), omelette, bhurji, scrambled eggs\n`;
+            prompt += `      ✅ Substitute with:\n`;
+            prompt += `         - For protein dishes: Paneer, tofu, chickpea scramble (besan chilla)\n`;
+            prompt += `         - For binding (baking): Flax egg (1 tbsp ground flax + 3 tbsp water), chia egg\n`;
+            prompt += `         - For texture: Mashed banana, applesauce, silken tofu\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `         "Egg Bhurji Pahadi Style" → "Paneer Bhurji Pahadi Style"\n`;
+            prompt += `         "Egg Omelette with Mandua Roti" → "Besan Chilla with Mandua Roti"\n`;
+            prompt += `         "Egg Curry" → "Paneer Curry" or "Tofu Curry"\n`;
+            prompt += `         "Scrambled Eggs" → "Paneer Scramble" or "Tofu Scramble"\n`;
+            prompt += `      \n`;
+            prompt += `      🏷️ Update meal name: Replace "Egg" with substituted protein\n`;
+            prompt += `         ✅ RIGHT: "Paneer Bhurji Pahadi Style (Uttarakhand)"\n`;
+            prompt += `         ❌ WRONG: "Egg Bhurji Pahadi Style (Uttarakhand)" - user is allergic!\n\n`;
+          }
+
+          if (normalizedRestriction === 'dairy') {
+            prompt += `   📌 DAIRY SUBSTITUTION RULES:\n`;
+            prompt += `      ❌ Allergen ingredients: milk, paneer, cheese, yogurt, ghee, butter, cream, khoya, malai\n`;
+            prompt += `      ✅ Substitute with:\n`;
+            prompt += `         - Milk → Coconut milk, almond milk, soy milk, cashew milk, oat milk\n`;
+            prompt += `         - Paneer → Tofu, tempeh, cashew cheese\n`;
+            prompt += `         - Yogurt → Coconut yogurt, almond yogurt, soy yogurt\n`;
+            prompt += `         - Ghee/butter → Coconut oil, olive oil, sesame oil, vegan butter\n`;
+            prompt += `         - Cream → Coconut cream, cashew cream\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `         "Paneer Butter Masala" → "Tofu Butter Masala (with coconut oil)"\n`;
+            prompt += `         "Palak Paneer" → "Palak Tofu"\n`;
+            prompt += `         "Dal Tadka with Ghee" → "Dal Tadka with Coconut Oil"\n`;
+            prompt += `         "Singal with Ghee" → "Singal with Sesame Oil"\n`;
+            prompt += `      \n`;
+            prompt += `      🏷️ Update meal name: Reflect dairy-free protein/fat\n`;
+            prompt += `         ✅ RIGHT: "Palak Tofu (Uttarakhand)"\n`;
+            prompt += `         ❌ WRONG: "Palak Paneer (Uttarakhand)" - user is allergic!\n\n`;
+          }
+
+          if (normalizedRestriction === 'nuts') {
+            prompt += `   📌 NUT SUBSTITUTION RULES:\n`;
+            prompt += `      ❌ Allergen ingredients: almonds, cashews, walnuts, pistachios, peanuts, hazelnuts, pecans\n`;
+            prompt += `      ✅ Substitute with:\n`;
+            prompt += `         - For crunch: Seeds (sunflower, pumpkin, chia, flax, hemp, sesame)\n`;
+            prompt += `         - For fat: Coconut products, tahini (sesame paste), sunflower butter\n`;
+            prompt += `         - For protein: Extra legumes, tofu, paneer\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `         "Cashew Curry" → "Coconut Curry"\n`;
+            prompt += `         "Almond-crusted dish" → "Sesame-crusted dish"\n`;
+            prompt += `         "Peanut Chutney" → "Coconut Chutney"\n`;
+            prompt += `         "Garnish with cashews" → "Garnish with sunflower seeds"\n`;
+            prompt += `      \n`;
+            prompt += `      ⚠️ NOTE: Coconut is a FRUIT (not a nut) - safe for nut allergies!\n`;
+            prompt += `      🏷️ Update meal name if nut is primary ingredient\n\n`;
+          }
+        });
+
+        prompt += `   🎯 REMEMBER:\n`;
+        prompt += `      1. NEVER reject a meal just because it has allergens\n`;
+        prompt += `      2. ALWAYS make intelligent substitutions using the rules above\n`;
+        prompt += `      3. UPDATE the meal name to reflect substituted ingredients\n`;
+        prompt += `      4. PRESERVE regional authenticity (keep state labels, cooking methods)\n`;
+        prompt += `      5. CHECK "ALLERGEN SUBSTITUTES" section in RAG context for more alternatives\n`;
+        prompt += `      6. This preserves meal variety while ensuring medical safety\n\n`;
+      }
+    }
 
     // 1. FORBIDDEN DISHES (anti-hallucination - highest priority)
     if (preferences.cuisines && preferences.cuisines.length > 0) {
@@ -3216,6 +3418,73 @@ class MealPlanChain {
       prompt += `   🚨 CRITICAL: Jain diet is VEGETARIAN + stricter rules. NO meat/fish/seafood EVER!\n\n`;
     }
 
+    // 7.5 ALLERGEN-SPECIFIC NAME ADAPTATION (applies to ALL diet types)
+    if (preferences.restrictions && preferences.restrictions.length > 0) {
+      const supportedAllergies = ['dairy', 'gluten', 'nuts', 'eggs'];
+      const validRestrictions = preferences.restrictions.filter((r) =>
+        supportedAllergies.includes(r.toLowerCase().trim())
+      );
+
+      if (validRestrictions.length > 0) {
+        prompt += `7.5️⃣ 🏷️ ALLERGEN SUBSTITUTION NAME ADAPTATION (MANDATORY):\n`;
+        prompt += `   ✅ When substituting allergens, UPDATE meal name to reflect substituted ingredients\n`;
+        prompt += `   ⚠️ User has allergies: ${validRestrictions
+          .map((r) => r.toUpperCase())
+          .join(', ')}\n`;
+        prompt += `   \n`;
+
+        validRestrictions.forEach((r) => {
+          const normalizedRestriction = r.toLowerCase().trim();
+
+          if (normalizedRestriction === 'gluten') {
+            prompt += `   📌 GLUTEN-FREE NAME EXAMPLES:\n`;
+            prompt += `      ❌ WRONG: "Roti with Ghee" - which flour?\n`;
+            prompt += `      ✅ RIGHT: "Bajra Roti with Ghee" - specific gluten-free flour\n`;
+            prompt += `      ❌ WRONG: "Urad Dal Paratha" - assumes wheat\n`;
+            prompt += `      ✅ RIGHT: "Urad Dal Paratha (Ragi Flour)" or "Urad Dal Ragi Paratha"\n`;
+            prompt += `      ❌ WRONG: "Mandua Roti" if already gluten-free\n`;
+            prompt += `      ✅ RIGHT: KEEP "Mandua Roti" (mandua = ragi, already gluten-free!)\n`;
+            prompt += `   \n`;
+          }
+
+          if (normalizedRestriction === 'eggs') {
+            prompt += `   📌 EGG-FREE NAME EXAMPLES:\n`;
+            prompt += `      ❌ WRONG: "Egg Bhurji (with paneer)" - still says "Egg"\n`;
+            prompt += `      ✅ RIGHT: "Paneer Bhurji" - reflects actual protein\n`;
+            prompt += `      ❌ WRONG: "Egg Curry (Egg-Free)" - contradictory\n`;
+            prompt += `      ✅ RIGHT: "Paneer Curry" or "Tofu Curry"\n`;
+            prompt += `      ❌ WRONG: "Omelette with Besan" - omelette requires eggs\n`;
+            prompt += `      ✅ RIGHT: "Besan Chilla" (traditional egg-free alternative)\n`;
+            prompt += `   \n`;
+          }
+
+          if (normalizedRestriction === 'dairy') {
+            prompt += `   📌 DAIRY-FREE NAME EXAMPLES:\n`;
+            prompt += `      ❌ WRONG: "Paneer Curry (dairy-free)" - contradictory\n`;
+            prompt += `      ✅ RIGHT: "Tofu Curry" - reflects actual protein\n`;
+            prompt += `      ❌ WRONG: "Dal Tadka with Ghee" - ghee is dairy\n`;
+            prompt += `      ✅ RIGHT: "Dal Tadka with Coconut Oil"\n`;
+            prompt += `      ❌ WRONG: "Palak Paneer" for dairy allergy\n`;
+            prompt += `      ✅ RIGHT: "Palak Tofu"\n`;
+            prompt += `   \n`;
+          }
+
+          if (normalizedRestriction === 'nuts') {
+            prompt += `   📌 NUT-FREE NAME EXAMPLES:\n`;
+            prompt += `      ❌ WRONG: "Cashew Curry (nut-free)" - contradictory\n`;
+            prompt += `      ✅ RIGHT: "Coconut Curry" - reflects actual ingredient\n`;
+            prompt += `      ❌ WRONG: "Garnished with Almonds" for nut allergy\n`;
+            prompt += `      ✅ RIGHT: "Garnished with Sunflower Seeds"\n`;
+            prompt += `   \n`;
+          }
+        });
+
+        prompt += `   🎯 RULE: Meal names must accurately reflect ingredients after allergen substitution\n`;
+        prompt += `   🎯 AVOID: Generic names that don't specify the substituted ingredient\n`;
+        prompt += `   🎯 PREFER: Specific names that clearly show what flour/protein/fat was used\n\n`;
+      }
+    }
+
     // 8. ACCOMPANIMENTS MANDATE
     prompt += `8️⃣ 🍛 ACCOMPANIMENTS MANDATE (COMPLETE MEALS ONLY):\n`;
     prompt += `   ✅ ALWAYS include chutneys, pickles, or sides with meals\n`;
@@ -3244,19 +3513,68 @@ class MealPlanChain {
 
     // Special instructions for multiple cuisines
     if (preferences.cuisines && preferences.cuisines.length > 1) {
-      prompt += `🌟 MULTI-CUISINE MEAL PLAN REQUIREMENTS:\n`;
-      prompt += `The user has selected ${
-        preferences.cuisines.length
-      } cuisines: ${preferences.cuisines.join(', ')}.\n`;
-      prompt += `\nIMPORTANT INSTRUCTIONS:\n`;
-      prompt += `1. Create a BALANCED MIX of all ${preferences.cuisines.length} selected cuisines\n`;
-      prompt += `2. Each day should feature meals from DIFFERENT cuisines for variety\n`;
-      prompt += `3. Example for 3 meals/day with 2 cuisines:\n`;
-      prompt += `   - Day 1: Breakfast (Cuisine A), Lunch (Cuisine B), Dinner (Cuisine A)\n`;
-      prompt += `   - Day 2: Breakfast (Cuisine B), Lunch (Cuisine A), Dinner (Cuisine B)\n`;
-      prompt += `4. Ensure ALL cuisines are represented fairly across the ${preferences.duration}-day plan\n`;
-      prompt += `5. Maintain authenticity of each cuisine's traditional preparations\n`;
-      prompt += `6. When mixing cuisines, ensure complementary flavors and nutritional balance\n\n`;
+      const cuisineCount = preferences.cuisines.length;
+      const totalDays = parseInt(preferences.duration) || 7;
+      const mealsPerDay = preferences.mealsPerDay || 3;
+      const totalMeals = totalDays * mealsPerDay;
+
+      // Calculate target meals per cuisine (as even as possible)
+      const baseMealsPerCuisine = Math.floor(totalMeals / cuisineCount);
+      const remainder = totalMeals % cuisineCount;
+
+      prompt += `🌟 MULTI-CUISINE BALANCED DISTRIBUTION (CRITICAL REQUIREMENT):\n`;
+      prompt += `The user has selected ${cuisineCount} cuisines: ${preferences.cuisines.join(
+        ', '
+      )}.\n\n`;
+
+      prompt += `📊 MANDATORY DISTRIBUTION TARGET:\n`;
+      prompt += `   Total meals in plan: ${totalMeals} meals (${totalDays} days × ${mealsPerDay} meals/day)\n`;
+      prompt += `   Required distribution:\n`;
+
+      preferences.cuisines.forEach((cuisine, index) => {
+        const targetMeals = index < remainder ? baseMealsPerCuisine + 1 : baseMealsPerCuisine;
+        const percentage = Math.round((targetMeals / totalMeals) * 100);
+        prompt += `      • ${cuisine}: ${targetMeals} meals (~${percentage}%)\n`;
+      });
+
+      prompt += `\n🎯 DISTRIBUTION STRATEGY:\n`;
+      prompt += `1. ROTATE cuisines across days - don't use same cuisine for all meals in one day\n`;
+      prompt += `2. BALANCE each day: If 3 meals/day with 2 cuisines → alternate (A, B, A) then (B, A, B)\n`;
+      prompt += `3. ENSURE every cuisine appears in breakfast, lunch, and dinner categories\n`;
+      prompt += `4. TARGET equal distribution (±1 meal variance is acceptable)\n`;
+      prompt += `5. PRIORITIZE variety: Don't cluster one cuisine at the beginning and another at the end\n\n`;
+
+      prompt += `📋 DISTRIBUTION EXAMPLES:\n`;
+
+      if (cuisineCount === 2) {
+        prompt += `   For 2 cuisines (${preferences.cuisines[0]}, ${preferences.cuisines[1]}) over ${totalDays} days:\n`;
+        prompt += `      Day 1: Breakfast (${preferences.cuisines[0]}), Lunch (${preferences.cuisines[1]}), Dinner (${preferences.cuisines[0]})\n`;
+        prompt += `      Day 2: Breakfast (${preferences.cuisines[1]}), Lunch (${preferences.cuisines[0]}), Dinner (${preferences.cuisines[1]})\n`;
+        prompt += `      Day 3: Breakfast (${preferences.cuisines[0]}), Lunch (${preferences.cuisines[1]}), Dinner (${preferences.cuisines[0]})\n`;
+        prompt += `      → Result: Each cuisine appears ~${Math.round(totalMeals / 2)} times\n\n`;
+      } else if (cuisineCount === 3) {
+        prompt += `   For 3 cuisines over ${totalDays} days, rotate through all three:\n`;
+        prompt += `      Day 1: Breakfast (A), Lunch (B), Dinner (C)\n`;
+        prompt += `      Day 2: Breakfast (B), Lunch (C), Dinner (A)\n`;
+        prompt += `      Day 3: Breakfast (C), Lunch (A), Dinner (B)\n`;
+        prompt += `      → Each cuisine gets ${baseMealsPerCuisine}-${
+          baseMealsPerCuisine + 1
+        } meals total\n\n`;
+      } else if (cuisineCount === 4) {
+        prompt += `   For 4 cuisines, ensure each appears in different meal times:\n`;
+        prompt += `      Day 1: Breakfast (A), Lunch (B), Dinner (C)\n`;
+        prompt += `      Day 2: Breakfast (D), Lunch (A), Dinner (B)\n`;
+        prompt += `      Day 3: Breakfast (C), Lunch (D), Dinner (A)\n`;
+        prompt += `      → Rotate to ensure fair distribution\n\n`;
+      } else if (cuisineCount === 5) {
+        prompt += `   For 5 cuisines (MAXIMUM), rotate strategically:\n`;
+        prompt += `      Distribute across ${totalDays} days ensuring each cuisine appears ${baseMealsPerCuisine} times\n\n`;
+      }
+
+      prompt += `⚠️ CRITICAL VALIDATION:\n`;
+      prompt += `   After generating the plan, COUNT how many times each cuisine appears\n`;
+      prompt += `   If any cuisine appears significantly more/less than target, ADJUST the plan\n`;
+      prompt += `   Maximum variance allowed: ±2 meals from target\n\n`;
     }
 
     // Main task
@@ -4371,53 +4689,364 @@ class MealPlanChain {
   }
 
   /**
-   * Generate meal plan in chunks for longer durations
+   * ⚡ OPTIMIZED: Generate meal plan in chunks with SINGLE retrieval
+   *
+   * OLD APPROACH (Inefficient):
+   * - 7 days → 3 retrieval calls (70 templates × 3 = 210 retrieved)
+   * - Each chunk: Retrieve 70 templates → Generate 3 days → Repeat
+   * - Problem: Redundant retrieval, slower, higher costs
+   *
+   * NEW APPROACH (Optimized):
+   * - 7 days → 1 retrieval call (70 templates total)
+   * - Retrieve 70 templates ONCE → Batch into 3 groups → Generate each chunk
+   * - Benefits: 66% fewer API calls, 3x faster, better template diversity
    */
   async generateInChunks(preferences) {
-    logger.info('Generating in 3-day chunks with RAG for reliability');
+    logger.info('⚡ Optimized batch generation: Single retrieval + batch processing');
 
     const duration = parseInt(preferences.duration) || 7;
-    const allDays = [];
+    const healthContext = preferences.healthContext || {};
     const chunkSize = 3;
-    const previousMealNames = new Set(); // ⭐ Track meal names to avoid repetition
 
-    for (let startDay = 1; startDay <= duration; startDay += chunkSize) {
+    // ===== STEP 1: PERFORM RAG RETRIEVAL ONCE =====
+    logger.info('🔍 Performing RAG retrieval ONCE for all chunks', { duration });
+    const ragTimer = performanceMetrics.startTimer('rag_retrieval');
+    const retrievalResults = await this.performMultiStageRetrieval(preferences, healthContext);
+    const ragMetrics = performanceMetrics.endTimer(ragTimer);
+
+    const mealTemplates = retrievalResults.mealTemplates || [];
+    const symptomGuidanceDocs = retrievalResults.symptomGuidance || [];
+    const labGuidanceDocs = retrievalResults.labGuidance || [];
+    const ingredientSubstituteDocs = retrievalResults.ingredientSubstitutes || [];
+
+    logger.info('✅ RAG retrieval complete (shared across all chunks)', {
+      mealTemplates: mealTemplates.length,
+      symptomGuidance: symptomGuidanceDocs.length,
+      labGuidance: labGuidanceDocs.length,
+      ingredientSubstitutes: ingredientSubstituteDocs.length,
+      retrievalTimeMs: ragMetrics.elapsedMs,
+    });
+
+    if (mealTemplates.length === 0) {
+      logger.warn('⚠️ No meal templates retrieved, falling back');
+      const fallbackDays = [];
+      for (let i = 1; i <= duration; i++) {
+        fallbackDays.push(this.getFallbackDay(i, preferences));
+      }
+      return { days: fallbackDays };
+    }
+
+    // ===== STEP 2: SPLIT TEMPLATES INTO BATCHES =====
+    // Group templates by meal type for better distribution
+    const templatesByType = {
+      breakfast: mealTemplates.filter(
+        (doc) =>
+          this.inferMealType({
+            metadata: doc.metadata,
+            pageContent: doc.pageContent || doc.content,
+          }) === 'breakfast'
+      ),
+      lunch: mealTemplates.filter(
+        (doc) =>
+          this.inferMealType({
+            metadata: doc.metadata,
+            pageContent: doc.pageContent || doc.content,
+          }) === 'lunch'
+      ),
+      dinner: mealTemplates.filter(
+        (doc) =>
+          this.inferMealType({
+            metadata: doc.metadata,
+            pageContent: doc.pageContent || doc.content,
+          }) === 'dinner'
+      ),
+      snack: mealTemplates.filter(
+        (doc) =>
+          this.inferMealType({
+            metadata: doc.metadata,
+            pageContent: doc.pageContent || doc.content,
+          }) === 'snack'
+      ),
+      unknown: mealTemplates.filter(
+        (doc) =>
+          this.inferMealType({
+            metadata: doc.metadata,
+            pageContent: doc.pageContent || doc.content,
+          }) === 'unknown'
+      ),
+    };
+
+    logger.info('📊 Templates by meal type:', {
+      breakfast: templatesByType.breakfast.length,
+      lunch: templatesByType.lunch.length,
+      dinner: templatesByType.dinner.length,
+      snack: templatesByType.snack.length,
+      unknown: templatesByType.unknown.length,
+    });
+
+    // Calculate number of chunks needed
+    const numChunks = Math.ceil(duration / chunkSize);
+
+    // Create batches with balanced meal type distribution
+    const templateBatches = [];
+    for (let i = 0; i < numChunks; i++) {
+      const batch = [];
+
+      // Distribute each meal type across batches
+      ['breakfast', 'lunch', 'dinner', 'snack', 'unknown'].forEach((type) => {
+        const templates = templatesByType[type];
+        const batchSize = Math.ceil(templates.length / numChunks);
+        const start = i * batchSize;
+        const end = Math.min(start + batchSize, templates.length);
+        batch.push(...templates.slice(start, end));
+      });
+
+      templateBatches.push(batch);
+      logger.info(`📦 Batch ${i + 1}: ${batch.length} templates`);
+    }
+
+    // ===== STEP 3: GENERATE CHUNKS WITH PRE-RETRIEVED TEMPLATES =====
+    const allDays = [];
+    const previousMealNames = new Set();
+
+    for (let chunkIndex = 0; chunkIndex < numChunks; chunkIndex++) {
+      const startDay = chunkIndex * chunkSize + 1;
       const endDay = Math.min(startDay + chunkSize - 1, duration);
       const chunkDuration = endDay - startDay + 1;
 
+      logger.info(
+        `\n🔄 Generating chunk ${chunkIndex + 1}/${numChunks} (Days ${startDay}-${endDay})`
+      );
+
       try {
+        // Use pre-retrieved templates for this batch
+        const batchTemplates = templateBatches[chunkIndex] || [];
+
+        logger.info(`  Using ${batchTemplates.length} templates from batch ${chunkIndex + 1}`);
+
         const chunkPrefs = {
           ...preferences,
           duration: chunkDuration,
           startDay,
-          excludeMeals: Array.from(previousMealNames), // ⭐ Pass previously used meals
+          excludeMeals: Array.from(previousMealNames),
+          // ⭐ Pass pre-retrieved context instead of re-retrieving
+          preRetrievedContext: {
+            mealTemplates: batchTemplates,
+            symptomGuidance: symptomGuidanceDocs,
+            labGuidance: labGuidanceDocs,
+            ingredientSubstitutes: ingredientSubstituteDocs,
+          },
         };
 
-        const chunk = await this.generateWithRAG(chunkPrefs);
+        const chunk = await this.generateWithPreRetrievedContext(chunkPrefs);
 
         if (chunk && chunk.days) {
           chunk.days.forEach((day, idx) => {
             day.dayNumber = startDay + idx;
-            // ⭐ Track all meal names from this chunk
+            // Track meal names to avoid repetition
             day.meals?.forEach((meal) => {
               if (meal.name) previousMealNames.add(meal.name);
             });
             allDays.push(day);
           });
+
+          logger.info(`✅ Chunk ${chunkIndex + 1} generated successfully`);
         } else {
+          logger.warn(`⚠️ Chunk ${chunkIndex + 1} failed, using fallback`);
           for (let i = startDay; i <= endDay; i++) {
             allDays.push(this.getFallbackDay(i, preferences));
           }
         }
       } catch (e) {
-        logger.warn(`RAG chunk ${startDay}-${endDay} failed, using fallback`);
+        logger.error(`❌ Chunk ${chunkIndex + 1} error: ${e.message}`, { error: e.stack });
         for (let i = startDay; i <= endDay; i++) {
           allDays.push(this.getFallbackDay(i, preferences));
         }
       }
     }
 
+    logger.info(`\n✅ All chunks generated. Total days: ${allDays.length}`);
     return { days: allDays };
+  }
+
+  /**
+   * 🆕 Generate meal plan with pre-retrieved RAG context (for batch processing)
+   *
+   * This method skips retrieval and uses provided templates directly.
+   * Used by generateInChunks() to avoid redundant retrieval calls.
+   */
+  async generateWithPreRetrievedContext(preferences) {
+    const duration = parseInt(preferences.duration) || 3;
+    const mealsPerDay = parseInt(preferences.mealsPerDay) || 3;
+    const restrictions = preferences.restrictions || [];
+    const cuisines = preferences.cuisines || [];
+    const healthContext = preferences.healthContext || {};
+    const preRetrievedContext = preferences.preRetrievedContext || {};
+
+    logger.info('🔄 Generating with pre-retrieved context (no retrieval)', {
+      duration,
+      mealsPerDay,
+      templatesProvided: preRetrievedContext.mealTemplates?.length || 0,
+    });
+
+    // Extract pre-retrieved results
+    const mealTemplates = preRetrievedContext.mealTemplates || [];
+    const symptomGuidanceDocs = preRetrievedContext.symptomGuidance || [];
+    const labGuidanceDocs = preRetrievedContext.labGuidance || [];
+    const ingredientSubstituteDocs = preRetrievedContext.ingredientSubstitutes || [];
+
+    if (mealTemplates.length === 0) {
+      logger.warn('⚠️ No templates in pre-retrieved context, falling back');
+      return null;
+    }
+
+    // ===== BUILD CONTEXT (Same as generateWithRAG, but skip retrieval) =====
+    const mealsByType = this.formatMealsByType(mealTemplates);
+
+    // Get nutrition guidelines (still need to retrieve these as they're not meal-specific)
+    const nutritionQuery = this.buildNutritionQuery(healthContext);
+    const nutritionGuidelines = await retriever.retrieve(nutritionQuery, { topK: 5 });
+    const nutritionContext = retriever.formatContextFromResults(nutritionGuidelines);
+
+    // Build enhanced context (same logic as generateWithRAG)
+    let enhancedContext = '';
+
+    if (mealTemplates.length > 0) {
+      enhancedContext += '📋 MEAL TEMPLATES FROM KNOWLEDGE BASE:\n';
+
+      if (preferences.isKeto) {
+        const mealsNeedingAdaptation = mealTemplates.filter(
+          (doc) => doc.metadata?.needsKetoAdaptation === true
+        );
+
+        enhancedContext += '🚨 CRITICAL: MEAL TEMPLATE USAGE RULES:\n';
+        enhancedContext += `REQUESTED CUISINES: ${cuisines.join(', ')}\n`;
+        enhancedContext += 'YOU MUST:\n';
+        enhancedContext += `  1. ✅ SELECT MEALS ONLY FROM THE "${mealTemplates.length} MEAL TEMPLATES" SECTION BELOW\n`;
+        enhancedContext += `  2. ✅ EVERY MEAL MUST BE FROM: ${cuisines.join(' OR ')}\n`;
+        enhancedContext += '  3. ❌ DO NOT create meals from scratch\n';
+        enhancedContext +=
+          '  4. ❌ DO NOT use meal examples from the INGREDIENT SUBSTITUTION section as full meals\n';
+        enhancedContext +=
+          '  5. ❌ DO NOT use generic Indian meals (dosa, idli, upma) unless they appear in the MEAL TEMPLATES section with the correct state label\n\n';
+
+        if (mealsNeedingAdaptation.length > 0) {
+          enhancedContext += '⚡ KETO ADAPTATION INSTRUCTIONS:\n';
+          enhancedContext += `${mealsNeedingAdaptation.length} meals below contain high-carb ingredients (rice, dal, wheat, potato).\n`;
+          enhancedContext += 'ADAPT them for keto by:\n';
+          enhancedContext +=
+            '  1. REPLACE rice → cauliflower rice (pulse raw cauliflower in food processor)\n';
+          enhancedContext +=
+            '  2. REPLACE dal/lentils → high-fat protein (paneer, chicken, fish, eggs)\n';
+          enhancedContext += '  3. REPLACE roto/bread → almond flour roti or coconut flour bread\n';
+          enhancedContext += '  4. REPLACE potato → cauliflower, zucchini, turnip\n';
+          enhancedContext += '  5. ADD extra fat (2-3 tbsp ghee, coconut oil, butter per meal)\n';
+          enhancedContext +=
+            '  6. KEEP the cooking method, spices, and authentic regional flavors\n';
+          enhancedContext += '  7. VERIFY final meal has <20g net carbs, >70% fat\n';
+          enhancedContext +=
+            '  8. PRESERVE the state/regional origin (Jharkhand → still Jharkhandi, Sikkim → still Sikkimese)\n\n';
+        }
+      } else {
+        enhancedContext += '🚨 CRITICAL: MEAL TEMPLATE USAGE RULES:\n';
+        enhancedContext += `REQUESTED CUISINES: ${cuisines.join(', ')}\n`;
+        enhancedContext += 'YOU MUST:\n';
+        enhancedContext += `  1. ✅ SELECT MEALS ONLY FROM THE "${mealTemplates.length} MEAL TEMPLATES" SECTION BELOW\n`;
+        enhancedContext += `  2. ✅ EVERY MEAL MUST BE FROM: ${cuisines.join(' OR ')}\n`;
+        enhancedContext += '  3. ❌ DO NOT create meals from scratch\n';
+        enhancedContext += '  4. ❌ DO NOT use meals from other regional cuisines\n\n';
+      }
+
+      enhancedContext +=
+        '(Adapt the templates below to user preferences while maintaining regional authenticity)\n\n';
+
+      if (mealsByType.breakfast) {
+        enhancedContext += '🌅 BREAKFAST TEMPLATES (use for breakfast/morning meals only):\n';
+        enhancedContext += mealsByType.breakfast + '\n\n';
+      }
+
+      if (mealsByType.lunch) {
+        enhancedContext += '🍛 LUNCH/DINNER TEMPLATES (use for lunch/dinner meals only):\n';
+        enhancedContext += mealsByType.lunch + '\n\n';
+      }
+
+      if (mealsByType.snack) {
+        enhancedContext += '🥤 SNACK TEMPLATES (use for snack meals only):\n';
+        enhancedContext += mealsByType.snack + '\n\n';
+      }
+
+      if (mealsByType.unknown) {
+        enhancedContext += '🍽️ OTHER MEAL TEMPLATES (flexible usage):\n';
+        enhancedContext += mealsByType.unknown + '\n\n';
+      }
+    }
+
+    if (nutritionContext) {
+      enhancedContext += '📚 PCOS NUTRITION GUIDELINES:\n';
+      enhancedContext += nutritionContext + '\n\n';
+    }
+
+    if (symptomGuidanceDocs.length > 0) {
+      const symptomContext = symptomGuidanceDocs
+        .map((doc) => doc.pageContent || doc.content)
+        .join('\n\n');
+
+      enhancedContext += '🩺 SYMPTOM-SPECIFIC RECOMMENDATIONS:\n';
+      enhancedContext += "(Prioritize these ingredients for the user's primary symptoms)\n\n";
+      enhancedContext += symptomContext + '\n\n';
+    }
+
+    if (labGuidanceDocs.length > 0) {
+      const labContext = labGuidanceDocs.map((doc) => doc.pageContent || doc.content).join('\n\n');
+
+      enhancedContext += '🧪 LAB-BASED NUTRITION GUIDANCE:\n';
+      enhancedContext += "(Optimize nutrition for the user's specific lab markers)\n\n";
+      enhancedContext += labContext + '\n\n';
+    }
+
+    if (ingredientSubstituteDocs.length > 0) {
+      const substituteContext = ingredientSubstituteDocs
+        .map((doc) => doc.pageContent || doc.content)
+        .join('\n\n');
+
+      enhancedContext += '🔄 INGREDIENT SUBSTITUTION DATABASE:\n';
+      enhancedContext +=
+        '(Use ONLY for substitution guidance - DO NOT use meal examples as full meals)\n\n';
+      enhancedContext += substituteContext + '\n\n';
+    }
+
+    // ===== GENERATE MEAL PLAN WITH LLM =====
+    const prompt = this.buildMealPlanPrompt(preferences, healthContext, enhancedContext);
+
+    try {
+      const llmTimer = performanceMetrics.startTimer('llm_generation');
+      const response = await this.structuredLLM.invoke(prompt);
+      const llmMetrics = performanceMetrics.endTimer(llmTimer);
+
+      logger.info('LLM response received', {
+        responseLength: response.content.length,
+        llmTimeMs: llmMetrics.elapsedMs,
+      });
+
+      const parsed = this.parseJSON(response.content);
+      const expectedDays = duration;
+      const expectedMeals = mealsPerDay;
+
+      if (!this.validateStructure(parsed, expectedDays, expectedMeals)) {
+        logger.warn('Attempting structure fix...');
+        const fixed = this.fixStructure(parsed, expectedDays, expectedMeals);
+        if (fixed) {
+          return fixed;
+        }
+        logger.error('Structure fix failed');
+        return null;
+      }
+
+      return parsed;
+    } catch (error) {
+      logger.error('LLM generation failed', { error: error.message });
+      return null;
+    }
   }
 
   /**
