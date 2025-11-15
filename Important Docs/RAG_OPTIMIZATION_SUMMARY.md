@@ -631,7 +631,6 @@ if (hasAllergen) {
 ### Long-term (Goals)
 - ⏳ Machine learning personalization
 - ⏳ Seasonal menu optimization
-- ⏳ Multi-language support
 - ⏳ Mobile app integration
 
 ---

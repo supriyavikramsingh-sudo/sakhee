@@ -1254,7 +1254,6 @@ For questions, issues, or suggestions:
 - [x] Medical report analysis (OCR + parsing) with meal plan integration
 - [x] Progress tracking dashboard
 - [x] Firebase authentication
-- [x] Multi-language support (EN, HI)
 - [x] Community insights (Reddit integration)
 
 ### Planned 🔜
@@ -1271,7 +1270,6 @@ For questions, issues, or suggestions:
 - [ ] Medication reminders
 - [ ] Doctor appointment scheduling
 - [ ] Community forum
-- [ ] More languages (Tamil, Telugu, Bengali)
 - [ ] Integration with health tracking devices (Fitbit, Apple Health)
 - [ ] Advanced RAG with medical knowledge base
 - [ ] Symptom prediction models
