@@ -33,11 +33,6 @@ export const pricingData: PricingCardData[] = [
         description: 'Understand your hormones in simple language',
       },
       {
-        text: '2 languages (English, Hindi)',
-        available: true,
-        description: 'Communicate in your preferred language',
-      },
-      {
         text: '5 meal photo scans/month',
         available: false,
         comingSoon: true,

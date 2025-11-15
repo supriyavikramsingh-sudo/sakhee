@@ -541,21 +541,6 @@ const PreferencesSection = () => {
       case 'preferences':
         return [
           {
-            key: 'language',
-            type: 'select',
-            label: t('onboarding.language'),
-            required: true,
-            placeholder: 'Please select your option',
-            value: data.language,
-            options: [
-              { value: 'en', label: 'English' },
-              { value: 'hi', label: 'हिंदी' },
-              { value: 'ta', label: 'தமிழ்' },
-              { value: 'te', label: 'తెలుగు' },
-            ],
-            error: validationErrors.language,
-          },
-          {
             key: 'regions',
             type: 'multiselect',
             label: 'Preferred Regions',
@@ -777,7 +762,7 @@ const PreferencesSection = () => {
         'Your health goals and budget preferences'
       )}
 
-      {renderSectionCard('preferences', 'Preferences', 'Language and cuisine preferences')}
+      {renderSectionCard('preferences', 'Preferences', 'Cuisine preferences')}
     </div>
   );
 };

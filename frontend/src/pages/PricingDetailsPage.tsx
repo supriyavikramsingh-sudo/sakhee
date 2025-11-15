@@ -186,25 +186,6 @@ const PricingDetailsPage = () => {
         },
       ],
     },
-    {
-      title: 'Languages',
-      availableNow: [
-        {
-          feature: 'Currently Available: English, Hindi',
-          free: true,
-          pro: true,
-          max: true,
-        },
-      ],
-      comingSoon: [
-        {
-          feature: 'Coming Soon: Telugu, Tamil, Marathi, Gujarati, Kannada, Bengali',
-          free: true,
-          pro: true,
-          max: true,
-        },
-      ],
-    },
   ];
 
   const renderCell = (value: boolean, isComingSoonSection: boolean = false) => {

@@ -55,7 +55,6 @@ This README covers how to get the project running locally, available scripts, en
   - Regional cuisine variations (North, South, East, West Indian)
 - **📄 Medical Report Analysis** - OCR-based parsing of lab reports (PDF, DOCX, images) with intelligent data extraction and integration into meal plan generation
 - **📊 Progress Tracking** - Visual dashboards to monitor health metrics, symptoms, and lifestyle changes over time
-- **🌐 Multi-language Support** - English and Hindi with i18next internationalization
 - **🔐 Firebase Authentication** - Secure Google OAuth login with Firestore for user profiles and data persistence
 - **🛡️ Safety & Privacy** - Content safety guards, rate limiting, and medical disclaimers
 - **🔄 Community Insights** - Reddit integration for anonymized community experiences (optional)
@@ -397,8 +396,7 @@ client/
 │   ├── hooks/
 │   │   └── useLocalStorage.js         # Custom React hooks
 │   ├── i18n/                          # Internationalization
-│   │   ├── en.json                    # English translations
-│   │   └── hi.json                    # Hindi translations
+│   │   └── en.json                    # English translations
 │   ├── pages/                         # Page components
 │   │   ├── LoginPage.jsx
 │   │   ├── HomePage.jsx
@@ -450,8 +448,7 @@ server/
 │   ├── index.js                       # Express server entry point
 │   ├── config/
 │   │   ├── env.js                     # Environment variables
-│   │   ├── appConfig.js               # App settings (model, RAG, etc.)
-│   │   └── languageConfig.js          # Language-specific configs
+│   │   └── appConfig.js               # App settings (model, RAG, etc.)
 │   ├── langchain/                     # LangChain.js integration
 │   │   ├── llmClient.js               # OpenAI LLM client
 │   │   ├── embeddings.js              # Text embeddings
@@ -601,7 +598,6 @@ server/
   - Reddit community insights integration
   - Web search for latest information
   - Medical disclaimers and safety guards
-  - Multi-language support (English, Hindi)
 
 ### 2. Personalized Meal Planning
 

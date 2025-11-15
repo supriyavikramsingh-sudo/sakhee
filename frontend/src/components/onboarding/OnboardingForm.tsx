@@ -231,18 +231,6 @@ const OnboardingForm = ({
     4: [
       // Preferences with Region -> State hierarchy
       {
-        id: 'language',
-        type: 'select',
-        placeholder: 'Please select your option',
-        value: userData?.language || '',
-        label: t('onboarding.language'),
-        required: true,
-        options: [
-          { value: 'en', label: 'English' },
-          { value: 'hi', label: 'हिंदी' }
-        ],
-      },
-      {
         id: 'regions',
         type: 'multiselect',
         placeholder: 'Please select your options',
