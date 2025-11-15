@@ -8,7 +8,7 @@ import { PromptTemplate } from '@langchain/core/prompts';
 import { llmClient } from '../llmClient.js';
 import { retriever } from '../retriever.js';
 import { redditService } from '../../services/redditService.js';
-import { serpService } from '../../services/serpService.js';
+import { spoonacularService } from '../../services/spoonacularService.js';
 import { medicalReportService } from '../../services/medicalReportService.js';
 import { Logger } from '../../utils/logger.js';
 import fs from 'fs';
@@ -222,7 +222,7 @@ You have access to:
 1. **Medical Knowledge Base**: Evidence-based PCOS research and lab-specific dietary guidance
 2. **User's Medical Report**: Actual lab values with severity classifications
 3. **Reddit Community Insights**: Anonymized experiences from r/PCOS, r/PCOSIndia, etc.
-4. **Nutritional Database**: Real-time nutrition facts via SERP API for Indian foods
+4. **Nutritional Database**: Real-time nutrition facts via Spoonacular API for Indian foods
 
 ## CRITICAL: Using User's Lab Values
 
@@ -2262,14 +2262,14 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
    */
   async fetchNutritionContext(userMessage) {
     try {
-      const data = await serpService.searchNutrition(userMessage);
+      const data = await spoonacularService.searchNutrition(userMessage);
 
       if (!data) return null;
 
       // Add validation flags for suspicious/incomplete data
       const validationWarnings = this.validateNutritionData(data, userMessage);
 
-      let context = `🥗 NUTRITIONAL DATA:\n${JSON.stringify(data, null, 2)}\n`;
+      let context = `🥗 NUTRITIONAL DATA (Spoonacular):\n${JSON.stringify(data, null, 2)}\n`;
 
       // Add CRITICAL instructions for using exact values
       context += `\n🚨 CRITICAL NUTRITION FORMATTING INSTRUCTIONS:\n`;
@@ -2299,7 +2299,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
       context += `⚠️ REMINDER: Your response MUST include:\n`;
       context += `1. Exact nutrition values in grams (from JSON above)\n`;
       context += `2. PCOS-friendly ingredient substitutes (if provided below)\n`;
-      context += `3. Google nutrition disclaimer with source links (shown below)\n\n`;
+      context += `3. Spoonacular nutrition disclaimer with source links (shown below)\n\n`;
 
       if (validationWarnings.length > 0) {
         context += `\n⚠️ DATA QUALITY WARNINGS:\n`;
@@ -2309,9 +2309,9 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
         context += `\n🔍 IMPORTANT: This data may be incomplete. Validate and provide realistic estimates based on typical recipe components.\n`;
       }
 
-      // Add formatted Google nutrition links for LLM to include in response
+      // Add formatted Spoonacular nutrition links for LLM to include in response
       context += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      context += `📊 GOOGLE NUTRITION SOURCES:\n`;
+      context += `📊 SPOONACULAR NUTRITION SOURCES:\n`;
       context += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
 
       const nutritionLinks = [];
@@ -2351,7 +2351,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
       // Add instructions for including links in response
       if (nutritionLinks.length > 0) {
-        context += `\n🚨 MANDATORY REQUIREMENT - GOOGLE NUTRITION DISCLAIMER:\n\n`;
+        context += `\n🚨 MANDATORY REQUIREMENT - SPOONACULAR NUTRITION DISCLAIMER:\n\n`;
         context += `⛔️ YOU MUST INCLUDE THIS EXACT TEXT AT THE END OF YOUR RESPONSE:\n\n`;
         context += `---\n\n`;
         context += `📊 **Nutrition Data Sources:**\n`;
@@ -2362,7 +2362,7 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
           context += `- [${shortTitle}](${link.url})\n`;
         });
 
-        context += `\n💬 **Nutritional information from Google's knowledge base.**\n\n`;
+        context += `\n💬 **Nutritional information from Spoonacular database.**\n\n`;
         context += `⛔️ THIS DISCLAIMER IS MANDATORY - DO NOT OMIT IT!\n\n`;
         context += `⚠️ FORMATTING RULE: Do NOT use bold (**) for ingredient names in the response body. Only use bold for section headers and disclaimers.\n\n`;
 
@@ -2375,8 +2375,8 @@ Remember: You're a knowledgeable companion who helps women understand their PCOS
 
         context += `⚠️ Place these links AFTER your PCOS modifications section and BEFORE any Reddit links!\n\n`;
       } else {
-        context += `\n⚠️ No direct source URLs available from Google.\n`;
-        context += `💡 You may mention that nutrition data is from Google's knowledge base without specific links.\n\n`;
+        context += `\n⚠️ No direct source URLs available from Spoonacular.\n`;
+        context += `💡 You may mention that nutrition data is from Spoonacular database without specific links.\n\n`;
       }
 
       return context;
@@ -3363,8 +3363,9 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
         // Parse the nutrition data to extract actual links
         try {
           // Extract just the JSON part (stops at the first newline after the closing brace)
+          // Updated regex to match "NUTRITIONAL DATA (Spoonacular):" format
           const nutritionDataMatch = nutritionContext.match(
-            /🥗 NUTRITIONAL DATA:\n(\{[\s\S]*?\n\})/
+            /🥗 NUTRITIONAL DATA \(Spoonacular\):\n(\{[\s\S]*?\n\})/
           );
           if (nutritionDataMatch) {
             const nutritionData = JSON.parse(nutritionDataMatch[1]);
@@ -3399,13 +3400,13 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
             if (nutritionSources.length > 0) {
               sources.push({
                 type: 'nutrition',
-                provider: 'Google (SERP API)',
+                provider: 'Spoonacular',
                 links: nutritionSources,
               });
             } else {
               sources.push({
                 type: 'nutrition',
-                provider: 'Google (SERP API)',
+                provider: 'Spoonacular',
                 message: 'Nutrition data found but no external links available',
               });
             }
@@ -3414,7 +3415,7 @@ Primary Goals: ${userContext.goals?.join(', ') || 'Not provided'}`;
           logger.error('Failed to parse nutrition data for sources', { error: parseError.message });
           sources.push({
             type: 'nutrition',
-            provider: 'Google (SERP API)',
+            provider: 'Spoonacular',
           });
         }
       }

@@ -26,7 +26,7 @@ const SourceCitations = ({ sources }: SourceCitationsProps) => {
       case 'reddit':
         return 'Reddit Community Insights';
       case 'nutrition':
-        return 'Google Web Search (Nutrition Data)';
+        return 'Spoonacular Database';
       case 'medical':
       case 'lab_guidance':
         return 'Sakhee Database';
@@ -44,7 +44,7 @@ const SourceCitations = ({ sources }: SourceCitationsProps) => {
       case 'reddit':
         return 'Reddit';
       case 'nutrition':
-        return 'Web Search';
+        return 'Spoonacular';
       case 'medical':
         return 'Medical KB';
       case 'lab_guidance':

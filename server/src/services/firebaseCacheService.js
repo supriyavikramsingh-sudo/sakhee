@@ -1,5 +1,6 @@
 // server/src/services/firebaseCacheService.js
-// This service provides persistent caching in Firestore for Reddit & SERP data
+// This service provides persistent caching in Firestore for Reddit & Spoonacular data
+// Note: SERP cache methods are deprecated but kept for backward compatibility
 // Replace in-memory caching in production
 
 import { db } from '../config/firebase.js';
@@ -137,8 +138,11 @@ class FirebaseCacheService {
 
   /**
    * Cache SERP search results
+   * @deprecated SERP API has been replaced by Spoonacular. This method is kept for backward compatibility.
+   * See spoonacularService.js for the new implementation.
    */
   async cacheSerpResults(query, results) {
+    logger.warn('DEPRECATED: cacheSerpResults() - SERP API has been replaced by Spoonacular');
     try {
       const cacheKey = query.toLowerCase().replace(/\s+/g, '_');
       const docRef = doc(db, this.collections.serpResults, cacheKey);
@@ -158,8 +162,11 @@ class FirebaseCacheService {
 
   /**
    * Get cached SERP results
+   * @deprecated SERP API has been replaced by Spoonacular. This method is kept for backward compatibility.
+   * See spoonacularService.js for the new implementation.
    */
   async getCachedSerpResults(query) {
+    logger.warn('DEPRECATED: getCachedSerpResults() - SERP API has been replaced by Spoonacular');
     try {
       const cacheKey = query.toLowerCase().replace(/\s+/g, '_');
       const docRef = doc(db, this.collections.serpResults, cacheKey);

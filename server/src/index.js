@@ -15,6 +15,7 @@ import feedbackRoutes from './routes/feedback.js';
 import userProfileRoutes from './routes/userProfile.js';
 import subscriptionRoutes from './routes/subscription.js';
 import metricsRoutes from './routes/metrics.js';
+import recipeRoutes from './routes/recipes.js';
 import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
@@ -58,6 +59,7 @@ app.use('/api/chat', safetyGuards);
 // ============================================
 app.use('/api/chat', chatRoutes);
 app.use('/api/meals', mealPlanRoutes);
+app.use('/api/recipes', recipeRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/rag', ragStatusRoutes);

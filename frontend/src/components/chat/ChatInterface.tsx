@@ -7,8 +7,12 @@ import { firestoreService } from '../../services/firestoreService';
 import { useChatStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
 import TextInput from '../common/TextInput';
+import DishNameInputCard from './DishNameInputCard';
 import MealPlanRedirectCard from './MealPlanRedirectCard';
 import MessageBubble from './MessageBubble';
+import RecipeErrorCard from './RecipeErrorCard';
+import RecipeResultCard from './RecipeResultCard';
+import RecipeSearchButton from './RecipeSearchButton';
 import SourceCitations from './SourceCitations';
 
 interface ChatInterfaceProps {
@@ -34,6 +38,17 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
   const { user } = useAuthStore();
   const hasLoadedHistory = useRef(false);
   const isLoadingOlderMessages = useRef(false);
+
+  // Recipe search state
+  const [showDishInputCard, setShowDishInputCard] = useState(false);
+  const [recipeSearchLoading, setRecipeSearchLoading] = useState(false);
+  const [recipeSearchError, setRecipeSearchError] = useState<any>(null);
+  const [userRecipeUsage, setUserRecipeUsage] = useState({
+    remaining: 0,
+    dailyLimit: 0,
+    tier: 'free' as 'free' | 'pro' | 'max',
+    resetAt: null as string | null,
+  });
 
   useEffect(() => {
     const loadChatHistory = async () => {
@@ -63,6 +78,51 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
 
     loadChatHistory();
   }, [user?.uid, loadHistory]);
+
+  // Fetch recipe search usage
+  useEffect(() => {
+    const fetchRecipeUsage = async () => {
+      if (!user?.uid) return;
+
+      try {
+        // Get user tier from profile or subscription
+        // Support both subscription.tier and subscription_plan fields
+        const tier = (
+          userProfile?.subscription?.tier || 
+          userProfile?.subscription_plan || 
+          'free'
+        ) as 'free' | 'pro' | 'max';
+        
+        console.log('🔍 Recipe Search - Fetching usage for tier:', tier, {
+          subscriptionTier: userProfile?.subscription?.tier,
+          subscriptionPlan: userProfile?.subscription_plan,
+          userId: user.uid,
+        });
+        
+        const response: any = await apiClient.getRecipeUsage(user.uid, tier);
+
+        if (response.success && response.data) {
+          setUserRecipeUsage({
+            tier,
+            remaining: response.data.remainingToday,
+            dailyLimit: response.data.dailyLimit,
+            resetAt: response.data.resetAt,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch recipe usage:', error);
+        // Default to free tier if fetch fails
+        setUserRecipeUsage({
+          tier: 'free',
+          remaining: 0,
+          dailyLimit: 0,
+          resetAt: null,
+        });
+      }
+    };
+
+    fetchRecipeUsage();
+  }, [user?.uid, userProfile?.subscription?.tier, userProfile?.subscription_plan]);
 
   useEffect(() => {
     // Only scroll to bottom if we're not loading older messages
@@ -242,6 +302,136 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
     }, 0);
   };
 
+  // Recipe Search Handlers
+  const handleRecipeSearchClick = () => {
+    // Check if FREE tier
+    if (userRecipeUsage.tier === 'free') {
+      setRecipeSearchError({ type: 'upgradeRequired' });
+      return;
+    }
+
+    // Check rate limit
+    if (userRecipeUsage.remaining <= 0) {
+      setRecipeSearchError({
+        type: 'rateLimited',
+        resetAt: userRecipeUsage.resetAt,
+        dailyLimit: userRecipeUsage.dailyLimit,
+      });
+      return;
+    }
+
+    // Show input card
+    setShowDishInputCard(true);
+  };
+
+  const handleDishSubmit = async (dishName: string) => {
+    try {
+      setRecipeSearchLoading(true);
+      setRecipeSearchError(null);
+
+      console.log('🔍 Submitting recipe search:', {
+        dishName,
+        userTier: userRecipeUsage.tier,
+        userId: user?.uid,
+      });
+
+      const response: any = await apiClient.searchRecipe({
+        dishName,
+        preferences: {
+          region: userProfile?.location || 'India',
+          dietType: userProfile?.dietType || 'vegetarian',
+          restrictions: userProfile?.restrictions || [],
+        },
+        userId: user?.uid || userId,
+        userTier: userRecipeUsage.tier,
+      });
+
+      console.log('📥 Recipe search response:', {
+        success: response.success,
+        count: response.data?.count,
+        recipesLength: response.data?.recipes?.length,
+        hasRecipes: !!response.data?.recipes,
+      });
+
+      if (response.success && response.data) {
+        // Check if no recipes found
+        if (!response.data.recipes || response.data.recipes.length === 0 || response.data.count === 0) {
+          console.log('No recipes found for:', dishName);
+          setRecipeSearchError({
+            type: 'notFound',
+            dishName,
+          });
+          setShowDishInputCard(false);
+          setRecipeSearchLoading(false);
+          return;
+        }
+
+        // Add recipe results to chat messages
+        const recipeTimestamp = Date.now();
+        response.data.recipes.forEach((recipe: any, index: number) => {
+          addMessage({
+            id: recipeTimestamp + index,
+            type: 'recipe_result',
+            content: dishName,
+            recipeData: recipe,
+            remainingSearches: response.data.tierLimit.remainingToday,
+            dailyLimit: response.data.tierLimit.dailyLimit,
+            timestamp: recipeTimestamp + index,
+          });
+        });
+
+        // Update usage counter
+        setUserRecipeUsage((prev) => ({
+          ...prev,
+          remaining: response.data.tierLimit.remainingToday,
+        }));
+
+        // Close input card
+        setShowDishInputCard(false);
+      }
+    } catch (error: any) {
+      console.error('Recipe search error:', error);
+
+      // Handle different error types
+      if (error.response?.upgradeRequired) {
+        setRecipeSearchError({ type: 'upgradeRequired' });
+      } else if (error.response?.rateLimited) {
+        setRecipeSearchError({
+          type: 'rateLimited',
+          resetAt: error.response.resetAt,
+          dailyLimit: error.response.tierLimit?.dailyLimit,
+        });
+      } else if (error.response?.data?.count === 0) {
+        // No recipes found - doesn't count against limit
+        setRecipeSearchError({
+          type: 'notFound',
+          dishName,
+        });
+      } else {
+        setRecipeSearchError({
+          type: 'apiError',
+          message: error.message || 'Failed to search recipes',
+        });
+      }
+    } finally {
+      setRecipeSearchLoading(false);
+    }
+  };
+
+  const handleDishInputCancel = () => {
+    setShowDishInputCard(false);
+  };
+
+  const handleRetry = () => {
+    setRecipeSearchError(null);
+    setShowDishInputCard(true);
+  };
+
+  const handleUpgrade = () => {
+    // Navigate to pricing page
+    window.location.href = '/pricing';
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4 py-8">
@@ -290,7 +480,16 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
                 return (
                   <div key={msg.id || idx}>
                     {msg.type === 'meal_plan_redirect' ? (
-                      <MealPlanRedirectCard data={msg.redirectData} />
+                      <MealPlanRedirectCard
+                        data={msg.redirectData}
+                        onRecipeSearchClick={handleRecipeSearchClick}
+                      />
+                    ) : msg.type === 'recipe_result' ? (
+                      <RecipeResultCard
+                        recipe={msg.recipeData}
+                        remainingSearches={msg.remainingSearches || 0}
+                        dailyLimit={msg.dailyLimit || 0}
+                      />
                     ) : (
                       <>
                         <MessageBubble
@@ -306,6 +505,31 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
                   </div>
                 );
               })}
+
+              {/* Dish Input Card */}
+              {showDishInputCard && (
+                <DishNameInputCard
+                  onSubmit={handleDishSubmit}
+                  onCancel={handleDishInputCancel}
+                  remainingSearches={userRecipeUsage.remaining}
+                  dailyLimit={userRecipeUsage.dailyLimit}
+                  userTier={userRecipeUsage.tier as 'pro' | 'max'}
+                  isLoading={recipeSearchLoading}
+                />
+              )}
+
+              {/* Recipe Search Error Card */}
+              {recipeSearchError && (
+                <RecipeErrorCard
+                  errorType={recipeSearchError.type}
+                  dishName={recipeSearchError.dishName}
+                  dailyLimit={recipeSearchError.dailyLimit}
+                  resetTime={recipeSearchError.resetAt}
+                  errorMessage={recipeSearchError.message}
+                  onTryAgain={handleRetry}
+                  onUpgrade={handleUpgrade}
+                />
+              )}
             </>
           )}
 
@@ -322,6 +546,26 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
         {/* Input Area */}
         <div className="border-t border-surface pt-4">
           <form onSubmit={handleSendMessage} className="flex flex-col gap-4">
+            {/* Recipe Search and New Chat Buttons */}
+            <div className="flex justify-between items-center gap-3">
+              <RecipeSearchButton
+                userTier={userRecipeUsage.tier}
+                remainingSearches={userRecipeUsage.remaining}
+                dailyLimit={userRecipeUsage.dailyLimit}
+                onRecipeSearchClick={handleRecipeSearchClick}
+                disabled={recipeSearchLoading}
+              />
+              <button
+                type="button"
+                onClick={handleClearChat}
+                className="flex items-center gap-1 text-xs text-muted hover:text-primary transition px-3 py-2 rounded-lg hover:bg-gray-100"
+              >
+                <Plus size={16} />
+                {t('chat.newChat')}
+              </button>
+            </div>
+
+            {/* Text Input and Send Button */}
             <div className="flex justify-between items-center gap-2">
               <TextInput
                 className="flex-1 !h-[44px]"
@@ -338,17 +582,6 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
                 title="Send message"
               >
                 <Send size={20} />
-              </button>
-            </div>
-
-            <div className="flex gap-2 text-xs text-muted">
-              <button
-                type="button"
-                onClick={handleClearChat}
-                className="flex items-center gap-1 hover:text-primary transition"
-              >
-                <Plus size={16} />
-                {t('chat.newChat')}
               </button>
             </div>
           </form>

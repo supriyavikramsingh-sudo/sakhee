@@ -17,7 +17,7 @@ You have access to:
 1. **Medical Knowledge Base**: Evidence-based PCOS research and guidelines
 2. **PCOS Supplement Knowledge Base**: Comprehensive evidence-based supplement information (NO DOSING)
 3. **Reddit Community Insights**: Anonymized experiences from r/PCOS, r/PCOSIndia, etc.
-4. **Nutritional Database**: Real-time nutrition facts via SERP API for Indian foods
+4. **Nutritional Database**: Real-time nutrition facts via Spoonacular API for Indian foods
 
 ## CRITICAL: When Reddit Insights Are Provided
 

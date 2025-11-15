@@ -356,6 +356,49 @@ export const apiClient = {
       throw error;
     }
   },
+
+  // ============================================
+  // RECIPE SEARCH ENDPOINTS
+  // ============================================
+  searchRecipe: async (data: {
+    dishName: string;
+    preferences?: {
+      region?: string;
+      dietType?: string;
+      restrictions?: string[];
+    };
+    userId: string;
+    userTier: string;
+    location?: string;
+  }): Promise<object> => {
+    try {
+      console.log('🔍 Searching for recipe:', data);
+      const response = await axiosInstance.post('/recipes/search', {
+        dishName: data.dishName,
+        preferences: data.preferences || {},
+        userId: data.userId,
+        userTier: data.userTier,
+        location: data.location || 'India',
+      });
+      console.log('✅ Recipe search response:', response);
+      return response;
+    } catch (error) {
+      console.error('❌ Recipe search failed:', error);
+      throw error;
+    }
+  },
+
+  getRecipeUsage: async (userId: string, userTier: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/recipes/usage/${userId}`, {
+        params: { userTier },
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to get recipe usage:', error);
+      throw error;
+    }
+  },
 };
 
 export default apiClient;

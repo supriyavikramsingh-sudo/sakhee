@@ -9,7 +9,12 @@ const __dirname = path.dirname(__filename);
 // Load .env from server directory (handles both running from root and server dir)
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const requiredEnvs = ['OPENAI_API_KEY', 'SERP_API_KEY', 'REDDIT_CLIENT_ID', 'REDDIT_CLIENT_SECRET'];
+const requiredEnvs = [
+  'OPENAI_API_KEY',
+  'SPOONACULAR_API_KEY',
+  'REDDIT_CLIENT_ID',
+  'REDDIT_CLIENT_SECRET',
+];
 
 // Validate required environment variables
 // Skip validation if SKIP_ENV_VALIDATION is set (useful for scripts that don't need all vars)
@@ -30,8 +35,8 @@ export const env = {
   // OpenAI
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 
-  // SERP API
-  SERP_API_KEY: process.env.SERP_API_KEY,
+  // Spoonacular API
+  SPOONACULAR_API_KEY: process.env.SPOONACULAR_API_KEY,
 
   // Reddit OAuth
   REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID,

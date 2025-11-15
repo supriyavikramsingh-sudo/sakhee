@@ -90,7 +90,7 @@ curl -sS -X POST http://localhost:5000/api/chat \
 - **npm** (or yarn)
 - **OpenAI API key** (required)
 - **Firebase project** with Authentication and Firestore enabled (required)
-- **SERP API key** (optional, for web search context)
+- **Spoonacular API key** (required, for nutrition data and recipe search)
 - **Reddit OAuth credentials** (optional, for community insights)
 
 ### Installation
@@ -120,8 +120,10 @@ NODE_ENV=development
 # Required: OpenAI API
 OPENAI_API_KEY=your_openai_api_key_here
 
-# Optional: SERP API for web search
-SERP_API_KEY=your_serp_api_key_here
+# Spoonacular API for nutrition data and recipe search
+# Free Plan: 150 requests/day
+# Get API key from: https://spoonacular.com/food-api
+SPOONACULAR_API_KEY=your_spoonacular_api_key_here
 
 # Optional: Reddit OAuth (Personal Script App)
 REDDIT_CLIENT_ID=your_reddit_client_id
@@ -210,7 +212,7 @@ cd client && npm run dev
 | `PORT`                 | No       | Server port (default: 5000)                          |
 | `NODE_ENV`             | No       | Environment (development/production)                 |
 | `OPENAI_API_KEY`       | **Yes**  | OpenAI API key for LLM and embeddings                |
-| `SERP_API_KEY`         | No       | SERP API key for web search context                  |
+| `SPOONACULAR_API_KEY`  | Yes      | Spoonacular API key for nutrition and recipe data    |
 | `REDDIT_CLIENT_ID`     | No       | Reddit OAuth client ID                               |
 | `REDDIT_CLIENT_SECRET` | No       | Reddit OAuth client secret                           |
 | `REDDIT_REDIRECT_URI`  | No       | Reddit OAuth redirect URI                            |
@@ -288,7 +290,7 @@ If you want this automated in CI, consider adding a guarded task that runs the b
 
 This project includes targeted logic for extracting nutrition facts from web search results and for recommending PCOS-aware ingredient substitutes. Recent fixes (Oct 2025) improve accuracy and relevance:
 
-- SERP query cleaning: user queries like "nutrition info on quinoa salad" are cleaned to the actual food item ("quinoa salad") before web search. This reduces cases where the SERP returned generic "quinoa (grain)" pages instead of the prepared dish.
+- Spoonacular query cleaning: user queries like "nutrition info on quinoa salad" are cleaned to the actual food item ("quinoa salad") before API search. This ensures accurate nutrition data for the specific dish requested.
 - Organic-result prioritization: when possible the system prefers organic/nutrition snippets that report per-serving values (not per-100g) to provide realistic serving nutrition values.
 - Improved regex extraction: calorie/macro extraction patterns were tightened (negative lookaheads and serving-size-aware patterns) to avoid false matches like "2000 calorie diet".
 - Validation rules: calories sanity checks (per-serving < 1000), duplicate-macro detection, and category-based minimum calorie thresholds to catch parsing errors.
@@ -299,7 +301,7 @@ Quick test cases and what to expect:
 
 - Query: `nutrition info on quinoa salad`
 
-  - SERP should be called with `quinoa salad` (cleaned); logs show `cleanQuery: "quinoa salad"`.
+  - Spoonacular should be called with `quinoa salad` (cleaned); logs show `cleanQuery: "quinoa salad"`.
   - Substitutes should target toppings/dressings (e.g., "Instead of mayonnaise, use Greek yogurt-based dressing because..."), not rice/maida.
 
 - Query: `nutrition info on white rice biryani`
@@ -311,7 +313,7 @@ Quick test cases and what to expect:
 
 Where to look in the code:
 
-- `server/src/services/serpService.js` — query sanitization and nutrition extraction logic
+- `server/src/services/spoonacularService.js` — query sanitization and nutrition extraction logic
 - `server/src/langchain/chains/chatChain.js` — building the substitute RAG query, mandatory instructions for the LLM, and validation helpers
 - `server/src/langchain/initializeRAG.js` and `server/src/langchain/vectorStore.js` — RAG initialization and vector store
 
@@ -483,7 +485,8 @@ server/
 │   │   ├── ocrService.js              # OCR for images (Tesseract.js)
 │   │   ├── parserService.js           # PDF/DOCX parsing
 │   │   ├── redditService.js           # Reddit API integration
-│   │   ├── serpService.js             # SERP API for web search
+│   │   ├── spoonacularService.js      # Spoonacular API for nutrition and recipes
+│   │   ├── serpService.js.legacy      # DEPRECATED - Old SERP API (kept for reference)
 │   │   └── firebaseCacheService.js    # Firebase caching
 │   ├── scripts/
 │   │   ├── ingestAll.js               # Ingest all data sources
@@ -540,7 +543,7 @@ server/
   - Mammoth 1.6 (DOCX parsing)
   - Tesseract.js 5.0 (OCR)
 - **Data APIs**:
-  - SERP API (web search)
+  - Spoonacular API (nutrition and recipes)
   - Snoowrap 1.23 (Reddit)
 - **File Upload**: Multer 1.4.5
 - **Security**:
@@ -2189,7 +2192,7 @@ Major improvements to the chat experience, especially around integrating users' 
     - `getUserLabValues(userId)` — server helper that fetches the user's medical report and extracts lab values, uploadedAt and analysis for use in chat.
     - `buildLabContext(medicalData)` / `categorizeLabs()` — create prioritized, human-readable lab context that is injected into prompts so the LLM references exact lab values when answering.
     - `buildLabGuidanceQuery()` — generates targeted RAG queries (dietary guidance) based on abnormal labs and the user's message to retrieve lab-specific recommendations from the vector store.
-    - `processMessage()` — orchestrates retrievals (medical knowledge, lab-guidance, Reddit community insights, SERP nutrition data), builds the final prompt, invokes the conversation chain, and returns structured sources and a `contextUsed` summary.
+    - `processMessage()` — orchestrates retrievals (medical knowledge, lab-guidance, Reddit community insights, Spoonacular nutrition data), builds the final prompt, invokes the conversation chain, and returns structured sources and a `contextUsed` summary.
 
 - Safer disclaimers (no duplication)
 
@@ -2208,10 +2211,10 @@ Major improvements to the chat experience, especially around integrating users' 
 
   - The chat pipeline returns `contextUsed` and `sources` with each response. `contextUsed.labValues` and `contextUsed.labGuidance` are useful indicators when testing whether lab-based personalization worked.
   - If you run integration tests and `labValues` are not detected, confirm the medical report exists at `users/{userId}/medicalReport/current` and the server can read it (authentication/permissions).
-  - There is a local test harness for lab-chat integration (dev-only). If it fails, check `server` logs for Retriever and Reddit/SERP fetch failures.
+  - There is a local test harness for lab-chat integration (dev-only). If it fails, check `server` logs for Retriever and Reddit/Spoonacular fetch failures.
 
 - Files/areas touched (v1.7.0)
-  - Server: `server/src/langchain/chains/chatChain.js`, `server/src/routes/chat.js`, (uses `medicalReportService` + retriever + redditService + serpService)
+  - Server: `server/src/langchain/chains/chatChain.js`, `server/src/routes/chat.js`, (uses `medicalReportService` + retriever + redditService + spoonacularService)
   - Client: `client/src/components/chat/LabContextBadge.jsx`
   - Middleware: `server/src/middleware/mealPlanIntentDetector.js` (usage continued)
 

@@ -1,4 +1,18 @@
-// server/src/services/serpService.js
+// ==================================================================================
+// ⚠️ DEPRECATED - DO NOT USE
+// ==================================================================================
+// This file has been replaced by spoonacularService.js
+// 
+// Reason for deprecation: Migrated from SERP API to Spoonacular API
+// Migration date: November 15, 2025
+// 
+// This file is kept for reference only. All nutrition lookups now use:
+// - server/src/services/spoonacularService.js
+// 
+// See: SPOONACULAR_MIGRATION_SUMMARY.md for migration details
+// ==================================================================================
+
+// server/src/services/serpService.js (LEGACY)
 import axios from 'axios';
 import { env } from '../config/env.js';
 import { Logger } from '../utils/logger.js';
