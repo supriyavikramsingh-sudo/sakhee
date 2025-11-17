@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, ChefHat, Search, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChefHat, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { boldify } from '../../utils/helper';
 
@@ -12,10 +12,9 @@ type MealPlanRedirectCardProps = {
     message: string;
     actionText: string;
   };
-  onRecipeSearchClick?: () => void;
 };
 
-const MealPlanRedirectCard = ({ data, onRecipeSearchClick }: MealPlanRedirectCardProps) => {
+const MealPlanRedirectCard = ({ data }: MealPlanRedirectCardProps) => {
   const navigate = useNavigate();
 
   const handleRedirect = () => {
@@ -62,32 +61,13 @@ const MealPlanRedirectCard = ({ data, onRecipeSearchClick }: MealPlanRedirectCar
       </div>
 
       {/* CTA Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search Recipe Button */}
-        <button
-          onClick={onRecipeSearchClick}
-          className="flex-1 btn-outline !py-3 flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-colors"
-        >
-          <Search className="w-5 h-5" />
-          <div className="flex flex-col items-start sm:items-center">
-            <span className="font-semibold">Search Recipe</span>
-            <span className="text-xs opacity-75">Find PCOS-friendly recipes</span>
-          </div>
-        </button>
-
-        {/* Create Meal Plan Button */}
-        <button
-          onClick={handleRedirect}
-          className="flex-1 btn-primary !py-3 flex items-center justify-center gap-2"
-        >
-          <ChefHat className="w-5 h-5" />
-          <div className="flex flex-col items-start sm:items-center">
-            <span className="font-semibold">{data.actionText || 'Create Meal Plan'}</span>
-            <span className="text-xs opacity-90">Complete 7-day plans</span>
-          </div>
-          <ArrowRight className="w-5 h-5" />
-        </button>
-      </div>
+      <button
+        onClick={handleRedirect}
+        className="w-full btn-primary !py-3 disabled:opacity-50 flex items-center justify-center gap-2"
+      >
+        <span>{data.actionText || 'Go to Meal Plan Generator'}</span>
+        <ArrowRight className="w-5 h-5" />
+      </button>
 
       {/* Help Text */}
       {data.helpText && (
