@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import MedicalDisclaimer from '../components/chat/MedicalDisclaimer';
-import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
 import { useAuthStore } from '../store/authStore';
 import type { OnboardingData } from '../types/onboarding.type';
@@ -99,9 +98,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       {!disclaimerAcknowledged ? (
         <MedicalDisclaimer onAcknowledge={handleDisclaimerAcknowledge} />
       ) : (

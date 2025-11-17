@@ -3,14 +3,14 @@ import { Badge, Dropdown, Space } from 'antd';
 import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import firestoreService from '../../services/firestoreService';
 import { useAuthStore } from '../../store/authStore';
 import Logo from '/images/logo.svg';
 
 export const Navbar = () => {
   const { t } = useTranslation();
-  const pathName = window.location.pathname;
+  const { pathname: pathName } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signOut } = useAuthStore();
   const [isTestAccount, setIsTestAccount] = useState(false);

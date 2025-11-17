@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from '../components/layout/Navbar';
 import PreferencesSection from '../components/settings/PreferencesSection';
 import { SettingsSidebar } from '../components/settings/SettingsSidebar';
 import SubscriptionSection from '../components/settings/SubscriptionSection';
@@ -8,9 +7,7 @@ const SettingsPageNew = () => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">

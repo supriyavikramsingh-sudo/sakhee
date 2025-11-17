@@ -2,7 +2,6 @@ import { Plus, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '../components/common/PageHeader';
-import Navbar from '../components/layout/Navbar';
 import ProgressCharts from '../components/progress/ProgressCharts';
 import ProgressDashboard from '../components/progress/ProgressDashboard';
 import ProgressLogger from '../components/progress/ProgressLogger';
@@ -34,8 +33,7 @@ const ProgressPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <PageHeader
           title={t('progress.title')}

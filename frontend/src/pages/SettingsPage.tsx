@@ -2,20 +2,11 @@ import { Alert, Spin } from 'antd';
 import { ChevronDown, ChevronUp, Edit2, Save, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Navbar from '../components/layout/Navbar';
 import QuestionField from '../components/onboarding/QuestionField';
 import { regionalCuisineConfig } from '../config/regionalCuisineConfig';
 import apiClient from '../services/apiClient';
 import { useAuthStore } from '../store/authStore';
 import { calculateBMI, validateBMI } from '../utils/calorieCalculations';
-
-interface SectionData {
-  personalInfo: any;
-  healthProfile: any;
-  dietLifestyle: any;
-  goalsBudget: any;
-  preferences: any;
-}
 
 const SettingsPage = () => {
   const { t } = useTranslation();
@@ -728,8 +719,7 @@ const SettingsPage = () => {
 
   if (isLoadingProfile) {
     return (
-      <div className="min-h-screen">
-        <Navbar />
+      <div>
         <div className="flex items-center justify-center min-h-[60vh]">
           <Spin size="large" />
         </div>
@@ -739,8 +729,7 @@ const SettingsPage = () => {
 
   if (errorMessage && !userProfile) {
     return (
-      <div className="min-h-screen">
-        <Navbar />
+      <div>
         <div className="flex items-center justify-center min-h-[60vh]">
           <Alert
             type="error"
@@ -759,9 +748,7 @@ const SettingsPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import PageHeader from '../components/common/PageHeader';
 import FileUpload from '../components/files/FileUpload';
 import ReportAnalysis from '../components/files/ReportAnalysis';
-import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
 import type { ReportData } from '../types/report.type';
 
@@ -87,8 +86,7 @@ const ReportsPage = () => {
   // Show loading only while auth is loading (not while fetching report)
   if (authLoading) {
     return (
-      <div className="min-h-screen">
-        <Navbar />
+      <div>
         <div className="max-w-7xl mx-auto px-4 py-8 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -102,8 +100,7 @@ const ReportsPage = () => {
   // If not authenticated after auth is loaded
   if (!authLoading && !user) {
     return (
-      <div className="min-h-screen">
-        <Navbar />
+      <div>
         <div className="max-w-7xl mx-auto px-4 py-8 text-center">
           <FileText className="mx-auto mb-4 text-muted" size={64} />
           <h3 className="text-xl font-bold text-gray-900 mb-2">Please Sign In</h3>
@@ -116,9 +113,7 @@ const ReportsPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <PageHeader

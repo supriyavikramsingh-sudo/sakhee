@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import ChatInterface from '../components/chat/ChatInterface';
 import { LoadingSpinner } from '../components/layout/LoadingSpinner';
-import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
 
 const ChatPage = () => {
@@ -22,12 +21,7 @@ const ChatPage = () => {
     return <LoadingSpinner />;
   }
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <ChatInterface userProfile={userProfile} userId={user?.uid ?? ''} />
-    </div>
-  );
+  return <ChatInterface userProfile={userProfile} userId={user?.uid ?? ''} />;
 };
 
 export default ChatPage;

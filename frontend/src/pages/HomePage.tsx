@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Qoutes from '../components/common/Qoutes';
-import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
 
 interface FeatureCardProps {
@@ -29,11 +28,9 @@ const HomePage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="h-screen snap-y snap-mandatory overflow-y-auto">
-      <Navbar />
-
-      <main className="max-w-7xl mx-auto px-4 pt-20">
-        <section className="min-h-screen snap-start flex justify-between items-center px-4">
+    <div>
+      <main className="max-w-7xl mx-auto px-4">
+        <section className="min-h-screen flex justify-between items-center px-4">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl md:text-5xl text-center font-bold text-primary mb-4">
               Welcome, {userProfile?.displayName || user?.displayName}! <br />
@@ -53,7 +50,7 @@ const HomePage = () => {
           <img src="/images/undraw_happy-women-day_8whn.svg" className="max-w-[550px]" />
         </section>
 
-        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center pt-[80px] px-4">
+        <section className="flex flex-col gap-8 min-h-screen items-center justify-center pt-[80px] px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
             Why women across India choose Sakhee?
           </h1>

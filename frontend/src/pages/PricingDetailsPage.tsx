@@ -1,7 +1,6 @@
 import { ArrowLeft, BlocksIcon, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/common/PageHeader';
-import Navbar from '../components/layout/Navbar';
 
 const PricingDetailsPage = () => {
   const navigate = useNavigate();
@@ -199,9 +198,7 @@ const PricingDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Back Button */}
         <button

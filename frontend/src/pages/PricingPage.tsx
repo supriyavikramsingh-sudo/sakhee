@@ -2,7 +2,6 @@ import { IndianRupeeIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/common/PageHeader';
-import Navbar from '../components/layout/Navbar';
 import { PricingCard } from '../components/pricing/PricingCard';
 import { pricingData } from '../config/pricingConfig';
 import subscriptionApi from '../services/subscriptionApi';
@@ -69,9 +68,7 @@ const PricingPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
-
+    <div>
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <PageHeader
