@@ -2,6 +2,7 @@ import { Alert, Steps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import MedicalDisclaimer from '../components/chat/MedicalDisclaimer';
 import Navbar from '../components/layout/Navbar';
 import OnboardingForm from '../components/onboarding/OnboardingForm';
 import { useAuthStore } from '../store/authStore';
@@ -10,7 +11,8 @@ import type { OnboardingData } from '../types/onboarding.type';
 const OnboardingPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, userProfile, completeOnboarding } = useAuthStore();
+  const { user, userProfile, completeOnboarding, updateProfile } = useAuthStore();
+  const [disclaimerAcknowledged, setDisclaimerAcknowledged] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState<OnboardingData>({} as OnboardingData);
   const [loading, setLoading] = useState(false);
@@ -22,15 +24,22 @@ const OnboardingPage = () => {
     }
   }, [userProfile, navigate]);
 
+  // Check if user has already acknowledged the disclaimer
+  useEffect(() => {
+    if (userProfile?.disclaimerAcknowledged === true) {
+      setDisclaimerAcknowledged(true);
+    }
+  }, [userProfile]);
+
   // Auto-populate email from Google Auth
   useEffect(() => {
     if (user?.email && !userData.email) {
       setUserData((prev) => ({
         ...prev,
-        email: user.email,
+        email: user.email || '',
       }));
     }
-  }, [user]);
+  }, [user, userData.email]);
 
   const steps = [
     { title: t('onboarding.step1.title'), description: t('onboarding.step1.desc') },
@@ -40,7 +49,7 @@ const OnboardingPage = () => {
     { title: t('onboarding.step5.title'), description: t('onboarding.step5.desc') },
   ];
 
-  const handleStepComplete = async (stepData) => {
+  const handleStepComplete = async (stepData: any) => {
     try {
       setLoading(true);
       const newUserData = { ...userData, ...stepData };
@@ -62,11 +71,24 @@ const OnboardingPage = () => {
         // Move to next step
         setCurrentStep(currentStep + 1);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Onboarding error:', error);
       alert(`An error occurred: ${error.message}. Please try again.`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDisclaimerAcknowledge = async () => {
+    if (!user) return;
+
+    // Save disclaimer acknowledgement to Firestore
+    const result = await updateProfile({ disclaimerAcknowledged: true });
+
+    if (result.success) {
+      setDisclaimerAcknowledged(true);
+    } else {
+      alert('Failed to save disclaimer acknowledgement. Please try again.');
     }
   };
 
@@ -80,27 +102,31 @@ const OnboardingPage = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Progress Bar */}
-        <Steps current={currentStep} size="small" items={steps} className="my-6" />
+      {!disclaimerAcknowledged ? (
+        <MedicalDisclaimer onAcknowledge={handleDisclaimerAcknowledge} />
+      ) : (
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          {/* Progress Bar */}
+          <Steps current={currentStep} size="small" items={steps} className="my-6" />
 
-        {/* Onboarding Form */}
-        <div className="bg-white rounded-xl shadow-md p-8">
-          <OnboardingForm
-            userData={userData}
-            setUserData={setUserData}
-            step={currentStep}
-            onComplete={handleStepComplete}
-            onBack={handleBack}
-            loading={loading}
-          />
+          {/* Onboarding Form */}
+          <div className="bg-white rounded-xl shadow-md p-8">
+            <OnboardingForm
+              userData={userData}
+              setUserData={setUserData}
+              step={currentStep}
+              onComplete={handleStepComplete}
+              onBack={handleBack}
+              loading={loading}
+            />
+          </div>
+
+          {/* Disclaimer Alert */}
+          {currentStep === 0 && (
+            <Alert type="warning" className="mt-6" showIcon message={t('common.disclaimerText')} />
+          )}
         </div>
-
-        {/* Disclaimer Alert */}
-        {currentStep === 0 && (
-          <Alert type="warning" className="mt-6" showIcon message={t('common.disclaimerText')} />
-        )}
-      </div>
+      )}
     </div>
   );
 };

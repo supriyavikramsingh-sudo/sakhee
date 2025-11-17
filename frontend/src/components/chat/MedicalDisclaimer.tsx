@@ -1,3 +1,4 @@
+import { Alert } from 'antd';
 import { CheckCircle } from 'lucide-react';
 
 interface MedicalDisclaimerProps {
@@ -17,16 +18,19 @@ const MedicalDisclaimer = ({ onAcknowledge }: MedicalDisclaimerProps) => {
             <strong>Sakhee</strong> is an AI-powered educational health companion designed to
             provide lifestyle guidance and information for managing PCOS/PCOD symptoms.
           </p>
-
-          <div className="bg-warning bg-opacity-10 p-4 rounded-lg border-l-4 border-warning">
-            <p className="font-bold mb-2">⚠️ IMPORTANT:</p>
-            <ul className="space-y-2 text-sm">
-              <li>✗ Sakhee does NOT diagnose conditions</li>
-              <li>✗ Sakhee does NOT prescribe medications</li>
-              <li>✗ Sakhee is NOT a replacement for professional medical advice</li>
-              <li>✗ Sakhee cannot provide emergency care</li>
-            </ul>
-          </div>
+          <Alert
+            showIcon
+            message="Important"
+            type="warning"
+            description={
+              <ul className="space-y-2 text-sm">
+                <li>Sakhee does NOT diagnose conditions</li>
+                <li>Sakhee does NOT prescribe medications</li>
+                <li>Sakhee is NOT a replacement for professional medical advice</li>
+                <li>Sakhee cannot provide emergency care</li>
+              </ul>
+            }
+          />
 
           <p>
             <strong>Always consult a qualified healthcare professional:</strong>
@@ -39,16 +43,22 @@ const MedicalDisclaimer = ({ onAcknowledge }: MedicalDisclaimerProps) => {
             <li>If symptoms worsen or don't improve</li>
           </ul>
 
-          <div className="bg-danger bg-opacity-10 p-4 rounded-lg border-l-4 border-danger">
-            <p className="font-bold mb-2">🚨 EMERGENCY:</p>
-            <p className="text-sm">
-              In case of severe pain, heavy bleeding, or other emergencies, seek immediate medical
-              attention:
-            </p>
-            <p className="font-bold text-sm mt-2">
-              Call 102 (Ambulance) or visit the nearest hospital
-            </p>
-          </div>
+          <Alert
+            showIcon
+            type="error"
+            message="In case of emergency"
+            description={
+              <>
+                <p className="text-sm">
+                  In case of severe pain, heavy bleeding, or other emergencies, seek immediate
+                  medical attention:
+                </p>
+                <p className="font-bold text-sm mt-2">
+                  Call 102 (Ambulance) or visit the nearest hospital
+                </p>
+              </>
+            }
+          />
         </div>
 
         <label className="flex items-center gap-3 mb-6 cursor-pointer">

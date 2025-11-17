@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import ChatInterface from '../components/chat/ChatInterface';
-import MedicalDisclaimer from '../components/chat/MedicalDisclaimer';
 import { LoadingSpinner } from '../components/layout/LoadingSpinner';
 import Navbar from '../components/layout/Navbar';
 import { useAuthStore } from '../store/authStore';
 
 const ChatPage = () => {
   const { user, userProfile } = useAuthStore();
-  const [disclaimerAcknowledged, setDisclaimerAcknowledged] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
@@ -17,9 +15,6 @@ const ChatPage = () => {
       return;
     }
 
-    // Load disclaimer state
-    const acknowledged = localStorage.getItem('disclaimerAcknowledged');
-    setDisclaimerAcknowledged(!!acknowledged);
     setPageLoading(false);
   }, [user]);
 
@@ -30,17 +25,7 @@ const ChatPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-
-      {!disclaimerAcknowledged ? (
-        <MedicalDisclaimer
-          onAcknowledge={() => {
-            localStorage.setItem('disclaimerAcknowledged', 'true');
-            setDisclaimerAcknowledged(true);
-          }}
-        />
-      ) : (
-        <ChatInterface userProfile={userProfile} userId={user?.uid ?? ''} />
-      )}
+      <ChatInterface userProfile={userProfile} userId={user?.uid ?? ''} />
     </div>
   );
 };
