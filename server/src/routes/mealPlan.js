@@ -5,6 +5,7 @@ import { db } from '../config/firebase.js';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
 import { canGenerateMealPlan, incrementMealPlanCounter } from '../utils/subscriptionUtils.js';
+import jobService from '../services/jobService.js';
 
 const router = express.Router();
 const logger = new Logger('MealPlanRoutes');
@@ -15,7 +16,7 @@ const mealPlans = new Map();
 /**
  * POST /api/meals/generate
  * Generate a personalized meal plan with RAG retrieval (UPDATED for multiple cuisines)
- * NOW WITH ACCESS CONTROL: Check subscription limits before generation
+ * NOW WITH BACKGROUND PROCESSING: Returns immediately with jobId, processes in background
  */
 router.post('/generate', async (req, res) => {
   try {
@@ -68,12 +69,114 @@ router.post('/generate', async (req, res) => {
       });
     }
 
-    logger.info('Access control passed - generating meal plan', {
+    logger.info('Access control passed - creating background job for meal plan', {
       userId,
       subscriptionPlan: accessCheck.subscriptionPlan,
       count: accessCheck.count,
       limit: accessCheck.limit,
     });
+
+    // Validate required fields
+    if (!budget || !mealsPerDay || !duration) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Budget, meals per day, and duration are required' },
+      });
+    }
+
+    // Validate cuisines array
+    if (!cuisines || !Array.isArray(cuisines) || cuisines.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'At least one cuisine must be selected' },
+      });
+    }
+
+    // ====================================
+    // CREATE BACKGROUND JOB
+    // ====================================
+    const job = jobService.createJob('meal-generation', userId, {
+      regions,
+      cuisines,
+      dietType,
+      duration,
+      isKeto: isKeto || false,
+    });
+
+    // Return job ID immediately
+    res.json({
+      success: true,
+      data: {
+        jobId: job.id,
+        status: job.status,
+        message:
+          "Meal plan generation started. You can navigate away - we'll notify you when it's ready.",
+      },
+    });
+
+    // ====================================
+    // PROCESS IN BACKGROUND (async, no await)
+    // ====================================
+    processMealPlanGeneration({
+      jobId: job.id,
+      userId,
+      regions,
+      cuisines,
+      dietType,
+      budget,
+      restrictions,
+      mealsPerDay,
+      goals,
+      duration,
+      healthContext,
+      userOverrides,
+      isKeto,
+    }).catch((error) => {
+      logger.error('Background meal plan generation failed', {
+        jobId: job.id,
+        error: error.message,
+        stack: error.stack,
+      });
+    });
+  } catch (error) {
+    logger.error('Failed to initiate meal plan generation', {
+      error: error.message,
+      stack: error.stack,
+    });
+
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to start meal plan generation',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * Background meal plan generation function
+ */
+async function processMealPlanGeneration(params) {
+  const {
+    jobId,
+    userId,
+    regions,
+    cuisines,
+    dietType,
+    budget,
+    restrictions,
+    mealsPerDay,
+    goals,
+    duration,
+    healthContext,
+    userOverrides,
+    isKeto,
+  } = params;
+
+  try {
+    // Update job to processing
+    jobService.updateProgress(jobId, 10, 'Fetching user profile...');
 
     // Fetch user profile to get personalized calorie requirements
     let userCalories = 2000; // Default fallback
@@ -107,70 +210,62 @@ router.post('/generate', async (req, res) => {
       }
     }
 
+    jobService.updateProgress(jobId, 20, 'Preparing meal plan parameters...');
+
     logger.info('Generating RAG-enhanced meal plan with multiple cuisines', {
+      jobId,
       userId,
       regions: regions?.length || 0,
       cuisines: cuisines?.length || 0,
       cuisineList: cuisines,
       dietType,
-      isKeto: isKeto || false, // NEW: Log keto flag
+      isKeto: isKeto || false,
       restrictions: restrictions?.length || 0,
       hasHealthContext: !!healthContext,
       hasMedicalData: !!healthContext?.medicalData,
       userOverrides,
     });
 
-    // Validate required fields
-    if (!budget || !mealsPerDay || !duration) {
-      return res.status(400).json({
-        success: false,
-        error: { message: 'Budget, meals per day, and duration are required' },
-      });
-    }
-
-    // Validate cuisines array
-    if (!cuisines || !Array.isArray(cuisines) || cuisines.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: { message: 'At least one cuisine must be selected' },
-      });
-    }
-
     // Use defaults if regions not provided
     const finalRegions = regions && regions.length > 0 ? regions : ['north-indian'];
     const finalDietType = dietType || 'vegetarian';
-    const finalIsKeto = isKeto === true; // NEW: Ensure boolean type
+    const finalIsKeto = isKeto === true;
 
     logger.info('Meal plan generation parameters', {
+      jobId,
       finalRegions,
       cuisines,
       cuisineCount: cuisines.length,
       finalDietType,
-      isKeto: finalIsKeto, // NEW: Log keto flag
+      isKeto: finalIsKeto,
       duration,
     });
+
+    jobService.updateProgress(jobId, 30, 'Generating personalized meal plan with AI...');
 
     // Generate plan using RAG-enhanced LLM with multiple cuisines
     const mealPlan = await mealPlanChain.generateMealPlan({
       duration,
       regions: finalRegions,
-      cuisines, // Now an array of cuisine names
+      cuisines,
       dietType: finalDietType,
-      isKeto: finalIsKeto, // NEW: Pass keto flag to meal generation chain
+      isKeto: finalIsKeto,
       budget,
       restrictions: restrictions || [],
       mealsPerDay: mealsPerDay || 3,
       healthContext: healthContext || {},
       userOverrides: userOverrides || {},
-      userCalories, // NEW: Pass personalized calorie requirement
-      weightGoal, // NEW: Pass weight goal for context
+      userCalories,
+      weightGoal,
     });
+
+    jobService.updateProgress(jobId, 90, 'Finalizing meal plan...');
 
     // Extract RAG metadata and performance metrics
     const ragMetadata = mealPlan.ragMetadata || null;
     const performanceMetrics = mealPlan.performanceMetrics || null;
-    delete mealPlan.ragMetadata; // Remove from plan data
-    delete mealPlan.performanceMetrics; // Remove from plan data
+    delete mealPlan.ragMetadata;
+    delete mealPlan.performanceMetrics;
 
     // Store plan with metadata
     const planId = 'plan_' + Date.now();
@@ -179,9 +274,9 @@ router.post('/generate', async (req, res) => {
       userId,
       plan: mealPlan,
       regions: finalRegions,
-      cuisines, // Store array of cuisines
+      cuisines,
       dietType: finalDietType,
-      isKeto: finalIsKeto, // NEW: Store keto flag in plan metadata
+      isKeto: finalIsKeto,
       budget,
       goals: goals || [],
       duration: duration || 7,
@@ -197,7 +292,7 @@ router.post('/generate', async (req, res) => {
           userOverrides?.cuisineStates ||
           userOverrides?.dietType
         ),
-        rag: true, // RAG always attempted
+        rag: true,
         ragQuality: ragMetadata?.retrievalQuality || 'unknown',
         ragSources: ragMetadata
           ? {
@@ -217,10 +312,11 @@ router.post('/generate', async (req, res) => {
     // ====================================
     try {
       await incrementMealPlanCounter(userId);
-      logger.info('Meal plan counter incremented', { userId });
+      logger.info('Meal plan counter incremented', { userId, jobId });
     } catch (error) {
       logger.error('Failed to increment meal plan counter', {
         userId,
+        jobId,
         error: error.message,
       });
       // Non-critical error - don't fail the request
@@ -228,10 +324,11 @@ router.post('/generate', async (req, res) => {
 
     logger.info('Meal plan generated successfully', {
       planId,
+      jobId,
       userId,
       daysGenerated: mealPlan.days?.length || 0,
       cuisinesUsed: cuisines,
-      isKeto: finalIsKeto, // NEW: Log keto status
+      isKeto: finalIsKeto,
       ragQuality: ragMetadata?.retrievalQuality,
       performanceMetrics: performanceMetrics
         ? {
@@ -245,36 +342,31 @@ router.post('/generate', async (req, res) => {
       ),
     });
 
-    res.json({
-      success: true,
-      data: {
-        planId,
-        regions,
-        cuisines,
-        dietType,
-        isKeto: finalIsKeto, // NEW: Return keto flag in response
-        budget,
-        plan: mealPlan,
-        ragMetadata,
-        performanceMetrics, // NEW: Include performance metrics in response
-        personalizationSources: planData.personalizationSources,
-      },
+    // Mark job as completed
+    jobService.completeJob(jobId, {
+      planId,
+      regions,
+      cuisines,
+      dietType,
+      isKeto: finalIsKeto,
+      budget,
+      plan: mealPlan,
+      ragMetadata,
+      performanceMetrics,
+      personalizationSources: planData.personalizationSources,
     });
+
+    logger.info('Job completed successfully', { jobId, planId });
   } catch (error) {
-    logger.error('Meal plan generation failed', {
+    logger.error('Meal plan generation failed in background', {
+      jobId,
       error: error.message,
       stack: error.stack,
     });
 
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Failed to generate meal plan',
-        details: error.message,
-      },
-    });
+    jobService.failJob(jobId, error.message);
   }
-});
+}
 
 /**
  * GET /api/meals/:planId

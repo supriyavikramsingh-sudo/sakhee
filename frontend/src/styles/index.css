@@ -86,6 +86,10 @@ h1,h2,h3,h4,h5,h6 {
   animation: fadeIn 0.3s ease-out;
 }
 
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
 /* Button styles */
 .btn {
   @apply px-4 py-2 rounded-lg font-medium transition duration-200 ease-in-out;

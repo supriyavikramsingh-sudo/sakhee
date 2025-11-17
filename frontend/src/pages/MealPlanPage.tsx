@@ -1,19 +1,52 @@
 import { Alert } from 'antd';
 import { Utensils } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '../components/common/PageHeader';
 import Navbar from '../components/layout/Navbar';
 import MealPlanDisplay from '../components/meal/MealPlanDisplay';
 import MealPlanGenerator from '../components/meal/MealPlanGenerator';
+import MealPlanGeneratingCard from '../components/meal/MealPlanGeneratingCard';
 import { useMealStore } from '../store';
 import { useAuthStore } from '../store/authStore';
+import { useJobStore } from '../store/jobStore';
 
 const MealPlanPage = () => {
   const { t } = useTranslation();
   const { user, userProfile } = useAuthStore();
-  const { currentMealPlan } = useMealStore();
+  const { currentMealPlan, setMealPlan } = useMealStore();
+  const { activeJobs, completedJobs, removeJob } = useJobStore();
   const [showGenerator, setShowGenerator] = useState(!currentMealPlan);
+
+  // Check if there's an active meal generation job
+  const hasActiveMealGeneration = activeJobs.some(
+    (job: any) => job.type === 'meal-generation'
+  );
+
+  // Check for completed meal generation jobs and load the result
+  useEffect(() => {
+    const checkCompletedJobs = async () => {
+      const mealGenJobs = completedJobs.filter(
+        (job: any) => job.type === 'meal-generation' && job.status === 'completed' && job.result
+      );
+
+      if (mealGenJobs.length > 0) {
+        const latestJob = mealGenJobs[0];
+        
+        // Set the meal plan from the job result
+        if (latestJob.result.plan) {
+          console.log('✅ Loading meal plan from completed job:', latestJob.id);
+          setMealPlan(latestJob.result);
+          setShowGenerator(false);
+          
+          // Clean up the job after loading
+          removeJob(latestJob.id);
+        }
+      }
+    };
+
+    checkCompletedJobs();
+  }, [completedJobs, setMealPlan, removeJob]);
 
   return (
     <div className="min-h-screen">
@@ -27,7 +60,9 @@ const MealPlanPage = () => {
           icon={<Utensils size={30} className="text-primary" strokeWidth={3} />}
         />
 
-        {showGenerator ? (
+        {hasActiveMealGeneration ? (
+          <MealPlanGeneratingCard />
+        ) : showGenerator ? (
           <MealPlanGenerator
             userProfile={userProfile?.profileData}
             userId={user?.uid ?? ''}
@@ -37,14 +72,7 @@ const MealPlanPage = () => {
           <div>
             <MealPlanDisplay plan={currentMealPlan} />
           </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted mb-6">{t('meals.noPlans')}</p>
-            <button onClick={() => setShowGenerator(true)} className="btn-primary">
-              {t('meals.createFirst')}
-            </button>
-          </div>
-        )}
+        ) : null}
 
         <Alert
           message="These meal plans are personalized suggestions based on PCOS management guidelines.

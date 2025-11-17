@@ -1,7 +1,7 @@
 import apiClient from './apiClient'
 
 export const mealApi = {
-  // Generate meal plan
+  // Generate meal plan (now returns jobId for background processing)
   generatePlan: async (preferences) => {
     try {
       const response = await apiClient.post('/meals/generate', preferences)
@@ -52,6 +52,28 @@ export const mealApi = {
       return response
     } catch (error) {
       console.error('Failed to delete meal plan:', error)
+      throw error
+    }
+  },
+
+  // Get job status
+  getJobStatus: async (jobId) => {
+    try {
+      const response = await apiClient.get(`/jobs/${jobId}`)
+      return response
+    } catch (error) {
+      console.error('Failed to get job status:', error)
+      throw error
+    }
+  },
+
+  // Get user's active jobs
+  getActiveJobs: async (userId) => {
+    try {
+      const response = await apiClient.get(`/jobs/user/${userId}/active`)
+      return response
+    } catch (error) {
+      console.error('Failed to get active jobs:', error)
       throw error
     }
   }

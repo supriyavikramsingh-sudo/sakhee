@@ -439,7 +439,7 @@ const ChatInterface = ({ userProfile, userId }: ChatInterfaceProps) => {
         <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-8 mb-8 min-h-96">
           {messages.length === 0 ? (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center border-accent p-4 border rounded-lg">
+              <div className="text-center border-accent p-4 border rounded-lg bg-white">
                 <h2 className="text-2xl font-bold text-primary mb-3">👋 {t('chat.welcome')}</h2>
                 <p className="text-muted mb-6 max-w-md">{t('chat.welcomeMessage')}</p>
                 <div className="rounded-lg p-6 text-left flex justify-center flex-col items-center max-w-md">

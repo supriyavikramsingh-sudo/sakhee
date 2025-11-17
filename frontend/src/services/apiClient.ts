@@ -399,6 +399,39 @@ export const apiClient = {
       throw error;
     }
   },
+
+  // ============================================
+  // BACKGROUND JOB ENDPOINTS
+  // ============================================
+  getJobStatus: async (jobId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/jobs/${jobId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get job status:', error);
+      throw error;
+    }
+  },
+
+  getActiveJobs: async (userId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/jobs/user/${userId}/active`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get active jobs:', error);
+      throw error;
+    }
+  },
+
+  getUserJobs: async (userId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/jobs/user/${userId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get user jobs:', error);
+      throw error;
+    }
+  },
 };
 
 export default apiClient;

@@ -18,8 +18,9 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-            <h1 className="text-2xl font-bold text-danger mb-4">⚠️ Something went wrong</h1>
+          <div className="bg-white flex items-center flex-col rounded-lg shadow-lg p-8 max-w-md text-center">
+          <img src="/images/404-page.svg" alt="Error Illustration" className="mb-6 w-48 h-48" />
+            <h1 className="text-2xl font-bold text-danger mb-4">Something went wrong</h1>
             <p className="text-muted mb-6">
               {this.state.error?.message || 'An unexpected error occurred'}
             </p>

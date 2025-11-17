@@ -7,6 +7,7 @@ import { apiClient } from '../../services/apiClient';
 import firestoreService from '../../services/firestoreService';
 import { useMealStore } from '../../store';
 import { useAuthStore } from '../../store/authStore';
+import { useJobStore } from '../../store/jobStore';
 import type { UserProfileData } from '../../types/meal.type';
 import SelectInput from '../common/SelectInput';
 import MealInfoTipSection from './MealInfoTipSection';
@@ -28,8 +29,14 @@ const MealPlanGenerator = ({
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { setMealPlan } = useMealStore();
+  const { activeJobs } = useJobStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Check if there's an active meal generation job
+  const hasActiveMealGeneration = activeJobs.some(
+    (job: any) => job.type === 'meal-generation'
+  );
 
   // Usage tracking state
   const [canGenerate, setCanGenerate] = useState(true);
@@ -161,7 +168,7 @@ const MealPlanGenerator = ({
     { value: 'jain', label: 'Jain' },
   ];
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Block submission if user can't generate and is not a test account
@@ -177,9 +184,9 @@ const MealPlanGenerator = ({
       const profileData = userProfile || {};
 
       // Fetch latest medical report
-      let latestReport = null;
+      let latestReport: any = null;
       try {
-        const reportResponse = await apiClient.getUserReport(userId);
+        const reportResponse: any = await apiClient.getUserReport(userId);
         if (reportResponse.success && reportResponse.data) {
           latestReport = reportResponse.data;
           console.log('✅ Medical report fetched successfully:', {
@@ -187,7 +194,7 @@ const MealPlanGenerator = ({
             labCount: latestReport.labValues ? Object.keys(latestReport.labValues).length : 0,
           });
         }
-      } catch (reportError) {
+      } catch (reportError: any) {
         console.warn('⚠️ No medical report found or error fetching report:', reportError.message);
       }
 
@@ -215,9 +222,6 @@ const MealPlanGenerator = ({
           finalRegions = regionalCuisineConfig.getRegionsFromStates(profileData.cuisineStates);
         } else if (profileData.cuisines && profileData.cuisines.length > 0) {
           finalCuisines = profileData.cuisines;
-        } else if (profileData.cuisine) {
-          // Legacy single cuisine support
-          finalCuisines = [profileData.cuisine];
         } else {
           // Ultimate fallback
           finalCuisines = ['North Indian'];
@@ -231,12 +235,8 @@ const MealPlanGenerator = ({
       const finalDietType = formData.dietType || profileData.dietType || 'vegetarian';
 
       // Build restrictions from onboarding + diet type
-      // ⭐ NOTE: Jain dietary requirements are NOT allergens - they're handled via LLM substitution
-      // The backend receives dietType='jain' and uses comprehensive prompts to substitute prohibited ingredients
-      // Only vegan restrictions (dairy, eggs, honey) are treated as allergens because they can't be substituted
       const restrictions = [
-        ...(profileData.allergies || []),
-        // ❌ REMOVED: Jain restrictions (onion, garlic, root-vegetables) - not allergens, handled by LLM
+        ...(profileData.restrictions || []),
         ...(finalDietType === 'vegan' ? ['dairy', 'eggs', 'honey'] : []),
       ];
 
@@ -261,11 +261,11 @@ const MealPlanGenerator = ({
           : null,
       };
 
-      const response = await apiClient.generateMealPlan({
+      const response: any = await apiClient.generateMealPlan({
         regions: finalRegions,
         cuisines: finalCuisines,
         dietType: finalDietType,
-        isKeto: formData.isKeto, // NEW: Pass keto flag to backend
+        isKeto: formData.isKeto,
         budget: formData.budget,
         mealsPerDay: formData.mealsPerDay,
         duration: formData.duration,
@@ -279,7 +279,48 @@ const MealPlanGenerator = ({
         },
       });
 
-      // Capture RAG metadata from response
+      console.log('📥 Response from backend:', response);
+
+      // NEW: Check if we got a jobId (background processing)
+      if (response.success && response.data?.jobId) {
+        console.log('✅ Background job created:', response.data.jobId);
+        
+        // Add job to store for tracking
+        const { addJob } = useJobStore.getState();
+        addJob({
+          id: response.data.jobId,
+          type: 'meal-generation',
+          userId,
+          status: 'pending',
+          progress: 0,
+          result: null,
+          error: null,
+          metadata: {
+            cuisines: finalCuisines,
+            duration: formData.duration,
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          completedAt: null,
+        });
+
+        // Increment usage counter immediately
+        if (!isTestAccount) {
+          await firestoreService.incrementMealPlanUsage(userId);
+          setCanGenerate(false);
+          setUsageInfo((prev: any) => ({ ...prev, planCount: (prev?.planCount || 0) + 1 }));
+        }
+
+        // Show success message and return
+        setLoading(false);
+        setError(null);
+        
+        // Navigate back to meal plan page to show background job banner
+        navigate('/meal-plan');
+        return;
+      }
+
+      // OLD: Legacy support - immediate response with meal plan data
       if (response.data.ragMetadata) {
         console.log('✅ RAG Metadata received:', response.data.ragMetadata);
         setRagMetadata(response.data.ragMetadata);
@@ -297,11 +338,11 @@ const MealPlanGenerator = ({
       if (!isTestAccount) {
         await firestoreService.incrementMealPlanUsage(userId);
         setCanGenerate(false);
-        setUsageInfo((prev) => ({ ...prev, planCount: (prev?.planCount || 0) + 1 }));
+        setUsageInfo((prev: any) => ({ ...prev, planCount: (prev?.planCount || 0) + 1 }));
       }
 
       onGenerated();
-    } catch (err) {
+    } catch (err: any) {
       setError(
         err?.response?.data?.message ||
           err?.message ||
@@ -587,16 +628,29 @@ const MealPlanGenerator = ({
         {/* Submit */}
         <button
           type="submit"
-          disabled={loading || (!canGenerate && !isTestAccount)}
+          disabled={loading || (!canGenerate && !isTestAccount) || hasActiveMealGeneration}
           className="w-full btn-primary !py-3 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {loading && <Loader className="animate-spin" size={20} />}
-          {loading
+          {hasActiveMealGeneration
+            ? '🔄 Meal Plan Generation in Progress...'
+            : loading
             ? 'Generating Your Personalized Plan...'
             : !canGenerate && !isTestAccount
             ? 'Upgrade to Pro to Generate Meal Plans'
             : 'Generate Meal Plan'}
         </button>
+
+        {/* Warning when active job exists */}
+        {hasActiveMealGeneration && (
+          <Alert
+            type="warning"
+            showIcon
+            className="mt-4"
+            message="Generation in Progress"
+            description="A meal plan is already being generated. Please wait for it to complete before creating a new one."
+          />
+        )}
       </form>
 
       <Alert

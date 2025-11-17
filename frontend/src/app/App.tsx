@@ -3,6 +3,7 @@ import { I18nextProvider } from 'react-i18next';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import OnboardingRoute from '../components/auth/OnboardingRoute';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import BackgroundJobBanner from '../components/common/BackgroundJobBanner';
 import ErrorBoundary from '../components/layout/ErrorBoundary';
 import { LoadingSpinner } from '../components/layout/LoadingSpinner';
 import ChatPage from '../pages/ChatPage';
@@ -50,6 +51,9 @@ const App = () => {
     <ErrorBoundary>
       <I18nextProvider i18n={i18n}>
         <Router>
+          {/* Global Background Job Banner */}
+          <BackgroundJobBanner />
+          
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
