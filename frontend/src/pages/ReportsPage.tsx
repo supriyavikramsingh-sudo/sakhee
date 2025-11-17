@@ -97,21 +97,6 @@ const ReportsPage = () => {
     );
   }
 
-  // If not authenticated after auth is loaded
-  if (!authLoading && !user) {
-    return (
-      <div>
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center">
-          <FileText className="mx-auto mb-4 text-muted" size={64} />
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Please Sign In</h3>
-          <p className="text-muted mb-6">
-            You need to be signed in to view and manage your medical reports
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -131,7 +116,7 @@ const ReportsPage = () => {
           type="warning"
           showIcon
           closable
-          className="mb-8"
+          className="my-6"
         />
 
         {/* Show loading indicator while fetching report */}
@@ -142,7 +127,7 @@ const ReportsPage = () => {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-6 mt-6">
           {/* Left Column - Upload & Actions */}
           <div className="lg:col-span-1 space-y-6">
             {/* Current Report Info */}
