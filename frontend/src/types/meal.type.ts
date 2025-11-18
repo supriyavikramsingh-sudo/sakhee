@@ -87,4 +87,6 @@ export interface UserProfileData {
   cuisines: string[];
   cuisineStates: string[];
   weight_goal: string;
+  allergies?: string[]; // Dietary allergies/restrictions from onboarding
+  restrictions?: string[]; // Deprecated - now using allergies
 }

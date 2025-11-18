@@ -2051,13 +2051,44 @@ class MealPlanChain {
             // Exclude meal templates (we want substitutes, not recipes)
             if (type === 'meal_template') return false;
 
-            // Accept substitute and nutritional guidance
-            return (
+            // Basic type filtering
+            const isSubstituteType =
               type === 'ingredient_substitute' ||
               type === 'medical_info' ||
               type === 'nutritional_data' ||
-              type === 'medical_knowledge'
-            );
+              type === 'medical_knowledge';
+
+            if (!isSubstituteType) return false;
+
+            // 🚨 CRITICAL FIX: Exclude keto-specific substitutes when isKeto=false
+            // This prevents cauliflower rice, almond flour, etc. from contaminating non-keto plans
+            if (!preferences.isKeto) {
+              const content = (doc.pageContent || doc.content || '').toLowerCase();
+              const ketoKeywords = [
+                'cauliflower rice',
+                'almond flour',
+                'coconut flour',
+                'ketogenic',
+                'keto diet',
+                'very low carb',
+                'net carb',
+                'ketosis',
+                'zucchini noodles',
+                'shirataki',
+                'flaxseed meal',
+              ];
+
+              const hasKetoContent = ketoKeywords.some((keyword) => content.includes(keyword));
+
+              if (hasKetoContent) {
+                logger.debug(
+                  `  ⏭️  Skipping keto substitute doc in protein substitutes (isKeto=false)`
+                );
+                return false;
+              }
+            }
+
+            return true;
           });
 
           logger.info(`  Filtered to ${substituteDocs.length} substitute docs`);
@@ -2115,11 +2146,42 @@ class MealPlanChain {
           // Filter to substitute docs
           const substituteDocs = results.filter((doc) => {
             const type = doc.metadata?.type;
-            return (
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+            // Basic type filtering
+            const isSubstituteType =
               type === 'ingredient_substitute' ||
               type === 'nutritional_data' ||
-              type === 'medical_knowledge'
-            );
+              type === 'medical_knowledge';
+
+            if (!isSubstituteType) return false;
+
+            // 🚨 CRITICAL FIX: Exclude keto-specific substitutes when isKeto=false
+            // This prevents cauliflower rice, almond flour, etc. from contaminating non-keto plans
+            if (!preferences.isKeto) {
+              const ketoKeywords = [
+                'cauliflower rice',
+                'almond flour',
+                'coconut flour',
+                'ketogenic',
+                'keto diet',
+                'very low carb',
+                'net carb',
+                'ketosis',
+                'zucchini noodles',
+                'shirataki',
+                'flaxseed meal',
+              ];
+
+              const hasKetoContent = ketoKeywords.some((keyword) => content.includes(keyword));
+
+              if (hasKetoContent) {
+                logger.debug(`  ⏭️  Skipping keto substitute doc (isKeto=false)`);
+                return false;
+              }
+            }
+
+            return true;
           });
 
           logger.info(`  Retrieved ${substituteDocs.length} PCOS substitute docs`);
@@ -2142,11 +2204,44 @@ class MealPlanChain {
           logger.info(`  Querying priority substitute: "${query}"`);
 
           const results = await retriever.retrieve(query, { topK: 2 });
-          const substituteDocs = results.filter(
-            (doc) =>
-              doc.metadata?.type === 'ingredient_substitute' ||
-              doc.metadata?.type === 'nutritional_data'
-          );
+          const substituteDocs = results.filter((doc) => {
+            const type = doc.metadata?.type;
+            const content = (doc.pageContent || doc.content || '').toLowerCase();
+
+            // Basic type filtering
+            const isSubstituteType =
+              type === 'ingredient_substitute' || type === 'nutritional_data';
+
+            if (!isSubstituteType) return false;
+
+            // 🚨 CRITICAL FIX: Exclude keto-specific substitutes when isKeto=false
+            if (!preferences.isKeto) {
+              const ketoKeywords = [
+                'cauliflower rice',
+                'almond flour',
+                'coconut flour',
+                'ketogenic',
+                'keto diet',
+                'very low carb',
+                'net carb',
+                'ketosis',
+                'zucchini noodles',
+                'shirataki',
+                'flaxseed meal',
+              ];
+
+              const hasKetoContent = ketoKeywords.some((keyword) => content.includes(keyword));
+
+              if (hasKetoContent) {
+                logger.debug(
+                  `  ⏭️  Skipping keto substitute doc in priority substitutes (isKeto=false)`
+                );
+                return false;
+              }
+            }
+
+            return true;
+          });
 
           retrievalResults.ingredientSubstitutes.push(...substituteDocs);
         }
@@ -3121,90 +3216,167 @@ class MealPlanChain {
           const normalizedRestriction = r.toLowerCase().trim();
 
           if (normalizedRestriction === 'gluten') {
-            prompt += `   📌 GLUTEN SUBSTITUTION RULES:\n`;
-            prompt += `      ❌ Allergen ingredients: wheat flour (atta/maida), roti, paratha, chapati, bread, naan\n`;
-            prompt += `      ✅ Substitute with: Ragi flour, bajra flour, jowar flour, amaranth flour, buckwheat flour,\n`;
-            prompt += `         chickpea flour (besan), rice flour, quinoa flour, millet flour\n`;
+            prompt += `   📌 GLUTEN SUBSTITUTION RULES (MEDICAL NECESSITY - ZERO TOLERANCE):\n`;
+            prompt += `      🚨 USER HAS CELIAC DISEASE/GLUTEN INTOLERANCE - ABSOLUTELY NO WHEAT/GLUTEN!\n`;
+            prompt += `      ❌ FORBIDDEN INGREDIENTS (NEVER USE THESE):\n`;
+            prompt += `         • wheat, whole wheat, wheat flour, atta, maida, refined flour\n`;
+            prompt += `         • roti (if wheat-based), chapati, paratha, naan, bread\n`;
+            prompt += `         • semolina (sooji/suji), pasta, couscous\n`;
+            prompt += `         • barley, rye, regular oats (unless certified gluten-free)\n`;
             prompt += `      \n`;
-            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `      ✅ MANDATORY SUBSTITUTES (ALWAYS USE THESE INSTEAD):\n`;
+            prompt += `         • Ragi flour (finger millet) - nutrient-rich, diabetic-friendly\n`;
+            prompt += `         • Bajra flour (pearl millet) - high protein, good for PCOS\n`;
+            prompt += `         • Jowar flour (sorghum) - high fiber, low GI\n`;
+            prompt += `         • Besan (chickpea flour) - protein-rich, versatile\n`;
+            prompt += `         • Rice flour - mild flavor, good for dosas\n`;
+            prompt += `         • Amaranth flour (rajgira) - protein-rich\n`;
+            prompt += `         • Buckwheat flour (kuttu) - not actually wheat, gluten-free\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 MANDATORY SUBSTITUTION EXAMPLES:\n`;
             prompt += `         "Wheat Roti" → "Bajra Roti" (pearl millet flatbread)\n`;
-            prompt += `         "Whole Wheat Paratha" → "Ragi Paratha" (finger millet flatbread)\n`;
-            prompt += `         "Dal Paratha with wheat" → "Dal Paratha with jowar flour"\n`;
-            prompt += `         "Urad Dal Paratha" → "Urad Dal Paratha (with bajra flour)"\n`;
-            prompt += `         "Mandua Roti" → KEEP AS IS (mandua = ragi, already gluten-free!)\n`;
-            prompt += `         "Bread" → "Millet bread" or "Rice bread"\n`;
+            prompt += `         "Whole Wheat Roti" → "Ragi Roti" (finger millet flatbread)\n`;
+            prompt += `         "Whole Wheat Paratha" → "Jowar Paratha" (sorghum flatbread)\n`;
+            prompt += `         "Chapati" → "Bajra Chapati" or "Jowar Chapati"\n`;
+            prompt += `         "Dal Paratha" → "Dal Paratha (Bajra Flour)"\n`;
+            prompt += `         "Bread" → "Millet Bread" or "Rice Bread"\n`;
+            prompt += `         "Mandua Roti" → KEEP AS IS (mandua = ragi = gluten-free!)\n`;
             prompt += `      \n`;
-            prompt += `      🏷️ Update meal name: Always reflect substituted flour in name\n`;
-            prompt += `         ✅ RIGHT: "Bajra Roti with Ghee (Uttarakhand)"\n`;
-            prompt += `         ❌ WRONG: "Roti with Ghee (Uttarakhand)" - which flour?\n\n`;
+            prompt += `      🏷️ MEAL NAME UPDATE RULES (CRITICAL - MUST FOLLOW):\n`;
+            prompt += `         • NEVER write "Roti" or "Paratha" without specifying the flour\n`;
+            prompt += `         • ALWAYS specify gluten-free flour in the meal name\n`;
+            prompt += `         • ✅ CORRECT: "Bajra Roti with Sabzi", "Jowar Paratha", "Ragi Dosa"\n`;
+            prompt += `         • ❌ WRONG: "Roti with Sabzi" (which flour?)\n`;
+            prompt += `         • ❌ WRONG: "Whole Wheat Roti" (USER IS ALLERGIC TO WHEAT!)\n`;
+            prompt += `         • ❌ WRONG: "Wheat Paratha" (CONTAINS GLUTEN - FORBIDDEN!)\n`;
+            prompt += `      \n`;
+            prompt += `      🚨 VALIDATION BEFORE OUTPUTTING ANY MEAL:\n`;
+            prompt += `         1. Does meal name contain "wheat", "atta", "maida"? → MUST SUBSTITUTE!\n`;
+            prompt += `         2. Does meal name say "roti"/"paratha" without flour type? → MUST SPECIFY!\n`;
+            prompt += `         3. Does ingredients list contain wheat? → MUST REPLACE WITH MILLET!\n`;
+            prompt += `         4. Is flour type specified and gluten-free? → OK TO USE!\n`;
+            prompt += `      \n`;
+            prompt += `      ⚠️ IF YOU OUTPUT "WHEAT ROTI" OR "WHOLE WHEAT" ANYTHING, PLAN WILL BE REJECTED!\n\n`;
           }
 
           if (normalizedRestriction === 'eggs') {
-            prompt += `   📌 EGG SUBSTITUTION RULES:\n`;
-            prompt += `      ❌ Allergen ingredients: eggs (whole/yolk/white), omelette, bhurji, scrambled eggs\n`;
-            prompt += `      ✅ Substitute with:\n`;
+            prompt += `   📌 EGG SUBSTITUTION RULES (MEDICAL NECESSITY - ZERO TOLERANCE):\n`;
+            prompt += `      🚨 USER HAS EGG ALLERGY - ABSOLUTELY NO EGGS IN ANY FORM!\n`;
+            prompt += `      ❌ FORBIDDEN INGREDIENTS (NEVER USE THESE):\n`;
+            prompt += `         • eggs (whole, yolk, white, powder, any form)\n`;
+            prompt += `         • omelette, bhurji, scrambled eggs, boiled eggs\n`;
+            prompt += `         • anda (Hindi for egg), egg curry, egg masala\n`;
+            prompt += `         • mayonnaise (contains eggs)\n`;
+            prompt += `      \n`;
+            prompt += `      ✅ MANDATORY SUBSTITUTES:\n`;
             prompt += `         - For protein dishes: Paneer, tofu, chickpea scramble (besan chilla)\n`;
             prompt += `         - For binding (baking): Flax egg (1 tbsp ground flax + 3 tbsp water), chia egg\n`;
             prompt += `         - For texture: Mashed banana, applesauce, silken tofu\n`;
             prompt += `      \n`;
-            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `      🔄 MANDATORY SUBSTITUTION EXAMPLES:\n`;
             prompt += `         "Egg Bhurji Pahadi Style" → "Paneer Bhurji Pahadi Style"\n`;
             prompt += `         "Egg Omelette with Mandua Roti" → "Besan Chilla with Mandua Roti"\n`;
             prompt += `         "Egg Curry" → "Paneer Curry" or "Tofu Curry"\n`;
             prompt += `         "Scrambled Eggs" → "Paneer Scramble" or "Tofu Scramble"\n`;
+            prompt += `         "Anda Curry" → "Paneer Curry"\n`;
             prompt += `      \n`;
-            prompt += `      🏷️ Update meal name: Replace "Egg" with substituted protein\n`;
-            prompt += `         ✅ RIGHT: "Paneer Bhurji Pahadi Style (Uttarakhand)"\n`;
-            prompt += `         ❌ WRONG: "Egg Bhurji Pahadi Style (Uttarakhand)" - user is allergic!\n\n`;
+            prompt += `      🏷️ MEAL NAME UPDATE RULES (CRITICAL):\n`;
+            prompt += `         • NEVER write "Egg" or "Anda" in meal names\n`;
+            prompt += `         • ALWAYS replace with substituted protein name\n`;
+            prompt += `         • ✅ CORRECT: "Paneer Bhurji", "Tofu Scramble", "Besan Chilla"\n`;
+            prompt += `         • ❌ WRONG: "Egg Bhurji" (USER IS ALLERGIC!)\n`;
+            prompt += `         • ❌ WRONG: "Anda Masala" (CONTAINS EGGS - FORBIDDEN!)\n`;
+            prompt += `      \n`;
+            prompt += `      ⚠️ IF YOU OUTPUT "EGG" OR "ANDA" IN ANY MEAL NAME, PLAN WILL BE REJECTED!\n\n`;
           }
 
           if (normalizedRestriction === 'dairy') {
-            prompt += `   📌 DAIRY SUBSTITUTION RULES:\n`;
-            prompt += `      ❌ Allergen ingredients: milk, paneer, cheese, yogurt, ghee, butter, cream, khoya, malai\n`;
-            prompt += `      ✅ Substitute with:\n`;
-            prompt += `         - Milk → Coconut milk, almond milk, soy milk, cashew milk, oat milk\n`;
-            prompt += `         - Paneer → Tofu, tempeh, cashew cheese\n`;
-            prompt += `         - Yogurt → Coconut yogurt, almond yogurt, soy yogurt\n`;
-            prompt += `         - Ghee/butter → Coconut oil, olive oil, sesame oil, vegan butter\n`;
-            prompt += `         - Cream → Coconut cream, cashew cream\n`;
+            prompt += `   📌 DAIRY SUBSTITUTION RULES (MEDICAL NECESSITY - ZERO TOLERANCE):\n`;
+            prompt += `      🚨 USER HAS LACTOSE INTOLERANCE/DAIRY ALLERGY - ABSOLUTELY NO DAIRY!\n`;
+            prompt += `      ❌ FORBIDDEN INGREDIENTS (NEVER USE THESE):\n`;
+            prompt += `         • milk, paneer, cheese, yogurt, curd, dahi\n`;
+            prompt += `         • ghee, butter, cream, khoya, mawa, malai\n`;
+            prompt += `         • condensed milk, evaporated milk, milk powder\n`;
             prompt += `      \n`;
-            prompt += `      🔄 Substitution examples:\n`;
-            prompt += `         "Paneer Butter Masala" → "Tofu Butter Masala (with coconut oil)"\n`;
+            prompt += `      ✅ MANDATORY SUBSTITUTES:\n`;
+            prompt += `         - Milk → Coconut milk, almond milk, soy milk, oat milk\n`;
+            prompt += `         - Paneer → Tofu, tempeh, cashew cheese (if no nut allergy)\n`;
+            prompt += `         - Yogurt/Curd → Coconut yogurt, almond yogurt, soy yogurt\n`;
+            prompt += `         - Ghee/Butter → Coconut oil, olive oil, sesame oil, vegan butter\n`;
+            prompt += `         - Cream → Coconut cream, cashew cream (if no nut allergy)\n`;
+            prompt += `      \n`;
+            prompt += `      🔄 MANDATORY SUBSTITUTION EXAMPLES:\n`;
+            prompt += `         "Paneer Butter Masala" → "Tofu Butter Masala (Coconut Oil)"\n`;
             prompt += `         "Palak Paneer" → "Palak Tofu"\n`;
             prompt += `         "Dal Tadka with Ghee" → "Dal Tadka with Coconut Oil"\n`;
-            prompt += `         "Singal with Ghee" → "Singal with Sesame Oil"\n`;
+            prompt += `         "Kadhi (yogurt-based)" → "Kadhi (Coconut Yogurt)"\n`;
+            prompt += `         "Roti with Ghee" → "Roti with Sesame Oil"\n`;
             prompt += `      \n`;
-            prompt += `      🏷️ Update meal name: Reflect dairy-free protein/fat\n`;
-            prompt += `         ✅ RIGHT: "Palak Tofu (Uttarakhand)"\n`;
-            prompt += `         ❌ WRONG: "Palak Paneer (Uttarakhand)" - user is allergic!\n\n`;
+            prompt += `      🏷️ MEAL NAME UPDATE RULES (CRITICAL):\n`;
+            prompt += `         • NEVER write "Paneer", "Ghee", "Butter" in meal names without noting substitute\n`;
+            prompt += `         • ALWAYS replace dairy protein/fat with plant-based alternative\n`;
+            prompt += `         • ✅ CORRECT: "Palak Tofu", "Dal with Coconut Oil", "Tofu Curry"\n`;
+            prompt += `         • ❌ WRONG: "Palak Paneer" (USER IS ALLERGIC TO DAIRY!)\n`;
+            prompt += `         • ❌ WRONG: "Roti with Ghee" (GHEE IS DAIRY - FORBIDDEN!)\n`;
+            prompt += `      \n`;
+            prompt += `      ⚠️ IF YOU OUTPUT "PANEER", "GHEE", or "BUTTER" IN MEAL NAME, PLAN WILL BE REJECTED!\n\n`;
           }
 
           if (normalizedRestriction === 'nuts') {
-            prompt += `   📌 NUT SUBSTITUTION RULES:\n`;
-            prompt += `      ❌ Allergen ingredients: almonds, cashews, walnuts, pistachios, peanuts, hazelnuts, pecans\n`;
-            prompt += `      ✅ Substitute with:\n`;
+            prompt += `   📌 NUT SUBSTITUTION RULES (MEDICAL NECESSITY - ZERO TOLERANCE):\n`;
+            prompt += `      🚨 USER HAS NUT ALLERGY - ABSOLUTELY NO NUTS OF ANY KIND!\n`;
+            prompt += `      ❌ FORBIDDEN INGREDIENTS (NEVER USE THESE):\n`;
+            prompt += `         • almonds (badam), cashews (kaju), walnuts (akhrot)\n`;
+            prompt += `         • pistachios, peanuts, hazelnuts, pecans, macadamia\n`;
+            prompt += `         • almond flour, almond milk, cashew cream, nut butters\n`;
+            prompt += `         • ANY product containing nuts or nut derivatives\n`;
+            prompt += `      \n`;
+            prompt += `      ✅ MANDATORY SUBSTITUTES:\n`;
             prompt += `         - For crunch: Seeds (sunflower, pumpkin, chia, flax, hemp, sesame)\n`;
             prompt += `         - For fat: Coconut products, tahini (sesame paste), sunflower butter\n`;
             prompt += `         - For protein: Extra legumes, tofu, paneer\n`;
+            prompt += `         - For milk: Coconut milk, soy milk, oat milk, rice milk\n`;
             prompt += `      \n`;
-            prompt += `      🔄 Substitution examples:\n`;
+            prompt += `      🔄 MANDATORY SUBSTITUTION EXAMPLES:\n`;
             prompt += `         "Cashew Curry" → "Coconut Curry"\n`;
-            prompt += `         "Almond-crusted dish" → "Sesame-crusted dish"\n`;
+            prompt += `         "Almond-crusted Paneer" → "Sesame-crusted Paneer"\n`;
             prompt += `         "Peanut Chutney" → "Coconut Chutney"\n`;
             prompt += `         "Garnish with cashews" → "Garnish with sunflower seeds"\n`;
+            prompt += `         "Almond Milk Smoothie" → "Coconut Milk Smoothie"\n`;
             prompt += `      \n`;
-            prompt += `      ⚠️ NOTE: Coconut is a FRUIT (not a nut) - safe for nut allergies!\n`;
-            prompt += `      🏷️ Update meal name if nut is primary ingredient\n\n`;
+            prompt += `      🏷️ MEAL NAME UPDATE RULES (CRITICAL):\n`;
+            prompt += `         • NEVER write any nut name in meal names\n`;
+            prompt += `         • ALWAYS replace with seed or coconut alternative\n`;
+            prompt += `         • ✅ CORRECT: "Coconut Curry", "Sesame-crusted Paneer"\n`;
+            prompt += `         • ❌ WRONG: "Cashew Curry" (USER IS ALLERGIC TO NUTS!)\n`;
+            prompt += `         • ❌ WRONG: "Almond Flour Roti" (ALMONDS ARE NUTS - FORBIDDEN!)\n`;
+            prompt += `      \n`;
+            prompt += `      ⚠️ NOTE: Coconut is a FRUIT, not a nut - SAFE for nut allergies!\n`;
+            prompt += `      ⚠️ IF YOU OUTPUT ANY NUT NAME IN MEAL, PLAN WILL BE REJECTED!\n\n`;
           }
         });
 
-        prompt += `   🎯 REMEMBER:\n`;
-        prompt += `      1. NEVER reject a meal just because it has allergens\n`;
-        prompt += `      2. ALWAYS make intelligent substitutions using the rules above\n`;
-        prompt += `      3. UPDATE the meal name to reflect substituted ingredients\n`;
-        prompt += `      4. PRESERVE regional authenticity (keep state labels, cooking methods)\n`;
-        prompt += `      5. CHECK "ALLERGEN SUBSTITUTES" section in RAG context for more alternatives\n`;
-        prompt += `      6. This preserves meal variety while ensuring medical safety\n\n`;
+        prompt += `   🎯 CRITICAL REMINDERS (READ BEFORE GENERATING EACH MEAL):\n`;
+        prompt += `      1. ⚠️ MEDICAL SAFETY: Allergies can cause severe reactions - ZERO TOLERANCE for mistakes!\n`;
+        prompt += `      2. ✅ NEVER reject a meal just because it has allergens - SUBSTITUTE instead!\n`;
+        prompt += `      3. ✅ ALWAYS make intelligent substitutions using the EXACT rules above\n`;
+        prompt += `      4. ✅ UPDATE the meal name to reflect substituted ingredients (not just ingredients list!)\n`;
+        prompt += `      5. ✅ PRESERVE regional authenticity (keep state labels, cooking methods)\n`;
+        prompt += `      6. ✅ CHECK "ALLERGEN SUBSTITUTES" section in RAG context for more alternatives\n`;
+        prompt += `      7. ✅ VALIDATE each meal: Does name contain allergen keywords? If YES → MUST SUBSTITUTE!\n`;
+        prompt += `      \n`;
+        prompt += `   🚨 FINAL ALLERGEN CHECK (DO THIS FOR EVERY SINGLE MEAL):\n`;
+        prompt += `      Before adding ANY meal to the plan, ask yourself:\n`;
+        prompt += `      • Does the meal NAME contain wheat/dairy/nuts/eggs? → SUBSTITUTE & UPDATE NAME!\n`;
+        prompt += `      • Does the ingredients list contain allergens? → SUBSTITUTE INGREDIENTS!\n`;
+        prompt += `      • Is the meal name accurate after substitution? → VERIFY IT MATCHES!\n`;
+        prompt += `      \n`;
+        prompt += `      Example validation for gluten allergy:\n`;
+        prompt += `      ❌ WRONG: Output "Whole Wheat Roti" → Contains "wheat" → REJECTED!\n`;
+        prompt += `      ✅ RIGHT: Output "Bajra Roti" → No wheat, millet specified → ACCEPTED!\n`;
+        prompt += `      \n`;
+        prompt += `   💀 IF YOU OUTPUT A MEAL WITH ALLERGEN IN NAME/INGREDIENTS, USER COULD HAVE SEVERE REACTION!\n`;
+        prompt += `   🏥 This is a MEDICAL SAFETY issue, not just a preference - treat it as HIGHEST PRIORITY!\n\n`;
       }
     }
 

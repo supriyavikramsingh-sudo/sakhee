@@ -34,9 +34,7 @@ const MealPlanGenerator = ({
   const [error, setError] = useState(null);
 
   // Check if there's an active meal generation job
-  const hasActiveMealGeneration = activeJobs.some(
-    (job: any) => job.type === 'meal-generation'
-  );
+  const hasActiveMealGeneration = activeJobs.some((job: any) => job.type === 'meal-generation');
 
   // Usage tracking state
   const [canGenerate, setCanGenerate] = useState(true);
@@ -235,8 +233,10 @@ const MealPlanGenerator = ({
       const finalDietType = formData.dietType || profileData.dietType || 'vegetarian';
 
       // Build restrictions from onboarding + diet type
+      // 🚨 FIX: Use profileData.allergies (from onboarding) as restrictions
       const restrictions = [
-        ...(profileData.restrictions || []),
+        ...(profileData.allergies || []), // Allergies from onboarding
+        ...(profileData.restrictions || []), // Fallback for old data structure
         ...(finalDietType === 'vegan' ? ['dairy', 'eggs', 'honey'] : []),
       ];
 
@@ -244,6 +244,7 @@ const MealPlanGenerator = ({
         regions: finalRegions,
         cuisines: finalCuisines,
         restrictions,
+        allergiesFromProfile: profileData.allergies,
       });
 
       // Build health context from onboarding + medical reports
@@ -284,7 +285,7 @@ const MealPlanGenerator = ({
       // NEW: Check if we got a jobId (background processing)
       if (response.success && response.data?.jobId) {
         console.log('✅ Background job created:', response.data.jobId);
-        
+
         // Add job to store for tracking
         const { addJob } = useJobStore.getState();
         addJob({
@@ -314,7 +315,7 @@ const MealPlanGenerator = ({
         // Show success message and return
         setLoading(false);
         setError(null);
-        
+
         // Navigate back to meal plan page to show background job banner
         navigate('/meal-plan');
         return;
@@ -473,8 +474,13 @@ const MealPlanGenerator = ({
                 const cuisineArray = Array.isArray(value) ? value : [value];
                 if (cuisineArray.length > 5) {
                   // Show warning and limit to 5
-                  alert('Maximum 5 cuisines allowed for balanced meal distribution. Keeping first 5 selected.');
-                  setFormData((prev) => ({ ...prev, cuisineStates: cuisineArray.slice(0, 5) as string[] }));
+                  alert(
+                    'Maximum 5 cuisines allowed for balanced meal distribution. Keeping first 5 selected.'
+                  );
+                  setFormData((prev) => ({
+                    ...prev,
+                    cuisineStates: cuisineArray.slice(0, 5) as string[],
+                  }));
                 } else {
                   setFormData((prev) => ({ ...prev, cuisineStates: cuisineArray as string[] }));
                 }
@@ -490,7 +496,13 @@ const MealPlanGenerator = ({
               }
               mode="multiple"
             />
-            <p className={`text-xs mt-1 ${formData.cuisineStates.length >= 5 ? 'text-orange-600 font-semibold' : 'text-gray-500'}`}>
+            <p
+              className={`text-xs mt-1 ${
+                formData.cuisineStates.length >= 5
+                  ? 'text-orange-600 font-semibold'
+                  : 'text-gray-500'
+              }`}
+            >
               {formData.cuisineStates.length === 0
                 ? `Will use your onboarding cuisines${
                     profileData.cuisines ? `: ${profileData.cuisines.join(', ')}` : ''
@@ -511,7 +523,9 @@ const MealPlanGenerator = ({
               })}
               placeholder="Use my onboarding preference"
               value={formData.dietType}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, dietType: String(val) }))}
+              handleInputChange={(val) =>
+                setFormData((prev) => ({ ...prev, dietType: String(val) }))
+              }
             />
             <p className="text-xs text-gray-500 mt-1">
               Override your onboarding diet type if needed
@@ -529,7 +543,9 @@ const MealPlanGenerator = ({
                 { value: '4', label: '4 Meals (with snack)' },
               ]}
               value={formData.mealsPerDay}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, mealsPerDay: String(val) }))}
+              handleInputChange={(val) =>
+                setFormData((prev) => ({ ...prev, mealsPerDay: String(val) }))
+              }
             />
           </div>
 
@@ -543,7 +559,9 @@ const MealPlanGenerator = ({
                 { value: '5', label: '5 Days' },
                 { value: '7', label: '7 Days (1 Week)' },
               ]}
-              handleInputChange={(val) => setFormData((prev) => ({ ...prev, duration: String(val) }))}
+              handleInputChange={(val) =>
+                setFormData((prev) => ({ ...prev, duration: String(val) }))
+              }
             />
           </div>
         </div>
