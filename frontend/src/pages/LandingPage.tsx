@@ -11,8 +11,6 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/common/Footer';
-import Logo from '/images/logo.svg';
 
 interface FeatureCardProps {
   title: string;
@@ -52,21 +50,9 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen snap-y snap-mandatory overflow-y-auto">
-      <header className="bg-white mx-auto sticky top-0 flex items-center justify-between p-4 z-10 shadow-xl">
-        <img src={Logo} className="h-12" alt="Sakhee" />
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/login')} className="btn-outline">
-            Sign in
-          </button>
-          <a href="#section2" className="btn-primary">
-            Learn More
-          </a>
-        </div>
-      </header>
-
+    <div className="max-w-7xl mx-auto snap-y snap-mandatory overflow-y-auto">
       <main className="mx-auto px-4">
-        <section className="min-h-screen snap-start flex items-center pt-[80px] px-4">
+        <section className="min-h-screen snap-start flex items-center px-4">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
               Your PCOS journey, supported every step of the way
@@ -88,7 +74,7 @@ const LandingPage = () => {
           <img src="/images/login-avatar.svg" />
         </section>
 
-        <section id="section2" className="min-h-screen snap-start flex items-center pt-[80px] px-4">
+        <section id="section2" className="min-h-screen snap-start flex items-center px-4">
           <div className="bg-[#FAFAFAFF] p-12 rounded-xl flex flex-col gap-11">
             <div className="flex flex-col items-center justify-center gap-[30px]">
               <h3 className="font-bold text-center text-[40px]">Discover Our Powerful Features</h3>
@@ -126,7 +112,7 @@ const LandingPage = () => {
           </div>
         </section>
 
-        <section className="min-h-screen snap-start flex items-center pt-[80px] px-4">
+        <section className="min-h-screen snap-start flex items-center px-4">
           <div className="flex flex-col gap-11">
             <div className="flex flex-col items-center justify-center gap-[30px]">
               <h3 className="font-bold text-center text-[40px]">
@@ -163,7 +149,7 @@ const LandingPage = () => {
           </div>
         </section>
 
-        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center pt-[80px] px-4">
+        <section className="flex flex-col gap-8 min-h-screen snap-start items-center justify-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
             Why women across India choose Sakhee?
           </h1>
@@ -221,7 +207,6 @@ const LandingPage = () => {
           </button>
         </div>
       </section>
-      <Footer />
     </div>
   );
 };

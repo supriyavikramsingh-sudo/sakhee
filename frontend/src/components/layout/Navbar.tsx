@@ -65,7 +65,7 @@ export const Navbar = () => {
               <>
                 <Link
                   to="/chat"
-                  className={`text-gray-700 hover:text-primary transition ${
+                  className={`text-gray-700 font-medium hover:text-primary transition ${
                     pathName === '/chat' ? 'text-primary' : ''
                   }`}
                 >
@@ -73,7 +73,7 @@ export const Navbar = () => {
                 </Link>
                 <Link
                   to="/meals"
-                  className={`text-gray-700 hover:text-primary transition ${
+                  className={`text-gray-700 font-medium hover:text-primary transition ${
                     pathName === '/meals' ? 'text-primary' : ''
                   }`}
                 >
@@ -81,7 +81,7 @@ export const Navbar = () => {
                 </Link>
                 <Link
                   to="/progress"
-                  className={`text-gray-700 hover:text-primary transition ${
+                  className={`text-gray-700 font-medium hover:text-primary transition ${
                     pathName === '/progress' ? 'text-primary' : ''
                   }`}
                 >
@@ -89,7 +89,7 @@ export const Navbar = () => {
                 </Link>
                 <Link
                   to="/reports"
-                  className={`text-gray-700 hover:text-primary transition ${
+                  className={`text-gray-700 font-medium hover:text-primary transition ${
                     pathName === '/reports' ? 'text-primary' : ''
                   }`}
                 >
@@ -99,7 +99,7 @@ export const Navbar = () => {
             )}
             <Link
               to="/pricing"
-              className={`text-gray-700 hover:text-primary transition ${
+              className={`text-gray-700 font-medium hover:text-primary transition ${
                 pathName === '/pricing' || pathName === '/pricing-details' ? 'text-primary' : ''
               }`}
             >

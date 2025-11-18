@@ -1,6 +1,7 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import OnboardingRoute from '../components/auth/OnboardingRoute';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import AboutUsPage from '../pages/AboutUsPage';
 import ChatPage from '../pages/ChatPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import HomePage from '../pages/HomePage';
@@ -14,17 +15,21 @@ import ProgressPage from '../pages/ProgressPage';
 import ReportsPage from '../pages/ReportsPage';
 import SettingsPageNew from '../pages/SettingsPageNew';
 import Layout from '../components/layout/Layout';
+import LayoutCommon from '../components/layout/LayoutCommon';
 
 export const UnauthenticatedRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<LandingPage />} />
-        {/* Public Pricing Routes */}
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/pricing-details" element={<PricingDetailsPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/" element={<LayoutCommon />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          {/* Public Routes */}
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/pricing-details" element={<PricingDetailsPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
       </Routes>
     </Router>
   );
@@ -99,6 +104,7 @@ export const AuthenticatedRoutes = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/about" element={<AboutUsPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/pricing-details" element={<PricingDetailsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
