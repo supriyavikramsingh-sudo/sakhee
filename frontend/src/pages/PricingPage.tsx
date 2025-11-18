@@ -72,7 +72,7 @@ const PricingPage = () => {
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <PageHeader
-          title={'Choose Your Sakhee Plan'}
+          title={'Plans Tailored for Your PCOS Journey'}
           description={
             ' Affordable PCOS care for every woman in India. Start free, upgrade as you grow. No long-term commitments, cancel anytime.'
           }
