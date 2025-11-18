@@ -10,9 +10,10 @@ import MealCard from './MealCard';
 
 interface MealPlanDisplayProps {
   plan: PlanData;
+  onGenerateNewPlan?: () => void; // NEW: Optional callback for generate new plan
 }
 
-const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
+const MealPlanDisplay = ({ plan, onGenerateNewPlan }: MealPlanDisplayProps) => {
   const [selectedDay, setSelectedDay] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const navigate = useNavigate();
@@ -172,11 +173,15 @@ const MealPlanDisplay = ({ plan }: MealPlanDisplayProps) => {
               {isDownloading ? 'Preparing...' : 'Download PDF'}
             </button>
 
-            {/* 🆕 NEW: Generate New Plan Button with Upgrade Logic */}
+            {/* 🆕 NEW: Generate New Plan Button with History Integration */}
             <div className="relative">
               <button
                 onClick={() => {
-                  if (canGenerateMore) {
+                  if (onGenerateNewPlan) {
+                    // Use callback if provided (from history integration)
+                    onGenerateNewPlan();
+                  } else if (canGenerateMore) {
+                    // Fallback to existing logic
                     window.location.reload();
                   } else {
                     navigate('/coming-soon');

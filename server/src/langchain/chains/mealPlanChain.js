@@ -299,7 +299,10 @@ class MealPlanChain {
     // Compresses less critical fields: macros (abbreviated), budget (range), type (abbrev)
     // Format: "Name (State/Region): Ingredients | Macros | GI | Budget | Type"
 
-    const mealName = m.mealName || 'Unknown Meal';
+    // 🔥 FIX: Remove serial numbers from meal names (e.g., "187. Patande..." → "Patande...")
+    let mealName = m.mealName || 'Unknown Meal';
+    mealName = mealName.replace(/^\d+\.\s*/, ''); // Remove leading numbers followed by dot and space
+
     const state = m.state || 'Unknown';
     const region = m.region || '';
     const ingredients = m.ingredients || 'N/A';

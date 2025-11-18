@@ -134,6 +134,39 @@ export const apiClient = {
   },
 
   // ============================================
+  // MEAL PLAN HISTORY ENDPOINTS (NEW FEATURE)
+  // ============================================
+  getMealPlanHistory: async (userId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/meals/history/${userId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get meal plan history:', error);
+      throw error;
+    }
+  },
+
+  loadFullMealPlan: async (userId: string, planId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.get(`/meals/history/${userId}/${planId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to load full meal plan:', error);
+      throw error;
+    }
+  },
+
+  deleteMealPlanFromHistory: async (userId: string, planId: string): Promise<object> => {
+    try {
+      const response = await axiosInstance.delete(`/meals/history/${userId}/${planId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to delete meal plan from history:', error);
+      throw error;
+    }
+  },
+
+  // ============================================
   // ONBOARDING ENDPOINTS
   // ============================================
   startOnboarding: async (data): Promise<object> => {

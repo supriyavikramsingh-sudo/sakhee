@@ -6,6 +6,12 @@ import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
 import { canGenerateMealPlan, incrementMealPlanCounter } from '../utils/subscriptionUtils.js';
 import jobService from '../services/jobService.js';
+import {
+  saveMealPlanToHistory,
+  getMealPlanHistory,
+  loadFullMealPlan,
+  deleteMealPlan,
+} from '../utils/mealPlanHistoryUtils.js';
 
 const router = express.Router();
 const logger = new Logger('MealPlanRoutes');
@@ -322,6 +328,59 @@ async function processMealPlanGeneration(params) {
       // Non-critical error - don't fail the request
     }
 
+    // ====================================
+    // SAVE TO HISTORY (NEW FEATURE)
+    // ====================================
+    let historyPlanId = null;
+    let historyFull = false;
+
+    try {
+      const historySaveResult = await saveMealPlanToHistory(userId, {
+        plan: mealPlan,
+        regions: finalRegions,
+        cuisines,
+        dietType: finalDietType,
+        isKeto: finalIsKeto,
+        budget,
+        goals: goals || [],
+        duration: duration || mealPlan.days?.length || 7,
+        userCalories,
+        ragMetadata,
+        performanceMetrics,
+        personalizationSources: planData.personalizationSources,
+      });
+
+      if (historySaveResult.success) {
+        historyPlanId = historySaveResult.planId;
+        logger.info('Meal plan saved to history', {
+          userId,
+          jobId,
+          historyPlanId,
+          planName: historySaveResult.planName,
+        });
+      } else if (historySaveResult.historyFull) {
+        historyFull = true;
+        logger.warn('Meal plan history full - plan not saved to history', {
+          userId,
+          jobId,
+        });
+      } else {
+        logger.error('Failed to save meal plan to history', {
+          userId,
+          jobId,
+          error: historySaveResult.error,
+        });
+      }
+    } catch (error) {
+      logger.error('Exception while saving meal plan to history', {
+        userId,
+        jobId,
+        error: error.message,
+        stack: error.stack,
+      });
+      // Non-critical - don't fail the job
+    }
+
     logger.info('Meal plan generated successfully', {
       planId,
       jobId,
@@ -330,6 +389,8 @@ async function processMealPlanGeneration(params) {
       cuisinesUsed: cuisines,
       isKeto: finalIsKeto,
       ragQuality: ragMetadata?.retrievalQuality,
+      historyPlanId,
+      historyFull,
       performanceMetrics: performanceMetrics
         ? {
             total: `${performanceMetrics.totalDuration}ms`,
@@ -354,6 +415,8 @@ async function processMealPlanGeneration(params) {
       ragMetadata,
       performanceMetrics,
       personalizationSources: planData.personalizationSources,
+      historyPlanId, // Include history plan ID in job result
+      historyFull, // Include history full flag
     });
 
     logger.info('Job completed successfully', { jobId, planId });
@@ -458,6 +521,147 @@ router.delete('/:planId', (req, res) => {
   } catch (error) {
     logger.error('Failed to delete meal plan', {
       error: error.message,
+    });
+
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to delete meal plan' },
+    });
+  }
+});
+
+/**
+ * GET /api/meals/history/:userId
+ * Get meal plan history metadata for a user (up to 5 plans)
+ * NEW ENDPOINT for meal plan history feature
+ */
+router.get('/history/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: { message: 'User ID is required' },
+      });
+    }
+
+    const result = await getMealPlanHistory(userId);
+
+    if (result.success) {
+      logger.info('Meal plan history retrieved via API', {
+        userId,
+        planCount: result.plans?.length || 0,
+      });
+
+      res.json({
+        success: true,
+        data: result.plans,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: { message: result.error || 'Failed to retrieve meal plan history' },
+      });
+    }
+  } catch (error) {
+    logger.error('Failed to retrieve meal plan history via API', {
+      error: error.message,
+      stack: error.stack,
+    });
+
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to retrieve meal plan history' },
+    });
+  }
+});
+
+/**
+ * GET /api/meals/history/:userId/:planId
+ * Lazy load full meal plan data for a specific plan
+ * NEW ENDPOINT for meal plan history feature
+ */
+router.get('/history/:userId/:planId', async (req, res) => {
+  try {
+    const { userId, planId } = req.params;
+
+    if (!userId || !planId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'User ID and Plan ID are required' },
+      });
+    }
+
+    const result = await loadFullMealPlan(userId, planId);
+
+    if (result.success) {
+      logger.info('Full meal plan loaded via API', {
+        userId,
+        planId,
+      });
+
+      res.json({
+        success: true,
+        data: result.planData,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: { message: result.error || 'Meal plan not found' },
+      });
+    }
+  } catch (error) {
+    logger.error('Failed to load full meal plan via API', {
+      error: error.message,
+      stack: error.stack,
+    });
+
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to load meal plan' },
+    });
+  }
+});
+
+/**
+ * DELETE /api/meals/history/:userId/:planId
+ * Delete a meal plan from history
+ * NEW ENDPOINT for meal plan history feature
+ */
+router.delete('/history/:userId/:planId', async (req, res) => {
+  try {
+    const { userId, planId } = req.params;
+
+    if (!userId || !planId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'User ID and Plan ID are required' },
+      });
+    }
+
+    const result = await deleteMealPlan(userId, planId);
+
+    if (result.success) {
+      logger.info('Meal plan deleted from history via API', {
+        userId,
+        planId,
+      });
+
+      res.json({
+        success: true,
+        message: 'Meal plan deleted successfully',
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: { message: result.error || 'Meal plan not found' },
+      });
+    }
+  } catch (error) {
+    logger.error('Failed to delete meal plan from history via API', {
+      error: error.message,
+      stack: error.stack,
     });
 
     res.status(500).json({

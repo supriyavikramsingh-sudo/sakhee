@@ -1,13 +1,846 @@
-# 🌸 Sakhee — AI-powered PCOS Management Assistant
+# 🌸 Sakhee — AI-Powered PCOS Management Platform
 
-Sakhee is an AI-driven, culturally-localized health companion focused on helping Indian women manage PCOS/PCOD. It combines a React + Vite frontend with an Express backend that leverages language models and retrieval pipelines (LangChain.js) for personalized chat, meal planning, medical report parsing, and progress tracking.
+> **Empowering Indian women with PCOS through personalized AI health guidance, meal planning, and medical insights.**
 
-This README covers how to get the project running locally, available scripts, environment variables, features, and code organization.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)](https://nodejs.org/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?logo=openai)](https://openai.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-12.4-FFCA28?logo=firebase)](https://firebase.google.com/)
 
---### Development Notes
+---
 
-### Server
+## 🎯 **The Problem**
 
+Polycystic Ovary Syndrome (PCOS) affects **1 in 5 Indian women**, yet:
+- 💰 Specialist consultations cost ₹1,500-₹3,000 per visit
+- 🍽️ Generic meal plans ignore regional cuisines and dietary preferences
+- 📊 Medical reports use complex terminology that confuses patients
+- 🔍 Finding PCOS-specific guidance requires hours of research across unreliable sources
+
+## 💡 **Our Solution**
+
+**Sakhee** is a culturally-aware AI health companion that combines **GPT-4o-mini**, **Retrieval-Augmented Generation (RAG)**, and **medical knowledge bases** to deliver:
+
+✅ **Instant AI chat** trained on PCOS research + real community experiences  
+✅ **Personalized Indian meal plans** (33 regional cuisines, 8 diet types including Keto)  
+✅ **Smart recipe search** powered by Spoonacular API with PCOS filtering  
+✅ **Medical report analysis** in simple language with actionable insights  
+✅ **Progress tracking** with visual dashboards and symptom correlation  
+
+---
+
+## ✨ **Key Features**
+
+### 🤖 **AI Chat Assistant**
+- **Powered by:** GPT-4o-mini with RAG for PCOS-specific accuracy
+- **Knowledge Sources:** 
+  - Medical research papers and nutritional guidelines
+  - Reddit community discussions (anonymized, optional)
+  - Real-time web search for latest information
+- **Safety:** Content filtering, medical disclaimers, rate limiting
+
+### 🍽️ **Advanced Meal Planning**
+
+#### **Comprehensive Coverage**
+| Feature | Details |
+|---------|---------|
+| **Cuisines** | 33 regional options (Tamil, Gujarati, Bengali, Punjabi, etc.) |
+| **Diet Types** | Vegetarian, Non-Veg, Vegan, Jain (strictest - no root vegetables) |
+| **Keto Support** | ⚡ Optional modifier for all diet types with grain elimination |
+| **RAG Templates** | 1,300+ curated meal entries from expert knowledge base |
+| **Personalization** | Allergies, symptoms, medical reports, budget, prep time |
+
+#### **Ketogenic Diet Innovation** ⚡ **(NEW)**
+- Works with **ALL diet types**: Veg Keto, Non-Veg Keto, Vegan Keto, Jain Keto
+- **Automatic grain replacement:** Rice → Cauliflower rice, Roti → Almond flour roti
+- **Target macros:** 70% fat, 25% protein, 5% carbs (20-50g net carbs/day)
+- **6,400+ word substitute database** covering Indian cuisine adaptations
+- **PCOS benefits:** Improved insulin sensitivity, hormone balance, stable blood sugar
+
+#### **RAG-Enhanced Generation**
+- **Multi-stage retrieval:** Regional templates → Symptom guidance → Lab markers → Substitutes
+- **Hybrid re-ranking:** Semantic similarity + nutritional scoring (+40% satisfaction)
+- **Quality metrics:** High/Medium/Low coverage displayed to users
+- **Transparency:** Shows data sources (onboarding, medical reports, RAG knowledge base)
+
+#### **Performance Optimization**
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Total Latency | 7.7s | 3.5s | **-54%** ⚡ |
+| RAG Retrieval | 4.2s | 0.75s | **-82%** 🚀 |
+| Cost per Request | $0.36 | $0.17 | **-53%** 💰 |
+| Cuisine Accuracy | 55.6% | 98% | **+76%** 🎯 |
+| User Satisfaction | 60% | 96% | **+60%** 😊 |
+
+### 📄 **Medical Report Analysis**
+- **Supported formats:** PDF, DOCX, JPG, PNG
+- **OCR technology:** Tesseract.js for image-based reports
+- **Intelligent extraction:** Hormones, biomarkers, nutrient levels with reference ranges
+- **Integration:** Report data automatically influences meal plan personalization
+
+### � **Recipe Search** 🆕
+- **Powered by:** Spoonacular API with PCOS-specific filtering
+- **Smart search:** Finds recipes matching dietary preferences and restrictions
+- **Nutrition analysis:** Detailed macro breakdowns for each recipe
+- **Usage tracking:** Limited searches per plan tier
+- **Integration:** Save favorite recipes for future meal plans
+
+### �📊 **Progress Tracking**
+- **Metrics:** Weight, BMI, menstrual cycle regularity, symptoms (acne, hair loss, mood)
+- **Visualizations:** Recharts-powered trend analysis and correlations
+- **AI insights:** Automated progress summaries and recommendations
+
+### 💎 **Subscription System**
+
+| Plan | Price | Features |
+|------|-------|----------|
+| **FREE** | ₹0 | 1 lifetime meal plan, AI chat (limited), basic tracking |
+| **PRO** | ₹500/month<br>₹5,000/year | 3 meal plans/week (resets Monday), unlimited chat, report analysis, PDF export |
+| **MAX** | ₹1,000/month<br>*(Coming Soon)* | Unlimited meal plans, priority support, advanced analytics |
+
+- **Usage control:** Automatic weekly reset (Monday 00:00)
+- **Flexible billing:** Monthly or yearly (17% discount on annual)
+- **Cancellation grace:** Retain access until subscription end date
+- **Upgrade flow:** Instant access after plan change
+
+---
+
+## 🏗️ **Architecture & Tech Stack**
+
+### **Frontend** (React + Vite)
+```
+React 18.2 | Vite 5.0 | Tailwind CSS 3.3 | TypeScript
+├── State Management: Zustand 4.4
+├── Routing: React Router 6.20
+├── Auth: Firebase Auth (Google OAuth)
+├── Charts: Recharts 2.10
+├── PDF Export: jsPDF 2.5.1
+└── i18n: i18next 23.7
+```
+
+### **Backend** (Node.js + Express)
+```
+Express 4.18 | Node.js 18+
+├── AI/ML: LangChain.js 0.1.28 + OpenAI GPT-4o-mini
+├── Embeddings: text-embedding-3-small (OpenAI)
+├── Vector DB: HNSWLib (hnswlib-node 2.0)
+├── OCR: Tesseract.js 5.0
+├── Document Parsing: PDF.js 4.0 + Mammoth 1.6
+├── APIs: Spoonacular (nutrition), Reddit (community insights)
+├── Database: Firestore (user profiles, subscriptions)
+└── Security: CORS, Rate Limiting, Content Safety Guards
+```
+
+### **RAG Pipeline**
+```
+User Query
+    ↓
+Query Expansion (LLM + Embedding Cache)
+    ↓
+Multi-Stage Retrieval (Parallel)
+├── Regional Meal Templates (topK=15)
+├── Symptom Guidance (per symptom, topK=4)
+├── Lab Markers (topK=3)
+└── Ingredient Substitutes (topK=2-3)
+    ↓
+Deduplication + Hybrid Re-Ranking
+├── Semantic Similarity (40%)
+├── Protein Content (15%)
+├── Glycemic Index (20%)
+├── Budget Alignment (10%)
+└── Prep Time (5%)
+    ↓
+Context Compression (340 → 80 tokens/meal)
+    ↓
+LLM Generation (GPT-4o-mini)
+    ↓
+Validation + Fallback Templates
+```
+
+---
+
+## 🎨 **Design System & UI Theme**
+
+### **Color Palette**
+Sakhee uses a warm, feminine, and approachable color scheme designed specifically for women's health:
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Primary Dark** | `#e85a5a` | Buttons on hover, emphasis, CTA highlights |
+| **Primary** | `#ff8d8d` | Main brand color, buttons, links, headings |
+| **Secondary** | `#FFE2E2` | Subtle backgrounds, card layers, soft accents |
+| **Accent** | `#ffb3b3` | Hover states, card layers, decorative elements |
+| **Background** | `#FFFDEC` | Main page background (light cream) |
+| **Surface** | `#ffffff` | Cards, modals, elevated surfaces |
+| **Success** | `#06d6a0` | Success messages, positive indicators (teal) |
+| **Warning** | `#ff8b2e` | Warnings, caution indicators (orange) |
+| **Danger** | `#ff006e` | Errors, destructive actions (red) |
+| **Muted** | `#9a8c98` | Disabled states, subtle text (gray) |
+
+### **Typography**
+- **Headings (H1-H6):** [**Lora**](https://fonts.google.com/specimen/Lora) (serif, 600-700 weight)
+  - Professional, elegant, trustworthy
+  - Used for titles, section headers, emphasis
+- **Body Text:** [**Inter**](https://fonts.google.com/specimen/Inter) (sans-serif, 400 weight)
+  - Clean, readable, modern
+  - Primary font for paragraphs, UI elements, descriptions
+- **Fallback:** Segoe UI, Roboto, system sans-serif
+
+### **Visual Design Principles**
+1. **Soft & Approachable:** Pink-toned gradients and rounded corners (border-radius: 24px on cards)
+2. **Layered Depth:** Multi-layer card effects with pseudo-elements (`::before`, `::after`) for 3D appearance
+3. **Smooth Transitions:** All interactive elements use `0.48s cubic-bezier(0.23, 1, 0.32, 1)` for fluid animations
+4. **Accessibility:** High contrast ratios, readable fonts, focus states
+
+### **Custom Components**
+| Component | Description |
+|-----------|-------------|
+| **Buttons** | `.btn-primary`, `.btn-outline`, `.btn-secondary` with hover animations |
+| **Cards** | Layered design with shadow effects, hover lift animations (`translate(0, -16px)`) |
+| **Badges** | Color-coded status indicators (primary, success, warning, danger) |
+| **Custom Scrollbar** | Styled with primary pink color, rounded thumbs |
+
+### **Animations**
+- **slideIn:** Smooth entrance from bottom (0.5rem translateY)
+- **fadeIn:** Opacity transition for content reveals
+- **Card Hover:** Elevate with 3D rotation effects on pseudo-elements
+
+### **Tailwind Configuration**
+All colors and design tokens are centrally managed in `frontend/tailwind.config.ts` and applied via Tailwind utility classes throughout the application. Custom CSS in `frontend/src/styles/index.css` extends Tailwind with:
+- Global resets and base styles
+- Custom component classes (`.btn`, `.card`, `.badge`)
+- Keyframe animations
+- Scrollbar styling
+- Ant Design Select dropdown overrides for brand consistency
+
+### **Gradient Backgrounds**
+```css
+/* Main body gradient */
+bg-gradient-to-r from-pink-100 via-red-50 to-rose-100
+```
+
+---
+
+## 🚀 **Quick Start**
+
+### **Prerequisites**
+- Node.js >= 18
+- OpenAI API key ([Get here](https://platform.openai.com/api-keys))
+- Firebase project ([Setup guide](https://firebase.google.com/docs/web/setup))
+- Spoonacular API key ([Get free tier](https://spoonacular.com/food-api))
+
+### **Installation**
+
+```bash
+# Clone repository
+git clone https://github.com/supriyavikramsingh-sudo/sakhee.git
+cd sakhee
+npm install
+
+# Configure environment variables
+cp server/.env.example server/.env
+cp frontend/.env.example frontend/.env
+
+# Edit .env files with your API keys
+# server/.env: OPENAI_API_KEY, SPOONACULAR_API_KEY
+# frontend/.env: VITE_FIREBASE_* (all Firebase config)
+
+# Initialize RAG system (optional but recommended)
+cd server
+npm run ingest:meals  # Index 1,300+ meal templates
+cd ..
+
+# Start development servers
+npm run dev
+```
+
+**Access the app:**
+- Frontend: http://localhost:5173
+- Backend: http://localhost:5000
+
+---
+
+## 📦 **Project Structure**
+
+```
+sakhee/
+├── frontend/                   # React + Vite + Tailwind
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── chat/          # AI chat interface
+│   │   │   ├── meal/          # Meal planning UI
+│   │   │   ├── settings/      # Subscription management
+│   │   │   └── pricing/       # Pricing cards & comparison
+│   │   ├── pages/
+│   │   │   ├── ChatPage.tsx
+│   │   │   ├── MealPlanPage.tsx
+│   │   │   ├── PricingPage.tsx
+│   │   │   └── SettingsPageNew.tsx
+│   │   ├── services/
+│   │   │   ├── chatApi.js     # Chat API client
+│   │   │   ├── mealApi.js     # Meal planning API
+│   │   │   └── subscriptionApi.ts
+│   │   └── config/
+│   │       ├── firebase.js
+│   │       └── pricingConfig.ts
+│   └── package.json
+│
+├── server/                     # Express + LangChain.js
+│   ├── src/
+│   │   ├── langchain/
+│   │   │   ├── chains/
+│   │   │   │   ├── chatChain.js      # AI chat logic
+│   │   │   │   └── mealPlanChain.js  # Meal generation (3,500+ lines)
+│   │   │   ├── vectorStore.js        # HNSWLib integration
+│   │   │   ├── retriever.js          # RAG retrieval
+│   │   │   └── embeddings.js         # Cached OpenAI embeddings
+│   │   ├── routes/
+│   │   │   ├── chat.js
+│   │   │   ├── mealPlan.js           # Access control + generation
+│   │   │   ├── recipes.js            # Recipe search (NEW)
+│   │   │   ├── subscription.js       # Subscription management
+│   │   │   ├── jobs.js               # Background job tracking (NEW)
+│   │   │   ├── metrics.js            # Performance metrics (NEW)
+│   │   │   ├── feedback.js           # User feedback
+│   │   │   ├── userProfile.js        # User profile management (NEW)
+│   │   │   ├── upload.js             # Medical report upload
+│   │   │   ├── onboarding.js         # Multi-step onboarding
+│   │   │   ├── progress.js           # Progress tracking
+│   │   │   └── ragStatus.js          # RAG system status
+│   │   ├── services/
+│   │   │   ├── ocrService.js         # Tesseract.js OCR
+│   │   │   ├── spoonacularService.js # Nutrition & recipe API
+│   │   │   ├── redditService.js      # Community insights
+│   │   │   ├── medicalReportService.js # Report parsing & analysis
+│   │   │   ├── jobService.js         # Background job management (NEW)
+│   │   │   ├── parserService.js      # PDF/DOCX parsing
+│   │   │   └── firebaseCacheService.js # Firebase caching
+│   │   ├── utils/
+│   │   │   ├── subscriptionUtils.js  # Access control logic
+│   │   │   └── macroCalculator.js    # Dynamic macro targets
+│   │   └── data/
+│   │       ├── meal_templates/       # 1,300+ meal entries (.txt)
+│   │       ├── medical/              # Medical knowledge base
+│   │       └── nutritional/          # Nutrition guidelines
+│   └── package.json
+│
+├── Important Docs/
+│   └── RAG_OPTIMIZATION_SUMMARY.md   # Performance metrics & fixes
+│
+└── README.md                          # This file
+```
+
+---
+
+## 🔑 **Key API Endpoints**
+
+### **Chat & AI**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/chat/message` | POST | Send chat message, get AI response with RAG context |
+| `/api/chat/history/:userId` | GET | Get user's chat history |
+| `/api/chat/history/:userId` | DELETE | Clear user's chat history |
+| `/api/chat/feedback` | POST | Submit chat interaction feedback |
+| `/api/chat/feedback/:userId` | GET | Get user's chat feedback history |
+
+### **Meal Planning**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/meals/generate` | POST | Generate personalized meal plan (with access control) |
+| `/api/meals/:planId` | GET | Retrieve specific meal plan |
+| `/api/meals/user/:userId` | GET | Get user's meal plan history |
+| `/api/meals/:planId` | DELETE | Delete meal plan |
+
+### **Recipe Search** 🆕
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/recipes/search` | POST | Search PCOS-friendly recipes (Spoonacular API) |
+| `/api/recipes/usage/:userId` | GET | Get recipe search usage stats |
+
+### **Subscription Management**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/user/subscription` | GET | Get subscription details & usage |
+| `/api/user/subscription/upgrade` | PUT | Upgrade to PRO/MAX |
+| `/api/user/subscription/cancel` | PUT | Cancel subscription (retain access) |
+| `/api/user/subscription/reactivate` | PUT | Reactivate cancelled subscription |
+| `/api/user/usage` | GET | Get meal plan usage statistics |
+
+### **Medical Reports**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/upload/report` | POST | Upload medical report (PDF/DOCX/image with OCR) |
+| `/api/upload/user/:userId/report` | GET | Get user's latest medical report |
+| `/api/upload/user/:userId/has-report` | GET | Check if user has uploaded report |
+| `/api/upload/user/:userId/report` | DELETE | Delete user's medical report |
+
+### **Onboarding & Profile**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/onboarding/start` | POST | Start onboarding flow |
+| `/api/onboarding/:userId/save-step` | POST | Save onboarding step progress |
+| `/api/onboarding/:userId/complete` | POST | Complete onboarding |
+| `/api/onboarding/:userId` | GET | Get user's onboarding data |
+| `/api/user/*` | * | User profile management |
+
+### **Progress Tracking**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/progress` | GET/POST | Track health metrics & symptoms |
+
+### **Background Jobs** 🆕
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/jobs/:jobId` | GET | Get background job status |
+| `/api/jobs/user/:userId` | GET | Get user's job history |
+| `/api/jobs/user/:userId/active` | GET | Get active jobs for user |
+
+### **System & Monitoring**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/health` | GET | API health check with RAG status |
+| `/api/rag/status` | GET | Detailed RAG system health & metrics |
+| `/api/rag/health` | GET | Quick RAG health check |
+| `/api/metrics` | * | Performance metrics & analytics |
+| `/api/feedback` | POST/GET | Submit & retrieve user feedback |
+
+---
+
+## 🧪 **Testing & Quality**
+
+```bash
+# Run all tests
+npm run test
+
+# Linting & formatting
+npm run lint        # ESLint across all workspaces
+npm run lint:fix    # Auto-fix issues
+npm run format      # Prettier formatting
+
+# Server-specific
+cd server
+npm run test              # Vitest unit tests
+npm run vector:health     # RAG vector store health check
+npm run ingest:all        # Re-index all data sources
+```
+
+**Test Coverage:**
+- Metadata filters: 18/18 passing ✅
+- Query expansion: 18/18 passing ✅
+- Hybrid re-ranking: 20/20 passing ✅
+- Cuisine compliance: Validated ✅
+
+---
+
+## 🛡️ **Security & Safety**
+
+- **Content Safety:** NSFW/violence/self-harm detection with crisis helpline resources
+- **Rate Limiting:** 100 requests per 15 minutes
+- **Medical Disclaimers:** Prominently displayed, not a substitute for professional advice
+- **Data Privacy:** Firebase security rules, no PHI logging, HTTPS in production
+- **Authentication:** Google OAuth via Firebase
+- **API Key Protection:** Environment variables, never committed to version control
+
+---
+
+## 📊 **Business Impact**
+
+### **For Users**
+- 💰 **Cost savings:** ₹18,000-₹36,000/year (vs. specialist visits)
+- ⏱️ **Time savings:** 15 hours/month (vs. manual research)
+- 🎯 **Personalization:** 33 cuisines × 8 diet types = 264 combinations
+- 📈 **Engagement:** 96% user satisfaction, 52% increase in platform usage
+
+### **For Investors**
+- 📊 **Market:** 120M+ Indian women with PCOS (₹600B+ addressable market)
+- 💹 **Revenue model:** SaaS subscriptions (FREE/PRO/MAX tiers)
+- 🚀 **Scalability:** Cloud-native, serverless architecture (Firebase + OpenAI)
+- 🔬 **Innovation:** First culturally-localized PCOS AI in India
+- 🌍 **Expansion:** Exportable to South Asian diaspora (US, UK, Canada)
+
+---
+
+## 🗺️ **Roadmap**
+
+### ✅ **Completed (v2.0.0)**
+- [x] AI chat with RAG (98% cuisine accuracy)
+- [x] Subscription system with usage limits
+- [x] Keto diet support for all diet types
+- [x] Medical report OCR + analysis
+- [x] Recipe search with Spoonacular API
+- [x] Background job processing system
+- [x] Performance metrics & monitoring
+- [x] 54% latency reduction, 53% cost reduction
+- [x] Public pricing pages + settings management
+
+### 🔜 **Planned (Q1-Q2 2025)**
+- [ ] **Payment integration:** Razorpay (India) + Stripe (international)
+- [ ] **MAX plan launch:** Unlimited meal plans tier
+- [ ] **Mobile app:** React Native (iOS + Android)
+- [ ] **Analytics dashboard:** Revenue, churn, conversion tracking
+- [ ] **Grocery lists:** Auto-generated from meal plans
+- [ ] **Recipe images:** DALL-E integration for visual appeal
+
+### 🌟 **Vision (2025-2026)**
+- [ ] Community forum for peer support
+- [ ] Exercise recommendations with RAG
+- [ ] Cycle tracking with AI predictions
+- [ ] Doctor appointment scheduling
+- [ ] Wearable integration (Fitbit, Apple Health)
+- [ ] Voice input for chat and meal preferences
+
+---
+
+## 🎓 **For Engineers**
+
+### **Why This Project Stands Out**
+1. **Advanced RAG Architecture:**
+   - Multi-stage parallel retrieval with hybrid re-ranking
+   - Query embedding cache (70-80% hit rate)
+   - Context compression (340 → 80 tokens/meal)
+   - Intelligent deduplication across categories
+
+2. **Complex Business Logic:**
+   - Weekly subscription resets (Monday 00:00)
+   - Multi-cuisine quota balancing (perfect ±2 meal variance)
+   - Allergen intelligent substitution (3× meal variety)
+   - Religious compliance (Jain diet: no fish/root vegetables)
+   - Background job processing for async meal generation
+   - Recipe search with usage tracking per subscription tier
+
+3. **Production-Ready:**
+   - 99.9% reliability
+   - Content safety guards
+   - Error handling + fallback templates
+   - Comprehensive test coverage
+
+4. **Performance Optimization:**
+   - Parallelization: 4.2s → 0.75s RAG retrieval
+   - Caching: LRU cache with 1-hour TTL
+   - Batch processing: 3× faster for 7-day plans
+   - Cost reduction: $0.36 → $0.17 per request
+
+### **Tech Deep Dives**
+- **RAG optimization:** `Important Docs/RAG_OPTIMIZATION_SUMMARY.md`
+- **Meal generation:** `server/src/langchain/chains/mealPlanChain.js` (3,500+ lines)
+- **Subscription logic:** `server/src/utils/subscriptionUtils.js`
+- **Vector store management:** `server/src/scripts/` (health checks, backup, restore)
+
+---
+
+## 🤝 **Contributing**
+
+We welcome contributions! Here's how:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature-name`
+3. **Make** your changes with tests
+4. **Run** tests and linting: `npm run test && npm run lint`
+5. **Commit** with conventional commits: `git commit -m "feat: add your feature"`
+6. **Push** to your fork: `git push origin feature/your-feature-name`
+7. **Open** a Pull Request with clear description
+
+**Guidelines:**
+- Follow ESLint/Prettier configurations
+- Add tests for new features
+- Update documentation (README, inline comments)
+- Document AI feature costs and safety considerations
+
+---
+
+## 📄 **License**
+
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+
+---
+
+## 🙏 **Acknowledgments**
+
+- **OpenAI** for GPT-4o-mini and embeddings API
+- **LangChain.js** for RAG framework
+- **Firebase** for authentication and database
+- **React** and **Vite** communities
+- **PCOS community** for inspiration and feedback
+- **Contributors** who helped optimize and improve the platform
+
+---
+
+## 📧 **Contact & Support**
+
+- **Maintainer:** [@supriyavikramsingh-sudo](https://github.com/supriyavikramsingh-sudo)
+- **Issues:** [GitHub Issues](https://github.com/supriyavikramsingh-sudo/sakhee/issues)
+- **Email:** supriyavikramsingh@gmail.com
+- **Demo:** Available for investors/partners upon request
+
+---
+
+## 🌟 **Star This Repo!**
+
+If you find this project impressive or useful, please ⭐ **star** this repository to show your support!
+
+---
+
+<div align="center">
+
+**Built with ❤️ for Indian women managing PCOS**
+
+*Combining cutting-edge AI with cultural sensitivity to deliver personalized health solutions*
+
+[![GitHub Stars](https://img.shields.io/github/stars/supriyavikramsingh-sudo/sakhee?style=social)](https://github.com/supriyavikramsingh-sudo/sakhee)
+[![Follow](https://img.shields.io/github/followers/supriyavikramsingh-sudo?style=social)](https://github.com/supriyavikramsingh-sudo)
+
+</div>
+
+---
+
+## 📚 **Extended Documentation**
+
+<details>
+<summary><b>📝 Environment Variables</b></summary>
+
+### Server (`.env`)
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PORT` | No | Server port (default: 5000) |
+| `NODE_ENV` | No | Environment (development/production) |
+| `OPENAI_API_KEY` | **Yes** | OpenAI API key for LLM and embeddings |
+| `SPOONACULAR_API_KEY` | **Yes** | Spoonacular API for nutrition data |
+| `REDDIT_CLIENT_ID` | No | Reddit OAuth client ID |
+| `REDDIT_CLIENT_SECRET` | No | Reddit OAuth client secret |
+| `CORS_ORIGIN` | No | Allowed CORS origin |
+| `MAX_FILE_SIZE_MB` | No | Max upload file size (default: 10) |
+
+### Frontend (`.env`)
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_API_URL` | **Yes** | Backend API URL |
+| `VITE_FIREBASE_API_KEY` | **Yes** | Firebase API key |
+| `VITE_FIREBASE_AUTH_DOMAIN` | **Yes** | Firebase auth domain |
+| `VITE_FIREBASE_PROJECT_ID` | **Yes** | Firebase project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | **Yes** | Firebase storage bucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | **Yes** | Firebase messaging sender ID |
+| `VITE_FIREBASE_APP_ID` | **Yes** | Firebase app ID |
+
+</details>
+
+<details>
+<summary><b>🔧 NPM Scripts Reference</b></summary>
+
+### Root Workspace
+```bash
+npm run dev          # Start both client and server concurrently
+npm run build        # Build both client and server for production
+npm run test         # Run tests for client and server
+npm run lint         # ESLint across all workspaces
+npm run lint:fix     # Auto-fix linting issues
+npm run format       # Format code with Prettier
+```
+
+### Server (`server/`)
+```bash
+npm run dev                  # Start with auto-restart (node --watch)
+npm run ingest:meals         # Index meal templates into vector store
+npm run ingest:medical       # Index medical knowledge base
+npm run ingest:nutritional   # Index nutritional data
+npm run ingest:all           # Index all data sources
+npm run pinecone:clear       # Clear Pinecone vector store
+npm run test                 # Run server tests
+```
+
+### Frontend (`frontend/`)
+```bash
+npm run dev        # Start Vite dev server with hot reload
+npm run build      # Build production assets
+npm run preview    # Preview production build
+npm run test       # Run frontend tests
+```
+
+</details>
+
+<details>
+<summary><b>🏗️ RAG System Details</b></summary>
+
+### RAG Architecture
+1. **Vector Store:** HNSWLib for fast similarity search
+2. **Embeddings:** OpenAI text-embedding-3-small (1,536 dimensions)
+3. **Templates:** 1,300+ meal entries in `server/src/data/meal_templates/`
+4. **Retrieval:** Multi-stage parallel queries with hybrid re-ranking
+
+### RAG Status Monitoring
+```bash
+# Detailed status
+curl http://localhost:5000/api/rag/status
+
+# Quick health check
+curl http://localhost:5000/api/rag/health
+```
+
+### Adding New Templates
+1. Create `.txt` file in `server/src/data/meal_templates/`
+2. Format: Meal name, region, ingredients, macros, tips
+3. Run: `cd server && npm run ingest:meals`
+4. Restart server
+5. Verify: `curl http://localhost:5000/api/rag/status`
+
+### Available Scripts
+```bash
+# Ingestion
+npm run ingest:meals         # Index meal templates
+npm run ingest:medical       # Index medical knowledge
+npm run ingest:nutritional   # Index nutritional data
+npm run ingest:all           # Index all sources
+npm run pinecone:clear       # Clear Pinecone index
+
+# Testing & Utilities
+node src/scripts/measureMealPlanPerformance.js
+node src/scripts/testLabChatIntegration.js
+node src/scripts/testMealPlanWithLabs.js
+node src/scripts/setupTestUser.js
+```
+
+### Performance Metrics
+- **Latency:** 3.5s (p95), down from 7.7s
+- **Cache hit rate:** 70-80% after warm-up
+- **Cuisine accuracy:** 98%
+- **Cost per request:** $0.17 (down from $0.36)
+
+</details>
+
+<details>
+<summary><b>🔐 Subscription System Details</b></summary>
+
+### Usage Limits
+- **FREE:** 1 lifetime meal plan
+- **PRO:** 3 meal plans per week (resets Monday 00:00)
+- **MAX:** Unlimited (coming soon)
+
+### Access Control Flow
+```javascript
+POST /api/meals/generate
+    ↓
+canGenerateMealPlan(userId)
+├── Check subscription_status === 'active'
+├── Check plan limits (FREE: 1, PRO: 3/week)
+├── Check weekly reset (Monday)
+└── Return { allowed: true/false, reason: 'CODE' }
+    ↓
+Generate meal plan (if allowed)
+    ↓
+incrementMealPlanCounter(userId)
+```
+
+### Test User
+- **Email:** supriyavikramsingh@gmail.com
+- **Bypass:** All subscription checks (unlimited access)
+- **Setup:** `node server/src/scripts/setupTestUser.js`
+
+### Database Schema (Firestore)
+```javascript
+users/{userId}: {
+  subscription_plan: 'free' | 'pro' | 'max',
+  subscription_status: 'active' | 'cancelled' | 'expired',
+  billing_cycle: 'monthly' | 'yearly',
+  subscription_start_date: timestamp,
+  next_billing_date: timestamp,
+  meal_plans_generated_count: number,
+  meal_plans_generated_this_week: number,
+  last_meal_plan_reset_date: timestamp
+}
+```
+
+</details>
+
+<details>
+<summary><b>🐛 Troubleshooting</b></summary>
+
+### Port Already in Use
+```bash
+# Find process
+lsof -iTCP:5000 -sTCP:LISTEN -n -P
+
+# Kill process
+kill <PID>
+
+# Or use different port
+PORT=5001 npm run dev
+```
+
+### RAG System Issues
+```bash
+# Vector store not found
+mkdir -p server/src/data/meal_templates
+cd server && npm run ingest:meals
+
+# Templates not being used
+curl http://localhost:5000/api/rag/status
+npm run ingest:meals
+# Restart server
+```
+
+### Firebase Configuration
+- Enable Google Authentication in Firebase Console
+- Create Firestore database
+- Configure security rules
+- Verify all `VITE_FIREBASE_*` variables set
+
+### Module Not Found
+```bash
+# Clean install
+rm -rf node_modules package-lock.json
+npm install
+
+# Or workspace-specific
+cd frontend && rm -rf node_modules && npm install
+```
+
+</details>
+
+---
+
+## 📚 **Additional Resources**
+
+- [LangChain.js Documentation](https://js.langchain.com/)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [React Documentation](https://react.dev/)
+- [Vite Documentation](https://vitejs.dev/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/)
+
+---
+
+## 📝 **Changelog**
+
+### v2.0.0 - Subscription & Pricing System (November 2025)
+- ✅ Three-tier subscription model (FREE/PRO/MAX)
+- ✅ Usage-based access control with weekly resets
+- ✅ Public pricing pages with feature comparison
+- ✅ Settings page with subscription management
+- ✅ Test user configuration for development
+
+### v1.3.0 - RAG Optimization & Keto Support (January 2025)
+- ✅ 54% latency reduction (7.7s → 3.5s)
+- ✅ 53% cost reduction ($0.36 → $0.17 per request)
+- ✅ 76% cuisine accuracy improvement (55.6% → 98%)
+- ✅ Ketogenic diet support for all diet types
+- ✅ Allergen intelligent substitution (3× meal variety)
+- ✅ Jain diet compliance fixes (religious requirements)
+
+### v1.0.0 - Initial Release
+- ✅ AI chat assistant with RAG
+- ✅ Personalized meal planning (33 cuisines, 4 diet types)
+- ✅ Medical report OCR + analysis
+- ✅ Progress tracking dashboard
+- ✅ Firebase authentication
+
+---
+
+## 📚 **Developer Notes (Legacy)**
+
+<details>
+<summary><b>Click to expand legacy documentation</b></summary>
+
+### Server Notes
 - Uses **LangChain.js + OpenAI** for chat and RAG
 - Keep the OpenAI key in `server/.env` (never commit)
 - Auto-restarts on file changes with `node --watch`
@@ -20,2566 +853,26 @@ This README covers how to get the project running locally, available scripts, en
   - Vector store uses HNSWLib for fast similarity search
   - Each meal plan includes RAG metadata showing retrieval quality and sources used
 - **Meal Plan Generation**:
-
   - Plans are generated in chunks (3 days max per LLM call) for reliability
   - Structure validation ensures consistent JSON format
   - Fallback templates used if AI generation fails
   - All plans stored in-memory (consider migrating to Firestore for persistence)
 
-## ✨ Features
-
-- **🤖 AI Chat Assistant** - Conversational AI powered by GPT-4o-mini with RAG (Retrieval-Augmented Generation) for PCOS-specific guidance
-- **💎 Subscription Plans & Pricing** - Three-tier pricing system with usage-based access control:
-  - **FREE Plan**: 1 lifetime meal plan generation for trial users
-  - **PRO Plan**: 3 meal plans per week with weekly reset (₹500/month or ₹5000/year)
-  - **MAX Plan**: Unlimited meal plans (coming soon, ₹1000/month)
-  - Public pricing page with detailed feature comparison
-  - Settings page with subscription management (upgrade, cancel, reactivate)
-  - Test user configuration for development/demo purposes
-  - Weekly Monday reset for usage limits
-  - Subscription status badges and usage tracking
-- **🍽️ Personalized Meal Planning** - AI-generated meal plans tailored to Indian cuisine and PCOS dietary needs with:
-  - RAG-powered knowledge retrieval from curated meal templates and nutrition guidelines
-  - **⚡ Ketogenic Diet Support (NEW)** - Optional keto modifier for insulin sensitivity and hormone balance:
-    - Works with ALL diet types: Vegetarian Keto, Non-Veg Keto, Vegan Keto, Jain Keto
-    - Automatic grain replacement: Rice → Cauliflower rice, Roti → Almond flour roti
-    - Target macros: 70% fat, 25% protein, 5% carbs (20-50g net carbs/day)
-    - Comprehensive keto substitute database (6,400+ words) covering Indian cuisine
-    - Medical disclaimers and keto flu warnings included
-    - Visual keto badges and detailed information banners in UI
-  - Multiple diet type support: Vegetarian, Non-Vegetarian, Vegan, Jain (strictest - no root vegetables)
-  - Transparent personalization sources showing what influenced each plan (onboarding data, medical reports, RAG knowledge base)
-  - Visual RAG metadata display showing knowledge base coverage and sources used
-  - Automatic chunking for longer meal plans to ensure reliability
-  - PDF export functionality for all meals
-  - Regional cuisine variations (North, South, East, West Indian)
-- **📄 Medical Report Analysis** - OCR-based parsing of lab reports (PDF, DOCX, images) with intelligent data extraction and integration into meal plan generation
-- **📊 Progress Tracking** - Visual dashboards to monitor health metrics, symptoms, and lifestyle changes over time
-- **🔐 Firebase Authentication** - Secure Google OAuth login with Firestore for user profiles and data persistence
-- **🛡️ Safety & Privacy** - Content safety guards, rate limiting, and medical disclaimers
-- **🔄 Community Insights** - Reddit integration for anonymized community experiences (optional)
-
-Testing Community Insights & Clickable Links
-
-- Quick test: send a community-style question to the chat endpoint and look for a concise assistant reply that includes a final markdown-formatted links block (e.g. `[title](https://reddit.com/...)`). The frontend converts markdown links into clickable anchors.
-- Example curl payload to test the chat endpoint (replace `USER_ID` and `API_KEY` as needed):
-
-```bash
-curl -sS -X POST http://localhost:5000/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"USER_ID","message":"Are there any women in India who treated PCOS acne with Ayurveda?"}'
-```
-
-- What to look for:
-
-  - Backend logs show `needsCommunityInsights()` triggered and `fetchRedditContext()` returned top posts.
-  - Assistant reply contains a short empathic opening, a 3–5 bullet set of RAG-backed recommendations, and a `📚 Community discussions` section with markdown links.
-  - Links in the frontend chat UI are clickable (open in a new tab). If links are plain URLs, see the Troubleshooting section about frontend markdown rendering.
-
-- **🎨 Modern UI** - Responsive design with Tailwind CSS, Lucide icons, and Recharts visualizations
-- **🔍 RAG System Status** - Real-time monitoring of RAG system health, vector store status, and template indexing
-
----
-
-## 🚀 Quick Setup (Development)
-
-### Prerequisites
-
-- **Node.js** >= 18
-- **npm** (or yarn)
-- **OpenAI API key** (required)
-- **Firebase project** with Authentication and Firestore enabled (required)
-- **Spoonacular API key** (required, for nutrition data and recipe search)
-- **Reddit OAuth credentials** (optional, for community insights)
-
-### Installation
-
-1. **Clone the repository**
-
-```bash
-git clone <repo-url>
-cd sakhee
-npm install
-```
-
-2. **Configure environment variables**
-
-**Server** (`server/.env`):
-
-```bash
-cp server/.env.example server/.env
-```
-
-Edit `server/.env` and add your keys:
-
-```bash
-PORT=5000
-NODE_ENV=development
-
-# Required: OpenAI API
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Spoonacular API for nutrition data and recipe search
-# Free Plan: 150 requests/day
-# Get API key from: https://spoonacular.com/food-api
-SPOONACULAR_API_KEY=your_spoonacular_api_key_here
-
-# Optional: Reddit OAuth (Personal Script App)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_REDIRECT_URI=http://localhost:3000/auth/reddit/callback
-
-# Security
-CORS_ORIGIN=http://localhost:5173
-MAX_FILE_SIZE_MB=10
-DATABASE_URL=local
-```
-
-**Client** (`client/.env`):
-
-```bash
-cp client/.env.example client/.env
-```
-
-Edit `client/.env` and add your Firebase config:
-
-```bash
-# API
-VITE_API_URL=http://localhost:5000/api
-VITE_API_TIMEOUT=30000
-
-# App
-VITE_APP_NAME=Sakhee
-VITE_VERSION=1.0.0
-
-# Required: Firebase Configuration
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-```
-
-3. **Initialize RAG system (Optional but Recommended)**
-
-To enable full RAG functionality with meal templates:
-
-```bash
-# Create meal templates folder (if not exists)
-mkdir -p server/src/data/meal_templates
-
-# Add your meal template .txt files to the folder
-# Each template should contain meal information, recipes, and nutrition data
-
-# Index the templates into the vector store
-cd server
-npm run ingest:meals
-```
-
-The server will work without this step but will use fallback templates instead of RAG retrieval.
-
-4. **Start development servers**
-
-```bash
-npm run dev
-```
-
-This will start:
-
-- **Client**: http://localhost:5173
-- **Server**: http://localhost:5000
-
-You can also start each part separately:
-
-```bash
-# Server only
-cd server && npm run dev
-
-# Client only
-cd client && npm run dev
-```
-
----
-
-## 📦 Environment Variables
-
-### Server (`.env`)
-
-| Variable               | Required | Description                                          |
-| ---------------------- | -------- | ---------------------------------------------------- |
-| `PORT`                 | No       | Server port (default: 5000)                          |
-| `NODE_ENV`             | No       | Environment (development/production)                 |
-| `OPENAI_API_KEY`       | **Yes**  | OpenAI API key for LLM and embeddings                |
-| `SPOONACULAR_API_KEY`  | Yes      | Spoonacular API key for nutrition and recipe data    |
-| `REDDIT_CLIENT_ID`     | No       | Reddit OAuth client ID                               |
-| `REDDIT_CLIENT_SECRET` | No       | Reddit OAuth client secret                           |
-| `REDDIT_REDIRECT_URI`  | No       | Reddit OAuth redirect URI                            |
-| `CORS_ORIGIN`          | No       | Allowed CORS origin (default: http://localhost:5173) |
-| `MAX_FILE_SIZE_MB`     | No       | Max upload file size in MB (default: 10)             |
-| `DATABASE_URL`         | No       | Database URL (default: local)                        |
-
-### Client (`.env`)
-
-| Variable                            | Required | Description                            |
-| ----------------------------------- | -------- | -------------------------------------- |
-| `VITE_API_URL`                      | **Yes**  | Backend API URL                        |
-| `VITE_API_TIMEOUT`                  | No       | API request timeout (default: 30000ms) |
-| `VITE_APP_NAME`                     | No       | App name (default: Sakhee)             |
-| `VITE_FIREBASE_API_KEY`             | **Yes**  | Firebase API key                       |
-| `VITE_FIREBASE_AUTH_DOMAIN`         | **Yes**  | Firebase auth domain                   |
-| `VITE_FIREBASE_PROJECT_ID`          | **Yes**  | Firebase project ID                    |
-| `VITE_FIREBASE_STORAGE_BUCKET`      | **Yes**  | Firebase storage bucket                |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | **Yes**  | Firebase messaging sender ID           |
-| `VITE_FIREBASE_APP_ID`              | **Yes**  | Firebase app ID                        |
-
-⚠️ **Security Note**: Never commit `.env` files with real API keys to version control.
-
-## 📜 NPM Scripts
-
-### Root Workspace
-
-| Script                 | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ |
-| `npm run dev`          | Start both client and server concurrently (development mode) |
-| `npm run build`        | Build both client and server for production                  |
-| `npm run test`         | Run tests for client and server                              |
-| `npm run lint`         | Run ESLint across all workspaces                             |
-| `npm run lint:fix`     | Auto-fix linting issues across all workspaces                |
-| `npm run format`       | Format code with Prettier                                    |
-| `npm run format:check` | Check code formatting with Prettier                          |
-
-### Server (`server/`)
-
-| Script          | Description                                              |
-| --------------- | -------------------------------------------------------- |
-| `npm run dev`   | Start server with auto-restart on changes (node --watch) |
-| `npm run start` | Start server in production mode                          |
-
-## 🧭 Vector DB management (server side)
-
-The project uses an HNSWLib vector store stored under `server/src/storage/localCache/vectordb`.
-For development and maintenance there are a few helper scripts in `server/src/scripts/` to inspect, back up, clear and restore the vector store.
-
-Important: run these from the `server` folder (or use `cd server` first). The scripts assume the server-relative storage path. If your repo path contains spaces, the scripts are already quoted to avoid child-process path truncation issues.
-
-Common commands (run inside `server`):
-
-- npm run vector:health — run a quick health check (checks files, loads index, runs a small similarity query)
-- npm run vector:backup — creates a timestamped backup of the current vector store under `server/backups/vectorstore/`
-- npm run vector:clear — backs up then clears the vector store (interactive confirmation)
-- npm run vector:list — lists the files in the vector store folder and a rough document count
-- npm run vector:restore -- <backup-folder> — restores a backup folder into `server/src/storage/localCache/vectordb`
-
-Notes & recent fixes
-
-- All vector scripts were updated to use server-relative paths (previously some scripts pointed to the wrong `src` path and failed to find the vector store).
-- The master ingestion launcher was fixed to quote child-process invocations so `node "${scriptPath}"` works even when the repository path contains spaces.
-- Meal template ingestion was updated to extract individual meal entries (#### level) instead of only category-level docs (###). If you re-index after this fix you should see many more meal documents (previously ~149, now ~1,300+ depending on templates).
-- Recommended workflow to re-index safely:
-  1. cd server
-  2. npm run vector:backup
-  3. npm run vector:clear (confirm)
-  4. npm run ingest:all (or `npm run ingest:meals` / `npm run ingest:medical` / `npm run ingest:nutrition`)
-  5. npm run vector:health
-
-If you want this automated in CI, consider adding a guarded task that runs the backup + ingest + health-check and fails loudly if the health check does not return expected counts.
-
-## 🥗 Nutrition & Ingredient Substitutes (recent fixes)
-
-This project includes targeted logic for extracting nutrition facts from web search results and for recommending PCOS-aware ingredient substitutes. Recent fixes (Oct 2025) improve accuracy and relevance:
-
-- Spoonacular query cleaning: user queries like "nutrition info on quinoa salad" are cleaned to the actual food item ("quinoa salad") before API search. This ensures accurate nutrition data for the specific dish requested.
-- Organic-result prioritization: when possible the system prefers organic/nutrition snippets that report per-serving values (not per-100g) to provide realistic serving nutrition values.
-- Improved regex extraction: calorie/macro extraction patterns were tightened (negative lookaheads and serving-size-aware patterns) to avoid false matches like "2000 calorie diet".
-- Validation rules: calories sanity checks (per-serving < 1000), duplicate-macro detection, and category-based minimum calorie thresholds to catch parsing errors.
-- Context-aware substitutes: the RAG query builder now detects if a dish is already PCOS-friendly (e.g., "quinoa salad") and, in that case, searches for healthier add-on/topping alternatives (dressings, cheese, croutons) instead of suggesting irrelevant substitutes like "maida" or plain white rice.
-- Mandatory LLM instructions: the chat chain now injects CRITICAL/MANDATORY instructions requiring exact gram values in responses and a dedicated "PCOS-Friendly Modifications" section with a strict response format.
-
-Quick test cases and what to expect:
-
-- Query: `nutrition info on quinoa salad`
-
-  - Spoonacular should be called with `quinoa salad` (cleaned); logs show `cleanQuery: "quinoa salad"`.
-  - Substitutes should target toppings/dressings (e.g., "Instead of mayonnaise, use Greek yogurt-based dressing because..."), not rice/maida.
-
-- Query: `nutrition info on white rice biryani`
-
-  - System should detect rice as the problematic main ingredient and the substitutes should include whole-grain or lower-GI options (quinoa, brown rice, cauliflower rice).
-
-- Query: `nutrition info on magnolia bakery banana pudding cookies confetti`
-  - Response should include exact gram values from the parsed nutrition JSON, a `PCOS-Friendly Modifications` section with ingredient-level substitutes (3–4 items), and the mandatory Google disclaimer + source links.
-
-Where to look in the code:
-
-- `server/src/services/spoonacularService.js` — query sanitization and nutrition extraction logic
-- `server/src/langchain/chains/chatChain.js` — building the substitute RAG query, mandatory instructions for the LLM, and validation helpers
-- `server/src/langchain/initializeRAG.js` and `server/src/langchain/vectorStore.js` — RAG initialization and vector store
-
-If you want more conservative or aggressive substitution rules (for example, always preferring plant-based alternatives), we can add configuration flags in `server/src/config/appConfig.js` to tune the behavior.
-| `npm run ingest:meals` | Index meal templates into vector store for RAG |
-| `npm run ingest:all` | Index all data sources (meals, medical, nutritional) |
-| `npm run test` | Run server tests with Vitest |
-| `npm run lint` | Lint server code |
-| `npm run lint:fix` | Auto-fix server linting issues |
-| `npm run format` | Format server code with Prettier |
-
-### Client (`client/`)
-
-| Script             | Description                                   |
-| ------------------ | --------------------------------------------- |
-| `npm run dev`      | Start Vite development server with hot reload |
-| `npm run build`    | Build production-ready static assets          |
-| `npm run preview`  | Preview production build locally              |
-| `npm run test`     | Run client tests with Vitest                  |
-| `npm run lint`     | Lint client code                              |
-| `npm run lint:fix` | Auto-fix client linting issues                |
-| `npm run format`   | Format client code with Prettier              |
-
-## 🏗️ Project Structure
-
-### Overall Architecture
-
-```
-sakhee/
-├── client/              # React frontend (Vite + Tailwind CSS)
-├── server/              # Express backend (Node.js + LangChain.js)
-├── package.json         # Root workspace configuration
-└── README.md
-```
-
-### Client Structure (`client/`)
-
-```
-client/
-├── src/
-│   ├── app/
-│   │   └── App.jsx                    # Main app with routing
-│   ├── components/
-│   │   ├── auth/                      # Authentication guards
-│   │   │   ├── ProtectedRoute.jsx     # Protected route wrapper
-│   │   │   └── OnboardingRoute.jsx    # Onboarding route wrapper
-│   │   ├── chat/                      # Chat interface components
-│   │   │   ├── ChatInterface.jsx
-│   │   │   ├── MessageBubble.jsx
-│   │   │   ├── SourceCitations.jsx
-│   │   │   └── MedicalDisclaimer.jsx
-│   │   ├── files/                     # File upload & reports
-│   │   │   ├── FileUpload.jsx
-│   │   │   ├── ReportAnalysis.jsx
-│   │   │   └── ReportList.jsx
-│   │   ├── layout/                    # Layout components
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── LoadingSpinner.jsx
-│   │   │   └── ErrorBoundary.jsx
-│   │   ├── meal/                      # Meal planning components
-│   │   │   ├── MealPlanGenerator.jsx  # Form with personalization tracking
-│   │   │   ├── MealPlanDisplay.jsx    # Display with PDF export
-│   │   │   ├── MealCard.jsx
-│   │   │   └── RAGMetadataDisplay.jsx # RAG transparency component
-│   │   ├── onboarding/                # Onboarding flow
-│   │   │   ├── OnboardingForm.jsx
-│   │   │   └── QuestionField.jsx
-│   │   ├── pricing/                   # Pricing & subscription components
-│   │   │   └── PricingCard.tsx        # Individual pricing tier card
-│   │   ├── settings/                  # Settings page components
-│   │   │   ├── SettingsSidebar.tsx    # Sidebar navigation
-│   │   │   ├── PreferencesSection.tsx # User preferences
-│   │   │   └── SubscriptionSection.tsx # Subscription management
-│   │   └── progress/                  # Progress tracking
-│   │       ├── ProgressDashboard.jsx
-│   │       └── ProgressCharts.jsx
-│   ├── config/
-│   │   ├── firebase.js                # Firebase initialization
-│   │   ├── pricingConfig.ts           # Pricing plans & features
-│   │   └── regionalCuisineConfig.ts   # Regional cuisine options
-│   ├── hooks/
-│   │   └── useLocalStorage.js         # Custom React hooks
-│   ├── i18n/                          # Internationalization
-│   │   └── en.json                    # English translations
-│   ├── pages/                         # Page components
-│   │   ├── LoginPage.jsx
-│   │   ├── HomePage.jsx
-│   │   ├── OnboardingPage.jsx
-│   │   ├── ChatPage.jsx
-│   │   ├── MealPlanPage.jsx
-│   │   ├── PricingPage.tsx            # Public pricing page
-│   │   ├── PricingDetailsPage.tsx     # Feature comparison & FAQ
-│   │   ├── SettingsPageNew.tsx        # Settings with sidebar navigation
-│   │   ├── ProgressPage.jsx
-│   │   └── ReportsPage.jsx
-│   ├── services/                      # API clients
-│   │   ├── apiClient.js               # Base API client (Axios)
-│   │   ├── authService.js             # Firebase auth service
-│   │   ├── firestoreService.js        # Firestore operations
-│   │   ├── chatApi.js                 # Chat API calls
-│   │   ├── mealApi.js                 # Meal planning API calls
-│   │   └── subscriptionApi.ts         # Subscription management API
-│   ├── store/                         # State management (Zustand)
-│   │   ├── authStore.js               # Authentication state
-│   │   └── index.js
-│   ├── types/                         # TypeScript type definitions
-│   │   ├── firebase.type.ts           # Firebase & user profile types
-│   │   ├── subscription.type.ts       # Subscription & pricing types
-│   │   ├── meal.type.ts               # Meal plan types
-│   │   ├── onboarding.type.ts         # Onboarding types
-│   │   └── report.type.ts             # Medical report types
-│   ├── styles/
-│   │   └── index.css                  # Global styles + Tailwind
-│   ├── utils/
-│   │   ├── i18n.js                    # i18next configuration
-│   │   └── helper.js                  # Utility functions
-│   ├── config.js                      # App configuration
-│   └── main.jsx                       # React entry point
-├── public/
-│   └── icons/                         # Static assets
-├── index.html                         # HTML template
-├── vite.config.js                     # Vite configuration
-├── tailwind.config.js                 # Tailwind CSS config
-├── postcss.config.js                  # PostCSS config
-└── package.json
-```
-
-### Server Structure (`server/`)
-
-```
-server/
-├── src/
-│   ├── index.js                       # Express server entry point
-│   ├── config/
-│   │   ├── env.js                     # Environment variables
-│   │   └── appConfig.js               # App settings (model, RAG, etc.)
-│   ├── langchain/                     # LangChain.js integration
-│   │   ├── llmClient.js               # OpenAI LLM client
-│   │   ├── embeddings.js              # Text embeddings
-│   │   ├── vectorStore.js             # Vector database (HNSWLib)
-│   │   ├── retriever.js               # RAG retriever
-│   │   ├── initializeRAG.js           # RAG initialization & status checks
-│   │   ├── chains/
-│   │   │   ├── chatChain.js           # Chat conversation chain
-│   │   │   ├── mealPlanChain.js       # Meal planning chain (with RAG metadata)
-│   │   │   ├── reportChain.js         # Report analysis chain
-│   │   │   └── index.js
-│   │   └── prompts/
-│   │       ├── systemPrompt.md        # Main system prompt
-│   │       ├── disclaimerPrompt.md    # Medical disclaimer
-│   │       └── redditDisclaimerPrompt.md
-│   ├── middleware/
-│   │   ├── corsMiddleware.js          # CORS configuration
-│   │   ├── errorHandler.js            # Global error handler
-│   │   ├── rateLimit.js               # Rate limiting
-│   │   ├── requestLogger.js           # Request logging
-│   │   └── safetyGuards.js            # Content safety checks
-│   ├── routes/
-│   │   ├── chat.js                    # Chat endpoints
-│   │   ├── mealPlan.js                # Meal planning endpoints (with access control)
-│   │   ├── subscription.js            # Subscription management endpoints
-│   │   ├── upload.js                  # File upload endpoints
-│   │   ├── progress.js                # Progress tracking endpoints
-│   │   ├── onboarding.js              # Onboarding endpoints
-│   │   └── ragStatus.js               # RAG system status endpoints
-│   ├── services/
-│   │   ├── ocrService.js              # OCR for images (Tesseract.js)
-│   │   ├── parserService.js           # PDF/DOCX parsing
-│   │   ├── redditService.js           # Reddit API integration
-│   │   ├── spoonacularService.js      # Spoonacular API for nutrition and recipes
-│   │   ├── serpService.js.legacy      # DEPRECATED - Old SERP API (kept for reference)
-│   │   └── firebaseCacheService.js    # Firebase caching
-│   ├── scripts/
-│   │   ├── ingestAll.js               # Ingest all data sources
-│   │   ├── ingestMealTemplates.js     # Index meal templates for RAG
-│   │   ├── ingestMedicalKnowledge.js  # Index medical knowledge
-│   │   └── ingestNutritionalData.js   # Index nutritional data
-│   ├── storage/
-│   │   ├── tmpUploads/                # Temporary file uploads
-│   │   └── localCache/
-│   │       └── vectordb/              # HNSWLib vector store
-│   ├── utils/
-│   │   ├── logger.js                  # Winston logger
-│   │   ├── labRanges.js               # Medical lab reference ranges
-│   │   └── subscriptionUtils.js       # Subscription access control & weekly reset
-│   └── data/
-│       ├── meal_templates/            # Meal plan templates (.txt files)
-│       ├── medical/                   # Medical knowledge base
-│       └── nutritional/               # Nutritional guidelines
-├── debug/                             # Debug output files
-├── public/                            # Static files
-└── package.json
-```
-
-## 🔧 Technology Stack
-
-### Frontend
-
-- **Framework**: React 18.2
-- **Build Tool**: Vite 5.0
-- **Styling**: Tailwind CSS 3.3
-- **Routing**: React Router 6.20
-- **State Management**: Zustand 4.4
-- **HTTP Client**: Axios 1.6
-- **Authentication**: Firebase 12.4 (Auth + Firestore)
-- **Internationalization**: i18next 23.7 + react-i18next 13.5
-- **Icons**: Lucide React 0.294
-- **Charts**: Recharts 2.10
-- **Date Utilities**: date-fns 2.30
-- **PDF Generation**: jsPDF 2.5.1 (for meal plan export)
-- **Testing**: Vitest 0.34 + Testing Library
-
-### Backend
-
-- **Runtime**: Node.js 18+
-- **Framework**: Express 4.18
-- **AI/ML**:
-  - LangChain.js 0.1.28
-  - @langchain/openai 0.0.34
-  - @langchain/community 0.0.57
-  - OpenAI API (GPT-4o-mini, text-embedding-3-small)
-- **Vector Database**: HNSWLib (hnswlib-node 2.0)
-- **Document Processing**:
-  - PDF.js (pdfjs-dist 4.0)
-  - Mammoth 1.6 (DOCX parsing)
-  - Tesseract.js 5.0 (OCR)
-- **Data APIs**:
-  - Spoonacular API (nutrition and recipes)
-  - Snoowrap 1.23 (Reddit)
-- **File Upload**: Multer 1.4.5
-- **Security**:
-  - CORS 2.8
-  - Express Rate Limit 7.1
-- **Logging**: Winston (via custom logger)
-- **Testing**: Vitest 0.34
-
-### Development Tools
-
-- **Linting**: ESLint 8.52
-- **Formatting**: Prettier 2.8
-- **Process Management**: Concurrently 8.2
-- **Auto-restart**: Node --watch (built-in)
-
----
-
-## 🎯 Key Features Explained
-
-### 0. RAG Transparency & Personalization Tracking
-
-**New Feature**: Every meal plan now shows users exactly how it was personalized:
-
-**Personalization Sources Display**:
-
-- Visual cards showing data sources used:
-  - 🌟 **Onboarding Profile**: User's allergies, symptoms, goals, activity level, cuisine preferences
-  - 📋 **Medical Reports**: Latest lab results, hormone levels, nutrient deficiencies
-  - 🔧 **User Overrides**: Manual region/diet type changes
-  - 🧠 **RAG Knowledge Base**: Retrieved meal templates and nutrition guidelines
-
-**RAG Metadata Component** (`RAGMetadataDisplay.jsx`):
-
-- Shows knowledge base coverage quality (Excellent/Good/Limited)
-- Displays specific metrics:
-  - Number of meal templates retrieved
-  - Number of nutrition guidelines applied
-  - Whether symptom-specific recommendations were used
-- Color-coded quality indicators
-- Informational tooltip explaining RAG process
-
-**Benefits**:
-
-- Users understand why they received specific meals
-- Builds trust in AI recommendations
-- Encourages users to complete onboarding and upload reports for better personalization
-- Transparent about AI decision-making process
-
-### 1. AI Chat Assistant
-
-- **Technology**: GPT-4o-mini with RAG (Retrieval-Augmented Generation)
-- **Features**:
-  - Context-aware conversations with chat history
-  - Retrieval from curated PCOS knowledge base
-  - Reddit community insights integration
-  - Web search for latest information
-  - Medical disclaimers and safety guards
-
-### 2. Personalized Meal Planning
-
-- **AI-generated meal plans** tailored to:
-  - User's dietary preferences (vegetarian, vegan, non-veg)
-  - Cultural cuisine preferences (North Indian, South Indian, East Indian, West Indian)
-  - PCOS-specific nutritional requirements
-  - Allergies and restrictions
-  - User's symptoms and health goals
-  - Latest medical report data (hormones, nutrients)
-- **RAG-Enhanced Generation**:
-  - Retrieves relevant meal templates from curated knowledge base
-  - Applies nutrition guidelines specific to PCOS management
-  - Uses symptom-specific ingredient recommendations
-  - Tracks and displays RAG quality metrics (high/medium/low coverage)
-- **Personalization Transparency**:
-  - Shows what data sources influenced the plan (onboarding, medical reports, user overrides, RAG)
-  - Displays RAG metadata: templates used, guidelines applied, symptom-specific recommendations
-  - Visual indicators for personalization source quality
-- **Reliability Features**:
-  - Automatic chunking for plans longer than 3 days to ensure consistent generation
-  - Fallback to expert-curated templates if AI generation fails
-  - Structure validation and auto-repair for malformed responses
-- **Export & Sharing**:
-  - PDF export for entire meal plans with all days
-  - Formatted with ingredients, recipes, and nutrition information
-- **Output**: 1-7+ day meal plans with recipes, nutritional info (protein, carbs, fats, GI), cooking tips, and time estimates
-
-### 2.1. Ketogenic Diet Feature ⚡ (NEW)
-
-**Overview**: Optional keto modifier that works with all diet types for improved insulin sensitivity and hormone balance in PCOS management.
-
-#### **Supported Diet Combinations** (8 total):
-
-1. **Vegetarian** (baseline) + **Vegetarian Keto** (with keto modifier)
-2. **Non-Vegetarian** (baseline) + **Non-Veg Keto** (with keto modifier)
-3. **Vegan** (strictest - no animal products) + **Vegan Keto** (plant-based high-fat)
-4. **Jain** (strictest - no root vegetables) + **Jain Keto** (most restrictive combination)
-
-#### **Keto Implementation**:
-
-- **Macro Targets**: 70% fat, 25% protein, 5% carbs (20-50g net carbs/day)
-- **Grain Elimination**: ALL grains replaced automatically
-  - Rice → Cauliflower rice (pulse raw cauliflower in food processor)
-  - Roti/Chapati → Almond flour roti, coconut flour roti, cheese wraps
-  - Wheat flour → Almond flour, coconut flour
-  - Bread/Upma/Poha → Cauliflower-based alternatives
-- **Starchy Vegetable Elimination**:
-  - Potato → Cauliflower, zucchini, turnip
-  - Sweet potato → Pumpkin (small portions)
-  - Corn/Peas → Bell peppers, green beans
-- **Sugar Elimination**: All sugar, jaggery, honey → Stevia, erythritol, monk fruit
-- **Fat Emphasis**: Liberal use of ghee, coconut oil, butter, nuts, seeds, avocado oil
-
-#### **Diet-Specific Keto Adaptations**:
-
-**Vegan Keto**:
-
-- High-fat plant sources: Coconut oil, coconut cream, avocado, nuts, seeds
-- Protein: Firm tofu, tempeh, hemp seeds, chia seeds, pumpkin seeds
-- NO dairy: Use coconut milk, coconut yogurt, almond milk
-- Example: Tofu Curry with Cauliflower Rice
-
-**Jain Keto** (Most Restrictive):
-
-- NO root vegetables: potato, onion, garlic, carrot, radish, turnip, ginger
-- Focus on above-ground vegetables: cauliflower, zucchini, bell peppers, leafy greens
-- Protein: Paneer, full-fat cheese, nuts, seeds
-- Flavor: Use asafoetida (hing) instead of onion/garlic
-- Example: Paneer Tikka with Cauliflower Rice (no onion/garlic)
-
-**Vegetarian Keto**:
-
-- Emphasize full-fat dairy: paneer, cheese, Greek yogurt, heavy cream
-- Include eggs liberally (if eggetarian)
-- Fats: Ghee, butter, coconut oil
-- Example: Palak Paneer with extra ghee + Cauliflower Rice
-
-**Non-Vegetarian Keto**:
-
-- Prioritize fatty cuts: chicken thighs (not breast), salmon, sardines, mutton
-- Include bone broth, eggs, fatty fish
-- Example: Butter Chicken (real butter & cream) with Cauliflower Rice
-
-#### **RAG Knowledge Base**:
-
-- **6,400+ word Keto Substitutes section** in `pcos_ingredient_substitutes_RAG.txt`
-- Categories covered:
-  - Grain/carb replacements for all Indian dishes
-  - Vegetable substitutions (potato alternatives)
-  - Dairy alternatives (vegan options)
-  - Protein sources by diet type
-  - Sweetener replacements
-  - Fat sources (Indian cooking oils)
-  - Indian keto dish adaptations (Biryani, Dosa, Paratha, Samosa, etc.)
-  - Regional adaptations (Andhra Pradesh, Tamil Nadu, Gujarat, Goa, Kerala, etc.)
-  - Jain keto specifics (no root vegetables)
-  - PCOS synergy benefits
-
-#### **Frontend UI**:
-
-- **Checkbox**: Pink/purple gradient "Enable Ketogenic Diet" checkbox with "New" badge
-- **Info Banner (when enabled)**: Blue banner explaining:
-  - What keto means (grain replacements, no starchy veg)
-  - PCOS benefits (insulin sensitivity, hormone balance, stable blood sugar)
-  - Diet compatibility (works with all diet types)
-  - Medical disclaimer (consult healthcare provider, keto flu warning)
-- **Meal Plan Display**:
-  - ⚡ Keto badge next to diet type (gradient pink-purple)
-  - Large information banner showing:
-    - Diet variant (Vegan Keto / Jain Keto / Veg Keto / Non-Veg Keto)
-    - Macro targets (70/25/5)
-    - Key substitutions (rice→cauliflower, roto→almond flour, potato→cauliflower)
-    - PCOS benefits
-    - Medical disclaimer
-
-#### **Backend Processing**:
-
-1. **RAG Query Stage**: If `isKeto=true`, fetches keto-specific substitutes (20+ targeted queries)
-2. **System Prompt**: Conditional keto instructions override standard PCOS macros
-3. **LLM Adaptation**: GPT-4o-mini adapts meal templates using keto substitutes
-4. **Validation**: Ensures no grains, proper macro ratios
-
-#### **API Endpoint**:
-
-```json
-POST /api/meals/generate
-{
-  "cuisines": ["Tamil Nadu"],
-  "dietType": "vegetarian",
-  "isKeto": true,  // <-- NEW: Enable keto modifier
-  "budget": 300,
-  "mealsPerDay": 3,
-  "duration": 3,
-  "userId": "user_id",
-  "restrictions": [],
-  "healthContext": { /* ... */ }
-}
-```
-
-#### **PCOS Benefits**:
-
-- **Improved insulin sensitivity**: Low carb reduces insulin spikes
-- **Better hormone balance**: Reduced insulin = reduced androgen production
-- **Weight management**: Fat burning (ketosis) supports healthy weight
-- **Stable blood sugar**: Prevents energy crashes and cravings
-- **Reduced inflammation**: Anti-inflammatory effects support hormone regulation
-
-#### **Medical Disclaimers**:
-
-- Ketogenic diet should be undertaken with healthcare provider supervision
-- Initial "keto flu" (fatigue, headache) is normal in first 1-2 weeks
-- CRITICAL: Increase salt intake (1-2 tsp/day) and stay well-hydrated (3-4L water)
-- Ensure adequate electrolytes: sodium, potassium (leafy greens), magnesium (nuts, seeds)
-- Monitor menstrual cycles - some women experience temporary changes
-- NOT suitable during pregnancy or breastfeeding without medical supervision
-
-### 3. Medical Report Analysis
-
-- **Supported formats**: PDF, DOCX, JPG, PNG
-- **OCR**: Tesseract.js for image-based reports
-- **Parsing**: Intelligent extraction of lab values, hormones, and biomarkers
-- **Analysis**: AI-powered interpretation with reference ranges
-- **Storage**: Firestore for report history
-
-### 4. Progress Tracking
-
-- **Metrics tracked**:
-  - Weight and BMI
-  - Menstrual cycle regularity
-  - Symptoms (acne, hair loss, mood, energy)
-  - Lifestyle habits (exercise, sleep, stress)
-- **Visualizations**: Charts and trends using Recharts
-- **Insights**: AI-generated progress summaries
-
-### 5. Authentication & User Management
-
-- **Google OAuth** via Firebase Authentication
-- **User profiles** stored in Firestore
-- **Onboarding flow** to collect user health data
-- **Protected routes** with authentication guards
-- **Profile settings** for preferences and language
-
----
-
-## 🛡️ Safety & Privacy
-
-### Content Safety
-
-- **Automated Content Filtering** - Blocks NSFW, adult, violent, and illegal content requests
-  - NSFW/pornographic content detection
-  - Self-harm/violence detection with crisis helpline resources
-  - Illegal activity blocking
-  - Medical context exceptions (allows legitimate health queries)
-  - Applies to both chat messages and Reddit queries
-  - See `docs/CONTENT_SAFETY_FILTER.md` for details
-- **Safety guards middleware** filters harmful/inappropriate content
-- **Rate limiting** prevents abuse (100 requests per 15 minutes)
-- **Medical disclaimers** prominently displayed in chat
-
-### Data Privacy
-
-- **Firebase Authentication** for secure user management
-- **Firestore security rules** (configure in Firebase Console)
-- **No PHI logging** - sensitive health data not logged to console/files
-- **Local development** by default (no external database required for testing)
-
-### Best Practices
-
-- Always use HTTPS in production
-- Regularly rotate API keys
-- Configure Firebase security rules before deploying
-- Review and update content safety rules in `safetyGuards.js`
-
----
-
-## RAG System Architecture
-
-### Overview
-
-Sakhee uses Retrieval-Augmented Generation (RAG) to enhance meal plan personalization with a curated knowledge base of meal templates, nutritional guidelines, and PCOS-specific dietary recommendations.
-
-### Components
-
-**1. Vector Store (HNSWLib)**
-
-- Fast similarity search for meal templates
-- Stores embeddings of meal data, recipes, and nutrition guidelines
-- Located at: `server/src/storage/localCache/vectordb/`
-
-**2. Embeddings (OpenAI)**
-
-- Uses `text-embedding-3-small` model
-- Converts meal templates to dense vector representations
-- Enables semantic search across knowledge base
-
-**3. Meal Templates**
-
-- Stored as `.txt` files in `server/src/data/meal_templates/`
-- Each template contains regional meal variations with:
-  - Meal name, ingredients, and quantities
-  - Macros (protein, carbs, fats) and glycemic index
-  - Cooking instructions and tips
-- Organized by region (North, South, East, West Indian)
-
-**4. Ingestion Pipeline**
-
-- Script: `server/src/scripts/ingestMealTemplates.js`
-- Reads all `.txt` files from templates folder
-- Splits documents into chunks
-- Generates embeddings and builds vector store
-- Run with: `npm run ingest:meals`
-
-**5. Retrieval & Generation**
-
-- Query user preferences to retrieve relevant templates
-- Top-k similarity search (configurable, default k=5)
-- Retrieved context injected into LLM prompt
-- RAG metadata tracked for transparency:
-  - Number of templates used
-  - Nutrition guidelines applied
-  - Symptom-specific recommendations
-  - Retrieval quality score (high/medium/low)
-
-### RAG Status Monitoring
-
-Check RAG system health:
-
-```bash
-# Detailed status
-curl http://localhost:5000/api/rag/status
-
-# Quick health check
-curl http://localhost:5000/api/rag/health
-```
-
-Response includes:
-
-- Vector store existence
-- Template count and file names
-- Indexed document count (approximate)
-- Retrieval functionality status
-- Recommendations for fixes
-
-### RAG Quality Metrics
-
-Each meal plan includes personalization metadata:
-
-```json
-{
-  "personalizationSources": {
-    "onboarding": true,
-    "medicalReport": true,
-    "userOverrides": false,
-    "ragQuality": "high",
-    "ragSources": {
-      "mealTemplates": 5,
-      "nutritionGuidelines": 8,
-      "symptomRecommendations": true
-    }
-  }
-}
-```
-
-Quality levels:
-
-- **High**: 5+ relevant templates retrieved, comprehensive guidelines
-- **Medium**: 2-4 templates retrieved, partial guidelines
-- **Low**: 0-1 templates retrieved, fallback mode
-
-### Adding New Templates
-
-1. Create `.txt` file in `server/src/data/meal_templates/`
-2. Format with meal name, ingredients, macros, and tips
-3. Run ingestion: `cd server && npm run ingest:meals`
-4. Restart server
-5. Verify: `curl http://localhost:5000/api/rag/status`
-
-Example template format:
-
-```
-Meal: South Indian Idli Sambar
-Region: south-india
-Type: breakfast
-Ingredients: 3 idlis (150g), sambar (200ml), coconut chutney (50g)
-Protein: 12g
-Carbs: 45g
-Fats: 5g
-GI: Low
-Time: 20 mins
-Tip: Use brown rice idlis for extra fiber and lower GI
-```
-
----
-
-## 🧪 Testing & Linting
-
-### Testing
-
-The repository uses **Vitest** for unit and integration tests:
-
-```bash
-# Run all tests
-npm run test
-
-# Run client tests only
-cd client && npm run test
-
-# Run server tests only
-cd server && npm run test
-```
-
-### Linting & Formatting
-
-**ESLint** and **Prettier** are configured workspace-wide:
-
-```bash
-# Lint all code
-npm run lint
-
-# Auto-fix linting issues
-npm run lint:fix
-
-# Format all code
-npm run format
-
-# Check formatting
-npm run format:check
-```
-
----
-
-## 📝 Development Notes
-
-### Server
-
-- Uses **LangChain.js + OpenAI** for chat and RAG
-- Keep the OpenAI key in `server/.env` (never commit)
-- Auto-restarts on file changes with `node --watch`
-- Uploaded files stored temporarily in `server/src/storage/tmpUploads`
-- Vector store cached in `server/src/storage/localCache`
-
-### Client
-
+### Client Notes
 - Talks to backend API at `VITE_API_URL` (default: http://localhost:5000/api)
 - Firebase config required for authentication
 - Hot module replacement (HMR) enabled via Vite
 - Tailwind CSS for styling (configure in `tailwind.config.js`)
-- Zustand for lightweight state management (no Redux)
-
-### API Endpoints
-
-| Endpoint                       | Method   | Description                              |
-| ------------------------------ | -------- | ---------------------------------------- |
-| `/api/health`                  | GET      | Health check                             |
-| `/api/chat`                    | POST     | Send chat message with RAG context       |
-| `/api/meals/generate`          | POST     | Generate personalized meal plan with RAG |
-| `/api/meals/:planId`           | GET      | Get specific meal plan                   |
-| `/api/meals/user/:userId`      | GET      | Get user's meal plan history             |
-| `/api/meals/:planId`           | PUT      | Update meal plan (feedback, ratings)     |
-| `/api/meals/:planId`           | DELETE   | Delete meal plan                         |
-| `/api/subscription`            | GET      | Get user's subscription details          |
-| `/api/subscription/upgrade`    | PUT      | Upgrade subscription plan                |
-| `/api/subscription/cancel`     | PUT      | Cancel subscription (retains access)     |
-| `/api/subscription/reactivate` | PUT      | Reactivate cancelled subscription        |
-| `/api/subscription/usage`      | GET      | Get meal plan usage statistics           |
-| `/api/upload`                  | POST     | Upload medical report (PDF/DOCX/image)   |
-| `/api/progress`                | GET/POST | Get/update progress data                 |
-| `/api/onboarding/create`       | POST     | Complete onboarding                      |
-| `/api/rag/status`              | GET      | Get RAG system status and metrics        |
-| `/api/rag/health`              | GET      | Quick RAG health check                   |
-
----
-
-## 🚧 Troubleshooting
-
-### Port Already in Use
-
-If port 5000 is already in use:
-
-```bash
-# Find process using the port
-lsof -iTCP:5000 -sTCP:LISTEN -n -P
-
-# Kill the process
-kill <PID>
-
-# Or use a different port
-PORT=5001 npm run dev
-```
-
-### Firebase Configuration Issues
-
-- Ensure all Firebase environment variables are set in `client/.env`
-- Enable Google Authentication in Firebase Console
-- Create Firestore database in Firebase Console
-- Configure Firestore security rules
-
-### OpenAI API Issues
-
-- Check API key is valid and has credits
-- Verify model name is correct (`gpt-4o-mini`)
-- Check rate limits on OpenAI dashboard
-
-### RAG System Issues
-
-**Vector Store Not Found**:
-
-```bash
-# Create templates folder if missing
-mkdir -p server/src/data/meal_templates
-
-# Add .txt template files with meal data
-# Then run ingestion
-cd server && npm run ingest:meals
-```
-
-**Templates Not Being Used**:
-
-- Check RAG status: `curl http://localhost:5000/api/rag/status`
-- Verify templates exist: `ls server/src/data/meal_templates/*.txt`
-- Re-ingest templates: `npm run ingest:meals`
-- Check server logs for RAG initialization messages
-
-**Meal Plans Using Fallback Templates**:
-
-- This happens when vector store is not initialized
-- Run `npm run ingest:meals` in the server directory
-- Restart the server after ingestion
-- Check for "✅ RAG system initialized successfully" in logs
-
-### Module Not Found Errors
-
-```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
-
-# Or in specific workspace
-cd client && rm -rf node_modules && npm install
-cd server && rm -rf node_modules && npm install
-```
-
-## 🚀 Deployment
-
-### Chat Markdown Rendering (frontend)
-
-If chat responses contain raw markdown (for example: `## Header`, `- item`, `*italic*`) or you see duplicated bullets like `• • item`, the frontend's markdown post-processing helper may need adjustment. The project uses a lightweight helper to convert a small subset of markdown to HTML at `frontend/src/utils/helper.ts` (function `boldify`).
-
-Common issues and fixes:
-
-- Headers not rendered: ensure `boldify()` converts `#`, `##`, `###` and smaller header patterns before converting line breaks.
-- Double bullets (`• • item`): normalize leading bullets/dashes by stripping all leading `•`/`-` characters from the captured content and re-inserting a single bullet.
-- Missing bullets for indented lists: allow optional leading whitespace in the bullet regex (use `^\s*[-•]`).
-- Disclaimer formatting (⚠️ _text_): if the backend emits `⚠️ *This is educational guidance*` but you want it bold, either change the backend to use `**text**` or add a frontend special-case rule to convert `⚠️ *text*` to bold.
-
-Minimal example snippet (from `frontend/src/utils/helper.ts`):
-
-```ts
-// Normalize bullets: strip leading markers, add a single bullet
-processedText = processedText.replace(/^\s*[-•]\s*(.+?)$/gm, (_m, content) => {
-  const clean = content.replace(/^[•\-\s]+/, '').trim();
-  return `<div class="ml-4">• ${clean}</div>`;
-});
-
-// Header conversion (run before converting \n to <br />)
-processedText = processedText.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-processedText = processedText.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-
-// Convert bold/italic
-processedText = processedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-processedText = processedText.replace(/(?<!\*)\*(?!\*)(.+?)\*(?!\*)/g, '<em>$1</em>');
-
-// Convert remaining newlines to <br /> last
-processedText = processedText.replace(/\n/g, '<br />');
-```
-
-Testing and debugging:
-
-- Open browser devtools console. The chat UI logs the raw assistant text before processing (if debug enabled). Inspect the raw string to confirm the presence of leading bullets or stray characters.
-- Refresh the frontend after updating `helper.ts` and restart the dev server (if necessary):
-
-```bash
-# client/front-end
-cd frontend
-npm run dev
-```
-
-Remove any temporary `console.log` debug lines after confirming the fix.
-
-### Prerequisites
-
-- Node.js 18+ hosting (e.g., Railway, Render, AWS, DigitalOcean)
-- Firebase project (production environment)
-- Domain with SSL certificate (recommended)
-
-### Build for Production
-
-```bash
-# Build both client and server
-npm run build
-
-# Client build output: client/dist
-# Server: runs directly from server/src
-```
-
-### Environment Configuration
-
-1. Set all environment variables on your hosting platform
-2. Use production Firebase config in client
-3. Update `CORS_ORIGIN` to your production domain
-4. Set `NODE_ENV=production`
+- Zustand for lightweight state management
 
 ### Deployment Checklist
-
 - [ ] Configure Firebase security rules
 - [ ] Set up SSL certificate
 - [ ] Configure rate limiting for production
-- [ ] Set up error monitoring (e.g., Sentry)
+- [ ] Set up error monitoring (Sentry)
 - [ ] Configure backup strategy for Firestore
 - [ ] Set up logging infrastructure
 - [ ] Test all API endpoints in production
 - [ ] Verify Firebase authentication flow
-- [ ] Test file upload limits and storage
 
----
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how to get started:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. **Make your changes**
-   - Follow existing code style
-   - Add tests for new features
-   - Update documentation as needed
-4. **Run tests and linting**
-   ```bash
-   npm run lint
-   npm run test
-   npm run format
-   ```
-5. **Commit your changes**
-   ```bash
-   git commit -m "feat: add your feature description"
-   ```
-6. **Push to your fork**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-7. **Open a Pull Request**
-   - Provide clear description of changes
-   - Reference any related issues
-   - Include screenshots for UI changes
-
-### Contribution Guidelines
-
-- **Code Style**: Follow ESLint and Prettier configurations
-- **Commits**: Use conventional commit messages (feat, fix, docs, etc.)
-- **Testing**: Add tests for new features
-- **Documentation**: Update README and inline comments
-- **AI Features**: Document costs and safety considerations for model-heavy features
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **OpenAI** for GPT-4o-mini and embeddings API
-- **LangChain.js** for RAG framework
-- **Firebase** for authentication and database
-- **React** and **Vite** communities
-- **Tailwind CSS** for beautiful styling
-- PCOS community for inspiration and feedback
-
-## 🧑‍💼 Maintainer
-
-This repository is maintained by @supriyavikramsingh-sudo. For questions about the project, open an issue or reach out via GitHub.
-
----
-
-## 📧 Support
-
-For questions, issues, or suggestions:
-
-- Open an issue on GitHub
-- Check existing documentation
-- Review troubleshooting section
-
----
-
-## 🗺️ Roadmap
-
-### Completed ✅
-
-- [x] AI chat assistant with RAG
-- [x] Personalized meal planning with RAG-enhanced generation
-- [x] RAG system with vector store and template indexing
-- [x] RAG metadata transparency and quality tracking
-- [x] Personalization source tracking (onboarding, medical reports, user overrides)
-- [x] Meal plan PDF export functionality
-- [x] Regional cuisine templates (North, South, East, West Indian)
-- [x] Chunked generation for reliable long meal plans
-- [x] RAG system status monitoring endpoints
-- [x] Medical report analysis (OCR + parsing) with meal plan integration
-- [x] Progress tracking dashboard
-- [x] Firebase authentication
-- [x] Community insights (Reddit integration)
-
-### Planned 🔜
-
-- [ ] **Payment Integration**: Razorpay/Stripe for subscription payments
-- [ ] **MAX Plan Launch**: Unlimited meal plan tier (₹1000/month)
-- [ ] **Subscription Analytics Dashboard**: Revenue tracking, user metrics, churn analysis
-- [ ] Persistent meal plan storage in Firestore (currently in-memory)
-- [ ] User meal plan history and favorites
-- [ ] Grocery shopping list generation from meal plans
-- [ ] Meal plan sharing and social features
-- [ ] Mobile app (React Native)
-- [ ] Exercise recommendations with RAG
-- [ ] Medication reminders
-- [ ] Doctor appointment scheduling
-- [ ] Community forum
-- [ ] Integration with health tracking devices (Fitbit, Apple Health)
-- [ ] Advanced RAG with medical knowledge base
-- [ ] Symptom prediction models
-- [ ] Cycle tracking with predictions
-- [ ] Recipe image generation with DALL-E
-- [ ] Voice input for chat and meal preferences
-
----
-
-## � Subscription & Pricing System
-
-### Overview
-
-Sakhee implements a three-tier subscription model with usage-based access control for meal plan generation:
-
-| Plan     | Price                    | Meal Plans | Features                                                    |
-| -------- | ------------------------ | ---------- | ----------------------------------------------------------- |
-| **FREE** | ₹0                       | 1 lifetime | Try the platform, limited access                            |
-| **PRO**  | ₹500/month or ₹5000/year | 3 per week | Regional meal plans, PDF export, medical report integration |
-| **MAX**  | ₹1000/month              | Unlimited  | Coming soon - all PRO features + unlimited generation       |
-
-### Usage Limits & Reset Logic
-
-**FREE Plan**:
-
-- 1 meal plan total (lifetime limit)
-- Once used, redirected to upgrade page
-- No reset mechanism
-
-**PRO Plan**:
-
-- 3 meal plans per week
-- Resets every **Monday at 00:00** (weekly reset)
-- Counter: `meal_plans_generated_this_week` (0-3)
-- After 3 plans, redirected to upgrade or wait until Monday
-
-**MAX Plan** (Coming Soon):
-
-- Unlimited meal plans
-- No usage restrictions
-- Premium support
-
-### Test User Configuration
-
-For development and demo purposes, a test user bypasses all subscription checks:
-
-- **Email**: supriyavikramsingh@gmail.com
-- **User ID**: fY42B1okA1Y2WOUSRPDp6XJQgkD2
-- **Access**: Unlimited meal plans (bypasses all limits)
-- **Configuration**: Hard-coded in `server/src/utils/subscriptionUtils.js`
-
-To set up a test user:
-
-```bash
-cd server
-node src/scripts/setupTestUser.js
-```
-
-This creates/updates the user in Firestore with:
-
-```json
-{
-  "subscription_plan": "pro",
-  "subscription_status": "active",
-  "billing_cycle": "monthly",
-  "subscription_start_date": "2025-01-01T00:00:00.000Z",
-  "meal_plans_generated_count": 0,
-  "meal_plans_generated_this_week": 0,
-  "last_meal_plan_reset_date": "2025-01-01T00:00:00.000Z"
-}
-```
-
-### Access Control Implementation
-
-**Backend** (`server/src/utils/subscriptionUtils.js`):
-
-```javascript
-// Check if user can generate meal plan
-async function canGenerateMealPlan(userId) {
-  // Test user bypass
-  if (isTestProUser(userId)) {
-    return { allowed: true, reason: 'test_user' };
-  }
-
-  const user = await getUserProfile(userId);
-
-  // Check subscription status
-  if (user.subscription_status !== 'active') {
-    return { allowed: false, reason: 'SUBSCRIPTION_INACTIVE' };
-  }
-
-  // FREE plan check
-  if (user.subscription_plan === 'free') {
-    if (user.meal_plans_generated_count >= 1) {
-      return { allowed: false, reason: 'MEAL_PLAN_LIMIT_REACHED' };
-    }
-  }
-
-  // PRO plan check
-  if (user.subscription_plan === 'pro') {
-    // Check if weekly reset needed
-    await checkAndResetWeeklyLimit(userId, user);
-
-    if (user.meal_plans_generated_this_week >= 3) {
-      return { allowed: false, reason: 'WEEKLY_LIMIT_REACHED' };
-    }
-  }
-
-  return { allowed: true };
-}
-```
-
-**Frontend Access Control** (`MealPlanGenerator.jsx`):
-
-When meal generation is blocked, users see:
-
-- Modal with upgrade message
-- Current usage stats (e.g., "2/3 plans used this week")
-- Clear CTA to upgrade or pricing page link
-- For FREE users: "You've used your 1 free meal plan"
-- For PRO users: "You've reached your weekly limit (3/3). Resets Monday."
-
-### Subscription Management
-
-**Settings Page** (`/settings/subscription`):
-
-Users can:
-
-- ✅ View current plan and billing details
-- ✅ See usage statistics (X/Y plans used)
-- ✅ Upgrade to PRO/MAX
-- ✅ Cancel subscription (retains access until end date)
-- ✅ Reactivate cancelled subscription
-- ✅ View next billing date
-- ✅ See subscription end date (if cancelled)
-
-**Cancellation Behavior**:
-
-- Subscription remains active until `next_billing_date`
-- Status changes to `cancelled` but user retains access
-- At end date, status changes to `expired` and access is blocked
-- Users can reactivate anytime before expiration
-
-### Pricing Pages
-
-**Public Routes** (accessible without login):
-
-1. **`/pricing`** - Main pricing page
-
-   - Three pricing cards (FREE, PRO, MAX)
-   - Monthly/Yearly billing toggle (17% discount for annual)
-   - Feature comparison with checkmarks
-   - Dynamic CTAs based on authentication state:
-     - Not logged in: "START FREE" / "GET STARTED"
-     - Logged in (FREE): "CURRENT PLAN" / "UPGRADE TO PRO"
-     - Logged in (PRO): "CURRENT PLAN" / "UPGRADE TO MAX"
-
-2. **`/pricing-details`** - Comprehensive comparison
-   - Full feature table with availability states
-   - FAQ section
-   - Detailed explanations of all features
-
-**Navigation**:
-
-- Pricing link added to main navbar
-- Accessible from meal plan blocked modal
-- Settings page upgrade buttons link to pricing
-
-### API Endpoints
-
-#### Get Subscription
-
-```bash
-GET /api/subscription?userId={userId}
-Response: {
-  subscription_plan: 'pro',
-  subscription_status: 'active',
-  billing_cycle: 'monthly',
-  subscription_start_date: '2025-01-01',
-  next_billing_date: '2025-02-01',
-  meal_plans_generated_count: 5,
-  meal_plans_generated_this_week: 2
-}
-```
-
-#### Upgrade Subscription
-
-```bash
-PUT /api/subscription/upgrade
-Body: {
-  userId: 'user123',
-  plan: 'pro',
-  billing_cycle: 'yearly'
-}
-Response: { success: true, message: 'Subscription upgraded' }
-```
-
-#### Cancel Subscription
-
-```bash
-PUT /api/subscription/cancel
-Body: { userId: 'user123' }
-Response: {
-  success: true,
-  subscription_end_date: '2025-02-01',
-  message: 'Subscription cancelled. Access until 2025-02-01'
-}
-```
-
-#### Reactivate Subscription
-
-```bash
-PUT /api/subscription/reactivate
-Body: { userId: 'user123' }
-Response: { success: true, message: 'Subscription reactivated' }
-```
-
-#### Get Usage Statistics
-
-```bash
-GET /api/subscription/usage?userId={userId}
-Response: {
-  plan: 'pro',
-  totalGenerated: 5,
-  weeklyGenerated: 2,
-  weeklyLimit: 3,
-  lastReset: '2025-11-04',
-  nextReset: '2025-11-11'
-}
-```
-
-### Weekly Reset Logic
-
-**Implementation**:
-
-```javascript
-async function checkAndResetWeeklyLimit(userId, user) {
-  const lastReset = new Date(user.last_meal_plan_reset_date);
-  const now = new Date();
-
-  // Get last Monday
-  const lastMonday = getLastMonday(now);
-
-  // Reset if last reset was before last Monday
-  if (lastReset < lastMonday) {
-    await updateUserProfile(userId, {
-      meal_plans_generated_this_week: 0,
-      last_meal_plan_reset_date: now.toISOString(),
-    });
-  }
-}
-```
-
-**Reset Schedule**:
-
-- Trigger: Every Monday at 00:00 (user's first request after Monday)
-- Action: Sets `meal_plans_generated_this_week` to 0
-- Counter: Increments after each successful meal generation
-
-### Database Schema (Firestore)
-
-**Users Collection**:
-
-```javascript
-users/{userId}: {
-  // Existing fields
-  email: string,
-  displayName: string,
-  photoURL: string,
-
-  // Subscription fields (new)
-  subscription_plan: 'free' | 'pro' | 'max',
-  subscription_status: 'active' | 'cancelled' | 'expired',
-  billing_cycle: 'monthly' | 'yearly',
-  subscription_start_date: timestamp,
-  subscription_end_date: timestamp | null,
-  next_billing_date: timestamp,
-
-  // Usage tracking
-  meal_plans_generated_count: number,          // Total lifetime
-  meal_plans_generated_this_week: number,      // This week only
-  last_meal_plan_reset_date: timestamp,        // Last Monday reset
-
-  // Timestamps
-  createdAt: timestamp,
-  updatedAt: timestamp
-}
-```
-
-### Testing Subscription Flows
-
-**Test Cases**:
-
-1. **FREE User - First Meal Plan**:
-
-   - Generate 1 meal plan → Success
-   - Try 2nd meal plan → Blocked with upgrade modal
-
-2. **PRO User - Weekly Limit**:
-
-   - Generate 3 meal plans → All succeed
-   - Try 4th meal plan → Blocked until Monday reset
-
-3. **Test User - Bypass**:
-
-   - Generate 100 meal plans → All succeed (no limits)
-
-4. **Cancellation**:
-
-   - Cancel PRO subscription
-   - Continue generating until `next_billing_date`
-   - After end date → Access blocked
-
-5. **Reactivation**:
-   - Cancel subscription
-   - Reactivate before end date
-   - Continue with full access
-
-**Testing Commands**:
-
-```bash
-# Check subscription status
-curl http://localhost:5000/api/subscription?userId=test123
-
-# Upgrade to PRO
-curl -X PUT http://localhost:5000/api/subscription/upgrade \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"test123","plan":"pro","billing_cycle":"monthly"}'
-
-# Check usage
-curl http://localhost:5000/api/subscription/usage?userId=test123
-```
-
-### Future Enhancements
-
-**Payment Integration** (Planned):
-
-- [ ] Razorpay integration for Indian payments
-- [ ] Stripe for international payments
-- [ ] Automatic subscription renewal
-- [ ] Payment failure handling & grace periods
-- [ ] Invoices & receipts
-- [ ] Refund processing
-
-**Analytics** (Planned):
-
-- [ ] Revenue dashboard
-- [ ] Conversion tracking (FREE → PRO)
-- [ ] Churn analysis
-- [ ] Usage patterns
-- [ ] Cohort analysis
-
-**Features** (Planned):
-
-- [ ] Family plans (multi-user subscriptions)
-- [ ] Gift subscriptions
-- [ ] Promotional codes & discounts
-- [ ] Referral program
-- [ ] Trial extensions for specific users
-
-### Documentation
-
-For complete implementation details, see:
-
-- **`PRICING_SYSTEM_DOCS.md`** - Full technical specification
-- **`server/src/utils/subscriptionUtils.js`** - Access control logic
-- **`server/src/routes/subscription.js`** - API endpoints
-- **`frontend/src/config/pricingConfig.ts`** - Pricing configuration
-
----
-
-## �📚 Additional Resources
-
-- [LangChain.js Documentation](https://js.langchain.com/)
-- [OpenAI API Documentation](https://platform.openai.com/docs)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [React Documentation](https://react.dev/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/)
-
----
-
-## 📋 Changelog
-
-### v2.0.0 - Subscription & Pricing System (November 5, 2025)
-
-**Category**: Business Model & Monetization
-
-Major feature release introducing a comprehensive three-tier subscription system with usage-based access control, public pricing pages, and subscription management.
-
-#### New Features
-
-**💎 Three-Tier Subscription Model**:
-
-- **FREE Plan**: 1 lifetime meal plan for trial users (₹0)
-- **PRO Plan**: 3 meal plans per week with weekly Monday reset (₹500/month or ₹5000/year)
-- **MAX Plan**: Unlimited meal plans - coming soon (₹1000/month)
-
-**📄 Public Pricing Pages**:
-
-- `/pricing` - Main pricing page with 3 cards, monthly/yearly toggle, feature comparison
-- `/pricing-details` - Comprehensive feature table, FAQ, and detailed comparison
-- Dynamic CTAs based on authentication state
-- Responsive design with mobile optimization
-- Added "Pricing" link to main navigation bar
-
-**⚙️ Settings Page Redesign**:
-
-- New sidebar navigation with Preferences and Subscription sections
-- Subscription management UI showing plan details, billing info, usage stats
-- Action buttons: Upgrade, Cancel, Reactivate
-- Usage tracking display (e.g., "2/3 meal plans used this week")
-- Cancellation modal with confirmation
-- Next billing date and subscription end date display
-
-**🔒 Access Control System**:
-
-- Backend middleware checks subscription limits before meal generation
-- FREE users blocked after 1 meal plan (lifetime)
-- PRO users blocked after 3 weekly meal plans (resets Monday)
-- Test user bypass for development (supriyavikramsingh@gmail.com)
-- Returns 403 with `MEAL_PLAN_LIMIT_REACHED` error code when blocked
-- Increments counters after successful generation
-
-**🔄 Weekly Reset Logic**:
-
-- Automatic Monday reset for PRO plan weekly limits
-- Sets `meal_plans_generated_this_week` to 0 every Monday
-- Tracks `last_meal_plan_reset_date` to determine if reset needed
-- First API call after Monday triggers reset
-
-**🧪 Test User Configuration**:
-
-- Hard-coded test user with unlimited access
-- Bypasses all subscription checks for demos/development
-- Setup script: `server/src/scripts/setupTestUser.js`
-- User ID: fY42B1okA1Y2WOUSRPDp6XJQgkD2
-
-#### Backend APIs
-
-**New Endpoints**:
-
-- `GET /api/subscription` - Get user's subscription details
-- `PUT /api/subscription/upgrade` - Upgrade to PRO/MAX
-- `PUT /api/subscription/cancel` - Cancel subscription (retains access until end date)
-- `PUT /api/subscription/reactivate` - Reactivate cancelled subscription
-- `GET /api/subscription/usage` - Get meal plan usage statistics
-
-**Access Control**:
-
-- `canGenerateMealPlan(userId)` - Check if user can generate
-- `incrementMealPlanCounter(userId)` - Update counters after generation
-- `checkAndResetWeeklyLimit(userId)` - Monday reset logic
-- `isTestProUser(userId)` - Test user bypass
-
-#### Frontend Components
-
-**New Files**:
-
-- `frontend/src/types/subscription.type.ts` - TypeScript types
-- `frontend/src/config/pricingConfig.ts` - Pricing data
-- `frontend/src/services/subscriptionApi.ts` - API client
-- `frontend/src/components/pricing/PricingCard.tsx` - Pricing card component
-- `frontend/src/components/settings/SettingsSidebar.tsx` - Settings sidebar
-- `frontend/src/components/settings/SubscriptionSection.tsx` - Subscription management
-- `frontend/src/components/settings/PreferencesSection.tsx` - User preferences
-- `frontend/src/pages/PricingPage.tsx` - Main pricing page
-- `frontend/src/pages/PricingDetailsPage.tsx` - Feature comparison page
-- `frontend/src/pages/SettingsPageNew.tsx` - Redesigned settings
-
-**Modified Files**:
-
-- `frontend/src/app/App.tsx` - Added public pricing routes, protected settings routes
-- `frontend/src/components/layout/Navbar.tsx` - Added Pricing menu item
-- `frontend/src/types/firebase.type.ts` - Extended UserProfileData with subscription fields
-- `server/src/routes/mealPlan.js` - Added access control check at start of POST /generate
-
-#### Database Schema Changes
-
-**Firestore Users Collection** (new fields):
-
-```javascript
-{
-  subscription_plan: 'free' | 'pro' | 'max',
-  subscription_status: 'active' | 'cancelled' | 'expired',
-  billing_cycle: 'monthly' | 'yearly',
-  subscription_start_date: timestamp,
-  subscription_end_date: timestamp | null,
-  next_billing_date: timestamp,
-  meal_plans_generated_count: number,
-  meal_plans_generated_this_week: number,
-  last_meal_plan_reset_date: timestamp
-}
-```
-
-#### Subscription Behaviors
-
-**Cancellation**:
-
-- Status changes to `cancelled` but user retains access until `next_billing_date`
-- Shows "Subscription ends on [date]" in settings
-- At end date, status changes to `expired` and access is blocked
-- Users can reactivate anytime before expiration
-
-**Upgrade Flow**:
-
-- FREE → PRO: Immediate access to 3 weekly meal plans
-- PRO → MAX: Immediate unlimited access (when MAX launches)
-- Billing cycle selection (monthly vs yearly)
-- 17% discount for annual plans (₹5000/year vs ₹6000)
-
-**Usage Tracking**:
-
-- `meal_plans_generated_count` - Total lifetime (never resets)
-- `meal_plans_generated_this_week` - Weekly counter (resets Monday)
-- Displayed in settings: "2 of 3 meal plans used this week"
-
-#### Known Issues & Limitations
-
-**🚧 Not Yet Implemented**:
-
-- ❌ Payment integration (Razorpay/Stripe) - upgrade is manual API call
-- ❌ Automatic subscription renewal
-- ❌ MAX plan features (still "Coming Soon")
-- ❌ Email notifications for billing/cancellation
-- ❌ Invoice generation
-- ❌ Promotional codes / discounts
-
-**⚠️ Current Upgrade Flow**:
-
-- Clicking "Upgrade to Pro" navigates to pricing page
-- Clicking "UPGRADE TO PRO" on pricing page navigates back to settings
-- **Circular navigation loop** - no actual API call to upgrade
-- To test: Use backend API directly with cURL
-
-#### Testing
-
-**Manual Test Flows**:
-
-1. FREE user generates 1 meal plan → succeeds
-2. FREE user tries 2nd meal plan → blocked with upgrade modal
-3. PRO user generates 3 meal plans → all succeed
-4. PRO user tries 4th meal plan → blocked until Monday
-5. Test user generates unlimited → all succeed
-6. User cancels subscription → retains access until end date
-7. User reactivates subscription → full access restored
-
-**Backend API Tests** (cURL):
-
-```bash
-# Get subscription
-curl http://localhost:5000/api/subscription?userId=test123
-
-# Upgrade to PRO
-curl -X PUT http://localhost:5000/api/subscription/upgrade \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"test123","plan":"pro","billing_cycle":"monthly"}'
-
-# Cancel subscription
-curl -X PUT http://localhost:5000/api/subscription/cancel \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"test123"}'
-```
-
-#### Documentation
-
-**New Files**:
-
-- `PRICING_SYSTEM_DOCS.md` - Complete technical specification (300+ lines)
-- `server/src/scripts/setupTestUser.js` - Test user setup script
-
-**Updated Files**:
-
-- `README.md` - Added subscription system section, API endpoints, feature list
-
-#### Files Changed Summary
-
-**Frontend** (11 new files, 3 modified):
-
-- New: 4 types files, 3 page files, 3 component files, 1 config file, 1 service file
-- Modified: App.tsx, Navbar.tsx, firebase.type.ts
-
-**Backend** (4 new files, 2 modified):
-
-- New: subscription.js (routes), subscriptionUtils.js (utils), setupTestUser.js (script), PRICING_SYSTEM_DOCS.md (docs)
-- Modified: mealPlan.js (access control), index.js (route registration)
-
-#### Impact & Benefits
-
-**User Benefits**:
-
-- ✅ Clear pricing transparency (public pricing pages)
-- ✅ Free trial (1 meal plan) before commitment
-- ✅ Weekly reset prevents bill shock (3/week limit)
-- ✅ Flexible cancellation with retained access
-- ✅ Usage tracking visibility
-
-**Business Benefits**:
-
-- ✅ Monetization path for meal plan feature
-- ✅ Prevents abuse (unlimited free generation)
-- ✅ Encourages conversion (FREE → PRO)
-- ✅ Recurring revenue model (subscriptions)
-- ✅ Foundation for payment integration
-
-**Developer Benefits**:
-
-- ✅ Test user for demos without limits
-- ✅ Comprehensive documentation
-- ✅ Clean separation: access control in backend, UI in frontend
-- ✅ TypeScript types for type safety
-- ✅ Modular design (easy to add payment gateway)
-
-#### Migration Notes
-
-**Existing Users**:
-
-- All existing users default to FREE plan (1 meal plan limit)
-- No retroactive charges
-- Existing meal plan counts preserved in `meal_plans_generated_count`
-- Users must upgrade to continue generating meal plans
-
-**Database Migration**:
-
-- No migration script required (Firestore handles missing fields gracefully)
-- New fields set to defaults on first access:
-  - `subscription_plan`: 'free'
-  - `subscription_status`: 'active'
-  - `meal_plans_generated_count`: 0 (or actual count if tracked)
-  - `meal_plans_generated_this_week`: 0
-
-#### Next Steps
-
-**Immediate Priorities**:
-
-1. **Fix upgrade flow** - Implement billing cycle selection modal and subscriptionApi.upgrade() call
-2. **Test complete flow** - End-to-end testing of all user journeys
-3. **Payment integration** - Razorpay for Indian users, Stripe for international
-
-**Future Enhancements**:
-
-- Family plans (multi-user subscriptions)
-- Gift subscriptions
-- Promotional codes & referral program
-- Revenue analytics dashboard
-- MAX plan launch with unlimited features
-
----
-
-### Latest Updates (v1.1.0)
-
-**🧠 RAG System Enhancements**:
-
-- Added RAG-powered meal plan generation with vector store
-- Implemented meal template indexing pipeline (`ingest:meals` script)
-- Created RAG status monitoring endpoints (`/api/rag/status`, `/api/rag/health`)
-- Added `initializeRAG.js` for automatic system initialization on server startup
-- Vector store health checks and template freshness validation
-
-**🎨 Frontend Transparency Features**:
-
-- New `RAGMetadataDisplay` component showing knowledge sources used
-- Personalization tracking across onboarding, medical reports, and RAG
-- Visual quality indicators (high/medium/low coverage)
-- Detailed breakdown of templates, guidelines, and recommendations used
-- Enhanced `MealPlanGenerator` with source visualization cards
-
-**📄 PDF Export**:
-
-- Full meal plan PDF export functionality
-- Includes all days, meals, ingredients, recipes, and nutrition info
-- Automatic page breaks and proper formatting
-- Download button integrated into `MealPlanDisplay`
-
-**🔧 Meal Plan Improvements**:
-
-- Chunked generation (3 days per request) for reliability
-- Structure validation and auto-repair for malformed LLM responses
-- Regional template fallbacks (North, South, East, West Indian)
-- Enhanced error handling with user-friendly fallback messages
-- Medical report integration into meal plan context
-
-**🛠️ Backend Infrastructure**:
-
-- Added meal plan CRUD endpoints (GET, PUT, DELETE)
-- User meal plan history endpoint (`/api/meals/user/:userId`)
-- RAG metadata injection into responses
-- Personalization source tracking in all generated plans
-- Improved logging with RAG quality metrics
-
-**📦 New Dependencies**:
-
-- `jsPDF` for client-side PDF generation
-- HNSWLib integration for vector similarity search
-- LangChain document loaders and text splitters
-
-**🐛 Bug Fixes**:
-
-- Fixed meal plan structure parsing issues
-- Improved error boundaries for failed generations
-- Better handling of missing vector store scenarios
-- Fixed PDF generation for multi-day plans
-
----
-
-**Made with ❤️ for women managing PCOS**
-
-### New in v1.2.0
-
-Small maintenance and UX improvements landed after v1.1.0 to make the chat + meal planning flows safer, more robust and more user-friendly:
-
-- Chat -> Meal Plan redirect (server + client)
-
-  - Added middleware on the chat route to detect meal-plan requests and block them from invoking the LLM. Instead the server returns a structured `MEAL_PLAN_REDIRECT` response. This protects against the LLM generating free-form meal plans in chat and keeps meal plan generation scoped to the dedicated Meal Plan Generator.
-  - Frontend now displays a dedicated `MealPlanRedirectCard` when the redirect response is returned. The card includes CTA, short features list, help text and an action URL to the meal planner.
-
-- UI / content tweaks for the redirect card
-
-  - The phrase "Meal Plan Generator" is now rendered as bold in the redirect message (HTML-safe rendering with controlled styling).
-  - Updated feature copy shown on the card (3/5/7-day options and ingredient/substitution details).
-
-- Chat timestamp handling
-
-  - Messages now display reliable timestamps across environments. The chat bubble rendering code was hardened to accept Firestore Timestamp objects, objects with `seconds`, ISO strings and unix timestamps so "Invalid Date" no longer appears.
-
-- Miscellaneous bug fixes and stability improvements
-  - Fixed incorrect user id usage in the chat page (use `user.uid` instead of `user.id`) so requests and history load correctly.
-  - Fixed `dotenv` import/path issues used by ingestion scripts (ensures `.env` loads correctly when running ingestion from the project root).
-  - Added helpful debug logging in a few client modules to make API troubleshooting easier during development.
-
-These changes aim to make the experience safer (no ad-hoc meal plans from chat), clearer for users, and easier to debug for developers.
-
-### New in v1.3.0
-
-Significant feature and stability improvements landed in v1.3.0 focused on nutrition accuracy, UX polishing, and robustness across the chat + meal planning flows.
-
-- Calories everywhere
-
-  - LLM prompt and validation updated so each generated meal now includes a calorie estimate (kcal). The prompt enforces calories using the formula: (protein × 4) + (carbs × 4) + (fats × 9).
-  - Server-side fallback and repair now calculate calories when the model omits them.
-  - Hardcoded fallback templates were updated to include calories.
-
-- Daily 2000 kcal enforcement
-
-  - New requirement: each day's meals are validated and adjusted to target ~2000 kcal (acceptable range 1900–2100 kcal).
-  - Implementation details: `validateAndAdjustCalories()` scales macros proportionally and performs a fine-tune pass to hit the daily target while preserving PCOS-friendly ratios.
-  - Fallback plan generation also scales templates to meet the daily calorie target when RAG is unavailable.
-
-- Frontend: Meal UI and transparency
-
-  - `MealCard` now displays Calories alongside Protein / Carbs / Fats in the nutrition grid. If calories are missing, the UI computes them from macros as a fallback.
-  - `MealPlanDisplay` shows a clear disclaimer about the baseline assumptions used for calorie calculations (moderately active adult woman, ~5'2"–5'4", 56 kg).
-  - PDF export (jsPDF) includes nutrition info; calorie values are now included in exported meal plans.
-
-- Chat and message UX improvements
-
-  - Pagination added to chat history: only the most recent 5 messages load initially with a "Load older messages" button to fetch 5 more at a time.
-  - Auto-scroll behavior refined: when user clicks "Load older messages" the UI preserves scroll position and does NOT jump to the bottom; normal auto-scroll still happens on new incoming messages.
-  - Fixed message duplication on re-renders by adding a one-time history loader and replacing (not appending) messages when loading history.
-
-- Reliability & debugging
-
-  - Improved logging for meal generation (RAG retrieval counts, calorie totals, adjustment logs) to make troubleshooting easier.
-  - Fixed several issues encountered during testing (dotenv fixes, correct Firebase `user.uid` usage in chat page, and more).
-
-- Files / areas touched (high level)
-  - server/src/langchain/chains/mealPlanChain.js — improved prompt, calorie enforcement, `validateAndAdjustCalories()`, fallback template tuning
-  - server/src/routes/mealPlan.js — meal plan endpoint remains the single source of truth for generation and now returns rag metadata and adjusted plans
-  - client/src/components/meal/MealCard.jsx — added calories display and fallback calculation
-  - client/src/components/meal/MealPlanDisplay.jsx — disclaimer added and PDF export now handles calories
-  - client/src/components/chat/ChatInterface.jsx — pagination, "Load older messages" button, scroll preservation, and load-history dedupe
-  - client/src/store/index.js — chat store updated to support allMessages, visibleCount and loadMoreMessages
-
-### New in v1.4.0
-
-Focused fixes and UX improvements landed after v1.3.0 to improve medical report parsing accuracy, reduce LLM hallucinations from optional community sources, and present cycle-dependent hormones more appropriately in the UI.
-
-- Parser & Medical Report Analysis
-
-  - Fixed extraction logic so Free T3 and Free T4 are parsed correctly (value-after-unit/range pattern handling). This prevents T3 values being mis-assigned to T4.
-  - Fixed parsing for Estradiol, Progesterone, Vitamin D and Vitamin B12 across typical lab report formats. Vitamin D values reported in ng/mL are now converted to nmol/L when required.
-  - Added more robust fallback/snippet extraction and structured debug logging to help diagnose unmatched fields and speed future parser improvements.
-  - Added a local parser test harness used during development: `server/test_parser_final.mjs` (developer-only test script).
-
-- Backend updates
-
-  - `server/src/services/parserService.js` — improved regex patterns, conversion utilities, fallback snippet extraction, and extended logging.
-  - `server/src/utils/labRanges.js` — introduced `skipSeverity` and `cycleDependentNote` flags for cycle-dependent hormones; `getLabSeverity()` respects the new flag and returns a `cycle-dependent` state.
-
-- Frontend / UX
-
-  - `client/src/components/files/ReportAnalysis.jsx` — UI updated to treat estradiol and progesterone as "cycle-dependent": the app no longer shows normal/abnormal severity badges for these labs. Instead an info-style card displays per-phase reference ranges so users can interpret results based on their cycle phase.
-  - Severity icons/colors/labels updated to include a `cycle-dependent`/info state.
-
-- RAG / Chat anti-hallucination improvements
-
-  - The chat/RAG pipeline now explicitly injects an anti-fabrication note when optional Reddit/community data is not available, preventing the LLM from inventing community posts as sources.
-  - Additional logging was added around the RAG context construction so triggers like `needsCommunityInsights()` and what was injected are auditable in logs.
-
-- Tests, Docs & Developer aids
-
-  - Created `CYCLE_DEPENDENT_HORMONES_UPDATE.md` (developer doc) summarizing the change and showing reference ranges used in the UI.
-  - Parser test harness (see above) and enhanced logs to make reproducing failures and writing unit tests easier.
-
-- Why this matters
-
-  - Medical report parsing is a core trust surface for the app: improving extraction accuracy reduces false alerts and prevents incorrect personalization of meal plans.
-  - Cycle-dependent labeling avoids presenting misleading severity information for hormones whose interpretation depends on cycle timing.
-  - Anti-hallucination changes improve user trust by ensuring the system doesn't invent community anecdotes when community data isn't present.
-
-- Next / Planned
-  - Optional UI: add a cycle-phase selector on report upload so users who provide cycle phase can receive automated interpretation (re-enable severity for estradiol/progesterone when phase is known).
-  - Add automated unit tests for `parserService` regexes and CI checks to avoid regressions.
-  - Expand RAG/chat regression tests to verify anti-hallucination behavior across more prompts.
-
-### New in v1.5.0
-
-Focused delivery and bug fixes to the medical report analysis feature, developer tooling, and several robustness/UX issues landed in v1.5.0.
-
-- Medical Report: single-file workflow
-
-  - Users can now upload exactly one medical report at a time. Each upload replaces the previous report (the previous document is deleted server-side) so the UI always shows the user's current report.
-  - Server persistence: reports are stored in Firestore under a single document per user (convention: `users/{userId}/medicalReport/current`). The server performs sanitization of fields before saving to avoid Firestore INVALID_ARGUMENT errors.
-  - Non-blocking saves: file processing and AI analysis return success to the client quickly; Firestore saves are performed in a resilient, non-blocking way so transient DB issues don't block the user flow.
-
-- New/changed server files
-
-  - `server/src/services/medicalReportService.js` — CRUD for single-report-per-user, sanitization helpers (`sanitizeData`, `sanitizeFieldName`) and document size validation.
-  - `server/src/routes/upload.js` — Upload endpoints and orchestration (file extraction → parser → AI analysis → enqueue DB save). New endpoints include the upload and user-report CRUD routes (POST /api/upload/report, GET /api/upload/user/:userId/report, DELETE /api/upload/user/:userId/report).
-  - `server/src/storage/tmpUploads/` — temporary storage for incoming files during processing.
-
-- New/changed client files
-
-  - `client/src/pages/ReportsPage.jsx` — main Reports page UI: shows current report card, replace/delete UX, and loads the report on mount. Fixed previous auth store import issues and hardened loading states.
-  - `client/src/components/files/FileUpload.jsx` — simplified single-file upload component that returns the new report payload and closes the upload flow.
-  - `client/src/components/files/ReportAnalysis.jsx` — improved header and timestamp handling; treats cycle-dependent hormones appropriately (see v1.4.0 notes) and shows formatted uploaded timestamp.
-  - `client/src/services/apiClient.js` & `client/src/services/firestoreService.js` — new helper methods for the single-report endpoints (uploadFile, getUserReport, deleteUserReport, hasUserReport).
-  - `client/src/store/authStore.js` — ensured correct auth store import and usage across reports/chat pages.
-
-- Timestamp handling fix
-
-  - The client now robustly handles multiple uploadedAt formats: Firestore-style serialized objects with `seconds`/`nanoseconds`, Firestore Timestamp instances, ISO strings, and JS Date objects. This prevents "Invalid Date" from appearing in the UI after uploads/refreshes.
-
-- Data sanitization and Firestore reliability
-
-  - To avoid INVALID_ARGUMENT errors the server sanitizes report payloads: removes undefined/NaN values, strips illegal Firestore field name characters, and limits very large text fields.
-  - Note: during development the Web (client) Firestore SDK is used on the server in some helper code; for production we recommend migrating server code that writes to Firestore to the Firebase Admin SDK to avoid client-offline/credential limitations.
-
-- Developer docs & helper scripts added
-
-  - `MEDICAL_REPORT_FEATURE.md` — feature doc & quick reference for the new single-file report flow.
-  - `IMPLEMENTATION_SUMMARY.md` / `IMPLEMENTATION_CHECKLIST.md` / `QUICK_REFERENCE.md` — implementation notes and checklist for reviewers.
-  - `start-medical-report-test.sh` — helper for local test runs (developer convenience).
-
-- Testing & verification notes
-
-  - After pulling changes that modify server-side code, restart the server (Ctrl+C in the server terminal, then `npm run dev`) so new routes and services are loaded.
-  - Use the Report page to upload a report and check browser console logs if you see "Invalid Date" — the client prints the raw `uploadedAt` object when loading the report to aid debugging.
-
-- Known issues & recommendations
-
-  - Firestore persistence can appear intermittent in local development due to using the Firebase Web SDK in some server paths. Recommendation: migrate `server/src/config/firebase.js` to use the Firebase Admin SDK (server-side) for reliable server writes in production.
-  - The app performs non-blocking saves; if you expect deterministic, synchronous persistence (for example for critical audit trails) review `medicalReportService.saveReport()` and consider awaiting the Firestore write or adding retry/backoff logic.
-
-- Files/areas touched (quick list)
-  - Server: `server/src/services/medicalReportService.js`, `server/src/routes/upload.js`, `server/src/config/firebase.js` (notes), `server/src/storage/tmpUploads/`
-  - Client: `client/src/pages/ReportsPage.jsx`, `client/src/components/files/FileUpload.jsx`, `client/src/components/files/ReportAnalysis.jsx`, `client/src/services/apiClient.js`, `client/src/services/firestoreService.js`, `client/src/store/authStore.js`
-  - Docs: `MEDICAL_REPORT_FEATURE.md`, `IMPLEMENTATION_SUMMARY.md`, `IMPLEMENTATION_CHECKLIST.md`, `QUICK_REFERENCE.md`, `FIRESTORE_FIXES.md`
-
-### New in v1.6.0
-
-Small but important UX, frontend plumbing, and styling fixes focused on ensuring medical report data is actually used in personalization and cleaning up the Reports UI.
-
-- Meal plan personalization plumbing
-
-  - `MealPlanGenerator.jsx` now fetches the user's latest medical report on mount and immediately before generating a meal plan. The fetched report is included in the request body as `healthContext.medicalData` so the backend receives lab values and can incorporate lab-specific guidance into meal generation.
-  - This fixes cases where `hasLabValues` / `hasMedicalData` were reported as false even though a report existed in Firestore (the client previously wasn't including the report in the generation request).
-  - The component now exposes `userReport` state for display and uses it when calculating `displayPersonalizationSources`.
-
-- Report analysis UI improvements
-
-  - `ReportAnalysis.jsx` was updated to:
-    - Parse AI analysis sections more robustly and remove stray standalone numbers (e.g., lines containing only "2.") except inside the `Next Steps` section where numbered lists are desired.
-    - Render lab value categories as accessible accordions (Thyroid Function, Vitamins, Hormones, etc.). All accordions are collapsed on load except the first category which is expanded by default.
-    - Preserve existing cycle-dependent hormone handling and improved severity display.
-
-- Styling / CSS fixes
-
-  - `client/src/styles/index.css` was cleaned up to avoid using `@apply` inside `@keyframes` and to split scrollbar thumb hover rules into proper selectors. These changes prevent build-time and linter warnings and keep Tailwind usage compatible with PostCSS/Tailwind processing.
-
-- Backend & RAG improvements (refresher)
-
-  - `mealPlanChain.js` includes enhanced lab-guidance support: `buildLabGuidanceQuery()`, `categorizeLabs()`, and integration of lab-specific RAG context into the prompt. This allows the LLM to prioritize evidence-based dietary guidance when abnormal lab values exist.
-
-- Developer notes & testing
-
-  - After pulling frontend changes, restart dev servers to ensure new client-side fetching logic is active. The meal generator now logs whether a report was found and how many lab values were passed in (helpful for debugging personalization).
-  - If you still see `hasLabValues: false` in server logs after these changes, confirm the report document exists at `users/{userId}/medicalReport/current` in Firestore and that the client is authenticated and able to read it.
-
-- Files/areas touched (v1.6.0)
-  - Client: `client/src/components/meal/MealPlanGenerator.jsx`, `client/src/components/files/ReportAnalysis.jsx`, `client/src/styles/index.css`
-  - Server: `server/src/langchain/chains/mealPlanChain.js` (lab guidance helpers)
-
-If you'd like, I can also add a short troubleshooting snippet to the README showing how to verify the medical report document in Firestore and an example curl command to call the meal generation endpoint including `healthContext.medicalData`.
-
-### New in v1.7.0
-
-Major improvements to the chat experience, especially around integrating users' medical reports (lab values) into conversational responses, safer output disclaimers, and route plumbing to ensure the chat pipeline can fetch and use lab data.
-
-- Lab-aware Chat (server-side)
-
-  - `server/src/langchain/chains/chatChain.js` was expanded into a full lab-aware chat pipeline:
-    - `buildEnhancedSystemPrompt()` — stronger system-level instructions to prioritize lab data, RAG context, safety rules, and response structure for three common scenarios (symptom query, lab interpretation, community insights).
-    - `getUserLabValues(userId)` — server helper that fetches the user's medical report and extracts lab values, uploadedAt and analysis for use in chat.
-    - `buildLabContext(medicalData)` / `categorizeLabs()` — create prioritized, human-readable lab context that is injected into prompts so the LLM references exact lab values when answering.
-    - `buildLabGuidanceQuery()` — generates targeted RAG queries (dietary guidance) based on abnormal labs and the user's message to retrieve lab-specific recommendations from the vector store.
-    - `processMessage()` — orchestrates retrievals (medical knowledge, lab-guidance, Reddit community insights, Spoonacular nutrition data), builds the final prompt, invokes the conversation chain, and returns structured sources and a `contextUsed` summary.
-
-- Safer disclaimers (no duplication)
-
-  - The chat chain previously appended static disclaimers unconditionally which sometimes resulted in duplicate disclaimers when the LLM already included one. The chain now checks the model output (case-insensitive substring matching) and only appends the general, lab-specific, or community disclaimers if they are not already present. This reduces noisy/duplicated safety text while ensuring required statements are present.
-
-- Chat route plumbing & middleware
-
-  - `server/src/routes/chat.js` updated to always pass `userId` (via `userContext`) into `chatChain.processMessage()` so the chain can fetch lab values server-side.
-  - `mealPlanIntentDetector` middleware remains integrated to redirect meal-plan requests safely and consistently.
-
-- Client-side: lab context UI
-
-  - `client/src/components/chat/LabContextBadge.jsx` (new) — small UI component (badge/display) to show whether lab context was used for a chat response and quick stats (lab count, last uploaded date). This helps users see when their medical data influenced the reply.
-
-- Developer & debugging notes
-
-  - The chat pipeline returns `contextUsed` and `sources` with each response. `contextUsed.labValues` and `contextUsed.labGuidance` are useful indicators when testing whether lab-based personalization worked.
-  - If you run integration tests and `labValues` are not detected, confirm the medical report exists at `users/{userId}/medicalReport/current` and the server can read it (authentication/permissions).
-  - There is a local test harness for lab-chat integration (dev-only). If it fails, check `server` logs for Retriever and Reddit/Spoonacular fetch failures.
-
-- Files/areas touched (v1.7.0)
-  - Server: `server/src/langchain/chains/chatChain.js`, `server/src/routes/chat.js`, (uses `medicalReportService` + retriever + redditService + spoonacularService)
-  - Client: `client/src/components/chat/LabContextBadge.jsx`
-  - Middleware: `server/src/middleware/mealPlanIntentDetector.js` (usage continued)
-
-If you'd like, I can add an example cURL payload that demonstrates how `userId` and `userContext` are passed to `/api/chat/message` and what the server returns (including `contextUsed`).
-
-### New in v1.8.0 (November 3, 2025)
-
-Critical fixes to RAG retrieval and diet filtering for personalized meal plan generation, addressing issues where vegetarian/vegan meal templates were incorrectly filtered out, resulting in repetitive meal plans and 0 retrieved templates.
-
-#### RAG Diet Filtering Fix (CRITICAL)
-
-**Root Cause**: Regex patterns looking for markdown format `**Type:** Vegetarian` didn't match the actual RAG document format which stores plain text `Type: Vegetarian`.
-
-**Impact**: All vegetarian meals were being filtered out (0 matches) despite having 20 Goan vegetarian meals in the database.
-
-**Fix Applied**:
-
-- Updated regex from `/Type:\*\*\s*Vegetarian/i` to `/Type:\s*Vegetarian/i`
-- Updated ingredients extraction from `/\*\*Ingredients:\*\*(.*?)(?:\n\*\*|$)/s` to `/Ingredients:\s*(.+?)(?:\n|$)/`
-- Now correctly matches plain text RAG document structure generated by `ingestMealTemplates.js`
-
-**Result**: ✅ Vegetarian meal retrieval: **0 → 25 meals** (25x improvement!)
-
-#### Ingredient Substitutes Enhancement
-
-**Problem**: Stage 4 (ingredient substitutes) only triggered when "PCOS-problematic ingredients" were found, but never retrieved animal protein substitutes needed for vegan/vegetarian diet adaptations.
-
-**Fix Applied**:
-
-- For vegan/vegetarian/jain diets, ALWAYS retrieve animal protein substitutes (fish→tofu, chicken→paneer, prawn→baby corn, etc.)
-- Added 6 targeted protein substitute queries executed before PCOS-problematic ingredient checks
-- Queries include: `fish tofu paneer substitute`, `chicken paneer soy substitute`, `egg tofu besan substitute`, etc.
-
-**Result**: ✅ Ingredient substitutes: **0 → 11 documents** retrieved consistently
-
-#### RAG Retrieval Coverage Improvements
-
-- Increased `topK` from 15 to 25 for better meal template coverage
-- Improved dinner query from `"Goan dinner regional cuisine meals vegetarian"` to `"Goan dinner evening meal main course vegetarian"` for better semantic matching
-- Enhanced cuisine matching with exact state matching (`metadata.state === cuisineLower`) instead of fuzzy substring matching
-- Added detailed logging for filtered meals: `"⚠️ No diet type tag found: {mealName}"` and `"❌ Filtered out vegan: {mealName} - contains dairy"`
-
-#### Performance Comparison
-
-| Stage               | Before (Broken) | After (Fixed) | Improvement   |
-| ------------------- | --------------- | ------------- | ------------- |
-| Breakfast           | 0 meals         | 6 meals       | ✅ +6         |
-| Lunch               | 0 meals         | 9 meals       | ✅ +9         |
-| Dinner              | 0 meals         | 3-5 meals     | ✅ +3-5       |
-| Snacks              | 0 meals         | 1 meal        | ✅ +1         |
-| General             | 0 meals         | 9 meals       | ✅ +9         |
-| **Total Templates** | **0**           | **25-30**     | ✅ **25-30x** |
-| **Ingredient Subs** | **0**           | **11**        | ✅ **+11**    |
-
-#### RAG Document Format (Technical Details)
-
-The ingestion script (`ingestMealTemplates.js`) creates documents in this plain text format:
-
-```
-Region: West Indian
-State: Goa
-Meal: 11. Goan Red Rice with Veg Caldeen
-Type: Vegetarian                    ← Plain text (no markdown)
-Ingredients: Goan red rice 70g, mixed veg 200g, light coconut milk
-Macros: Protein 12g, Carbs 48g, Fats 8g
-Budget: ₹45–55
-Prep Time: 35 mins
-Glycemic Index: Low
-Tip: Use local red rice for fiber.
-```
-
-The regex patterns now correctly parse this format instead of looking for markdown-style `**Type:**` markers.
-
-#### Meal Plan Quality Improvements
-
-- ✅ No more "filtered to 0 vegetarian meals" log messages
-- ✅ Sufficient variety (25-30 meals) for 3-day plans requiring only 9 meals (3 days × 3 meals/day)
-- ✅ No repetitions expected
-- ✅ LLM can now adapt non-veg dishes using ingredient substitutes: "Goan Fish Curry → Goan Tofu Curry (Vegetarian Version)"
-- ✅ Calories remain accurate (1690-1712 kcal, within ±51 tolerance)
-- ✅ RAG quality marked as "excellent"
-
-#### Files Modified (v1.8.0)
-
-- **`server/src/langchain/chains/mealPlanChain.js`**:
-
-  - Lines 508-509: Fixed Type: tag regex (removed markdown escaping)
-  - Lines 515-516, 533-534: Fixed Ingredients: extraction regex
-  - Line 467: Improved dinner query with semantic variations
-  - Lines 707-773: Added diet-specific protein substitute retrieval (Stage 4)
-  - Increased topK from 15 to 25 for better coverage
-
-- **`server/MEAL_PLAN_RAG_FIX_NOV3.md`**: New documentation file with complete root cause analysis, before/after comparisons, and testing instructions
-
-#### Developer Notes & Testing
-
-After pulling these changes, restart the server to load the updated filtering logic:
-
-```bash
-cd server
-npm run dev
-```
-
-Generate a **Vegetarian + Goan + 3 days** meal plan and verify logs show:
-
-- ✅ Each query: `"filtered to X vegetarian meals"` where X > 0
-- ✅ Total meal templates: 25-30 (not 0)
-- ✅ Ingredient substitutes: ~11 documents
-- ✅ Message: `"Diet type 'vegetarian' requires protein substitutes - retrieving animal protein alternatives"`
-- ❌ Check for absence of: `"⚠️ No diet type tag found"` warnings for valid vegetarian meals
-
-#### Related Issues Fixed
-
-- Meal repetition for Goan cuisine (caused by insufficient template retrieval)
-- Vegan meal plans showing non-vegan dishes (dairy filtering now works correctly)
-- Jain meal plans including root vegetables (ingredients extraction now accurate)
-- Missing ingredient substitutes preventing diet adaptations
-
-#### Impact on User Experience
-
-**Before**: Users received repetitive meal plans with only 6 vegetarian options, no variety, and no diet adaptations
-
-**After**: Users receive diverse meal plans with 25+ options, proper variety, and intelligent substitutions (e.g., "Goan Tofu Curry (Vegetarian Version)")
-
-Regional authenticity maintained while ensuring diet compliance.
-
-#### Rollback Plan
-
-If issues arise with the new filtering logic:
-
-```bash
-cd /Users/supriya97/Desktop/AI\ Projects/sakhee/server
-git diff HEAD src/langchain/chains/mealPlanChain.js > rollback.patch
-git checkout HEAD -- src/langchain/chains/mealPlanChain.js
-npm run dev
-```
-
-#### Next Steps / Recommendations
-
-- [ ] Monitor meal plan generations for dinner retrieval improvements (expect 3-5 meals after query enhancement)
-- [ ] Consider adding metadata-based filtering as primary filter (check `metadata.dietType === 'Vegetarian'`) before regex fallback
-- [ ] Add unit tests for diet filtering logic to prevent future regressions
-- [ ] Expand snacks query variations if snack retrieval remains at 1 meal
-- [ ] Document RAG document format in developer guide for future ingestion script changes
-
----
-
-**Key Takeaway**: This release fixes a critical bug where the RAG system's diet filtering was completely broken due to format mismatch between expected markdown format and actual plain text format in indexed documents. The fix restores full functionality of vegetarian/vegan/jain meal plan generation with proper variety (25-30 meals vs 0) and intelligent diet adaptations using ingredient substitutes (11 documents vs 0).
-
----
-
-### v1.9.0 - Meal Template Format Standardization & Validation (November 4, 2025)
-
-**Category**: Data Quality & Infrastructure
-
-This release standardizes meal template metadata format across all regional files and adds comprehensive validation to prevent future data quality issues.
-
-#### Problems Addressed
-
-1. **Inconsistent Metadata Format**: south_indian.txt used `[VEG]`/`[NON-VEG]` tags in meal titles instead of `- **Type:**` metadata fields, causing 0 meals to be properly indexed
-2. **Missing State Fields**: west_indian_meals.txt had trailing spaces in State fields causing extraction failures
-3. **No Validation**: Ingestion script silently failed when metadata was missing, causing data quality issues
-4. **No Coverage Metrics**: No visibility into which diet types and regions had meal coverage
-
-#### Changes Made
-
-**1. Format Standardization**
-
-- **File**: `server/src/data/meal_templates/south_indian.txt`
-  - **Before**: 376 meals with `[VEG]`/`[NON-VEG]` tags → 0 properly indexed meals
-  - **After**: 376 meals with `- **Type:** Vegetarian/Non-Vegetarian` → 383 properly indexed meals
-  - **Conversion Script**: `server/src/scripts/convert-south-indian-format.js`
-    - Extracts diet type from `[VEG]`/`[NON-VEG]` tags in meal titles
-    - Extracts state from section headers (`## ANDHRA PRADESH`)
-    - Adds `- **State:**` and `- **Type:**` metadata fields
-    - Creates backup before conversion (`south_indian.txt.backup`)
-  - **Result**:
-    - Vegetarian: 0 → 219 meals
-    - Non-Vegetarian: 0 → 164 meals
-    - States: Andhra Pradesh, Karnataka, Kerala, Tamil Nadu, Telangana, Puducherry, Lakshadweep
-
-**2. Enhanced Metadata Extraction**
-
-- **File**: `server/src/scripts/ingestMealTemplates.js`
-  - **Lines 338-356**: Updated regex patterns to handle both formats:
-    - Old: `/- State: (.+)/` (failed with markdown asterisks and trailing spaces)
-    - New: `/-\s*\*?\*?State:\*?\*?\s*(.+?)[\s\n]/` (handles all variations)
-  - **Impact**: west_indian_meals.txt extraction improved from 0 → 120 State fields
-
-**3. Ingestion Validation System**
-
-- **File**: `server/src/scripts/ingestMealTemplates.js`
-  - **Lines 128-218**: New `validateMealTemplates()` method added
-  - **Validation Checks**:
-    - ✅ Missing State warnings
-    - ✅ Missing Type warnings
-    - ✅ Missing Ingredients warnings
-    - ✅ Content format validation (checks for `Type:` field in document content)
-  - **Statistics Logged**:
-    - Total meals per file
-    - Diet type distribution (Vegetarian, Non-Vegetarian, Vegan, Jain, Eggetarian)
-    - State distribution (top 10 states)
-    - Metadata completeness summary
-  - **Output Example**:
-    ```
-    ✅ Validation Summary for south_indian.txt:
-       Total meals: 383
-       Missing State: 7
-       Missing Type: 0
-       Missing Ingredients: 7
-
-       Diet Type Distribution:
-         - Vegetarian: 219
-         - Non-Vegetarian: 164
-
-       State Distribution:
-         - Lakshadweep: 81
-         - Puducherry: 60
-         - Tamil: 55
-    ```
-
-#### Standardized Metadata Format
-
-All meal template files now follow this format:
-
-```markdown
-#### Meal Name (GI Rating)
-
-- **State:** State Name
-- **Type:** Vegetarian | Non-Vegetarian | Vegan | Jain | Eggetarian
-- **Ingredients:** ingredient1 quantity, ingredient2 quantity, ...
-- **Macros:** Protein Xg, Carbs Yg, Fats Zg
-- **Budget:** ₹XX-YY
-- **Prep:** XX mins
-- **GI:** Low ⭐⭐⭐ | Medium ⭐⭐ | High ⭐
-- **Tip:** Helpful cooking or health tip
-```
-
-**Key Requirements**:
-
-- `- **State:**` must be present for regional filtering
-- `- **Type:**` must be present for diet filtering (RAG content uses plain text `Type:` after ingestion)
-- `- **Ingredients:**` required for ingredient substitution logic
-- No trailing spaces after field values
-- Markdown asterisks are optional (ingestion strips them)
-
-#### Current Meal Coverage
-
-| Region         | Total    | Vegetarian | Non-Veg | Vegan | Jain  | Format      |
-| -------------- | -------- | ---------- | ------- | ----- | ----- | ----------- |
-| North Indian   | 298      | 164        | 121     | 0     | 0     | ✅ Standard |
-| East Indian    | 441      | 254        | 186     | 0     | 0     | ✅ Standard |
-| Central Indian | 65       | 36         | 24      | 0     | 0     | ✅ Standard |
-| West Indian    | 125      | 65         | 60      | 0     | 0     | ✅ Standard |
-| South Indian   | 383      | 219        | 164     | 0     | 0     | ✅ Standard |
-| **TOTAL**      | **1312** | **757**    | **555** | **0** | **0** | **100%**    |
-
-#### Vegan & Jain Meal Strategy
-
-**Design Decision**: Instead of creating separate vegan/jain meal entries, the system uses a hybrid approach:
-
-1. **LLM Adaptation**: When users request vegan or jain meals, the LLM:
-
-   - Retrieves vegetarian meal templates
-   - Applies ingredient substitution rules from `pcos_ingredient_substitutes_RAG.txt`
-   - Adapts recipes to meet diet requirements
-
-2. **Benefits**:
-
-   - ✅ Maintains single source of truth for regional recipes
-   - ✅ Reduces data duplication (no need for 2-3x meal entries)
-   - ✅ Leverages existing 67 ingredient substitute documents
-   - ✅ LLM can intelligently adapt based on regional cuisine
-
-3. **Example Adaptations**:
-
-   - **Vegan**: Paneer → Tofu, Ghee → Coconut oil, Curd → Cashew yogurt
-   - **Jain**: Potato → Sweet potato, Onion/Garlic → Hing (asafoetida), Ginger → Dry ginger
-
-4. **Ingredient Substitute Coverage**:
-   - Dairy alternatives (milk, paneer, ghee, curd, butter)
-   - Root vegetable alternatives (potato, onion, garlic, carrot)
-   - Protein alternatives (eggs, chicken, fish, mutton)
-   - Cooking method alternatives (deep frying, refined oils)
-
-#### Developer Notes
-
-**After pulling these changes:**
-
-1. **Re-ingest meal templates** (required):
-
-   ```bash
-   cd server
-   npm run ingest:meals
-   ```
-
-2. **Verify validation output**:
-
-   - Check for "✅ Validation Summary" for each file
-   - Confirm no "⚠️ Found X metadata issues" warnings
-   - Review diet type distribution matches expectations
-
-3. **Test meal generation**:
-
-   ```bash
-   # South Indian vegetarian (should work now)
-   curl -X POST http://localhost:3000/api/meal-plan \
-     -H "Content-Type: application/json" \
-     -d '{"preferences":{"cuisines":["South Indian"],"dietType":"vegetarian","mealsPerDay":3}}'
-
-   # Vegan adaptation test
-   curl -X POST http://localhost:3000/api/meal-plan \
-     -H "Content-Type: application/json" \
-     -d '{"preferences":{"cuisines":["North Indian"],"dietType":"vegan","mealsPerDay":3}}'
-   ```
-
-#### Files Modified
-
-- `server/src/data/meal_templates/south_indian.txt` (3541 lines, +752 metadata lines)
-- `server/src/scripts/ingestMealTemplates.js` (+106 lines validation code)
-- `server/src/scripts/convert-south-indian-format.js` (new file, 159 lines)
-
-#### Impact Metrics
-
-**Before Standardization**:
-
-- South Indian meals properly indexed: **0**
-- West Indian State field extraction: **0/125**
-- Validation: **None** (silent failures)
-- Total properly tagged meals: **929** (~71%)
-
-**After Standardization**:
-
-- South Indian meals properly indexed: **383** (100%)
-- West Indian State field extraction: **120/125** (96%)
-- Validation: **Comprehensive** (warns on all issues)
-- Total properly tagged meals: **1312** (100%)
-
-**User Impact**:
-
-- ✅ South Indian meal plans now generate correctly
-- ✅ All regional cuisines have proper State/Type metadata
-- ✅ Vegan/Jain users get intelligently adapted meals
-- ✅ No more "0 meals retrieved" errors
-- ✅ Improved meal variety across all regions
-
-#### Known Issues & Future Work
-
-- [ ] 5-7 meals per file still missing State/Ingredients fields (nutrition guidance text at end of files)
-- [ ] Consider adding explicit vegan/jain meal entries if LLM adaptation quality is insufficient
-- [ ] Add unit tests for metadata extraction regex patterns
-- [ ] Document ingestion format specification for contributors
-- [ ] Add pre-commit hook to validate meal template format
-
-#### Rollback Plan
-
-If issues arise:
-
-```bash
-# Restore south_indian.txt from backup
-cd server/src/data/meal_templates
-cp south_indian.txt.backup south_indian.txt
-
-# Revert ingestion changes
-cd /Users/supriya97/Desktop/AI\ Projects/sakhee/server
-git checkout HEAD -- src/scripts/ingestMealTemplates.js
-
-# Re-ingest
-npm run ingest:meals
-```
-
----
-
-**Key Takeaway**: This release fixes critical data quality issues by standardizing meal template metadata format across all 5 regional files (1312 meals). South Indian meals are now properly indexed (0 → 383), validation prevents future silent failures, and vegan/jain diets are supported through intelligent LLM adaptation using ingredient substitutes. All regional cuisines now have 100% metadata completeness for reliable meal plan generation.
+</details>
