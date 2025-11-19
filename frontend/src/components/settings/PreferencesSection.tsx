@@ -667,7 +667,7 @@ const PreferencesSection = () => {
             )}
 
             {/* Questions Grid */}
-            <div className="grid grid-cols-2 gap-y-4 gap-x-6 mt-4">
+            <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-y-4 gap-x-6 mt-4">
               {questions.map((question) => (
                 <QuestionField
                   key={question.key}

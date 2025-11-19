@@ -30,7 +30,7 @@ const HomePage = () => {
   return (
     <div>
       <main className="max-w-7xl mx-auto px-4">
-        <section className="min-h-screen flex justify-between items-center px-4">
+        <section className="min-h-screen flex justify-between items-center">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl md:text-5xl text-center font-bold text-primary mb-4">
               Welcome, {userProfile?.displayName || user?.displayName}! <br />
@@ -50,7 +50,7 @@ const HomePage = () => {
           <img src="/images/undraw_happy-women-day_8whn.svg" className="max-w-[550px]" />
         </section>
 
-        <section className="flex flex-col gap-8 min-h-screen items-center justify-center pt-[80px] px-4">
+        <section className="flex flex-col gap-8 min-h-screen items-center justify-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
             Why women across India choose Sakhee?
           </h1>
@@ -95,8 +95,8 @@ const HomePage = () => {
 
       <Footer>
         <Alert
-          message={t('common.disclaimer')}
-          description={t('common.disclaimerText')}
+          message={<h3 className="text-[#700f0f] font-bold">{t('common.disclaimer')}</h3>}
+          description={<p className="text-[#700f0f] font-medium">{t('common.disclaimerText')}</p>}
           type="warning"
           showIcon
           closable

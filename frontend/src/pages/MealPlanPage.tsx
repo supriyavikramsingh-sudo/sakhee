@@ -208,7 +208,7 @@ const MealPlanPage = () => {
           onGenerated={() => setShowGenerator(false)}
         />
       ) : currentMealPlan ? (
-        <div className="flex gap-6">
+        <div className="md:flex gap-6">
           {/* NEW: History Panel */}
           <MealPlanHistoryPanel
             plans={mealPlanHistory}

@@ -187,7 +187,7 @@ const MealPlanDisplay = ({ plan, onGenerateNewPlan }: MealPlanDisplayProps) => {
                     navigate('/coming-soon');
                   }
                 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition bg-primary text-white hover:bg-secondary`}
+                className={`btn-primary flex items-center gap-2`}
               >
                 <Calendar size={20} />
                 Generate New Plan

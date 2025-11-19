@@ -36,7 +36,9 @@ const SelectInput = ({
         placeholder={placeholder}
         disabled={disable}
         value={value || defaultValue}
-        style={{ width: 400, height: mode !== 'multiple' ? 40 : 'auto' }}
+        className={`w-full md:w-[400px] ${
+          mode !== 'multiple' ? 'h-[40px]' : 'min-h-[40px] h-auto'
+        }`}
         onChange={handleInputChange}
         options={options}
         popupClassName="custom-select-dropdown"

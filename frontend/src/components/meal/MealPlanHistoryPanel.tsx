@@ -47,12 +47,9 @@ const MealPlanHistoryPanel = ({
 
       {/* DESKTOP VIEW (>= 768px) */}
       <div
-        className={`
-          hidden md:block
-          relative bg-white border-r border-gray-200 shadow-sm
-          transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)]
-          ${isExpanded ? 'w-[300px]' : 'w-12'}
-        `}
+        className={`hidden md:block relative bg-white border-r border-gray-200 shadow-sm transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          isExpanded ? 'w-[300px]' : 'w-12'
+        }`}
         style={{
           minHeight: '500px',
         }}
@@ -60,9 +57,7 @@ const MealPlanHistoryPanel = ({
         {/* Toggle Button */}
         <button
           onClick={togglePanel}
-          className="absolute -right-3 top-8 z-10 bg-primary text-white rounded-full p-1.5
-                   shadow-md hover:shadow-lg hover:bg-primaryDark
-                   transition-all duration-200"
+          className="absolute -right-3 top-8 z-10 bg-primary text-white rounded-full p-1.5 shadow-md hover:shadow-lg hover:bg-primaryDark transition-all duration-200"
           aria-label={isExpanded ? 'Collapse panel' : 'Expand panel'}
         >
           {isExpanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
@@ -123,8 +118,7 @@ const MealPlanHistoryPanel = ({
         {!isExpanded && (
           <button
             onClick={togglePanel}
-            className="fixed bottom-0 left-0 right-0 z-30 bg-primary text-white py-3 
-                     shadow-lg flex items-center justify-center gap-2 font-medium"
+            className="fixed bottom-0 left-0 right-0 z-30 bg-primary text-white py-3 shadow-lg flex items-center justify-center gap-2 font-medium"
           >
             <History size={20} />
             <span>History ({plans.length})</span>
@@ -142,18 +136,14 @@ const MealPlanHistoryPanel = ({
             />
 
             {/* Sheet */}
-            <div
-              className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl
-                       max-h-[50vh] overflow-hidden
-                       animate-slide-up"
-            >
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl max-h-[50vh] overflow-hidden animate-slide-up">
               {/* Handle */}
               <div className="py-3 flex justify-center">
                 <div className="w-12 h-1 bg-gray-300 rounded-full" />
               </div>
 
               {/* Content */}
-              <div className="px-4 pb-4 overflow-y-auto max-h-[calc(50vh-60px)] custom-scrollbar">
+              <div className="px-4 pb-4 overflow-y-auto max-h-[60vh] custom-scrollbar">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -209,36 +199,6 @@ const MealPlanHistoryPanel = ({
           </>
         )}
       </div>
-
-      {/* Custom Scrollbar Styles + Mobile Animation */}
-      <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #ff8d8d;
-          border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #e85a5a;
-        }
-        
-        @keyframes slide-up {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
     </>
   );
 };

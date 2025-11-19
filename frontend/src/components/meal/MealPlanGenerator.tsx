@@ -317,7 +317,7 @@ const MealPlanGenerator = ({
         setError(null);
 
         // Navigate back to meal plan page to show background job banner
-        navigate('/meal-plan');
+        navigate('/meals');
         return;
       }
 
@@ -674,7 +674,7 @@ const MealPlanGenerator = ({
       <Alert
         className="mt-6"
         message="💡 All meal plans are PCOS-friendly with low GI foods, anti-inflammatory ingredients, and
-        hormone-balancing nutrients. Generation takes 20-30 seconds."
+        hormone-balancing nutrients. Generation takes 2-3 minutes."
       />
     </div>
   );

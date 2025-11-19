@@ -90,7 +90,7 @@ const NumberInput = ({
         placeholder={placeholder}
         value={inputValue}
         disabled={disable}
-        style={{ width: 400, height: 40 }}
+        className="w-full md:w-[400px] h-[40px]"
         onChange={(e) => validateAndUpdate(e.target.value)}
         status={validationError || error ? 'error' : ''}
       />

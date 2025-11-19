@@ -1,96 +1,98 @@
-import { AlertCircle, CheckCircle, Loader, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { apiClient } from '../../services/apiClient'
-import { useJobStore } from '../../store/jobStore'
+import { AlertCircle, CheckCircle, Loader, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiClient } from '../../services/apiClient';
+import { useJobStore } from '../../store/jobStore';
+import { toast } from 'react-toastify';
 
 const BackgroundJobBanner = () => {
-  const navigate = useNavigate()
-  const { activeJobs, completedJobs, updateJob, getUnnotifiedCompletedJobs, markJobAsNotified } = useJobStore()
-  const [showCompletionNotification, setShowCompletionNotification] = useState(false)
-  const [completedJob, setCompletedJob] = useState<any>(null)
-  const [dismissedActiveJobs, setDismissedActiveJobs] = useState<Set<string>>(new Set())
+  const navigate = useNavigate();
+  const { activeJobs, completedJobs, updateJob, getUnnotifiedCompletedJobs, markJobAsNotified } =
+    useJobStore();
+  const [showCompletionNotification, setShowCompletionNotification] = useState(false);
+  const [completedJob, setCompletedJob] = useState<any>(null);
+  const [dismissedActiveJobs, setDismissedActiveJobs] = useState<Set<string>>(new Set());
 
   // Poll active jobs for updates
   useEffect(() => {
-    if (activeJobs.length === 0) return
+    if (activeJobs.length === 0) return;
 
     const pollInterval = setInterval(async () => {
       for (const job of activeJobs) {
         try {
-          const response: any = await apiClient.getJobStatus(job.id)
-          
+          const response: any = await apiClient.getJobStatus(job.id);
+
           if (response.success && response.data) {
-            updateJob(job.id, response.data)
+            updateJob(job.id, response.data);
           }
         } catch (error) {
-          console.error('Failed to poll job status:', error)
+          console.error('Failed to poll job status:', error);
         }
       }
-    }, 3000) // Poll every 3 seconds
+    }, 3000); // Poll every 3 seconds
 
-    return () => clearInterval(pollInterval)
-  }, [activeJobs, updateJob])
+    return () => clearInterval(pollInterval);
+  }, [activeJobs, updateJob]);
 
   // Show notification for newly completed jobs
   useEffect(() => {
-    const unnotifiedJobs = getUnnotifiedCompletedJobs()
-    
+    const unnotifiedJobs = getUnnotifiedCompletedJobs();
+
     if (unnotifiedJobs.length > 0) {
-      const job = unnotifiedJobs[0]
-      setCompletedJob(job)
-      setShowCompletionNotification(true)
+      const job = unnotifiedJobs[0];
+      setCompletedJob(job);
+      setShowCompletionNotification(true);
 
       // Remove from dismissed list when job completes (so user sees completion)
-      setDismissedActiveJobs(prev => {
-        const newSet = new Set(prev)
-        newSet.delete(job.id)
-        return newSet
-      })
+      setDismissedActiveJobs((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(job.id);
+        return newSet;
+      });
 
       // Auto-hide notification after 10 seconds
       const timer = setTimeout(() => {
-        setShowCompletionNotification(false)
-        markJobAsNotified(job.id)
-      }, 10000)
+        setShowCompletionNotification(false);
+        markJobAsNotified(job.id);
+      }, 10000);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [completedJobs, getUnnotifiedCompletedJobs, markJobAsNotified])
+  }, [completedJobs, getUnnotifiedCompletedJobs, markJobAsNotified]);
 
   const handleViewResult = () => {
     if (completedJob?.type === 'meal-generation') {
-      navigate('/meals')
-      setShowCompletionNotification(false)
-      markJobAsNotified(completedJob.id)
+      navigate('/meals');
+      setShowCompletionNotification(false);
+      markJobAsNotified(completedJob.id);
     }
-  }
+  };
 
   const handleDismissNotification = () => {
-    setShowCompletionNotification(false)
+    setShowCompletionNotification(false);
     if (completedJob) {
-      markJobAsNotified(completedJob.id)
+      markJobAsNotified(completedJob.id);
     }
-  }
+  };
 
   const handleDismissActiveJob = (jobId: string) => {
     // Only hide the banner UI, don't stop the background job
     // The job continues to run and poll for updates in the background
     // When the job completes, the completion notification will still show
-    setDismissedActiveJobs(prev => new Set(prev).add(jobId))
-  }
+    setDismissedActiveJobs((prev) => new Set(prev).add(jobId));
+  };
 
   // Don't render anything if no active jobs and no notification
   if (activeJobs.length === 0 && !showCompletionNotification) {
-    return null
+    return null;
   }
 
   // Filter out dismissed jobs for display
-  const visibleActiveJobs = activeJobs.filter(job => !dismissedActiveJobs.has(job.id))
+  const visibleActiveJobs = activeJobs.filter((job) => !dismissedActiveJobs.has(job.id));
 
   // Don't render anything if no visible jobs and no notification
   if (visibleActiveJobs.length === 0 && !showCompletionNotification) {
-    return null
+    return null;
   }
 
   return (
@@ -99,33 +101,31 @@ const BackgroundJobBanner = () => {
       {visibleActiveJobs.map((job) => (
         <div
           key={job.id}
-          className="bg-blue-50 border-l-4 border-blue-500 rounded-lg shadow-lg p-4 flex items-start gap-3 animate-slide-in"
+          className="bg-white border-l-4 border-primary rounded-lg shadow-lg p-4 flex items-start gap-3 animate-slide-in"
         >
-          <Loader className="text-blue-600 animate-spin flex-shrink-0 mt-1" size={20} />
+          <Loader className="text-primary animate-spin flex-shrink-0 mt-1" size={20} />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
-                <p className="text-sm font-semibold text-blue-900">
+                <p className="text-sm font-semibold text-primaryDark">
                   {job.type === 'meal-generation' ? 'Generating Meal Plan' : 'Processing...'}
                 </p>
-                <p className="text-xs text-blue-700 mt-1">
+                <p className="text-xs text-muted mt-1">
                   We're preparing your page in the background. You can continue using the app —
                   we'll notify you when it's ready.
                 </p>
                 {job.metadata?.progressMessage && (
-                  <p className="text-xs text-blue-600 mt-1 italic">
-                    {job.metadata.progressMessage}
-                  </p>
+                  <p className="text-xs text-primary mt-1 italic">{job.metadata.progressMessage}</p>
                 )}
                 {job.progress > 0 && (
                   <div className="mt-2">
-                    <div className="flex justify-between text-xs text-blue-600 mb-1">
+                    <div className="flex justify-between text-xs text-primary mb-1">
                       <span>Progress</span>
                       <span>{job.progress}%</span>
                     </div>
-                    <div className="w-full bg-blue-200 rounded-full h-2">
+                    <div className="w-full bg-accent rounded-full h-2">
                       <div
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        className="bg-primaryDark h-2 rounded-full transition-all duration-300"
                         style={{ width: `${job.progress}%` }}
                       />
                     </div>
@@ -134,7 +134,7 @@ const BackgroundJobBanner = () => {
               </div>
               <button
                 onClick={() => handleDismissActiveJob(job.id)}
-                className="text-blue-400 hover:text-blue-600 flex-shrink-0"
+                className="text-primaryDark flex-shrink-0"
                 aria-label="Dismiss"
               >
                 <X size={16} />
@@ -204,7 +204,7 @@ const BackgroundJobBanner = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BackgroundJobBanner
+export default BackgroundJobBanner;

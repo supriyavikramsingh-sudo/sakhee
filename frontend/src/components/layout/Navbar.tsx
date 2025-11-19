@@ -1,12 +1,13 @@
 import type { MenuProps } from 'antd';
 import { Badge, Dropdown, Space } from 'antd';
-import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react';
+import { ChevronDown, LogOut, Menu, Settings, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import firestoreService from '../../services/firestoreService';
 import { useAuthStore } from '../../store/authStore';
 import Logo from '/images/logo.svg';
+import MobileNavbar from './MobileNavbar';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -52,8 +53,8 @@ export const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto max-sm:px-4 sm:px-6">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img className="h-12" src={Logo} />
@@ -61,46 +62,50 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            {user && (
-              <>
-                <Link
-                  to="/chat"
-                  className={`text-gray-700 font-medium hover:text-primary transition ${
-                    pathName === '/chat' ? 'text-primary' : ''
-                  }`}
-                >
-                  {t('nav.chat')}
-                </Link>
-                <Link
-                  to="/meals"
-                  className={`text-gray-700 font-medium hover:text-primary transition ${
-                    pathName === '/meals' ? 'text-primary' : ''
-                  }`}
-                >
-                  {t('nav.meals')}
-                </Link>
-                <Link
-                  to="/progress"
-                  className={`text-gray-700 font-medium hover:text-primary transition ${
-                    pathName === '/progress' ? 'text-primary' : ''
-                  }`}
-                >
-                  {t('nav.progress')}
-                </Link>
-                <Link
-                  to="/reports"
-                  className={`text-gray-700 font-medium hover:text-primary transition ${
-                    pathName === '/reports' ? 'text-primary' : ''
-                  }`}
-                >
-                  {t('nav.reports')}
-                </Link>
-              </>
-            )}
+            <Link
+              to="/chat"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/chat' ? 'text-rimaryDark' : ''
+              }`}
+            >
+              {t('nav.chat')}
+            </Link>
+            <Link
+              to="/meals"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/meals' ? 'text-primaryDark' : ''
+              }`}
+            >
+              {t('nav.meals')}
+            </Link>
+            <Link
+              to="/progress"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/progress' ? 'text-primaryDark' : ''
+              }`}
+            >
+              {t('nav.progress')}
+            </Link>
+            <Link
+              to="/reports"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/reports' ? 'text-primaryDark' : ''
+              }`}
+            >
+              {t('nav.reports')}
+            </Link>
+            <Link
+              to="/about"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/about' ? 'text-primaryDark' : ''
+              }`}
+            >
+              About
+            </Link>
             <Link
               to="/pricing"
-              className={`text-gray-700 font-medium hover:text-primary transition ${
-                pathName === '/pricing' || pathName === '/pricing-details' ? 'text-primary' : ''
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/pricing' || pathName === '/pricing-details' ? 'text-primaryDark' : ''
               }`}
             >
               Pricing
@@ -108,70 +113,42 @@ export const Navbar = () => {
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center gap-4">
-            {user ? (
-              <Dropdown menu={{ items }}>
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    {isTestAccount ? (
-                      <Badge count={'⭐'} offset={[-35, 2]} color="#fbbc04">
-                        <img
-                          src={user.photoURL ?? ''}
-                          alt={user.displayName ?? 'User Avatar'}
-                          className="w-8 h-8 rounded-full"
-                        />
-                      </Badge>
-                    ) : (
+          <div className="max-sm:hidden flex items-center gap-4">
+            <Dropdown menu={{ items }}>
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  {isTestAccount ? (
+                    <Badge count={'⭐'} offset={[-35, 2]} color="#fbbc04">
                       <img
-                        src={user.photoURL ?? ''}
-                        alt={user.displayName ?? 'User Avatar'}
+                        src={user?.photoURL ?? ''}
+                        alt={user?.displayName ?? 'User Avatar'}
                         className="w-8 h-8 rounded-full"
                       />
-                    )}
+                    </Badge>
+                  ) : (
+                    <img
+                      src={user?.photoURL ?? ''}
+                      alt={user?.displayName ?? 'User Avatar'}
+                      className="w-8 h-8 rounded-full"
+                    />
+                  )}
 
-                    <span className="text-sm">{user.displayName}</span>
-                    <ChevronDown />
-                  </Space>
-                </a>
-              </Dropdown>
-            ) : (
-              <Link to="/onboarding" className="btn-primary">
-                {t('nav.getStarted')}
-              </Link>
-            )}
+                  <span className="text-sm">{user?.displayName}</span>
+                  <ChevronDown />
+                </Space>
+              </a>
+            </Dropdown>
           </div>
 
           {/* Mobile Menu Toggle */}
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            <Menu size={24} />
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-surface p-4 space-y-3">
-          {user && (
-            <>
-              <Link to="/chat" className="block text-primary hover:underline">
-                {t('nav.chat')}
-              </Link>
-              <Link to="/meals" className="block text-primary hover:underline">
-                {t('nav.meals')}
-              </Link>
-              <Link to="/progress" className="block text-primary hover:underline">
-                {t('nav.progress')}
-              </Link>
-              <Link to="/reports" className="block text-primary hover:underline">
-                {t('nav.reports')}
-              </Link>
-            </>
-          )}
-          <Link to="/pricing" className="block text-primary hover:underline">
-            Pricing
-          </Link>
-        </div>
-      )}
+      {menuOpen && <MobileNavbar />}
     </nav>
   );
 };

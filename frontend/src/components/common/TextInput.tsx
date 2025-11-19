@@ -32,7 +32,7 @@ const TextInput = ({
         placeholder={placeholder}
         value={value || defaultValue}
         disabled={disable}
-        className={`w-[400px] h-[40px] ${className}`}
+        className={`w-full md:w-[400px] h-[40px] ${className}`}
         onChange={(e) => handleInputChange(e.target.value)}
       />
     </>
