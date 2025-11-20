@@ -43,6 +43,7 @@
     "node-cache": "^5.1.2",
     "openai": "^4.24.1",
     "pdfjs-dist": "^4.0.379",
+    "pdfkit": "^0.17.2",
     "snoowrap": "^1.23.0",
     "tesseract.js": "^5.0.4"
   },

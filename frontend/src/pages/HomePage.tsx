@@ -29,32 +29,43 @@ const HomePage = () => {
 
   return (
     <div>
-      <main className="max-w-7xl mx-auto px-4">
-        <section className="min-h-screen flex justify-between items-center">
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl md:text-5xl text-center font-bold text-primary mb-4">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="min-h-screen flex flex-col-reverse lg:flex-row justify-center md:justify-between items-center gap-8">
+          <div className="flex flex-col items-center justify-center w-full lg:w-1/2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold text-primary mb-4 px-4">
               Welcome, {userProfile?.displayName || user?.displayName}! <br />
             </h1>
-            <p className="text-lg text-muted text-center mb-6 max-w-2xl">{t('home.subtitle')}</p>
+            <p className="text-base sm:text-lg text-muted text-center mb-6 max-w-2xl px-4">
+              {t('home.subtitle')}
+            </p>
 
-            <div className="flex gap-4 justify-center">
-              <button onClick={() => navigate('/chat')} className="btn-primary text-lg px-8 py-3">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center w-full px-4 sm:w-auto">
+              <button
+                onClick={() => navigate('/chat')}
+                className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 w-full sm:w-auto"
+              >
                 {t('home.openChat')}
               </button>
-              <button onClick={() => navigate('/meals')} className="btn-outline text-lg px-8 py-3">
+              <button
+                onClick={() => navigate('/meals')}
+                className="btn-outline text-base sm:text-lg px-6 sm:px-8 py-3 w-full sm:w-auto"
+              >
                 {t('home.viewMeals')}
               </button>
             </div>
             <Qoutes />
           </div>
-          <img src="/images/undraw_happy-women-day_8whn.svg" className="max-w-[550px]" />
+          <img
+            src="/images/undraw_happy-women-day_8whn.svg"
+            className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[550px] lg:w-1/2"
+          />
         </section>
 
-        <section className="flex flex-col gap-8 min-h-screen items-center justify-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
+        <section className="flex flex-col gap-6 sm:gap-8 min-h-screen items-center justify-center px-4 py-12 sm:py-16">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-8 text-center px-4">
             Why women across India choose Sakhee?
           </h1>
-          <div className="grid align-middle place-items-center md:grid-cols-3 gap-6 px-4 w-full max-w-6xl">
+          <div className="grid align-middle place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 w-full max-w-6xl">
             <FeatureCard
               icon={<Cpu className="w-8 h-8" />}
               title={t('home.features.ai') || 'AI That Actually Understands PCOS'}
@@ -76,7 +87,7 @@ const HomePage = () => {
               description={t('home.features.mealsDesc') || 'Weekly meal plans with shopping lists.'}
             />
           </div>
-          <div className="flex justify-center gap-16 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 justify-center gap-6 sm:gap-16 mt-4 sm:mt-8 w-full max-w-6xl px-4">
             <FeatureCard
               icon={<Zap className="w-8 h-8" />}
               title={t('home.features.tracking') || 'Progress tracking'}

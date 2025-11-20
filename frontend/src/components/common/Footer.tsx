@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 const Footer = ({ children }: { children?: ReactNode }) => {
   return (
-    <footer className="bg-background text-[#700f0f] snap-end flex flex-col gap-2 items-center justify-center mt-8 py-8 w-full">
+    <footer className="bg-background max-sm:px-4 text-[#700f0f] snap-end flex flex-col gap-2 items-center justify-center mt-8 py-8 w-full">
       {children}
       <div className="flex gap-2 justify-center items-center">
         <Heart size={40} className="bg-secondary border border-[#700f0f] rounded-lg p-1" />

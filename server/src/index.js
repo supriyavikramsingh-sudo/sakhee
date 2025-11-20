@@ -9,7 +9,7 @@ import { Logger } from './utils/logger.js';
 import chatRoutes from './routes/chat.js';
 import mealPlanRoutes from './routes/mealPlan.js';
 import uploadRoutes from './routes/upload.js';
-import progressRoutes from './routes/progress.js';
+import progressTrackerRoutes from './routes/progressTracker.js'; // Comprehensive progress tracker
 import ragStatusRoutes from './routes/ragStatus.js';
 import feedbackRoutes from './routes/feedback.js';
 import userProfileRoutes from './routes/userProfile.js';
@@ -62,7 +62,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/meals', mealPlanRoutes);
 app.use('/api/recipes', recipeRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/progress', progressRoutes);
+app.use('/api/progress', progressTrackerRoutes); // Comprehensive progress tracker
 app.use('/api/rag', ragStatusRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/user', userProfileRoutes);

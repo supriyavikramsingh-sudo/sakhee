@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Test Pro user bypass (for development)
+    function isTestUser() {
+      return isAuthenticated() && request.auth.uid == 'fY42B1okA1Y2WOUSRPDp6XJQgkD2';
+    }
+    
+    // Users collection - main user profiles
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+    }
+    
+    // Period Tracking - Top-level collection
+    match /periodTracking/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Cycles subcollection
+      match /cycles/{cycleId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // Daily Tracking - Top-level collection
+    match /dailyTracking/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Entries subcollection
+      match /entries/{entryId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // Weekly Symptoms - Top-level collection
+    match /weeklySymptoms/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Weeks subcollection
+      match /weeks/{weekId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // Weekly Summaries - Top-level collection
+    match /weeklySummaries/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Weeks subcollection
+      match /weeks/{weekId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // Monthly Reports - Top-level collection
+    match /monthlyReports/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Months subcollection
+      match /months/{monthId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // AI Insights - Top-level collection
+    match /aiInsights/{userId} {
+      allow read: if isOwner(userId) || isTestUser();
+      allow write: if isOwner(userId) || isTestUser();
+      
+      // Months subcollection
+      match /months/{monthId} {
+        allow read: if isOwner(userId) || isTestUser();
+        allow write: if isOwner(userId) || isTestUser();
+      }
+    }
+    
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

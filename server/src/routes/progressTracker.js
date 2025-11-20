@@ -1,0 +1,1111 @@
+/**
+ * Progress Tracker API Routes
+ * Handles period tracking, daily tracking, ovulation, and reports
+ */
+
+import express from 'express';
+import { Logger } from '../utils/logger.js';
+import {
+  initializePeriodSetup,
+  getPeriodSetup,
+  createCycle,
+  getCycles,
+  getCycle,
+  saveCycleInsights,
+  calculateCycleLength,
+  saveDailyTracking,
+  getDailyTracking,
+  getDailyTrackingRange,
+  calculateCurrentCycleDay,
+  calculateWeeklyWeightAverage,
+  getGoalAchievement,
+  dismissGoalBanner,
+  calculateOvulationScore,
+  saveDailyOvulationScore,
+  getCurrentCycleId,
+  saveWeeklySymptoms,
+  getWeeklySymptoms,
+  getWeeklySymptomsRange,
+  getWeeklySummary,
+  getWeeklySummariesRange,
+  generateWeeklySummary,
+  getMonthlyReport,
+  getMonthlyReportsRange,
+  generateMonthlyReport,
+} from '../services/progressTrackerService.js';
+import {
+  generateMonthlyInsights,
+  generateLongTermInsights,
+} from '../services/aiInsightsService.js';
+import {
+  exportDailyTracking,
+  exportWeeklySummaries,
+  exportMonthlyReports,
+  exportAllData,
+} from '../services/dataExportService.js';
+import { generateMonthlyReportPDF } from '../services/pdfExportService.js';
+
+const router = express.Router();
+const logger = new Logger('ProgressTrackerRoutes');
+
+/**
+ * Middleware to verify authentication
+ */
+const verifyAuth = async (req, res, next) => {
+  try {
+    const userId = req.body.userId || req.query.userId || req.params.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: { message: 'Unauthorized: No user ID provided' },
+      });
+    }
+
+    req.userId = userId;
+    next();
+  } catch (error) {
+    logger.error('Auth middleware error', { error: error.message });
+    return res.status(500).json({
+      success: false,
+      error: { message: 'Authentication error' },
+    });
+  }
+};
+
+// =====================================================
+// PERIOD TRACKING ROUTES
+// =====================================================
+
+/**
+ * POST /api/progress/period/setup
+ * Initialize period tracking setup
+ */
+router.post('/period/setup', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const setupData = req.body;
+
+    logger.info('Initializing period setup', { userId });
+
+    const result = await initializePeriodSetup(userId, setupData);
+
+    // Create initial cycle if user is on period or has logged last period
+    if (setupData.lastPeriodStart) {
+      const cycleData = {
+        startDate: setupData.lastPeriodStart,
+        endDate: setupData.lastPeriodEnd || setupData.expectedEnd,
+        flow: setupData.flow,
+        color: setupData.color,
+        colorConsistency: setupData.colorConsistency,
+        clots: setupData.clots,
+        spotting: setupData.spotting,
+        odor: setupData.odor,
+        cycleLength: null, // First cycle, no previous data
+      };
+
+      const cycleResult = await createCycle(userId, cycleData);
+      result.initialCycleId = cycleResult.cycleId;
+    }
+
+    res.json({
+      success: true,
+      message: 'Period tracking setup completed',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Period setup failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to initialize period setup',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/period/setup/:userId
+ * Get period setup status
+ */
+router.get('/period/setup/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    logger.info('Fetching period setup', { userId });
+
+    const setup = await getPeriodSetup(userId);
+
+    res.json({
+      success: true,
+      data: setup,
+    });
+  } catch (error) {
+    logger.error('Get period setup failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch period setup',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/period/log
+ * Log a new period cycle
+ */
+router.post('/period/log', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const cycleData = req.body;
+
+    logger.info('Logging period cycle', { userId });
+
+    // Calculate cycle length
+    const cycleLength = await calculateCycleLength(userId, cycleData.startDate);
+    if (cycleLength) {
+      cycleData.cycleLength = cycleLength;
+    }
+
+    const result = await createCycle(userId, cycleData);
+
+    res.json({
+      success: true,
+      message: 'Period logged successfully',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Log period failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to log period',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/period/cycles/:userId
+ * Get all cycles for timeline
+ */
+router.get('/period/cycles/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const limitCount = parseInt(req.query.limit) || 6;
+
+    logger.info('Fetching cycles', { userId, limit: limitCount });
+
+    const cycles = await getCycles(userId, limitCount);
+
+    res.json({
+      success: true,
+      data: cycles,
+    });
+  } catch (error) {
+    logger.error('Get cycles failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch cycles',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/period/cycle/:userId/:cycleId
+ * Get specific cycle details
+ */
+router.get('/period/cycle/:userId/:cycleId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { cycleId } = req.params;
+
+    logger.info('Fetching cycle', { userId, cycleId });
+
+    const cycle = await getCycle(userId, cycleId);
+
+    if (!cycle) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'Cycle not found' },
+      });
+    }
+
+    res.json({
+      success: true,
+      data: cycle,
+    });
+  } catch (error) {
+    logger.error('Get cycle failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch cycle',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/period/insights/:cycleId
+ * Generate AI insights for a cycle
+ */
+router.post('/period/insights/:cycleId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { cycleId } = req.params;
+
+    logger.info('Generating cycle insights', { userId, cycleId });
+
+    // TODO: Implement AI insights generation in Phase 8
+    // For now, return placeholder
+    const insights = 'AI insights generation will be implemented in Phase 8';
+
+    const result = await saveCycleInsights(userId, cycleId, insights);
+
+    res.json({
+      success: true,
+      message: 'Insights generated',
+      data: { insights },
+    });
+  } catch (error) {
+    logger.error('Generate insights failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to generate insights',
+        details: error.message,
+      },
+    });
+  }
+});
+
+// =====================================================
+// DAILY TRACKING ROUTES
+// =====================================================
+
+/**
+ * POST /api/progress/daily
+ * Save daily tracking entry
+ */
+router.post('/daily', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { date, ...trackingData } = req.body;
+
+    logger.info('Saving daily tracking', { userId, date });
+
+    // Calculate ovulation score if relevant data provided
+    let ovulationData = null;
+    if (trackingData.cervicalMucus && trackingData.ovulationPain && trackingData.libido) {
+      ovulationData = calculateOvulationScore(trackingData);
+
+      // Save ovulation score
+      const currentCycleId = await getCurrentCycleId(userId);
+      if (currentCycleId) {
+        await saveDailyOvulationScore(userId, currentCycleId, date, ovulationData);
+      }
+    }
+
+    const result = await saveDailyTracking(userId, date, trackingData);
+
+    // Check if weight tracking should trigger weekly average
+    if (trackingData.weight !== undefined && trackingData.weight !== null) {
+      try {
+        const weeklyResult = await calculateWeeklyWeightAverage(userId, date);
+        if (weeklyResult) {
+          result.weeklyAverage = weeklyResult;
+        }
+      } catch (error) {
+        logger.warn('Weekly average calculation failed', { userId, error: error.message });
+        // Don't fail the entire request if weekly average fails
+      }
+    }
+
+    res.json({
+      success: true,
+      message: 'Daily tracking saved',
+      data: {
+        ...result,
+        ovulationScore: ovulationData,
+      },
+    });
+  } catch (error) {
+    logger.error('Save daily tracking failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to save daily tracking',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/daily/:userId/:date
+ * Get daily tracking for specific date
+ */
+router.get('/daily/:userId/:date', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { date } = req.params;
+
+    logger.info('Fetching daily tracking', { userId, date });
+
+    const tracking = await getDailyTracking(userId, date);
+
+    res.json({
+      success: true,
+      data: tracking,
+    });
+  } catch (error) {
+    logger.error('Get daily tracking failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch daily tracking',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/daily/range/:userId
+ * Get daily tracking for date range
+ */
+router.get('/daily/range/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { startDate, endDate } = req.query;
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Start date and end date are required' },
+      });
+    }
+
+    logger.info('Fetching daily tracking range', { userId, startDate, endDate });
+
+    const entries = await getDailyTrackingRange(userId, new Date(startDate), new Date(endDate));
+
+    res.json({
+      success: true,
+      data: entries,
+    });
+  } catch (error) {
+    logger.error('Get daily tracking range failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch daily tracking range',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/cycle-day/:userId
+ * Get current cycle day
+ */
+router.get('/cycle-day/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    logger.info('Calculating current cycle day', { userId });
+
+    const cycleDay = await calculateCurrentCycleDay(userId, new Date());
+
+    res.json({
+      success: true,
+      data: { cycleDay },
+    });
+  } catch (error) {
+    logger.error('Get cycle day failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to calculate cycle day',
+        details: error.message,
+      },
+    });
+  }
+});
+
+// =====================================================
+// WEIGHT TRACKING ROUTES
+// =====================================================
+
+/**
+ * GET /api/progress/weight/goal/:userId
+ * Get goal achievement status
+ */
+router.get('/weight/goal/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    logger.info('Fetching goal achievement', { userId });
+
+    const achievement = await getGoalAchievement(userId);
+
+    res.json({
+      success: true,
+      data: achievement,
+    });
+  } catch (error) {
+    logger.error('Get goal achievement failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch goal achievement',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/weight/goal/dismiss
+ * Dismiss goal achievement banner
+ */
+router.post('/weight/goal/dismiss', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    logger.info('Dismissing goal banner', { userId });
+
+    const result = await dismissGoalBanner(userId);
+
+    res.json({
+      success: true,
+      message: 'Goal banner dismissed',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Dismiss goal banner failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to dismiss goal banner',
+        details: error.message,
+      },
+    });
+  }
+});
+
+// =====================================================
+// WEEKLY SYMPTOMS ROUTES
+// =====================================================
+
+/**
+ * POST /api/progress/weekly-symptoms
+ * Save weekly symptoms
+ * Body: { userId, weekId, ...symptomData }
+ */
+router.post('/weekly-symptoms', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { weekId, ...symptomData } = req.body;
+
+    if (!weekId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Week ID is required' },
+      });
+    }
+
+    logger.info('Saving weekly symptoms', { userId, weekId });
+
+    const result = await saveWeeklySymptoms(userId, weekId, symptomData);
+
+    res.json({
+      success: true,
+      message: 'Weekly symptoms saved successfully',
+      data: result.data,
+    });
+  } catch (error) {
+    logger.error('Save weekly symptoms failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to save weekly symptoms',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/weekly-symptoms/range/:userId
+ * Get weekly symptoms for date range
+ * Query params: startWeek, endWeek
+ */
+router.get('/weekly-symptoms/range/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { startWeek, endWeek } = req.query;
+
+    logger.info('Fetching weekly symptoms range', { userId, startWeek, endWeek });
+
+    const symptoms = await getWeeklySymptomsRange(userId, startWeek, endWeek);
+
+    res.json({
+      success: true,
+      data: symptoms,
+    });
+  } catch (error) {
+    logger.error('Get weekly symptoms range failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch weekly symptoms range',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/weekly-symptoms/:userId/:weekId
+ * Get weekly symptoms for specific week
+ */
+router.get('/weekly-symptoms/:userId/:weekId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { weekId } = req.params;
+
+    logger.info('Fetching weekly symptoms', { userId, weekId });
+
+    const symptoms = await getWeeklySymptoms(userId, weekId);
+
+    if (!symptoms) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'Weekly symptoms not found' },
+      });
+    }
+
+    res.json({
+      success: true,
+      data: symptoms,
+    });
+  } catch (error) {
+    logger.error('Get weekly symptoms failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch weekly symptoms',
+        details: error.message,
+      },
+    });
+  }
+});
+
+// =====================================================
+// WEEKLY SUMMARY ROUTES
+// =====================================================
+
+/**
+ * GET /api/progress/weekly-summary/:userId/:weekId
+ * Get weekly summary for specific week
+ */
+router.get('/weekly-summary/:userId/:weekId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { weekId } = req.params;
+
+    logger.info('Fetching weekly summary', { userId, weekId });
+
+    const summary = await getWeeklySummary(userId, weekId);
+
+    if (!summary) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'Weekly summary not found' },
+      });
+    }
+
+    res.json({
+      success: true,
+      data: summary,
+    });
+  } catch (error) {
+    logger.error('Get weekly summary failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch weekly summary',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/weekly-summaries/:userId
+ * Get multiple weekly summaries
+ * Query params: weeks (default: 12)
+ */
+router.get('/weekly-summaries/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const numberOfWeeks = parseInt(req.query.weeks) || 12;
+
+    logger.info('Fetching weekly summaries range', { userId, numberOfWeeks });
+
+    const summaries = await getWeeklySummariesRange(userId, numberOfWeeks);
+
+    res.json({
+      success: true,
+      data: summaries,
+    });
+  } catch (error) {
+    logger.error('Get weekly summaries failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch weekly summaries',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/weekly-summary/generate
+ * Generate weekly summary manually
+ * Body: { userId, weekId }
+ */
+router.post('/weekly-summary/generate', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { weekId } = req.body;
+
+    if (!weekId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Week ID is required' },
+      });
+    }
+
+    logger.info('Generating weekly summary', { userId, weekId });
+
+    const result = await generateWeeklySummary(userId, weekId);
+
+    res.json({
+      success: true,
+      message: 'Weekly summary generated successfully',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Generate weekly summary failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to generate weekly summary',
+        details: error.message,
+      },
+    });
+  }
+});
+
+// =====================================================
+// MONTHLY REPORT ROUTES
+// =====================================================
+
+/**
+ * GET /api/progress/monthly-report/:userId/:monthId
+ * Get monthly report for specific month
+ */
+router.get('/monthly-report/:userId/:monthId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { monthId } = req.params;
+
+    logger.info('Fetching monthly report', { userId, monthId });
+
+    const report = await getMonthlyReport(userId, monthId);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'Monthly report not found' },
+      });
+    }
+
+    res.json({
+      success: true,
+      data: report,
+    });
+  } catch (error) {
+    logger.error('Get monthly report failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch monthly report',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/monthly-reports/:userId
+ * Get multiple monthly reports
+ * Query params: months (default: 6)
+ */
+router.get('/monthly-reports/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const numberOfMonths = parseInt(req.query.months) || 6;
+
+    logger.info('Fetching monthly reports range', { userId, numberOfMonths });
+
+    const reports = await getMonthlyReportsRange(userId, numberOfMonths);
+
+    res.json({
+      success: true,
+      data: reports,
+    });
+  } catch (error) {
+    logger.error('Get monthly reports failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch monthly reports',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/monthly-report/generate
+ * Generate monthly report manually
+ * Body: { userId, monthId }
+ */
+router.post('/monthly-report/generate', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { monthId } = req.body;
+
+    if (!monthId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Month ID is required' },
+      });
+    }
+
+    logger.info('Generating monthly report', { userId, monthId });
+
+    const result = await generateMonthlyReport(userId, monthId);
+
+    res.json({
+      success: true,
+      message: 'Monthly report generated successfully',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Generate monthly report failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to generate monthly report',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/ai-insights/:userId/:monthId
+ * Generate AI-powered insights for a specific monthly report
+ * Params: userId, monthId
+ * Body: { previousMonths?, userProfile?, forceRegenerate? }
+ */
+router.post('/ai-insights/:userId/:monthId', verifyAuth, async (req, res) => {
+  try {
+    const { userId, monthId } = req.params;
+    const { previousMonths = [], userProfile = {}, forceRegenerate = false } = req.body;
+
+    if (!monthId) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Month ID is required' },
+      });
+    }
+
+    logger.info('Generating AI insights', { userId, monthId, forceRegenerate });
+
+    // First, fetch the monthly report
+    const monthlyReport = await getMonthlyReport(userId, monthId);
+
+    if (!monthlyReport) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'Monthly report not found. Please generate the report first.' },
+      });
+    }
+
+    // Generate AI insights (with caching)
+    const insights = await generateMonthlyInsights(userId, monthlyReport, {
+      previousMonths,
+      userProfile,
+      forceRegenerate,
+    });
+
+    res.json({
+      success: true,
+      data: insights,
+    });
+  } catch (error) {
+    logger.error('Generate AI insights failed', {
+      userId: req.userId,
+      monthId: req.params.monthId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to generate AI insights',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/ai-insights/long-term/:userId
+ * Generate long-term AI insights across multiple months
+ * Body: { numberOfMonths, forceRegenerate }
+ */
+router.post('/ai-insights/long-term/:userId', verifyAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { numberOfMonths = 6, forceRegenerate = false } = req.body;
+
+    logger.info('Generating long-term AI insights', { userId, numberOfMonths, forceRegenerate });
+
+    // Fetch multiple monthly reports
+    const monthlyReports = await getMonthlyReportsRange(userId, numberOfMonths);
+
+    if (!monthlyReports || monthlyReports.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          message: 'No monthly reports found. Please track data and generate reports first.',
+        },
+      });
+    }
+
+    // Generate long-term insights (with caching)
+    const insights = await generateLongTermInsights(userId, monthlyReports, { forceRegenerate });
+
+    res.json({
+      success: true,
+      data: insights,
+    });
+  } catch (error) {
+    logger.error('Generate long-term AI insights failed', {
+      userId: req.userId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to generate long-term AI insights',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/export/daily/:userId
+ * Export daily tracking data
+ * Query: startDate, endDate, format (csv or json)
+ */
+router.get('/export/daily/:userId', verifyAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { startDate, endDate, format = 'csv' } = req.query;
+
+    logger.info('Exporting daily tracking data', { userId, startDate, endDate, format });
+
+    const exportData = await exportDailyTracking(userId, {
+      startDate,
+      endDate,
+      format,
+    });
+
+    // Set response headers for file download
+    res.setHeader('Content-Type', exportData.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${exportData.filename}"`);
+    res.send(exportData.content);
+  } catch (error) {
+    logger.error('Export daily tracking failed', {
+      userId: req.params.userId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to export daily tracking data',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/export/weekly/:userId
+ * Export weekly summaries data
+ * Query: numberOfWeeks, format (csv or json)
+ */
+router.get('/export/weekly/:userId', verifyAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { numberOfWeeks, format = 'csv' } = req.query;
+
+    logger.info('Exporting weekly summaries', { userId, numberOfWeeks, format });
+
+    const exportData = await exportWeeklySummaries(userId, {
+      numberOfWeeks: numberOfWeeks ? parseInt(numberOfWeeks) : null,
+      format,
+    });
+
+    // Set response headers for file download
+    res.setHeader('Content-Type', exportData.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${exportData.filename}"`);
+    res.send(exportData.content);
+  } catch (error) {
+    logger.error('Export weekly summaries failed', {
+      userId: req.params.userId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to export weekly summaries',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/export/monthly/:userId
+ * Export monthly reports data
+ * Query: numberOfMonths, format (csv or json), includeAIInsights (true or false)
+ */
+router.get('/export/monthly/:userId', verifyAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { numberOfMonths, format = 'csv', includeAIInsights = 'false' } = req.query;
+
+    logger.info('Exporting monthly reports', { userId, numberOfMonths, format, includeAIInsights });
+
+    const exportData = await exportMonthlyReports(userId, {
+      numberOfMonths: numberOfMonths ? parseInt(numberOfMonths) : null,
+      format,
+      includeAIInsights: includeAIInsights === 'true',
+    });
+
+    // Set response headers for file download
+    res.setHeader('Content-Type', exportData.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${exportData.filename}"`);
+    res.send(exportData.content);
+  } catch (error) {
+    logger.error('Export monthly reports failed', {
+      userId: req.params.userId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to export monthly reports',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/export/all/:userId
+ * Export all progress tracking data (JSON only)
+ */
+router.get('/export/all/:userId', verifyAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    logger.info('Exporting all progress data', { userId });
+
+    const exportData = await exportAllData(userId, { format: 'json' });
+
+    // Set response headers for file download
+    res.setHeader('Content-Type', exportData.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${exportData.filename}"`);
+    res.send(exportData.content);
+  } catch (error) {
+    logger.error('Export all data failed', {
+      userId: req.params.userId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to export all data',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/export/pdf/:userId/:monthId
+ * Export monthly report as PDF
+ * Query: includeAIInsights (true or false)
+ */
+router.get('/export/pdf/:userId/:monthId', verifyAuth, async (req, res) => {
+  try {
+    const { userId, monthId } = req.params;
+    const { includeAIInsights = 'true' } = req.query;
+
+    logger.info('Exporting monthly report as PDF', { userId, monthId, includeAIInsights });
+
+    const pdfBuffer = await generateMonthlyReportPDF(userId, monthId, {
+      includeAIInsights: includeAIInsights === 'true',
+    });
+
+    // Set response headers for PDF download
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="monthly-report-${monthId}.pdf"`);
+    res.send(pdfBuffer);
+  } catch (error) {
+    logger.error('Export PDF failed', {
+      userId: req.params.userId,
+      monthId: req.params.monthId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to export PDF',
+        details: error.message,
+      },
+    });
+  }
+});
+
+export default router;
