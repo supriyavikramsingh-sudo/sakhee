@@ -205,12 +205,16 @@ export async function createCycle(userId, cycleData) {
       throw new Error(validation.error);
     }
 
+    // Calculate cycle length based on previous cycle
+    const cycleLength = await calculateCycleLength(userId, startDate);
+
     // Convert to Firestore Timestamps for storage
     const dataToSave = {
       ...cycleData,
       startDate: Timestamp.fromDate(startDate),
       endDate: endDate ? Timestamp.fromDate(endDate) : null,
       cycleId,
+      cycleLength: cycleLength, // Add cycle length
       month: startDate.getMonth() + 1, // 1-12
       year: startDate.getFullYear(),
       loggedAt: serverTimestamp(),
@@ -221,7 +225,7 @@ export async function createCycle(userId, cycleData) {
 
     await setDoc(cycleRef, dataToSave);
 
-    logger.info('Cycle created', { userId, cycleId });
+    logger.info('Cycle created', { userId, cycleId, cycleLength });
     return { success: true, cycleId, data: dataToSave, warnings: validation.warnings };
   } catch (error) {
     logger.error('Failed to create cycle', { userId, error: error.message });
@@ -241,6 +245,7 @@ export async function getCycles(userId, limitCount = 6) {
     const cycles = [];
     snapshot.forEach((doc) => {
       const data = doc.data();
+      console.log('Fetched cycle data:', data);
       cycles.push({
         ...data,
         startDate: data.startDate?.toDate?.() || data.startDate,
@@ -404,20 +409,20 @@ export async function saveCycleInsights(userId, cycleId, insights) {
 export async function calculateCycleLength(userId, currentStartDate) {
   try {
     const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(2));
+    // Get the most recent cycle (before the one being created)
+    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
     const snapshot = await getDocs(q);
 
-    if (snapshot.size < 2) {
-      return null; // Not enough data
+    if (snapshot.empty) {
+      return null; // This is the first cycle, no previous cycle to compare
     }
 
-    const docs = [];
-    snapshot.forEach((doc) => docs.push(doc.data()));
-
-    const previousStartDate = docs[1].startDate?.toDate?.() || docs[1].startDate;
+    const mostRecentCycle = snapshot.docs[0].data();
+    const previousStartDate = mostRecentCycle.startDate?.toDate?.() || mostRecentCycle.startDate;
     const currentStart =
       currentStartDate instanceof Date ? currentStartDate : currentStartDate.toDate();
 
+    // Calculate difference between new cycle start and previous cycle start
     const diffTime = Math.abs(currentStart - previousStartDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 

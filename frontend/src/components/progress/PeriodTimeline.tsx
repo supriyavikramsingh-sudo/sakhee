@@ -46,11 +46,11 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
     try {
       const response = await progressTrackerApi.getCycles(userId, zoomLevel);
       if (response.success) {
-        // Backend returns in ascending order (oldest first)
-        // Reverse for timeline display (newest on right)
-        const reversedCycles = [...response.data].reverse();
-        setCycles(reversedCycles);
-        // Auto-scroll to most recent
+        // Backend returns in ascending order (oldest first), keep that order
+        // Timeline displays left to right: oldest → newest
+        console.log('Fetched cycle data:', response.data);
+        setCycles(response.data);
+        // Auto-scroll to most recent (rightmost)
         setTimeout(() => {
           if (timelineRef.current) {
             timelineRef.current.scrollLeft = timelineRef.current.scrollWidth;
@@ -144,10 +144,11 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
           <div className="relative flex items-center gap-8 py-8" style={{ zIndex: 1 }}>
             {cycles.map((cycle, index) => {
               const startDate = new Date(cycle.startDate);
-              const prevCycle = cycles[index + 1];
-              const daysApart = prevCycle
+              // Next cycle is the one after (index + 1) since oldest is on left
+              const nextCycle = cycles[index + 1];
+              const daysApart = nextCycle
                 ? Math.floor(
-                    (startDate.getTime() - new Date(prevCycle.startDate).getTime()) /
+                    (new Date(nextCycle.startDate).getTime() - startDate.getTime()) /
                       (1000 * 60 * 60 * 24)
                   )
                 : null;
@@ -162,10 +163,13 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
               const fertileStartDate = new Date(startDate);
               fertileStartDate.setDate(startDate.getDate() + fertileStartDay - 1);
 
+              // Most recent cycle is the last one in the array
+              const isCurrentCycle = index === cycles.length - 1;
+
               return (
                 <div key={cycle.cycleId} className="relative flex flex-col items-center">
                   {/* Fertile Window Shading - Only for most recent cycle */}
-                  {index === 0 && (
+                  {isCurrentCycle && (
                     <div
                       className="absolute bg-success/15 border-2 border-success/40 rounded-lg"
                       style={{
@@ -178,15 +182,15 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
                     />
                   )}
 
-                  {/* Cycle length label */}
+                  {/* Cycle length label - show to the right, between this and next cycle */}
                   {daysApart && (
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs text-muted whitespace-nowrap">
+                    <div className="absolute -top-8 left-full ml-4 text-xs text-muted whitespace-nowrap">
                       {daysApart} days
                     </div>
                   )}
 
                   {/* Fertile window indicator */}
-                  {index === 0 && (
+                  {isCurrentCycle && (
                     <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
                       <div className="bg-success/20 border-2 border-success rounded-lg px-3 py-1 text-xs font-semibold text-success whitespace-nowrap shadow-sm">
                         <Heart size={12} className="inline mr-1" />
@@ -200,7 +204,7 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
                     <div
                       className={`w-6 h-6 rounded-full bg-primary shadow-lg cursor-pointer 
                         transform transition-all duration-300 hover:scale-125 hover:shadow-xl
-                        ${index === 0 ? 'animate-pulse ring-4 ring-primary/30' : ''}`}
+                        ${isCurrentCycle ? 'animate-pulse ring-4 ring-primary/30' : ''}`}
                     />
                     {/* Tooltip */}
                     <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
@@ -221,7 +225,7 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
                   </div>
 
                   {/* Ovulation prediction marker (only for current cycle) */}
-                  {index === 0 && (
+                  {isCurrentCycle && (
                     <div className="absolute top-0 left-full ml-2">
                       <div className="flex items-center gap-1 text-[10px] text-success font-semibold whitespace-nowrap">
                         <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
@@ -264,13 +268,13 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold text-primary">
-                Day {getCurrentCycleDay(cycles[0])}
+                Day {getCurrentCycleDay(cycles[cycles.length - 1])}
               </div>
               <div className="text-xs text-muted mt-1">Current Cycle Day</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-gray-800">
-                {new Date(cycles[0].startDate).toLocaleDateString('en-US', {
+                {new Date(cycles[cycles.length - 1].startDate).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
                 })}
@@ -278,7 +282,9 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
               <div className="text-xs text-muted mt-1">Last Period Start</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-800">{cycles[0].cycleLength || '-'}</div>
+              <div className="text-2xl font-bold text-gray-800">
+                {cycles[cycles.length - 1].cycleLength || '-'}
+              </div>
               <div className="text-xs text-muted mt-1">Last Cycle Length</div>
             </div>
           </div>

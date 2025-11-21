@@ -152,6 +152,7 @@ const CycleInsightsCard = ({
         cyclePhase,
         cyclesLogged: cycles.length,
       });
+      console.log('Fetched cycle data:', cycleData);
     } catch (error) {
       console.error('Failed to fetch cycle data:', error);
     } finally {
@@ -457,7 +458,9 @@ const CycleInsightsCard = ({
               <span className="text-lg">📌</span>
               <div>
                 <strong className="text-gray-800">Daily:</strong>
-                <span className="text-gray-600 ml-1">Cervical mucus, BBT, ovulation symptoms</span>
+                <span className="text-gray-600 ml-1">
+                  Cervical mucus, body temperature, ovulation symptoms
+                </span>
               </div>
             </div>
             <div className="flex items-start gap-3 text-sm">
@@ -475,28 +478,6 @@ const CycleInsightsCard = ({
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="flex gap-3">
-          {onTrackSymptoms && (
-            <button
-              onClick={onTrackSymptoms}
-              className="btn-primary flex-1 flex items-center justify-center gap-2"
-            >
-              <Plus size={20} />
-              Log Today's Symptoms
-            </button>
-          )}
-          {onLogPeriod && (
-            <button
-              onClick={onLogPeriod}
-              className="btn-secondary flex-1 flex items-center justify-center gap-2"
-            >
-              <Plus size={20} />
-              Log Period
-            </button>
-          )}
         </div>
       </div>
     );
@@ -523,9 +504,7 @@ const CycleInsightsCard = ({
       {/* Key Metrics */}
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-secondary/30 rounded-xl p-4 text-center border border-secondary">
-          <div className="text-3xl font-bold text-primary">
-            {cycleData.currentCycleDay}/{cycleData.totalCycleDays}
-          </div>
+          <div className="text-3xl font-bold text-primary">{cycleData.currentCycleDay}</div>
           <div className="text-xs text-muted mt-1">Current Day</div>
         </div>
         <div className="bg-secondary/30 rounded-xl p-4 text-center border border-secondary">

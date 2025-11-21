@@ -103,7 +103,7 @@ const LogPeriodModal = ({
     } catch (error: any) {
       console.error(`Failed to ${mode} period:`, error);
       setValidationError(error.message || `Failed to ${mode} period. Please try again.`);
-      toast.error(error.message || `Failed to ${mode} period. Please try again.`);
+      toast.error(error.details || `Failed to ${mode} period. Please try again.`);
     } finally {
       setLoading(false);
     }

@@ -224,13 +224,6 @@ const ProgressPage = () => {
                   >
                     Edit Last Period
                   </button>
-                  <button
-                    onClick={() => setShowDailyForm(true)}
-                    className="btn-secondary flex items-center gap-2"
-                  >
-                    <Plus size={20} />
-                    Track Ovulation Symptoms
-                  </button>
                 </div>
               </div>
             )}
