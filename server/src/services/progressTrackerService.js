@@ -70,6 +70,103 @@ export async function getPeriodSetup(userId) {
 }
 
 /**
+ * Validate period dates
+ */
+async function validatePeriodDates(userId, startDate, endDate, excludeCycleId = null) {
+  // Calculate period duration
+  const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+  // Validation 1: Period duration checks
+  if (duration < 0) {
+    throw new Error('End date must be after start date');
+  }
+
+  if (duration > 20) {
+    throw new Error(
+      'Period duration exceeds 20 days. Please verify your dates or consult your doctor if this is accurate.'
+    );
+  }
+
+  // Warning for long periods (10-20 days) - we'll return this as a warning, not block
+  const warnings = [];
+  if (duration > 10) {
+    warnings.push(
+      "This period is longer than typical (10+ days). People with PCOS can have extended spotting, but if you're concerned, consult your doctor."
+    );
+  }
+
+  // Validation 2: Check for overlapping periods
+  const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
+  const snapshot = await getDocs(cyclesRef);
+
+  snapshot.forEach((doc) => {
+    const existingCycle = doc.data();
+
+    // Skip validation against the cycle being edited
+    if (excludeCycleId && existingCycle.cycleId === excludeCycleId) {
+      return;
+    }
+
+    const existingStart = existingCycle.startDate?.toDate?.() || new Date(existingCycle.startDate);
+    const existingEnd = existingCycle.endDate?.toDate?.() || new Date(existingCycle.endDate);
+
+    // Check if new period overlaps with existing period
+    const newPeriodOverlaps =
+      (startDate >= existingStart && startDate <= existingEnd) ||
+      (endDate >= existingStart && endDate <= existingEnd) ||
+      (startDate <= existingStart && endDate >= existingEnd);
+
+    if (newPeriodOverlaps) {
+      const existingStartStr = existingStart.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      const existingEndStr = existingEnd.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      throw new Error(
+        `This period overlaps with your previous period from ${existingStartStr} to ${existingEndStr}. Please check your dates.`
+      );
+    }
+  });
+
+  // Validation 3: Check cycle length (warning only, not blocking)
+  if (snapshot.size > 0) {
+    // Get most recent period (excluding the one being edited if applicable)
+    const sortedCycles = [];
+    snapshot.forEach((doc) => {
+      const cycleData = doc.data();
+      if (!excludeCycleId || cycleData.cycleId !== excludeCycleId) {
+        sortedCycles.push(cycleData);
+      }
+    });
+
+    if (sortedCycles.length > 0) {
+      sortedCycles.sort((a, b) => {
+        const dateA = a.startDate?.toDate?.() || new Date(a.startDate);
+        const dateB = b.startDate?.toDate?.() || new Date(b.startDate);
+        return dateB - dateA;
+      });
+
+      const lastPeriodStart =
+        sortedCycles[0].startDate?.toDate?.() || new Date(sortedCycles[0].startDate);
+      const daysSinceLastPeriod = Math.ceil((startDate - lastPeriodStart) / (1000 * 60 * 60 * 24));
+
+      if (daysSinceLastPeriod < 21) {
+        warnings.push(
+          'This is a short cycle (less than 21 days). If you experience short cycles frequently, consult your doctor.'
+        );
+      }
+    }
+  }
+
+  return { valid: true, warnings };
+}
+
+/**
  * Create a new period cycle entry
  */
 export async function createCycle(userId, cycleData) {
@@ -102,6 +199,12 @@ export async function createCycle(userId, cycleData) {
       }
     }
 
+    // Validate period dates
+    const validation = await validatePeriodDates(userId, startDate, endDate);
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
     // Convert to Firestore Timestamps for storage
     const dataToSave = {
       ...cycleData,
@@ -119,7 +222,7 @@ export async function createCycle(userId, cycleData) {
     await setDoc(cycleRef, dataToSave);
 
     logger.info('Cycle created', { userId, cycleId });
-    return { success: true, cycleId, data: dataToSave };
+    return { success: true, cycleId, data: dataToSave, warnings: validation.warnings };
   } catch (error) {
     logger.error('Failed to create cycle', { userId, error: error.message });
     throw error;
@@ -132,7 +235,7 @@ export async function createCycle(userId, cycleData) {
 export async function getCycles(userId, limitCount = 6) {
   try {
     const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(limitCount));
+    const q = query(cyclesRef, orderBy('startDate', 'asc'), limit(limitCount));
     const snapshot = await getDocs(q);
 
     const cycles = [];
@@ -176,6 +279,100 @@ export async function getCycle(userId, cycleId) {
     };
   } catch (error) {
     logger.error('Failed to get cycle', { userId, cycleId, error: error.message });
+    throw error;
+  }
+}
+
+/**
+ * Update an existing cycle
+ */
+export async function updateCycle(userId, cycleId, updateData) {
+  try {
+    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
+
+    // Check if cycle exists
+    const cycleDoc = await getDoc(cycleRef);
+    if (!cycleDoc.exists()) {
+      throw new Error('Cycle not found');
+    }
+
+    // Convert date strings to Date objects
+    let startDate;
+    if (updateData.startDate instanceof Date) {
+      startDate = updateData.startDate;
+    } else if (updateData.startDate?.toDate) {
+      startDate = updateData.startDate.toDate();
+    } else if (typeof updateData.startDate === 'string') {
+      startDate = new Date(updateData.startDate);
+    } else {
+      // Use existing startDate if not provided
+      const existingData = cycleDoc.data();
+      startDate = existingData.startDate?.toDate?.() || existingData.startDate;
+    }
+
+    let endDate = null;
+    if (updateData.endDate) {
+      if (updateData.endDate instanceof Date) {
+        endDate = updateData.endDate;
+      } else if (updateData.endDate?.toDate) {
+        endDate = updateData.endDate.toDate();
+      } else if (typeof updateData.endDate === 'string') {
+        endDate = new Date(updateData.endDate);
+      }
+    }
+
+    // Validate period dates (excluding the current cycle being edited)
+    const validation = await validatePeriodDates(userId, startDate, endDate, cycleId);
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
+    // Prepare update data
+    const dataToUpdate = {
+      ...updateData,
+      startDate: Timestamp.fromDate(startDate),
+      endDate: endDate ? Timestamp.fromDate(endDate) : null,
+      month: startDate.getMonth() + 1,
+      year: startDate.getFullYear(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Remove cycleId and cycleLength from update (don't allow changing these)
+    delete dataToUpdate.cycleId;
+    delete dataToUpdate.cycleLength;
+
+    await updateDoc(cycleRef, dataToUpdate);
+
+    // Recalculate cycle lengths for this cycle and the next one
+    const cycles = await getCycles(userId, 50); // Get more cycles to ensure we find neighbors
+    const cycleIndex = cycles.findIndex((c) => c.cycleId === cycleId);
+
+    if (cycleIndex !== -1) {
+      // Update this cycle's length if there's a previous cycle
+      if (cycleIndex > 0) {
+        const previousCycle = cycles[cycleIndex - 1];
+        const thisCycleLength = Math.ceil(
+          Math.abs(startDate.getTime() - new Date(previousCycle.startDate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+        await updateCycleLength(userId, cycleId, thisCycleLength);
+      }
+
+      // Update next cycle's length if there is one
+      if (cycleIndex < cycles.length - 1) {
+        const nextCycle = cycles[cycleIndex + 1];
+        const nextCycleLength = Math.ceil(
+          Math.abs(new Date(nextCycle.startDate).getTime() - startDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+        await updateCycleLength(userId, nextCycle.cycleId, nextCycleLength);
+      }
+    }
+
+    logger.info('Cycle updated', { userId, cycleId });
+    return { success: true, warnings: validation.warnings };
+  } catch (error) {
+    logger.error('Failed to update cycle', { userId, cycleId, error: error.message });
     throw error;
   }
 }
@@ -228,6 +425,23 @@ export async function calculateCycleLength(userId, currentStartDate) {
   } catch (error) {
     logger.error('Failed to calculate cycle length', { userId, error: error.message });
     return null;
+  }
+}
+
+/**
+ * Update cycle length for a specific cycle
+ */
+export async function updateCycleLength(userId, cycleId, cycleLength) {
+  try {
+    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
+    await updateDoc(cycleRef, {
+      cycleLength,
+    });
+    logger.info('Updated cycle length', { userId, cycleId, cycleLength });
+    return { success: true };
+  } catch (error) {
+    logger.error('Failed to update cycle length', { userId, cycleId, error: error.message });
+    throw error;
   }
 }
 
@@ -671,6 +885,102 @@ export async function getCurrentCycleId(userId) {
   } catch (error) {
     logger.error('Failed to get current cycle ID', { userId, error: error.message });
     return null;
+  }
+}
+
+/**
+ * Get ovulation prediction based on tracked data
+ */
+export async function getOvulationPrediction(userId) {
+  try {
+    // Get current cycle info
+    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
+    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
+    const cycleSnapshot = await getDocs(q);
+
+    if (cycleSnapshot.empty) {
+      return {
+        method: 'none',
+        message: 'No period logged yet',
+        ovulationDate: null,
+        fertileWindowStart: null,
+        fertileWindowEnd: null,
+        confidence: 0,
+      };
+    }
+
+    const currentCycle = cycleSnapshot.docs[0].data();
+    const cycleStartDate = currentCycle.startDate?.toDate?.() || new Date(currentCycle.startDate);
+    const cycleLength = currentCycle.cycleLength || 28;
+
+    // Get daily tracking data for current cycle
+    const dailyRef = collection(db, 'dailyTracking', userId, 'entries');
+    const dailySnapshot = await getDocs(dailyRef);
+
+    const ovulationScores = [];
+    dailySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const entryDate = new Date(data.date);
+
+      // Only include entries from current cycle
+      if (entryDate >= cycleStartDate && data.ovulationScore) {
+        ovulationScores.push({
+          date: data.date,
+          score: data.ovulationScore.totalScore,
+          confidence: data.ovulationScore.confidenceLevel,
+        });
+      }
+    });
+
+    // If we have tracked data with high scores, use data-driven prediction
+    if (ovulationScores.length >= 3) {
+      // Find peak ovulation score
+      ovulationScores.sort((a, b) => b.score - a.score);
+      const peakScore = ovulationScores[0];
+
+      if (peakScore.score >= 60) {
+        // High confidence data-driven prediction
+        const ovulationDate = new Date(peakScore.date);
+        const fertileStart = new Date(ovulationDate);
+        fertileStart.setDate(fertileStart.getDate() - 5);
+        const fertileEnd = new Date(ovulationDate);
+        fertileEnd.setDate(fertileEnd.getDate() + 1);
+
+        return {
+          method: 'data-driven',
+          message: 'Based on your tracked symptoms',
+          ovulationDate: ovulationDate.toISOString().split('T')[0],
+          fertileWindowStart: fertileStart.toISOString().split('T')[0],
+          fertileWindowEnd: fertileEnd.toISOString().split('T')[0],
+          confidence: peakScore.confidence,
+          peakScore: peakScore.score,
+        };
+      }
+    }
+
+    // Fallback to formula-based estimation
+    const ovulationDay = cycleLength - 14;
+    const ovulationDate = new Date(cycleStartDate);
+    ovulationDate.setDate(cycleStartDate.getDate() + ovulationDay - 1);
+
+    const fertileStart = new Date(cycleStartDate);
+    fertileStart.setDate(cycleStartDate.getDate() + ovulationDay - 6);
+
+    const fertileEnd = new Date(ovulationDate);
+    fertileEnd.setDate(ovulationDate.getDate() + 1);
+
+    return {
+      method: 'estimated',
+      message: 'Estimated from cycle average - track symptoms for accuracy',
+      ovulationDate: ovulationDate.toISOString().split('T')[0],
+      fertileWindowStart: fertileStart.toISOString().split('T')[0],
+      fertileWindowEnd: fertileEnd.toISOString().split('T')[0],
+      confidence: 40, // Low confidence for estimates
+      cycleLength,
+    };
+  } catch (error) {
+    logger.error('Failed to get ovulation prediction', { userId, error: error.message });
+    throw error;
   }
 }
 

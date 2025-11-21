@@ -46,7 +46,10 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
     try {
       const response = await progressTrackerApi.getCycles(userId, zoomLevel);
       if (response.success) {
-        setCycles(response.data);
+        // Backend returns in ascending order (oldest first)
+        // Reverse for timeline display (newest on right)
+        const reversedCycles = [...response.data].reverse();
+        setCycles(reversedCycles);
         // Auto-scroll to most recent
         setTimeout(() => {
           if (timelineRef.current) {
@@ -138,7 +141,7 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
           <div className="absolute top-1/2 left-0 right-0 h-1 bg-muted/30 transform -translate-y-1/2" />
 
           {/* Period points */}
-          <div className="relative flex items-center gap-8 py-8">
+          <div className="relative flex items-center gap-8 py-8" style={{ zIndex: 1 }}>
             {cycles.map((cycle, index) => {
               const startDate = new Date(cycle.startDate);
               const prevCycle = cycles[index + 1];
@@ -153,6 +156,7 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
               const cycleLength = cycle.cycleLength || 28;
               const ovulationDay = cycleLength - 14;
               const fertileStartDay = ovulationDay - 5;
+              const fertileEndDay = ovulationDay + 1;
               const ovulationDate = new Date(startDate);
               ovulationDate.setDate(startDate.getDate() + ovulationDay - 1);
               const fertileStartDate = new Date(startDate);
@@ -160,6 +164,20 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
 
               return (
                 <div key={cycle.cycleId} className="relative flex flex-col items-center">
+                  {/* Fertile Window Shading - Only for most recent cycle */}
+                  {index === 0 && (
+                    <div
+                      className="absolute bg-success/15 border-2 border-success/40 rounded-lg"
+                      style={{
+                        left: `${(fertileStartDay / cycleLength) * 100}%`,
+                        width: `${((fertileEndDay - fertileStartDay) / cycleLength) * 100}%`,
+                        top: '-20px',
+                        height: '80px',
+                        zIndex: 0,
+                      }}
+                    />
+                  )}
+
                   {/* Cycle length label */}
                   {daysApart && (
                     <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs text-muted whitespace-nowrap">

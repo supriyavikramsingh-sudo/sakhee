@@ -48,7 +48,9 @@ const MonthlyReportsDashboard = ({ userId, refreshTrigger = 0 }: MonthlyReportsD
           : 24; // All time (cap at 24 months)
 
       const data = await progressTrackerApi.getMonthlyReportsRange(userId, monthsToFetch);
-      setReports(data);
+      if (data && Array.isArray(data)) {
+        setReports(data);
+      }
 
       // Auto-expand most recent report
       if (data.length > 0 && !expandedReportId) {
@@ -73,8 +75,8 @@ const MonthlyReportsDashboard = ({ userId, refreshTrigger = 0 }: MonthlyReportsD
   // Pagination
   const indexOfLastReport = currentPage * reportsPerPage;
   const indexOfFirstReport = indexOfLastReport - reportsPerPage;
-  const currentReports = reports.slice(indexOfFirstReport, indexOfLastReport);
-  const totalPages = Math.ceil(reports.length / reportsPerPage);
+  const currentReports = reports ? reports.slice(indexOfFirstReport, indexOfLastReport) : [];
+  const totalPages = Math.ceil(reports?.length / reportsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {

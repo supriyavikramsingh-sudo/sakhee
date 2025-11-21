@@ -12,20 +12,32 @@ interface LogPeriodModalProps {
   userId: string;
   onClose: () => void;
   onSuccess: () => void;
+  mode?: 'new' | 'edit';
+  initialData?: any;
 }
 
-const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => {
+const LogPeriodModal = ({
+  userId,
+  onClose,
+  onSuccess,
+  mode = 'new',
+  initialData,
+}: LogPeriodModalProps) => {
   const [loading, setLoading] = useState(false);
+  const [validationError, setValidationError] = useState<string>('');
+  const [validationWarning, setValidationWarning] = useState<string>('');
   const [formData, setFormData] = useState({
-    startDate: '',
-    endDate: '',
-    flow: '',
-    color: '',
-    colorConsistency: '',
-    clots: '',
-    spotting: null as boolean | null,
-    odor: '',
-    comparedToLast: '',
+    startDate: initialData?.startDate
+      ? new Date(initialData.startDate).toISOString().split('T')[0]
+      : '',
+    endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : '',
+    flow: initialData?.flow || '',
+    color: initialData?.color || '',
+    colorConsistency: initialData?.colorConsistency || '',
+    clots: initialData?.clots || '',
+    spotting: initialData?.spotting ?? (null as boolean | null),
+    odor: initialData?.odor || '',
+    comparedToLast: initialData?.comparedToLast || '',
   });
 
   const canSubmit = () => {
@@ -45,15 +57,53 @@ const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => 
   const handleSubmit = async () => {
     if (!canSubmit()) return;
 
+    // Clear previous errors/warnings
+    setValidationError('');
+    setValidationWarning('');
+
+    // Frontend validation
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+    const duration = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Check duration
+    if (duration > 20) {
+      setValidationError(
+        'Period duration exceeds 20 days. Please verify your dates or consult your doctor if this is accurate.'
+      );
+      return;
+    }
+
+    if (duration > 10) {
+      setValidationWarning(
+        "This period is longer than typical (10+ days). People with PCOS can have extended spotting, but if you're concerned, consult your doctor."
+      );
+    }
+
     setLoading(true);
     try {
-      await progressTrackerApi.logPeriod(userId, formData);
-      toast.success('Period logged successfully!');
+      let result;
+      if (mode === 'edit' && initialData?.cycleId) {
+        result = await progressTrackerApi.updateCycle(userId, initialData.cycleId, formData);
+        toast.success('Period updated successfully!');
+      } else {
+        result = await progressTrackerApi.logPeriod(userId, formData);
+        toast.success('Period logged successfully!');
+      }
+
+      // Check for backend warnings
+      if (result.data?.warnings && result.data.warnings.length > 0) {
+        result.data.warnings.forEach((warning: string) => {
+          toast.warning(warning, { autoClose: 5000 });
+        });
+      }
+
       onSuccess();
       onClose();
     } catch (error: any) {
-      console.error('Failed to log period:', error);
-      toast.error(error.message || 'Failed to log period. Please try again.');
+      console.error(`Failed to ${mode} period:`, error);
+      setValidationError(error.message || `Failed to ${mode} period. Please try again.`);
+      toast.error(error.message || `Failed to ${mode} period. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -62,10 +112,9 @@ const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => 
   const flowOptions = ['Light', 'Moderate', 'Heavy', 'Very heavy'];
   const colorOptions = ['Bright red', 'Dark red', 'Brown/old blood', 'Blackish', 'Pinkish'];
   const consistencyOptions = [
-    'Stays similar',
     'Starts brown → red → brown',
-    'Mostly brown only',
-    'Mostly dark/thick only',
+    'Mostly red only',
+    'Mostly dark/brown only',
   ];
   const clotOptions = ['No', 'Small clots', 'Large clots'];
   const odorOptions = ['No', 'Mild / normal metallic smell', 'Strong / foul smell', 'Fishy smell'];
@@ -82,7 +131,9 @@ const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => 
       <div className="bg-surface rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="px-6 py-4 border-b border-secondary flex items-center justify-between">
-          <h2 className="text-2xl font-serif font-bold text-gray-800">Log Your Period</h2>
+          <h2 className="text-2xl font-serif font-bold text-gray-800">
+            {mode === 'edit' ? 'Edit Period' : 'Log Your Period'}
+          </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-secondary rounded-full transition-colors"
@@ -94,6 +145,22 @@ const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => 
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+          {/* Validation Error */}
+          {validationError && (
+            <div className="bg-danger/10 border-2 border-danger/30 rounded-xl p-4 flex items-start gap-3">
+              <span className="text-danger text-xl">⚠️</span>
+              <p className="text-sm text-danger font-medium">{validationError}</p>
+            </div>
+          )}
+
+          {/* Validation Warning */}
+          {validationWarning && (
+            <div className="bg-warning/10 border-2 border-warning/30 rounded-xl p-4 flex items-start gap-3">
+              <span className="text-warning text-xl">💡</span>
+              <p className="text-sm text-warning font-medium">{validationWarning}</p>
+            </div>
+          )}
+
           {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -305,6 +372,8 @@ const LogPeriodModal = ({ userId, onClose, onSuccess }: LogPeriodModalProps) => 
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
                 Saving...
               </>
+            ) : mode === 'edit' ? (
+              'Update Period'
             ) : (
               'Save Period'
             )}

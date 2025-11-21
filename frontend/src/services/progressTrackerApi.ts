@@ -110,6 +110,22 @@ export const progressTrackerApi = {
   },
 
   /**
+   * Update an existing cycle
+   */
+  updateCycle: async (userId: string, cycleId: string, updateData: any): Promise<any> => {
+    try {
+      const response = await axiosInstance.put(`/progress/period/update/${cycleId}`, {
+        ...updateData,
+        userId,
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to update cycle:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Generate AI insights for a cycle
    */
   generateCycleInsights: async (userId: string, cycleId: string): Promise<any> => {
@@ -120,6 +136,19 @@ export const progressTrackerApi = {
       return response;
     } catch (error) {
       console.error('Failed to generate insights:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get ovulation prediction (data-driven or estimated)
+   */
+  getOvulationPrediction: async (userId: string): Promise<any> => {
+    try {
+      const response = await axiosInstance.get(`/progress/period/ovulation-prediction/${userId}`);
+      return response;
+    } catch (error) {
+      console.error('Failed to get ovulation prediction:', error);
       throw error;
     }
   },

@@ -44,7 +44,7 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
       component: <IntroductionStep />,
     },
     {
-      title: 'Are you currently on your period?',
+      title: 'Are you on your period?',
       subtitle: '',
       component: <CurrentPeriodStep formData={formData} onChange={setFormData} />,
     },
@@ -150,6 +150,8 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
             </div>
             <p className="text-sm text-muted">
               Step {currentStep + 1} of {totalSteps}
+              {currentStep === 5 && <span className="text-primary"> - Almost done!</span>}
+              {currentStep === 6 && <span className="text-primary"> - Final step</span>}
             </p>
           </div>
           <button
@@ -190,7 +192,11 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
           <button
             onClick={handleNext}
             disabled={!canProceed() || loading}
-            className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+              currentStep === totalSteps - 1
+                ? 'bg-[#06d6a0] hover:bg-[#05c293] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl'
+                : 'btn-primary'
+            }`}
           >
             {loading ? (
               <>
@@ -298,54 +304,98 @@ const PeriodDatesStep = ({ formData, onChange }: any) => (
 );
 
 const CycleLengthStep = ({ formData, onChange }: any) => {
-  const options = ['<24 days', '24-35 days', '35-60 days', '60+ days', '>6 months', '>1 year'];
+  const [showNote, setShowNote] = useState(true);
+  const options = ['<24 days', '24-35 days', '35-60 days', '60+ days'];
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4 text-sm text-muted">
         <span className="bg-secondary px-3 py-1 rounded-full">
           💡 Cycle length = days from first day of one period to first day of next
         </span>
       </div>
-      {options.map((option) => (
-        <button
-          key={option}
-          onClick={() => onChange({ ...formData, averageCycleLength: option })}
-          className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-300 ${
-            formData.averageCycleLength === option
-              ? 'border-primary bg-secondary shadow-md'
-              : 'border-gray-200 hover:border-primary/50'
-          }`}
+      <div className="space-y-3">
+        {options.map((option) => (
+          <button
+            key={option}
+            onClick={() => onChange({ ...formData, averageCycleLength: option })}
+            className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-300 ${
+              formData.averageCycleLength === option
+                ? 'border-primary bg-secondary shadow-md'
+                : 'border-gray-200 hover:border-primary/50'
+            }`}
+          >
+            <span className="text-lg">{option}</span>
+            {option === '24-35 days' && (
+              <span className="ml-2 text-xs text-success font-medium">(Normal range)</span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {showNote && (
+        <div
+          className="relative bg-[#FFE2E2] text-[#9a8c98] rounded-lg p-3 transition-all duration-300"
+          style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
         >
-          <span className="text-lg">{option}</span>
-          {option === '24-35 days' && (
-            <span className="ml-2 text-xs text-success font-medium">(Normal range)</span>
-          )}
-        </button>
-      ))}
+          <button
+            onClick={() => setShowNote(false)}
+            className="absolute top-2 right-2 text-[#9a8c98] hover:text-gray-700 transition-colors"
+          >
+            <X size={16} />
+          </button>
+          <div className="flex items-start gap-2 pr-6">
+            <span className="text-lg">💡</span>
+            <p className="leading-relaxed">
+              If you haven't had a period in 6+ months, we recommend consulting your doctor before
+              starting tracking.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 const FlowStep = ({ formData, onChange }: any) => {
-  const options = ['Light', 'Moderate', 'Heavy', 'Very heavy'];
+  const options = [
+    {
+      label: 'Light',
+      helper: '(Need to change pad/tampon every 4-6 hours or less)',
+    },
+    {
+      label: 'Moderate',
+      helper: '(Need to change pad/tampon every 3-4 hours)',
+    },
+    {
+      label: 'Heavy',
+      helper: '(Need to change pad/tampon every 2-3 hours)',
+    },
+    {
+      label: 'Very heavy',
+      helper: '(Soaking pads/cups every 1-2 hours)',
+    },
+  ];
 
   return (
     <div className="space-y-3">
       {options.map((option) => (
         <button
-          key={option}
-          onClick={() => onChange({ ...formData, flow: option })}
+          key={option.label}
+          onClick={() => onChange({ ...formData, flow: option.label })}
           className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-300 ${
-            formData.flow === option
+            formData.flow === option.label
               ? 'border-primary bg-secondary shadow-md'
               : 'border-gray-200 hover:border-primary/50'
           }`}
         >
-          <span className="text-lg">{option}</span>
-          {option === 'Very heavy' && (
-            <span className="ml-2 text-xs text-muted">(Soaking pads/cups every 1-2 hours)</span>
-          )}
+          <div className="text-lg">{option.label}</div>
+          <div
+            className="text-[#9a8c98] mt-1"
+            style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: 1.4 }}
+          >
+            {option.helper}
+          </div>
         </button>
       ))}
     </div>
@@ -355,16 +405,15 @@ const FlowStep = ({ formData, onChange }: any) => {
 const ColorStep = ({ formData, onChange }: any) => {
   const colorOptions = ['Bright red', 'Dark red', 'Brown/old blood', 'Blackish', 'Pinkish'];
   const consistencyOptions = [
-    'Stays similar',
     'Starts brown → red → brown',
-    'Mostly brown only',
-    'Mostly dark/thick only',
+    'Mostly red only',
+    'Mostly dark/brown only',
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block font-medium text-gray-700 mb-3">
           What is the color of your period blood usually?
         </label>
         <div className="space-y-2">
@@ -385,7 +434,7 @@ const ColorStep = ({ formData, onChange }: any) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block font-medium text-gray-700 mb-3">
           Does the color stay consistent or change throughout your period?
         </label>
         <div className="space-y-2">
@@ -413,12 +462,10 @@ const AdditionalDetailsStep = ({ formData, onChange }: any) => {
   const odorOptions = ['No', 'Mild / normal metallic smell', 'Strong / foul smell', 'Fishy smell'];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5" style={{ gap: '20px' }}>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
-          Do you pass blood clots?
-        </label>
-        <div className="space-y-2">
+        <label className="block font-medium text-gray-700 mb-3">Do you pass blood clots?</label>
+        <div className="space-y-2" style={{ gap: '8px' }}>
           {clotOptions.map((option) => (
             <button
               key={option}
@@ -439,10 +486,10 @@ const AdditionalDetailsStep = ({ formData, onChange }: any) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block font-medium text-gray-700 mb-3">
           Did you experience spotting between periods?
         </label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3" style={{ gap: '8px' }}>
           <button
             onClick={() => onChange({ ...formData, spotting: true })}
             className={`p-4 rounded-xl border-2 transition-all duration-300 ${
@@ -467,10 +514,10 @@ const AdditionalDetailsStep = ({ formData, onChange }: any) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block font-medium text-gray-700 mb-3">
           Do you notice an unusual odor during your periods?
         </label>
-        <div className="space-y-2">
+        <div className="space-y-2" style={{ gap: '8px' }}>
           {odorOptions.map((option) => (
             <button
               key={option}

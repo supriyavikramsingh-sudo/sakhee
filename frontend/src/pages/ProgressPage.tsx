@@ -9,8 +9,7 @@ import CycleDetailsModal from '../components/progress/CycleDetailsModal';
 import DailyTrackingForm from '../components/progress/DailyTrackingForm';
 import WeightTracker from '../components/progress/WeightTracker';
 import GoalAchievementBanner from '../components/progress/GoalAchievementBanner';
-import OvulationScoreDisplay from '../components/progress/OvulationScoreDisplay';
-import FertileWindowCard from '../components/progress/FertileWindowCard';
+import CycleInsightsCard from '../components/progress/CycleInsightsCard';
 import WeeklySymptomForm from '../components/progress/WeeklySymptomForm';
 import SymptomTrendsChart from '../components/progress/SymptomTrendsChart';
 import WeeklySummariesDashboard from '../components/progress/WeeklySummariesDashboard';
@@ -26,6 +25,8 @@ const ProgressPage = () => {
   const [periodSetupComplete, setPeriodSetupComplete] = useState(false);
   const [showPeriodSetup, setShowPeriodSetup] = useState(false);
   const [showLogPeriod, setShowLogPeriod] = useState(false);
+  const [editMode, setEditMode] = useState<'new' | 'edit'>('new');
+  const [editCycleData, setEditCycleData] = useState<any>(null);
   const [selectedCycle, setSelectedCycle] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'period' | 'daily' | 'weekly' | 'reports'>('period');
 
@@ -93,6 +94,24 @@ const ProgressPage = () => {
   const handleLogPeriodSuccess = () => {
     // Refresh timeline data
     checkPeriodSetup();
+    setOvulationRefreshTrigger((prev) => prev + 1);
+  };
+
+  const handleEditLastPeriod = async () => {
+    if (!user?.uid) return;
+
+    try {
+      // Fetch the most recent cycle
+      const response = await progressTrackerApi.getCycles(user.uid, 1);
+      if (response.success && response.data.length > 0) {
+        const lastCycle = response.data[response.data.length - 1]; // Get the most recent (last in reversed array)
+        setEditCycleData(lastCycle);
+        setEditMode('edit');
+        setShowLogPeriod(true);
+      }
+    } catch (error) {
+      console.error('Failed to fetch last cycle for editing:', error);
+    }
   };
 
   const handleCycleClick = (cycle: any) => {
@@ -175,26 +194,35 @@ const ProgressPage = () => {
             {/* Period & Ovulation Tab */}
             {activeTab === 'period' && user?.uid && (
               <div className="space-y-6">
-                {/* Fertile Window Card & Ovulation Score - Side by Side */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <FertileWindowCard userId={user.uid} refreshTrigger={ovulationRefreshTrigger} />
-                  <OvulationScoreDisplay
-                    userId={user.uid}
-                    refreshTrigger={ovulationRefreshTrigger}
-                  />
-                </div>
+                {/* Unified Cycle Insights Card */}
+                <CycleInsightsCard
+                  userId={user.uid}
+                  refreshTrigger={ovulationRefreshTrigger}
+                  onLogPeriod={() => setShowLogPeriod(true)}
+                  onTrackSymptoms={() => setShowDailyForm(true)}
+                />
 
                 {/* Period Timeline */}
                 <PeriodTimeline userId={user.uid} onCycleClick={handleCycleClick} />
 
                 {/* Actions */}
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                   <button
-                    onClick={() => setShowLogPeriod(true)}
+                    onClick={() => {
+                      setEditMode('new');
+                      setEditCycleData(null);
+                      setShowLogPeriod(true);
+                    }}
                     className="btn-primary flex items-center gap-2"
                   >
                     <Plus size={20} />
                     Log Period
+                  </button>
+                  <button
+                    onClick={handleEditLastPeriod}
+                    className="btn-outline flex items-center gap-2"
+                  >
+                    Edit Last Period
                   </button>
                   <button
                     onClick={() => setShowDailyForm(true)}
@@ -305,8 +333,14 @@ const ProgressPage = () => {
         {showLogPeriod && user?.uid && (
           <LogPeriodModal
             userId={user.uid}
-            onClose={() => setShowLogPeriod(false)}
+            onClose={() => {
+              setShowLogPeriod(false);
+              setEditMode('new');
+              setEditCycleData(null);
+            }}
             onSuccess={handleLogPeriodSuccess}
+            mode={editMode}
+            initialData={editCycleData}
           />
         )}
 

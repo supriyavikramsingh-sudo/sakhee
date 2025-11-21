@@ -11,8 +11,10 @@ import {
   createCycle,
   getCycles,
   getCycle,
+  updateCycle,
   saveCycleInsights,
   calculateCycleLength,
+  updateCycleLength,
   saveDailyTracking,
   getDailyTracking,
   getDailyTrackingRange,
@@ -23,6 +25,7 @@ import {
   calculateOvulationScore,
   saveDailyOvulationScore,
   getCurrentCycleId,
+  getOvulationPrediction,
   saveWeeklySymptoms,
   getWeeklySymptoms,
   getWeeklySymptomsRange,
@@ -164,13 +167,27 @@ router.post('/period/log', verifyAuth, async (req, res) => {
 
     logger.info('Logging period cycle', { userId });
 
-    // Calculate cycle length
+    // First, create the cycle
+    const result = await createCycle(userId, cycleData);
+
+    // After cycle is saved, calculate and update cycle length for the PREVIOUS cycle
+    // (The new cycle's length will be calculated when the NEXT cycle is logged)
     const cycleLength = await calculateCycleLength(userId, cycleData.startDate);
     if (cycleLength) {
-      cycleData.cycleLength = cycleLength;
+      // Update the previous cycle with its calculated cycle length
+      const cycles = await getCycles(userId, 50); // Get all cycles to ensure we find the right one
+      if (cycles.length >= 2) {
+        // cycles is ordered ascending (oldest first)
+        // We want to update the SECOND-TO-LAST cycle (the one before the one we just created)
+        const previousCycle = cycles[cycles.length - 2];
+        await updateCycleLength(userId, previousCycle.cycleId, cycleLength);
+        logger.info('Updated previous cycle length', {
+          userId,
+          cycleId: previousCycle.cycleId,
+          cycleLength,
+        });
+      }
     }
-
-    const result = await createCycle(userId, cycleData);
 
     res.json({
       success: true,
@@ -183,6 +200,41 @@ router.post('/period/log', verifyAuth, async (req, res) => {
       success: false,
       error: {
         message: 'Failed to log period',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * PUT /api/progress/period/update/:cycleId
+ * Update an existing period cycle
+ */
+router.put('/period/update/:cycleId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { cycleId } = req.params;
+    const updateData = req.body;
+
+    logger.info('Updating period cycle', { userId, cycleId });
+
+    const result = await updateCycle(userId, cycleId, updateData);
+
+    res.json({
+      success: true,
+      message: 'Period updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    logger.error('Update period failed', {
+      userId: req.userId,
+      cycleId: req.params.cycleId,
+      error: error.message,
+    });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to update period',
         details: error.message,
       },
     });
@@ -248,6 +300,34 @@ router.get('/period/cycle/:userId/:cycleId', verifyAuth, async (req, res) => {
       success: false,
       error: {
         message: 'Failed to fetch cycle',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/period/ovulation-prediction/:userId
+ * Get ovulation prediction (data-driven or estimated)
+ */
+router.get('/period/ovulation-prediction/:userId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    logger.info('Fetching ovulation prediction', { userId });
+
+    const prediction = await getOvulationPrediction(userId);
+
+    res.json({
+      success: true,
+      data: prediction,
+    });
+  } catch (error) {
+    logger.error('Get ovulation prediction failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch ovulation prediction',
         details: error.message,
       },
     });
