@@ -1,10 +1,12 @@
 import { Plus, TrendingUp, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import PageHeader from '../components/common/PageHeader';
 import PeriodSetupWizard from '../components/progress/PeriodSetupWizard';
 import PeriodTimeline from '../components/progress/PeriodTimeline';
 import LogPeriodModal from '../components/progress/LogPeriodModal';
+import EditPeriodModal from '../components/progress/EditPeriodModal';
 import CycleDetailsModal from '../components/progress/CycleDetailsModal';
 import DailyTrackingForm from '../components/progress/DailyTrackingForm';
 import WeightTracker from '../components/progress/WeightTracker';
@@ -25,10 +27,12 @@ const ProgressPage = () => {
   const [periodSetupComplete, setPeriodSetupComplete] = useState(false);
   const [showPeriodSetup, setShowPeriodSetup] = useState(false);
   const [showLogPeriod, setShowLogPeriod] = useState(false);
+  const [showEditPeriod, setShowEditPeriod] = useState(false);
   const [editMode, setEditMode] = useState<'new' | 'edit'>('new');
   const [editCycleData, setEditCycleData] = useState<any>(null);
   const [selectedCycle, setSelectedCycle] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'period' | 'daily' | 'weekly' | 'reports'>('period');
+  const [periodRefreshTrigger, setPeriodRefreshTrigger] = useState(0);
 
   // Daily tracking state
   const [showDailyForm, setShowDailyForm] = useState(false);
@@ -91,26 +95,46 @@ const ProgressPage = () => {
     setShowPeriodSetup(false);
   };
 
-  const handleLogPeriodSuccess = () => {
+  const handleLogPeriodSuccess = async () => {
     // Refresh timeline data
     checkPeriodSetup();
     setOvulationRefreshTrigger((prev) => prev + 1);
+    setPeriodRefreshTrigger((prev) => prev + 1);
+
+    // If a cycle details modal is open and we just edited a period, refresh that cycle's data
+    if (selectedCycle && editMode === 'edit' && editCycleData?.cycleId) {
+      try {
+        // Fetch the updated cycle data
+        const response = await progressTrackerApi.getCycles(user!.uid, 100);
+        if (response.success && response.data) {
+          const updatedCycle = response.data.find((c: any) => c.cycleId === editCycleData.cycleId);
+          if (updatedCycle) {
+            setSelectedCycle(updatedCycle); // Update the modal with fresh data
+          }
+        }
+      } catch (error) {
+        console.error('Failed to refresh cycle data:', error);
+      }
+    }
   };
 
   const handleEditLastPeriod = async () => {
     if (!user?.uid) return;
 
     try {
-      // Fetch the most recent cycle
+      // Fetch the most recent cycle (the last completed period)
       const response = await progressTrackerApi.getCycles(user.uid, 1);
       if (response.success && response.data.length > 0) {
-        const lastCycle = response.data[response.data.length - 1]; // Get the most recent (last in reversed array)
+        // Get the most recent cycle
+        const lastCycle = response.data[response.data.length - 1];
         setEditCycleData(lastCycle);
-        setEditMode('edit');
-        setShowLogPeriod(true);
+        setShowEditPeriod(true);
+      } else {
+        toast.error('No periods found to edit.');
       }
     } catch (error) {
       console.error('Failed to fetch last cycle for editing:', error);
+      toast.error('Failed to load period data for editing.');
     }
   };
 
@@ -203,7 +227,11 @@ const ProgressPage = () => {
                 />
 
                 {/* Period Timeline */}
-                <PeriodTimeline userId={user.uid} onCycleClick={handleCycleClick} />
+                <PeriodTimeline
+                  userId={user.uid}
+                  onCycleClick={handleCycleClick}
+                  refreshTrigger={periodRefreshTrigger}
+                />
 
                 {/* Actions */}
                 <div className="flex gap-4 flex-wrap">
@@ -334,6 +362,20 @@ const ProgressPage = () => {
             onSuccess={handleLogPeriodSuccess}
             mode={editMode}
             initialData={editCycleData}
+          />
+        )}
+
+        {/* Edit Period Modal */}
+        {showEditPeriod && user?.uid && editCycleData && (
+          <EditPeriodModal
+            userId={user.uid}
+            cycleId={editCycleData.cycleId}
+            initialData={editCycleData}
+            onClose={() => {
+              setShowEditPeriod(false);
+              setEditCycleData(null);
+            }}
+            onSuccess={handleLogPeriodSuccess}
           />
         )}
 

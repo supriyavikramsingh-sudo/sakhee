@@ -29,9 +29,10 @@ interface Cycle {
 interface PeriodTimelineProps {
   userId: string;
   onCycleClick: (cycle: Cycle) => void;
+  refreshTrigger?: number;
 }
 
-const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
+const PeriodTimeline = ({ userId, onCycleClick, refreshTrigger }: PeriodTimelineProps) => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoomLevel, setZoomLevel] = useState<number>(6); // 3, 6, or 12 months
@@ -39,7 +40,7 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
 
   useEffect(() => {
     fetchCycles();
-  }, [userId, zoomLevel]);
+  }, [userId, zoomLevel, refreshTrigger]);
 
   const fetchCycles = async () => {
     setLoading(true);
@@ -261,46 +262,8 @@ const PeriodTimeline = ({ userId, onCycleClick }: PeriodTimelineProps) => {
           <span className="text-xs text-gray-600">Predicted Ovulation</span>
         </div>
       </div>
-
-      {/* Current cycle info */}
-      {cycles.length > 0 && (
-        <div className="mt-6 p-4 bg-secondary/30 rounded-xl border border-secondary">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-2xl font-bold text-primary">
-                Day {getCurrentCycleDay(cycles[cycles.length - 1])}
-              </div>
-              <div className="text-xs text-muted mt-1">Current Cycle Day</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-800">
-                {new Date(cycles[cycles.length - 1].startDate).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </div>
-              <div className="text-xs text-muted mt-1">Last Period Start</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-800">
-                {cycles[cycles.length - 1].cycleLength || '-'}
-              </div>
-              <div className="text-xs text-muted mt-1">Last Cycle Length</div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
-};
-
-// Helper function to calculate current cycle day
-const getCurrentCycleDay = (latestCycle: Cycle): number => {
-  const startDate = new Date(latestCycle.startDate);
-  const today = new Date();
-  const diffTime = Math.abs(today.getTime() - startDate.getTime());
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays + 1;
 };
 
 export default PeriodTimeline;

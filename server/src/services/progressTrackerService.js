@@ -239,7 +239,8 @@ export async function createCycle(userId, cycleData) {
 export async function getCycles(userId, limitCount = 6) {
   try {
     const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'asc'), limit(limitCount));
+    // Order descending to get most recent cycles, then reverse to return ascending
+    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(limitCount));
     const snapshot = await getDocs(q);
 
     const cycles = [];
@@ -255,7 +256,8 @@ export async function getCycles(userId, limitCount = 6) {
       });
     });
 
-    return cycles;
+    // Reverse to return ascending order (oldest first, newest last)
+    return cycles.reverse();
   } catch (error) {
     logger.error('Failed to get cycles', { userId, error: error.message });
     throw error;
@@ -420,11 +422,19 @@ export async function calculateCycleLength(userId, currentStartDate) {
     const mostRecentCycle = snapshot.docs[0].data();
     const previousStartDate = mostRecentCycle.startDate?.toDate?.() || mostRecentCycle.startDate;
     const currentStart =
-      currentStartDate instanceof Date ? currentStartDate : currentStartDate.toDate();
+      currentStartDate instanceof Date ? currentStartDate : new Date(currentStartDate);
 
     // Calculate difference between new cycle start and previous cycle start
-    const diffTime = Math.abs(currentStart - previousStartDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    // Use floor instead of ceil for accurate day counting
+    const diffTime = Math.abs(currentStart.getTime() - new Date(previousStartDate).getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    logger.info('Calculated cycle length', {
+      userId,
+      previousStart: previousStartDate,
+      currentStart,
+      diffDays,
+    });
 
     return diffDays;
   } catch (error) {

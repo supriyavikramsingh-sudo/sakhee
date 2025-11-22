@@ -1,12 +1,13 @@
 /**
  * Period Setup Wizard
- * Multi-step form for first-time period tracking setup
+ * Multi-step form for first-time period tracking setup with branching logic
  */
 
-import { useState } from 'react';
-import { X, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, ChevronRight, ChevronLeft, Check, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import progressTrackerApi from '../../services/progressTrackerApi';
+import type { MedicalWarnings } from '../../types/periodTracking.type';
 
 interface PeriodSetupWizardProps {
   userId: string;
@@ -18,13 +19,12 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // Form data
+  // Form data with new schema
   const [formData, setFormData] = useState({
     currentlyOnPeriod: null as boolean | null,
     lastPeriodStart: '',
-    lastPeriodEnd: '',
-    expectedEnd: '',
-    averageCycleLength: '',
+    onboardingDuration: null as number | null, // 2, 4, 5, 6, or 7
+    averageCycleLength: null as number | null, // Only asked if last period >35 days ago
     flow: '',
     color: '',
     colorConsistency: '',
@@ -33,9 +33,57 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
     odor: '',
   });
 
-  const totalSteps = 7;
+  const [medicalWarnings, setMedicalWarnings] = useState<MedicalWarnings>({
+    irregularCycleWarning: false,
+    longCycleLengthWarning: false,
+    longDurationWarning: false,
+  });
 
-  // Step content configuration
+  const [showCycleLengthQuestion, setShowCycleLengthQuestion] = useState(false);
+
+  // Dynamic step count based on branching
+  const getStepCount = () => {
+    let count = 6; // Introduction + Currently on period + Date + Duration + Flow + Color/Details
+    if (showCycleLengthQuestion) count += 1; // Add cycle length question
+    return count;
+  };
+
+  const totalSteps = getStepCount();
+
+  // Check if cycle length question should be shown
+  useEffect(() => {
+    if (formData.currentlyOnPeriod === false && formData.lastPeriodStart) {
+      const today = new Date();
+      const periodStart = new Date(formData.lastPeriodStart);
+      const daysSince = Math.floor(
+        (today.getTime() - periodStart.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      // Show warning if >60 days, clear it if <=60 days
+      if (daysSince > 60) {
+        setMedicalWarnings((prev) => ({
+          ...prev,
+          irregularCycleWarning: true,
+        }));
+      } else {
+        setMedicalWarnings((prev) => ({
+          ...prev,
+          irregularCycleWarning: false,
+        }));
+      }
+
+      // Show cycle length question if >35 days
+      setShowCycleLengthQuestion(daysSince > 35);
+    } else {
+      setShowCycleLengthQuestion(false);
+      // Clear warning when not on the "not currently on period" path
+      setMedicalWarnings((prev) => ({
+        ...prev,
+        irregularCycleWarning: false,
+      }));
+    }
+  }, [formData.currentlyOnPeriod, formData.lastPeriodStart]);
+
   const steps = [
     {
       title: "Let's Track Your Menstrual Cycle",
@@ -44,7 +92,7 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
       component: <IntroductionStep />,
     },
     {
-      title: 'Are you on your period?',
+      title: 'Are you currently on your period?',
       subtitle: '',
       component: <CurrentPeriodStep formData={formData} onChange={setFormData} />,
     },
@@ -53,22 +101,49 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
         ? 'When did this period start?'
         : 'When did your last period start?',
       subtitle: '',
-      component: <PeriodDatesStep formData={formData} onChange={setFormData} />,
+      component: (
+        <PeriodStartDateStep
+          formData={formData}
+          onChange={setFormData}
+          medicalWarnings={medicalWarnings}
+        />
+      ),
     },
     {
-      title: 'What is your average cycle length?',
+      title: 'How long does your period usually last?',
       subtitle: '',
-      component: <CycleLengthStep formData={formData} onChange={setFormData} />,
+      component: (
+        <DurationDropdownStep
+          formData={formData}
+          onChange={setFormData}
+          onWarning={(warning: boolean) =>
+            setMedicalWarnings((prev) => ({ ...prev, longDurationWarning: warning }))
+          }
+        />
+      ),
     },
+    // Conditional step - only shown if last period was >35 days ago
+    ...(showCycleLengthQuestion
+      ? [
+          {
+            title: 'What is your average cycle length?',
+            subtitle: 'Days between period starts',
+            component: (
+              <CycleLengthStep
+                formData={formData}
+                onChange={setFormData}
+                onWarning={(warning: boolean) =>
+                  setMedicalWarnings((prev) => ({ ...prev, longCycleLengthWarning: warning }))
+                }
+              />
+            ),
+          },
+        ]
+      : []),
     {
       title: 'How would you describe your flow?',
       subtitle: '',
       component: <FlowStep formData={formData} onChange={setFormData} />,
-    },
-    {
-      title: 'Period Blood Color & Consistency',
-      subtitle: '',
-      component: <ColorStep formData={formData} onChange={setFormData} />,
     },
     {
       title: 'Additional Period Details',
@@ -84,19 +159,38 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
       case 1:
         return formData.currentlyOnPeriod !== null;
       case 2:
-        if (formData.currentlyOnPeriod) {
-          return formData.lastPeriodStart && formData.expectedEnd;
-        } else {
-          return formData.lastPeriodStart && formData.lastPeriodEnd;
-        }
+        return formData.lastPeriodStart !== '';
       case 3:
-        return formData.averageCycleLength !== '';
+        return formData.onboardingDuration !== null;
       case 4:
+        // If showCycleLengthQuestion, this is the cycle length step
+        if (showCycleLengthQuestion) {
+          return formData.averageCycleLength !== null;
+        }
+        // Otherwise, this is the flow step
         return formData.flow !== '';
       case 5:
-        return formData.color !== '' && formData.colorConsistency !== '';
+        // If showCycleLengthQuestion, this is the flow step
+        if (showCycleLengthQuestion) {
+          return formData.flow !== '';
+        }
+        // Otherwise, this is the additional details step
+        return (
+          formData.color !== '' &&
+          formData.colorConsistency !== '' &&
+          formData.clots !== '' &&
+          formData.spotting !== null &&
+          formData.odor !== ''
+        );
       case 6:
-        return formData.clots !== '' && formData.spotting !== null && formData.odor !== '';
+        // Only reached if showCycleLengthQuestion is true - additional details
+        return (
+          formData.color !== '' &&
+          formData.colorConsistency !== '' &&
+          formData.clots !== '' &&
+          formData.spotting !== null &&
+          formData.odor !== ''
+        );
       default:
         return false;
     }
@@ -119,7 +213,22 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
   const handleComplete = async () => {
     setLoading(true);
     try {
-      await progressTrackerApi.initializePeriodSetup(userId, formData);
+      const setupPayload = {
+        isCurrentlyOnPeriod: formData.currentlyOnPeriod,
+        lastPeriodStart: formData.lastPeriodStart,
+        onboardingDuration: formData.onboardingDuration,
+        averageCycleLength: formData.averageCycleLength || undefined, // Only include if set
+        flow: formData.flow,
+        color: formData.color,
+        colorConsistency: formData.colorConsistency,
+        clots: formData.clots,
+        spotting: formData.spotting,
+        odor: formData.odor,
+        medicalWarnings,
+        symptoms: [], // Can be extended later
+      };
+
+      await progressTrackerApi.initializePeriodSetup(userId, setupPayload);
       toast.success('Period tracking setup complete! 🌸', {
         style: { background: '#06d6a0', color: '#fff' },
       });
@@ -150,8 +259,12 @@ const PeriodSetupWizard = ({ userId, onComplete, onCancel }: PeriodSetupWizardPr
             </div>
             <p className="text-sm text-muted">
               Step {currentStep + 1} of {totalSteps}
-              {currentStep === 5 && <span className="text-primary"> - Almost done!</span>}
-              {currentStep === 6 && <span className="text-primary"> - Final step</span>}
+              {currentStep === totalSteps - 2 && (
+                <span className="text-primary"> - Almost done!</span>
+              )}
+              {currentStep === totalSteps - 1 && (
+                <span className="text-primary"> - Final step</span>
+              )}
             </p>
           </div>
           <button
@@ -262,50 +375,112 @@ const CurrentPeriodStep = ({ formData, onChange }: any) => (
   </div>
 );
 
-const PeriodDatesStep = ({ formData, onChange }: any) => (
-  <div className="space-y-6">
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        {formData.currentlyOnPeriod ? 'Period start date' : 'Last period start date'}
-      </label>
-      <input
-        type="date"
-        value={formData.lastPeriodStart}
-        onChange={(e) => onChange({ ...formData, lastPeriodStart: e.target.value })}
-        max={new Date().toISOString().split('T')[0]}
-        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
-      />
-    </div>
-    {formData.currentlyOnPeriod ? (
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Expected end date</label>
-        <input
-          type="date"
-          value={formData.expectedEnd}
-          onChange={(e) => onChange({ ...formData, expectedEnd: e.target.value })}
-          min={formData.lastPeriodStart}
-          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
-        />
-      </div>
-    ) : (
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Last period end date</label>
-        <input
-          type="date"
-          value={formData.lastPeriodEnd}
-          onChange={(e) => onChange({ ...formData, lastPeriodEnd: e.target.value })}
-          min={formData.lastPeriodStart}
-          max={new Date().toISOString().split('T')[0]}
-          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
-        />
-      </div>
-    )}
-  </div>
-);
+const PeriodStartDateStep = ({ formData, onChange, medicalWarnings }: any) => {
+  const isCurrentlyOnPeriod = formData.currentlyOnPeriod;
+  const today = new Date().toISOString().split('T')[0];
 
-const CycleLengthStep = ({ formData, onChange }: any) => {
-  const [showNote, setShowNote] = useState(true);
-  const options = ['<24 days', '24-35 days', '35-60 days', '60+ days'];
+  // Calculate min date based on whether currently on period
+  const getMinDate = () => {
+    if (isCurrentlyOnPeriod) {
+      // Within last 7 days
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      return sevenDaysAgo.toISOString().split('T')[0];
+    }
+    // No hard limit for past periods
+    return '';
+  };
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {isCurrentlyOnPeriod ? 'Period start date' : 'Last period start date'}
+        </label>
+        <input
+          type="date"
+          value={formData.lastPeriodStart}
+          onChange={(e) => onChange({ ...formData, lastPeriodStart: e.target.value })}
+          max={today}
+          min={getMinDate()}
+          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
+        />
+        {isCurrentlyOnPeriod && (
+          <p className="text-xs text-muted mt-1">Please select a date within the last 7 days</p>
+        )}
+      </div>
+
+      {/* Warning for irregular cycles (>60 days) */}
+      {medicalWarnings.irregularCycleWarning && (
+        <div className="bg-warning/10 border-l-4 border-warning rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle className="text-warning flex-shrink-0 mt-0.5" size={20} />
+          <p className="text-sm text-warning">
+            It's been more than 60 days since your last period. Irregular cycles are common with
+            PCOS, but we recommend consulting a healthcare provider to rule out other causes.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const DurationDropdownStep = ({ formData, onChange, onWarning }: any) => {
+  const options = [
+    { label: 'Less than 3 days', value: 2 },
+    { label: '3-5 days', value: 4 },
+    { label: '5 days', value: 5 },
+    { label: '5-7 days', value: 6 },
+    { label: '7+ days', value: 7 },
+  ];
+
+  const handleSelect = (value: number) => {
+    onChange({ ...formData, onboardingDuration: value });
+    onWarning(value === 7); // Show warning for 7+ days
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        {options.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => handleSelect(option.value)}
+            className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-300 ${
+              formData.onboardingDuration === option.value
+                ? 'border-primary bg-secondary shadow-md'
+                : 'border-gray-200 hover:border-primary/50'
+            }`}
+          >
+            <span className="text-lg">{option.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Warning for 7+ days */}
+      {formData.onboardingDuration === 7 && (
+        <div className="bg-warning/10 border-l-4 border-warning rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle className="text-warning flex-shrink-0 mt-0.5" size={20} />
+          <p className="text-sm text-warning">
+            Periods longer than 7 days can indicate hormonal imbalances. We recommend consulting a
+            healthcare provider to rule out any underlying conditions.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CycleLengthStep = ({ formData, onChange, onWarning }: any) => {
+  const handleChange = (value: string) => {
+    const numValue = parseInt(value) || null;
+    onChange({ ...formData, averageCycleLength: numValue });
+
+    if (numValue && numValue > 35) {
+      onWarning(true);
+    } else {
+      onWarning(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -314,43 +489,30 @@ const CycleLengthStep = ({ formData, onChange }: any) => {
           💡 Cycle length = days from first day of one period to first day of next
         </span>
       </div>
-      <div className="space-y-3">
-        {options.map((option) => (
-          <button
-            key={option}
-            onClick={() => onChange({ ...formData, averageCycleLength: option })}
-            className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-300 ${
-              formData.averageCycleLength === option
-                ? 'border-primary bg-secondary shadow-md'
-                : 'border-gray-200 hover:border-primary/50'
-            }`}
-          >
-            <span className="text-lg">{option}</span>
-            {option === '24-35 days' && (
-              <span className="ml-2 text-xs text-success font-medium">(Normal range)</span>
-            )}
-          </button>
-        ))}
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Enter your average cycle length (in days)
+        </label>
+        <input
+          type="number"
+          min="21"
+          placeholder="e.g., 28, 32, 40"
+          value={formData.averageCycleLength || ''}
+          onChange={(e) => handleChange(e.target.value)}
+          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
+        />
       </div>
 
-      {showNote && (
-        <div
-          className="relative bg-[#FFE2E2] text-[#9a8c98] rounded-lg p-3 transition-all duration-300"
-          style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
-        >
-          <button
-            onClick={() => setShowNote(false)}
-            className="absolute top-2 right-2 text-[#9a8c98] hover:text-gray-700 transition-colors"
-          >
-            <X size={16} />
-          </button>
-          <div className="flex items-start gap-2 pr-6">
-            <span className="text-lg">💡</span>
-            <p className="leading-relaxed">
-              If you haven't had a period in 6+ months, we recommend consulting your doctor before
-              starting tracking.
-            </p>
-          </div>
+      {/* Warning for long cycles (>35 days) */}
+      {formData.averageCycleLength && formData.averageCycleLength > 35 && (
+        <div className="bg-warning/10 border-l-4 border-warning rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle className="text-warning flex-shrink-0 mt-0.5" size={20} />
+          <p className="text-sm text-warning">
+            Cycle lengths longer than 35 days are common with PCOS but may indicate anovulatory
+            cycles. Consider discussing this with your healthcare provider, especially if you're
+            trying to conceive.
+          </p>
         </div>
       )}
     </div>
@@ -390,28 +552,26 @@ const FlowStep = ({ formData, onChange }: any) => {
           }`}
         >
           <div className="text-lg">{option.label}</div>
-          <div
-            className="text-[#9a8c98] mt-1"
-            style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400, lineHeight: 1.4 }}
-          >
-            {option.helper}
-          </div>
+          <div className="text-[#9a8c98] mt-1 text-sm">{option.helper}</div>
         </button>
       ))}
     </div>
   );
 };
 
-const ColorStep = ({ formData, onChange }: any) => {
+const AdditionalDetailsStep = ({ formData, onChange }: any) => {
   const colorOptions = ['Bright red', 'Dark red', 'Brown/old blood', 'Blackish', 'Pinkish'];
   const consistencyOptions = [
     'Starts brown → red → brown',
     'Mostly red only',
     'Mostly dark/brown only',
   ];
+  const clotOptions = ['No', 'Small clots', 'Large clots'];
+  const odorOptions = ['No', 'Mild / normal metallic smell', 'Strong / foul smell', 'Fishy smell'];
 
   return (
     <div className="space-y-6">
+      {/* Color */}
       <div>
         <label className="block font-medium text-gray-700 mb-3">
           What is the color of your period blood usually?
@@ -433,6 +593,7 @@ const ColorStep = ({ formData, onChange }: any) => {
         </div>
       </div>
 
+      {/* Color Consistency */}
       <div>
         <label className="block font-medium text-gray-700 mb-3">
           Does the color stay consistent or change throughout your period?
@@ -453,43 +614,33 @@ const ColorStep = ({ formData, onChange }: any) => {
           ))}
         </div>
       </div>
-    </div>
-  );
-};
 
-const AdditionalDetailsStep = ({ formData, onChange }: any) => {
-  const clotOptions = ['No', 'Small clots', 'Large clots'];
-  const odorOptions = ['No', 'Mild / normal metallic smell', 'Strong / foul smell', 'Fishy smell'];
-
-  return (
-    <div className="space-y-5" style={{ gap: '20px' }}>
+      {/* Clots */}
       <div>
         <label className="block font-medium text-gray-700 mb-3">Do you pass blood clots?</label>
-        <div className="space-y-2" style={{ gap: '8px' }}>
+        <div className="grid grid-cols-3 gap-2">
           {clotOptions.map((option) => (
             <button
               key={option}
               onClick={() => onChange({ ...formData, clots: option })}
-              className={`w-full p-3 rounded-xl border-2 text-left transition-all duration-300 ${
+              className={`p-3 rounded-xl border-2 text-center transition-all duration-300 ${
                 formData.clots === option
                   ? 'border-primary bg-secondary shadow-md'
                   : 'border-gray-200 hover:border-primary/50'
               }`}
             >
               {option}
-              {option === 'Large clots' && (
-                <span className="ml-2 text-xs text-muted">({'>'}₹5 coin size)</span>
-              )}
             </button>
           ))}
         </div>
       </div>
 
+      {/* Spotting */}
       <div>
         <label className="block font-medium text-gray-700 mb-3">
           Did you experience spotting between periods?
         </label>
-        <div className="grid grid-cols-2 gap-3" style={{ gap: '8px' }}>
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => onChange({ ...formData, spotting: true })}
             className={`p-4 rounded-xl border-2 transition-all duration-300 ${
@@ -513,11 +664,12 @@ const AdditionalDetailsStep = ({ formData, onChange }: any) => {
         </div>
       </div>
 
+      {/* Odor */}
       <div>
         <label className="block font-medium text-gray-700 mb-3">
           Do you notice an unusual odor during your periods?
         </label>
-        <div className="space-y-2" style={{ gap: '8px' }}>
+        <div className="space-y-2">
           {odorOptions.map((option) => (
             <button
               key={option}

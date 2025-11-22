@@ -5,7 +5,8 @@ This document explains **how the Cycle Insights feature works** from setup to da
 
 **Feature Location:** Progress Tracking Page → Period & Ovulation Tab  
 **Main Component:** `frontend/src/components/progress/CycleInsightsCard.tsx`  
-**Last Updated:** November 22, 2025
+**Last Updated:** November 22, 2025  
+**Recent Updates:** Fixed cycle length calculation bugs, improved period status messaging, added rolling 4-cycle median predictions
 
 ---
 
@@ -17,7 +18,8 @@ This document explains **how the Cycle Insights feature works** from setup to da
 5. [Editing Period Data](#editing-period-data)
 6. [Understanding the Dashboard](#understanding-the-dashboard)
 7. [How Calculations Work](#how-calculations-work)
-8. [Technical Architecture](#technical-architecture)
+8. [Recent Bug Fixes & Improvements](#recent-bug-fixes--improvements)
+9. [Technical Architecture](#technical-architecture)
 
 ---
 
@@ -369,52 +371,115 @@ const currentCycleDay = Math.floor(
 
 ### 📊 **2. Total Cycle Days (the "28" in "51/28")**
 
-**What it means:** Expected cycle length (denominator)
+**What it means:** Expected cycle length based on rolling 4-cycle median
 
-**Where it comes from:**
-- Uses `cycleLength` from your last period's database entry
-- If not available (first cycle), defaults to **28 days**
+**NEW CALCULATION (Updated Nov 22, 2025):**
 
-**Code:**
+Instead of just using the last cycle length, the system now uses a **smart rolling median** calculation:
+
+**Progressive Learning Algorithm:**
+
+- **Cycle 1:** Uses `avgCycleLength` from setup (28 or your custom input)
+- **Cycles 2-4:** Median of (avgCycleLength + actual cycle lengths)
+  - Example: Setup=28, Cycle1=30, Cycle2=32 → Median(28,30,32) = 30 days
+- **Cycle 5+:** Median of last 4 actual cycle lengths only (drops setup assumption)
+  - Example: Last 4 cycles = [30, 32, 35, 28] → Median = 31 days
+
+**Why the change?**
+- More accurate predictions for irregular PCOS cycles
+- Gradually learns your actual pattern
+- Drops the 28-day assumption once you have enough data
+- Resistant to one-off outliers (median vs mean)
+
+**Code Location:** `CycleInsightsCard.tsx`, lines 72-102
 ```javascript
-const totalCycleDays = currentPeriod.cycleLength || 28;
+function calculateTotalCycleDays(cycles, avgCycleLength) {
+  const completedCycles = cycles.filter(c => c.cycleLength !== null);
+  
+  if (completedCycles.length === 0) {
+    return avgCycleLength; // Cycle 1
+  }
+  
+  if (completedCycles.length <= 3) {
+    // Cycles 2-4: Include setup assumption
+    const lengths = [avgCycleLength, ...completedCycles.map(c => c.cycleLength)];
+    return Math.round(calculateMedian(lengths));
+  }
+  
+  // Cycle 5+: Use last 4 actual cycles only
+  const recentLengths = completedCycles.slice(-4).map(c => c.cycleLength);
+  return Math.round(calculateMedian(recentLengths));
+}
 ```
-
-**Why it might show 28:** You've only logged 1 cycle so far!
 
 ---
 
 ### 📊 **3. Last Cycle Length**
 
-**What it means:** How long your PREVIOUS complete cycle was
+**What it means:** How long your PREVIOUS complete cycle was (ACTUAL, not predicted)
+
+**IMPORTANT:** This shows the **actual** cycle length from your data, NOT the median prediction used for totalCycleDays.
 
 **Calculation Process:**
 
 1. **When you log your 2nd period:**
    - Backend calculates: `New Period Start - Previous Period Start`
-   - Example: Sept 4 - Aug 5 = 30 days
+   - Example: Nov 22 - Oct 28 = 25 days
 
 2. **Where it's stored:**
    - Saved to the **first** cycle document (not the second!)
    - Because the first cycle is now "complete"
 
-3. **Backend Code:** `progressTrackerService.js`
+3. **Backend Code:** `progressTrackerService.js` (FIXED Nov 22, 2025)
    ```javascript
    export async function calculateCycleLength(userId, currentStartDate) {
-     // Get most recent cycle (before the one being logged)
-     const previousCycle = await getLatestCycle(userId);
+     // Get most recent cycle BEFORE creating new one
+     const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
+     const snapshot = await getDocs(q);
      
-     const daysBetween = Math.ceil(
-       (currentStartDate - previousCycle.startDate) / (1000 * 60 * 60 * 24)
-     );
+     if (snapshot.empty) {
+       return null; // First cycle
+     }
      
-     return daysBetween;
+     const previousCycle = snapshot.docs[0].data();
+     const previousStart = previousCycle.startDate?.toDate?.() || previousCycle.startDate;
+     const currentStart = new Date(currentStartDate);
+     
+     // Use Math.floor for accurate day counting (not ceil)
+     const diffTime = currentStart.getTime() - new Date(previousStart).getTime();
+     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+     
+     return diffDays;
    }
    ```
 
-**Why it shows "-" or "Not yet calculated":**
+**Display Logic (UPDATED Nov 22, 2025):**
+
+The UI now shows a proper fallback when no previous cycle exists:
+
+```javascript
+// Summary card at top
+{cycleData.lastCycleLength
+  ? `${cycleData.lastCycleLength}d`
+  : `${cycleData.avgCycleLength}d`}
+
+// Subtext when showing fallback
+{!cycleData.lastCycleLength && (
+  <div className="text-[10px] text-muted">
+    {cycleData.avgCycleLength === 28 ? '(assumed)' : '(your input)'}
+  </div>
+)}
+```
+
+**Why it shows "28d (assumed)" or "Xd (your input)":**
 - You've only logged 1 period
-- Need 2+ periods to know cycle length!
+- Need 2+ periods to calculate actual cycle length
+- Shows your setup value as a placeholder
+
+**Bug Fix Applied (Nov 22, 2025):**
+- Previously showed just "-" when no data
+- Now shows avgCycleLength with appropriate label
+- Helps users understand the value is estimated
 
 ---
 
@@ -693,28 +758,86 @@ return {
 
 ### 📊 **10. Period Expected Banner**
 
-**What it means:** Warning when your next period is coming
+**What it means:** Smart messaging about when your next period is coming
+
+**NEW PCOS-SENSITIVE MESSAGING (Updated Nov 22, 2025):**
+
+The period status now uses compassionate, PCOS-aware language:
 
 **Calculation:**
 ```
-Expected Period Day = Total Cycle Days + 1
+Expected Period Day = Total Cycle Days
 Days Until Period = Expected Period Day - Current Cycle Day
 ```
 
-**Example:**
-- Total Cycle Days: 28
-- Current Day: 25
-- Days Until: 29 - 25 = **4 days**
-
 **Display Logic:**
+
 ```javascript
-if (daysUntil <= 4 && daysUntil > 0) {
-  show: "Period expected in 1-4 days. Track PMS symptoms."
-}
-else if (daysUntil <= 0) {
-  show: "Period expected today" or "Period is X days late"
+function calculatePeriodStatus(currentCycleDay, totalCycleDays) {
+  const daysUntilPeriod = totalCycleDays - currentCycleDay;
+  
+  // Upcoming (2+ days)
+  if (daysUntilPeriod > 1) {
+    return {
+      message: `Your period is due in ${daysUntilPeriod} days`,
+      color: '#9a8c98', // Muted gray
+      showProgressBar: true
+    };
+  }
+  
+  // Imminent (tomorrow)
+  if (daysUntilPeriod === 1) {
+    return {
+      message: 'Your period is due tomorrow',
+      color: '#ff8b2e', // Warning orange
+      showProgressBar: true
+    };
+  }
+  
+  // Expected today
+  if (daysUntilPeriod === 0) {
+    return {
+      message: 'Your period might start today',
+      color: '#ff8b2e',
+      showProgressBar: true
+    };
+  }
+  
+  // Overdue (PCOS-sensitive messaging)
+  const overdueDays = Math.abs(daysUntilPeriod);
+  let secondaryMessage;
+  
+  if (overdueDays >= 7 && overdueDays < 14) {
+    secondaryMessage = 'Long cycles are common with PCOS. Keep tracking your symptoms.';
+  } else if (overdueDays >= 14 && overdueDays < 30) {
+    secondaryMessage = "Extended cycles can happen with PCOS. If you're concerned, consider consulting your healthcare provider.";
+  } else if (overdueDays >= 30) {
+    secondaryMessage = "It's been over a month since your predicted period date. We recommend consulting with your healthcare provider about your cycle patterns.";
+  }
+  
+  return {
+    message: `Your period is overdue by ${overdueDays} day${overdueDays > 1 ? 's' : ''}`,
+    secondaryMessage,
+    color: '#9a8c98', // Muted gray (NOT danger red)
+    showProgressBar: false // Hide progress bar when overdue
+  };
 }
 ```
+
+**Key Design Decisions:**
+- ✅ Uses **muted gray** for overdue states (not alarming red)
+- ✅ Adds PCOS context at appropriate thresholds
+- ✅ Hides progress bar when >100% (less stressful)
+- ✅ Shows "Day X - Extended cycle in progress"
+- ✅ Suggests medical consultation only after 30+ days
+
+**Visual Updates:**
+- Progress bar shows only until predicted date
+- After predicted date: shows contextual card with emoji icons
+  - 📅 Upcoming
+  - ⏰ Imminent
+  - 🔔 Expected today
+  - 📊 Overdue (data/tracking focus, not panic)
 
 ---
 
@@ -931,49 +1054,304 @@ Key functions:
 
 ---
 
-## Known Issues & Fixes
+## Recent Bug Fixes & Improvements
 
-### 🔴 Bug #1: Last Cycle Length Shows "-"
-
-**Problem:** Even after logging 2 periods, cycle length shows "Not calculated"
-
-**Root Cause:**
-- The `calculateCycleLength()` function correctly calculates
-- But the updating logic may target the wrong cycle
-
-**Current Code Issue:**
-```javascript
-// After creating new cycle
-const cycles = await getCycles(userId, 2);
-const previousCycle = cycles[0]; // Gets oldest
-await updateCycleLength(userId, previousCycle.cycleId, cycleLength);
-```
-
-**Problem:** If only 1 cycle exists, `cycles[0]` is the one just created!
-
-**Fix Applied:**
-```javascript
-// Get more cycles to ensure we find the right one
-const cycles = await getCycles(userId, 50);
-if (cycles.length >= 2) {
-  // cycles is sorted ascending (oldest first)
-  // Update the SECOND-TO-LAST cycle
-  const previousCycle = cycles[cycles.length - 2];
-  await updateCycleLength(userId, previousCycle.cycleId, cycleLength);
-}
-```
-
-**Status:** ✅ Fixed in latest version
+### 🎉 Major Updates - November 22, 2025
 
 ---
 
-### 🔴 Bug #2: Inconsistent Query Ordering
+### ✅ Fix #1: Period Setup Wizard Medical Warning Not Clearing
 
-**Problem:** Some functions use `desc` order, others use `asc`
+**Issue:** When entering a date >60 days ago in the setup wizard, a medical warning appeared. However, changing the date to be within 60 days didn't clear the warning.
 
-**Fix:** Standardized all queries to use `asc` (ascending) order for consistency
+**Root Cause:**
+```javascript
+// OLD CODE - Only set warning to true, never cleared it
+if (daysSince > 60) {
+  setMedicalWarnings((prev) => ({
+    ...prev,
+    irregularCycleWarning: true,
+  }));
+}
+// Warning persisted even when date changed!
+```
 
-**Status:** ✅ Fixed
+**Fix Applied:**
+```javascript
+// NEW CODE - Properly manages warning state
+if (daysSince > 60) {
+  setMedicalWarnings((prev) => ({
+    ...prev,
+    irregularCycleWarning: true,
+  }));
+} else {
+  setMedicalWarnings((prev) => ({
+    ...prev,
+    irregularCycleWarning: false, // Clear warning
+  }));
+}
+```
+
+**File:** `frontend/src/components/progress/PeriodSetupWizard.tsx`  
+**Status:** ✅ Fixed - Warning now appears/disappears in real-time
+
+---
+
+### ✅ Fix #2: Last Cycle Length Showing Dash Instead of Value
+
+**Issue:** The "Last Cycle Length" summary card showed "-" even though a fallback value should display.
+
+**Root Cause:** Two different display sections for "Last Cycle Length":
+- Detailed view (lines 530-543): Had proper fallback ✅
+- Summary card (lines 680-686): Only showed actual or "-" ❌
+
+**Fix Applied:**
+```javascript
+// OLD CODE
+<div className="text-3xl font-bold">
+  {cycleData.lastCycleLength ? `${cycleData.lastCycleLength}d` : '-'}
+</div>
+
+// NEW CODE
+<div className="text-3xl font-bold">
+  {cycleData.lastCycleLength
+    ? `${cycleData.lastCycleLength}d`
+    : `${cycleData.avgCycleLength}d`}
+</div>
+{!cycleData.lastCycleLength && (
+  <div className="text-[10px] text-muted">
+    {cycleData.avgCycleLength === 28 ? '(assumed)' : '(your input)'}
+  </div>
+)}
+```
+
+**File:** `frontend/src/components/progress/CycleInsightsCard.tsx`  
+**Status:** ✅ Fixed - Now shows avgCycleLength with appropriate label
+
+---
+
+### ✅ Fix #3: Cycle Length Calculation Timing Bug
+
+**Issue:** Cycle lengths were calculated AFTER creating new cycle, causing the query to find the wrong cycle.
+
+**Root Cause:**
+```javascript
+// OLD CODE - WRONG ORDER
+const result = await createCycle(userId, cycleData); // Create new cycle
+const cycleLength = await calculateCycleLength(userId, startDate); // Query finds NEW cycle!
+```
+
+The `calculateCycleLength` function queries for the most recent cycle using `orderBy('startDate', 'desc'), limit(1)`, which would return the newly created cycle instead of the previous one.
+
+**Fix Applied:**
+```javascript
+// NEW CODE - CORRECT ORDER
+// Calculate BEFORE creating new cycle
+const cycleLength = await calculateCycleLength(userId, startDate);
+
+if (cycleLength) {
+  const cycles = await getCycles(userId, 50);
+  if (cycles.length >= 1) {
+    const previousCycle = cycles[cycles.length - 1];
+    await updateCycleLength(userId, previousCycle.cycleId, cycleLength);
+  }
+}
+
+// NOW create the new cycle
+const result = await createCycle(userId, cycleData);
+```
+
+**File:** `server/src/routes/progressTracker.js`  
+**Status:** ✅ Fixed - Cycle lengths now calculated correctly
+
+---
+
+### ✅ Fix #4: Incorrect Day Calculation (Math.ceil vs Math.floor)
+
+**Issue:** Using `Math.ceil()` could round up fractional days, causing off-by-one errors.
+
+**Example:**
+- Oct 28 to Nov 22 should be 25 days
+- But with `Math.ceil()`, any fractional time could round to 26
+
+**Fix Applied:**
+```javascript
+// OLD CODE
+const diffTime = Math.abs(currentStart - previousStartDate);
+const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Rounds UP
+
+// NEW CODE
+const diffTime = currentStart.getTime() - new Date(previousStartDate).getTime();
+const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Accurate floor
+```
+
+**Additional improvements:**
+- Removed `Math.abs()` - we want directional difference
+- Added `.getTime()` for explicit millisecond conversion
+- Added logging for debugging
+
+**File:** `server/src/services/progressTrackerService.js`  
+**Status:** ✅ Fixed - Day calculations now accurate
+
+---
+
+### ✅ Enhancement #1: Rolling 4-Cycle Median for Predictions
+
+**What Changed:** Instead of using just the last cycle length, the system now uses a smart rolling median.
+
+**Algorithm:**
+1. **Cycle 1:** Uses setup assumption (28 or custom)
+2. **Cycles 2-4:** Median of (setup + actual cycles)
+3. **Cycle 5+:** Median of last 4 actual cycles only
+
+**Benefits:**
+- ✅ More accurate for irregular PCOS cycles
+- ✅ Resistant to one-off outliers
+- ✅ Gradually learns your actual pattern
+- ✅ Drops 28-day assumption when you have enough data
+
+**Example:**
+```
+Setup: avgCycleLength = 28
+
+Cycle 1: No previous data
+→ totalCycleDays = 28
+
+Cycle 2: Actual cycle 1 length = 30
+→ totalCycleDays = median(28, 30) = 29
+
+Cycle 3: Actual cycle 2 length = 32
+→ totalCycleDays = median(28, 30, 32) = 30
+
+Cycle 4: Actual cycle 3 length = 35
+→ totalCycleDays = median(28, 30, 32, 35) = 31
+
+Cycle 5: Actual cycle 4 length = 33
+→ totalCycleDays = median(30, 32, 35, 33) = 32.5 ≈ 33
+→ Setup value (28) DROPPED
+```
+
+**Files:**
+- `frontend/src/components/progress/CycleInsightsCard.tsx` - New calculation functions
+- `server/src/services/progressTrackerService.js` - Updated getCycles query
+
+**Status:** ✅ Implemented - More accurate cycle predictions
+
+---
+
+### ✅ Enhancement #2: PCOS-Sensitive Period Status Messaging
+
+**What Changed:** Replaced generic "late period" warnings with compassionate, PCOS-aware messaging.
+
+**Key Changes:**
+- ❌ Old: Red "LATE!" warnings
+- ✅ New: Muted gray with context
+
+**Message Progression:**
+- **7-13 days overdue:** "Long cycles are common with PCOS. Keep tracking your symptoms."
+- **14-29 days:** "Extended cycles can happen with PCOS. If concerned, consider consulting your provider."
+- **30+ days:** "We recommend consulting with your healthcare provider about your cycle patterns."
+
+**Visual Updates:**
+- Progress bar hides after predicted date (less stressful)
+- Contextual icons instead of warning symbols
+- Gray color (#9a8c98) instead of danger red
+- Shows "Day X - Extended cycle in progress"
+
+**File:** `frontend/src/components/progress/CycleInsightsCard.tsx`  
+**Status:** ✅ Implemented - More supportive UX for PCOS users
+
+---
+
+### ✅ Enhancement #3: Optimized Cycles Fetching
+
+**What Changed:** Limited cycles fetching to only what's needed for calculations.
+
+**Before:**
+- Fetched all cycles (could be 50+)
+- Slow queries for long-time users
+
+**After:**
+- Fetches only last 5 cycles (4 for median + 1 current)
+- Query changed from ascending to descending with reverse
+
+**Implementation:**
+```javascript
+// Backend: Get most recent cycles efficiently
+const q = query(
+  cyclesRef, 
+  orderBy('startDate', 'desc'),  // Newest first
+  limit(limitCount)
+);
+const snapshot = await getDocs(q);
+return cycles.reverse(); // Return in ascending order
+```
+
+**Benefits:**
+- ⚡ Faster page loads
+- 📉 Reduced Firestore read costs
+- 🎯 Only fetches what's needed
+
+**Files:**
+- `frontend/src/components/progress/CycleInsightsCard.tsx` - Changed limit to 5
+- `server/src/services/progressTrackerService.js` - Updated query logic
+
+**Status:** ✅ Implemented - Better performance
+
+---
+
+### ✅ Tool #1: Migration Script for Existing Data
+
+**Purpose:** Fix cycle lengths for users who logged periods before the bug fixes.
+
+**What it does:**
+1. Fetches all cycles for a user
+2. Recalculates cycle lengths correctly
+3. Updates database with accurate values
+
+**How to use:**
+```bash
+cd /Users/supriya97/Desktop/AI\ Projects/sakhee/server
+node scripts/fix-cycle-lengths.js YOUR_USER_ID
+```
+
+**Example output:**
+```
+🔍 Fetching cycles for user: abc123
+
+📊 Found 2 cycles
+
+Current cycle data:
+  1. 2025-10-28 - cycleLength: null
+  2. 2025-11-22 - cycleLength: null
+
+🔧 Calculating cycle lengths...
+
+  Cycle 1: 2025-10-28 → 2025-11-22 = 25 days
+    ✅ Updated cycleLength to 25
+
+🎉 Migration complete!
+```
+
+**File:** `server/scripts/fix-cycle-lengths.js`  
+**Status:** ✅ Created - Ready for data migration
+
+---
+
+### 📋 Summary of Changes
+
+| Fix/Enhancement | Impact | Status | Files Changed |
+|----------------|--------|--------|---------------|
+| Medical warning clearing | UX Bug Fix | ✅ Fixed | PeriodSetupWizard.tsx |
+| Last Cycle Length display | UI Bug Fix | ✅ Fixed | CycleInsightsCard.tsx |
+| Cycle length calculation timing | Data Bug Fix | ✅ Fixed | progressTracker.js |
+| Day calculation accuracy | Data Bug Fix | ✅ Fixed | progressTrackerService.js |
+| Rolling 4-cycle median | Enhancement | ✅ Implemented | CycleInsightsCard.tsx |
+| PCOS-sensitive messaging | Enhancement | ✅ Implemented | CycleInsightsCard.tsx |
+| Optimized cycles fetching | Performance | ✅ Implemented | Multiple files |
+| Migration script | Tool | ✅ Created | fix-cycle-lengths.js |
+
+---
 
 ---
 
@@ -982,7 +1360,7 @@ if (cycles.length >= 2) {
 | Component | Formula | Data Source | Default |
 |-----------|---------|-------------|---------|
 | **Current Cycle Day** | `(Today - Last Period Start) + 1` | Most recent cycle | N/A |
-| **Total Cycle Days** | From `cycleLength` field | Database | 28 days |
+| **Total Cycle Days** | Rolling 4-cycle median (NEW) | Calculated from cycles | 28 days |
 | **Last Cycle Length** | `Current Start - Previous Start` | Calculated on 2nd+ period | null |
 | **Period Duration** | `(End Date - Start Date) + 1` | Cycle start/end dates | N/A |
 | **Cycle Phase** | Complex logic (see §5) | Current day + ovulation data | 'post-ovulation' |
@@ -1042,9 +1420,16 @@ if (cycles.length >= 2) {
 
 ---
 
-**Document Version:** 2.0  
+**Document Version:** 3.0  
 **Created:** November 21, 2025  
-**Updated:** November 22, 2025  
+**Last Major Update:** November 22, 2025  
+**Changes in v3.0:**
+- Added rolling 4-cycle median calculation algorithm
+- Documented PCOS-sensitive period status messaging
+- Added all recent bug fixes (medical warning, cycle length, day calculation)
+- Included migration script documentation
+- Updated all calculation formulas and code examples
+
 **Next Review:** When additional features are added
 
 ---

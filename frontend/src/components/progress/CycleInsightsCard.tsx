@@ -21,6 +21,7 @@ interface CycleData {
   lastPeriodEnd: string;
   lastPeriodDuration: number;
   lastCycleLength: number | null;
+  avgCycleLength: number; // Added for displaying assumed vs actual
   ovulationPrediction: any;
   todayOvulationScore: number | null;
   cyclePhase: 'period' | 'fertile' | 'ovulation' | 'post-ovulation' | 'pre-period';
@@ -33,6 +34,139 @@ interface TodayTracking {
   ovulationPain: boolean;
   breastTenderness: boolean;
   increasedLibido: boolean;
+}
+
+/**
+ * Calculates median of an array of numbers
+ *
+ * @param arr - Array of numbers
+ * @returns Median value
+ */
+function calculateMedian(arr: number[]): number {
+  if (arr.length === 0) return 0;
+
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+
+  if (sorted.length % 2 === 0) {
+    // Even number of elements: average of two middle values
+    return (sorted[mid - 1] + sorted[mid]) / 2;
+  }
+
+  // Odd number of elements: middle value
+  return sorted[mid];
+}
+
+/**
+ * Calculates total cycle days using rolling 4-cycle median
+ *
+ * Logic:
+ * - Cycle 1: Use avgCycleLength from setup (28 or user input)
+ * - Cycles 2-4: Use median of (avgCycleLength + actual cycle lengths)
+ * - Cycle 5+: Use median of last 4 actual cycle lengths only (drop onboarding assumption)
+ *
+ * @param cycles - Array of cycle objects sorted by startDate ascending
+ * @param avgCycleLength - Initial assumption from onboarding (28 or user input)
+ * @returns Predicted cycle length in days (rounded to nearest integer)
+ */
+function calculateTotalCycleDays(
+  cycles: Array<{ cycleId: string; cycleLength: number | null }>,
+  avgCycleLength: number
+): number {
+  // Filter to only cycles with calculated lengths (exclude current incomplete cycle)
+  const completedCycles = cycles.filter((c) => c.cycleLength !== null);
+
+  // Case 1: First cycle (no completed cycles yet)
+  if (completedCycles.length === 0) {
+    return avgCycleLength; // Use onboarding assumption
+  }
+
+  // Case 2: Cycles 2-4 (include onboarding assumption)
+  if (completedCycles.length <= 3) {
+    const lengths = [avgCycleLength, ...completedCycles.map((c) => c.cycleLength as number)];
+    return Math.round(calculateMedian(lengths));
+  }
+
+  // Case 3: Cycle 5+ (use last 4 actual cycle lengths only)
+  const recentLengths = completedCycles
+    .slice(-4) // Get last 4 completed cycles
+    .map((c) => c.cycleLength as number);
+
+  return Math.round(calculateMedian(recentLengths));
+}
+
+/**
+ * Calculates period due status and messaging
+ *
+ * @param currentCycleDay - Current day in the cycle (1-indexed)
+ * @param totalCycleDays - Predicted cycle length
+ * @returns Period status object with message, color, and display settings
+ */
+function calculatePeriodStatus(
+  currentCycleDay: number,
+  totalCycleDays: number
+): {
+  message: string;
+  secondaryMessage?: string;
+  status: 'upcoming' | 'imminent' | 'expected' | 'overdue';
+  color: string;
+  showProgressBar: boolean;
+} {
+  const daysUntilPeriod = totalCycleDays - currentCycleDay;
+
+  // Case 1: Period expected in 2+ days
+  if (daysUntilPeriod > 1) {
+    return {
+      message: `Your period is due in ${daysUntilPeriod} days`,
+      status: 'upcoming',
+      color: '#9a8c98', // Muted
+      showProgressBar: true, // Show progress bar when under predicted length
+    };
+  }
+
+  // Case 2: Period expected tomorrow
+  if (daysUntilPeriod === 1) {
+    return {
+      message: 'Your period is due tomorrow',
+      status: 'imminent',
+      color: '#ff8b2e', // Warning
+      showProgressBar: true,
+    };
+  }
+
+  // Case 3: Period expected today
+  if (daysUntilPeriod === 0) {
+    return {
+      message: 'Your period might start today',
+      status: 'expected',
+      color: '#ff8b2e', // Warning
+      showProgressBar: true,
+    };
+  }
+
+  // Case 4: Period overdue (past predicted date)
+  const overdueDays = Math.abs(daysUntilPeriod);
+
+  let secondaryMessage = undefined;
+
+  // Add context for longer delays
+  if (overdueDays >= 7 && overdueDays < 14) {
+    secondaryMessage = 'Long cycles are common with PCOS. Keep tracking your symptoms.';
+  } else if (overdueDays >= 14 && overdueDays < 30) {
+    secondaryMessage =
+      "Extended cycles can happen with PCOS. If you're concerned, consider consulting your healthcare provider.";
+  } else if (overdueDays >= 30) {
+    secondaryMessage =
+      "It's been over a month since your predicted period date. We recommend consulting with your healthcare provider about your cycle patterns.";
+  }
+
+  return {
+    message: `Your period is overdue by ${overdueDays} day${overdueDays > 1 ? 's' : ''}`,
+    secondaryMessage,
+    status: 'overdue',
+    color: '#9a8c98', // Muted (NOT danger red - irregular cycles are normal for PCOS)
+    showProgressBar: false, // Hide progress bar once overdue
+  };
 }
 
 const CycleInsightsCard = ({
@@ -54,8 +188,12 @@ const CycleInsightsCard = ({
     try {
       const today = new Date().toISOString().split('T')[0];
 
-      // Get cycles
-      const cyclesResponse = await progressTrackerApi.getCycles(userId, 12);
+      // Get period tracking setup (includes avgCycleLength)
+      const setupResponse = await progressTrackerApi.getPeriodSetup(userId);
+      const avgCycleLength = setupResponse.data?.avgCycleLength || 28;
+
+      // Get cycles (fetch last 5: 4 for median calculation + 1 current cycle)
+      const cyclesResponse = await progressTrackerApi.getCycles(userId, 5);
       const cycles = cyclesResponse.data;
 
       if (!cycles || cycles.length === 0) {
@@ -104,9 +242,11 @@ const CycleInsightsCard = ({
 
       setTodayTracking(trackingData);
 
+      // Calculate total cycle days using rolling 4-cycle median
+      const totalCycleDays = calculateTotalCycleDays(cycles, avgCycleLength);
+
       // Determine cycle phase
       let cyclePhase: CycleData['cyclePhase'] = 'post-ovulation';
-      const totalCycleDays = currentPeriod.cycleLength || 28;
 
       if (currentCycleDay <= periodDuration) {
         cyclePhase = 'period';
@@ -140,13 +280,22 @@ const CycleInsightsCard = ({
         }
       }
 
+      // Get previous cycle length (ACTUAL, not median)
+      // Previous cycle is second-to-last in the array (if exists)
+      let previousCycleLength = null;
+      if (cycles.length >= 2) {
+        const previousCycle = cycles[cycles.length - 2];
+        previousCycleLength = previousCycle.cycleLength;
+      }
+
       setCycleData({
         currentCycleDay,
         totalCycleDays,
         lastPeriodStart: currentPeriod.startDate,
         lastPeriodEnd: currentPeriod.endDate,
         lastPeriodDuration: periodDuration,
-        lastCycleLength: currentPeriod.cycleLength,
+        lastCycleLength: previousCycleLength,
+        avgCycleLength,
         ovulationPrediction,
         todayOvulationScore,
         cyclePhase,
@@ -263,8 +412,8 @@ const CycleInsightsCard = ({
     );
   }
 
-  // Building Insights State (<2 cycles)
-  if (!cycleData || cycleData.cyclesLogged < 2) {
+  // Building Insights State (<3 cycles)
+  if (!cycleData || cycleData.cyclesLogged < 3) {
     const progressPercent = cycleData ? (cycleData.cyclesLogged / 3) * 100 : 0;
 
     return (
@@ -297,12 +446,18 @@ const CycleInsightsCard = ({
             <div className="flex items-center gap-3">
               <CheckCircle2
                 size={20}
-                className={cycleData ? 'text-success' : 'text-gray-300'}
-                fill={cycleData ? 'currentColor' : 'none'}
+                className={
+                  cycleData && cycleData.cyclesLogged >= 1 ? 'text-success' : 'text-gray-300'
+                }
+                fill={cycleData && cycleData.cyclesLogged >= 1 ? 'currentColor' : 'none'}
               />
-              <span className="text-gray-700">
+              <span
+                className={
+                  cycleData && cycleData.cyclesLogged >= 1 ? 'text-gray-700' : 'text-muted'
+                }
+              >
                 First Period Logged
-                {cycleData && (
+                {cycleData && cycleData.cyclesLogged >= 1 && (
                   <span className="text-sm text-muted ml-2">
                     (
                     {new Date(cycleData.lastPeriodStart).toLocaleDateString('en-US', {
@@ -320,8 +475,21 @@ const CycleInsightsCard = ({
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0" />
-              <span className="text-muted">Second Period: Not logged yet</span>
+              <CheckCircle2
+                size={20}
+                className={
+                  cycleData && cycleData.cyclesLogged >= 2 ? 'text-success' : 'text-gray-300'
+                }
+                fill={cycleData && cycleData.cyclesLogged >= 2 ? 'currentColor' : 'none'}
+              />
+              <span
+                className={
+                  cycleData && cycleData.cyclesLogged >= 2 ? 'text-gray-700' : 'text-muted'
+                }
+              >
+                Second Period:{' '}
+                {cycleData && cycleData.cyclesLogged >= 2 ? 'Logged' : 'Not logged yet'}
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0" />
@@ -367,6 +535,11 @@ const CycleInsightsCard = ({
                   {cycleData.lastPeriodDuration} days
                 </p>
                 <p className="text-xs text-muted mt-1">
+                  {new Date(cycleData.lastPeriodStart).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}{' '}
+                  -{' '}
                   {new Date(cycleData.lastPeriodEnd).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -375,12 +548,20 @@ const CycleInsightsCard = ({
               </div>
             </div>
             <div className="bg-secondary/20 rounded-xl p-4">
-              <p className="text-xs text-muted mb-1">Cycle Length</p>
+              <p className="text-xs text-muted mb-1">Previous Cycle Length</p>
               <p className="text-lg font-medium text-gray-700">
                 {cycleData.lastCycleLength
                   ? `${cycleData.lastCycleLength} days`
-                  : 'Not yet calculated (need 2+ cycles)'}
+                  : cycleData.avgCycleLength === 28
+                  ? '28 days (assumed normal)'
+                  : `${cycleData.avgCycleLength} days (your input)`}
               </p>
+              {!cycleData.lastCycleLength && (
+                <p className="text-xs text-muted mt-2">
+                  Cycle length predictions will get better as more periods are logged into the
+                  tracker.
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -395,7 +576,7 @@ const CycleInsightsCard = ({
               <p className="text-sm text-gray-700 mb-3">
                 Based on{' '}
                 {cycleData.ovulationPrediction.method === 'estimated'
-                  ? '28-day average cycle estimate'
+                  ? `~${cycleData.totalCycleDays}-day cycle estimate`
                   : 'your tracked data'}
                 :
               </p>
@@ -443,7 +624,15 @@ const CycleInsightsCard = ({
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
               <AlertCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
-              <p className="text-sm text-blue-800">💡 {cycleData.ovulationPrediction.message}</p>
+              <p className="text-sm text-blue-800">
+                ℹ️ This is an estimate based on your cycle pattern (
+                {cycleData.cyclesLogged <= 1
+                  ? 'using your initial setup'
+                  : cycleData.cyclesLogged <= 4
+                  ? `median of ${cycleData.cyclesLogged} cycles + setup assumption`
+                  : `median of last 4 cycles`}
+                ). Track daily symptoms for more accurate ovulation detection.
+              </p>
             </div>
           </div>
         )}
@@ -483,7 +672,7 @@ const CycleInsightsCard = ({
     );
   }
 
-  // Full Insights State (2+ cycles)
+  // Full Insights State (3+ cycles)
   return (
     <div className="bg-surface rounded-3xl p-6 shadow-lg space-y-6">
       {/* Header with Phase Badge */}
@@ -509,9 +698,16 @@ const CycleInsightsCard = ({
         </div>
         <div className="bg-secondary/30 rounded-xl p-4 text-center border border-secondary">
           <div className="text-3xl font-bold text-gray-800">
-            {cycleData.lastCycleLength ? `${cycleData.lastCycleLength}d` : '-'}
+            {cycleData.lastCycleLength
+              ? `${cycleData.lastCycleLength}`
+              : `${cycleData.avgCycleLength}`}
           </div>
-          <div className="text-xs text-muted mt-1">Last Cycle Length</div>
+          <div className="text-xs text-muted mt-1">Last Cycle Length (Days)</div>
+          {!cycleData.lastCycleLength && (
+            <div className="text-[10px] text-muted mt-0.5">
+              {cycleData.avgCycleLength === 28 ? '(assumed)' : '(your input)'}
+            </div>
+          )}
         </div>
         <div className="bg-secondary/30 rounded-xl p-4 text-center border border-secondary">
           <div className="text-3xl font-bold text-gray-800">
@@ -521,23 +717,79 @@ const CycleInsightsCard = ({
         </div>
       </div>
 
-      {/* Cycle Progress Bar */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-gray-600">
-          <span>Period</span>
-          <span>Fertile Window</span>
-          <span>Next Period</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-primary via-success to-primary h-4 rounded-full transition-all duration-500"
-            style={{ width: `${(cycleData.currentCycleDay / cycleData.totalCycleDays) * 100}%` }}
-          />
-        </div>
-        <div className="text-center text-sm text-gray-600">
-          {Math.round((cycleData.currentCycleDay / cycleData.totalCycleDays) * 100)}% Complete
-        </div>
-      </div>
+      {/* Period Status Section */}
+      {(() => {
+        const periodStatus = calculatePeriodStatus(
+          cycleData.currentCycleDay,
+          cycleData.totalCycleDays
+        );
+        return (
+          <div className="space-y-4">
+            {/* Show progress bar only if not overdue */}
+            {periodStatus.showProgressBar && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <span>Period</span>
+                  <span>Fertile Window</span>
+                  <span>Next Period</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-primary via-success to-primary h-4 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(
+                        (cycleData.currentCycleDay / cycleData.totalCycleDays) * 100,
+                        100
+                      )}%`,
+                    }}
+                  />
+                </div>
+                <div className="text-center text-xs text-gray-600">
+                  Day {cycleData.currentCycleDay} of ~{cycleData.totalCycleDays}
+                </div>
+              </div>
+            )}
+
+            {/* Period due message */}
+            <div
+              className="p-4 rounded-lg border-l-4"
+              style={{
+                backgroundColor: periodStatus.status === 'overdue' ? '#f5f5f5' : '#fff5f0',
+                borderColor: periodStatus.color,
+              }}
+            >
+              <div className="flex items-center gap-2">
+                {/* Icon based on status */}
+                <span className="text-xl">
+                  {periodStatus.status === 'upcoming' && '📅'}
+                  {periodStatus.status === 'imminent' && '⏰'}
+                  {periodStatus.status === 'expected' && '🔔'}
+                  {periodStatus.status === 'overdue' && '📊'}
+                </span>
+
+                <div className="flex-1">
+                  <p className="font-semibold font-inter" style={{ color: periodStatus.color }}>
+                    {periodStatus.message}
+                  </p>
+
+                  {periodStatus.secondaryMessage && (
+                    <p className="text-xs text-muted mt-1">{periodStatus.secondaryMessage}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Additional context for overdue state */}
+              {periodStatus.status === 'overdue' && (
+                <div className="mt-3 pt-3 border-t border-gray-200">
+                  <p className="text-xs text-muted">
+                    <strong>Day {cycleData.currentCycleDay}</strong> - Extended cycle in progress
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Fertility Status */}
       <div

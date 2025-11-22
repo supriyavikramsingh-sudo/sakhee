@@ -41,6 +41,7 @@ const CycleDetailsModal = ({
   onClose,
   onInsightsGenerated,
 }: CycleDetailsModalProps) => {
+  console.log('Cycle data in modal:', cycle); // Debugging log
   const [generatingInsights, setGeneratingInsights] = useState(false);
   const [insights, setInsights] = useState(cycle.aiInsights);
   const [showInsights, setShowInsights] = useState(false);
@@ -168,10 +169,10 @@ const CycleDetailsModal = ({
                         Analyzing...
                       </>
                     ) : (
-                      <>
+                      <span className="flex items-center">
                         <Sparkles size={18} className="mr-2" />
                         Generate Insights
-                      </>
+                      </span>
                     )}
                   </button>
                 </div>

@@ -126,6 +126,39 @@ export const progressTrackerApi = {
   },
 
   /**
+   * Update period duration system-wide
+   */
+  updatePeriodDuration: async (userId: string, newDuration?: number, declined: boolean = false): Promise<any> => {
+    try {
+      const response = await axiosInstance.post('/progress/period/update-duration', {
+        userId,
+        newDuration,
+        declined,
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to update period duration:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Decline period duration update offer
+   */
+  declinePeriodDurationUpdate: async (userId: string): Promise<any> => {
+    try {
+      const response = await axiosInstance.post('/progress/period/update-duration', {
+        userId,
+        declined: true,
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to decline period duration update:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Generate AI insights for a cycle
    */
   generateCycleInsights: async (userId: string, cycleId: string): Promise<any> => {

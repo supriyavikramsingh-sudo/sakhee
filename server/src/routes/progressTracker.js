@@ -4,6 +4,8 @@
  */
 
 import express from 'express';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 import {
   initializePeriodSetup,
@@ -82,7 +84,7 @@ const verifyAuth = async (req, res, next) => {
 
 /**
  * POST /api/progress/period/setup
- * Initialize period tracking setup
+ * Initialize period tracking setup with branching logic
  */
 router.post('/period/setup', verifyAuth, async (req, res) => {
   try {
@@ -91,25 +93,70 @@ router.post('/period/setup', verifyAuth, async (req, res) => {
 
     logger.info('Initializing period setup', { userId });
 
-    const result = await initializePeriodSetup(userId, setupData);
+    // Extract new fields
+    const {
+      isCurrentlyOnPeriod,
+      lastPeriodStart,
+      onboardingDuration, // User's typical duration (2, 4, 5, 6, or 7)
+      averageCycleLength, // Optional, only if period was >35 days ago
+      flow,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      medicalWarnings = {},
+    } = setupData;
 
-    // Create initial cycle if user is on period or has logged last period
-    if (setupData.lastPeriodStart) {
-      const cycleData = {
-        startDate: setupData.lastPeriodStart,
-        endDate: setupData.lastPeriodEnd || setupData.expectedEnd,
-        flow: setupData.flow,
-        color: setupData.color,
-        colorConsistency: setupData.colorConsistency,
-        clots: setupData.clots,
-        spotting: setupData.spotting,
-        odor: setupData.odor,
-        cycleLength: null, // First cycle, no previous data
-      };
-
-      const cycleResult = await createCycle(userId, cycleData);
-      result.initialCycleId = cycleResult.cycleId;
+    // Validate required fields
+    if (!lastPeriodStart || !onboardingDuration) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Missing required fields: lastPeriodStart and onboardingDuration' },
+      });
     }
+
+    // Calculate end date from start + onboarding duration
+    const startDate = new Date(lastPeriodStart);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + (onboardingDuration - 1)); // -1 because inclusive counting
+    const lastPeriodEnd = endDate.toISOString().split('T')[0];
+
+    // Determine final cycle length (use input if provided, otherwise default to 28)
+    const finalCycleLength = averageCycleLength || 28;
+
+    // Prepare setup data with new schema
+    const enhancedSetupData = {
+      lastPeriodStart,
+      lastPeriodEnd, // Auto-calculated
+      onboardingDuration, // Store user's selection
+      avgCycleLength: finalCycleLength,
+      medicalWarnings: medicalWarnings || {},
+      setupCompleted: true,
+      symptoms: setupData.symptoms || [],
+    };
+
+    const result = await initializePeriodSetup(userId, enhancedSetupData);
+
+    // Create initial cycle
+    const cycleData = {
+      startDate: lastPeriodStart,
+      endDate: lastPeriodEnd,
+      periodDuration: onboardingDuration,
+      actualDuration: onboardingDuration, // Initially same as onboarding
+      durationDiffersFromOnboarding: false,
+      cycleLength: null, // First cycle, no previous data
+      flow,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      source: 'setup', // Mark as setup-created
+    };
+
+    const cycleResult = await createCycle(userId, cycleData);
+    result.initialCycleId = cycleResult.cycleId;
 
     res.json({
       success: true,
@@ -158,28 +205,86 @@ router.get('/period/setup/:userId', verifyAuth, async (req, res) => {
 
 /**
  * POST /api/progress/period/log
- * Log a new period cycle
+ * Log a new period cycle with auto-calculated end date
  */
 router.post('/period/log', verifyAuth, async (req, res) => {
   try {
     const userId = req.userId;
-    const cycleData = req.body;
+    const {
+      startDate,
+      flow,
+      symptoms,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      comparedToLast,
+    } = req.body;
 
     logger.info('Logging period cycle', { userId });
 
-    // First, create the cycle
-    const result = await createCycle(userId, cycleData);
+    // Fetch user's setup data
+    const setupDoc = await getPeriodSetup(userId);
 
-    // After cycle is saved, calculate and update cycle length for the PREVIOUS cycle
-    // (The new cycle's length will be calculated when the NEXT cycle is logged)
-    const cycleLength = await calculateCycleLength(userId, cycleData.startDate);
+    // Validate that the period is not before the first setup period
+    if (setupDoc.lastPeriodStart) {
+      const setupPeriodDate = new Date(setupDoc.lastPeriodStart);
+      const newPeriodDate = new Date(startDate);
+
+      if (newPeriodDate < setupPeriodDate) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            message: `You cannot log a period before your first setup period (${setupDoc.lastPeriodStart}). Please select a date on or after this date.`,
+          },
+        });
+      }
+    }
+
+    const onboardingDuration = setupDoc.onboardingDuration;
+
+    if (!onboardingDuration) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Onboarding duration not found. Please complete setup first.' },
+      });
+    }
+
+    // Calculate end date from start + onboarding duration
+    const start = new Date(startDate);
+    const end = new Date(start);
+    end.setDate(end.getDate() + (onboardingDuration - 1)); // -1 for inclusive counting
+    const endDate = end.toISOString().split('T')[0];
+
+    // Prepare cycle data with auto-calculated end date
+    const cycleData = {
+      startDate,
+      endDate, // Auto-calculated from onboarding duration
+      periodDuration: onboardingDuration,
+      actualDuration: onboardingDuration, // Initially same as onboarding
+      durationDiffersFromOnboarding: false,
+      flow,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      comparedToLast,
+      symptoms: symptoms || [],
+      source: 'manual',
+    };
+
+    // BEFORE creating the cycle, calculate cycle length for the PREVIOUS cycle
+    const cycleLength = await calculateCycleLength(userId, startDate);
+    let previousCycleId = null;
+
     if (cycleLength) {
-      // Update the previous cycle with its calculated cycle length
-      const cycles = await getCycles(userId, 50); // Get all cycles to ensure we find the right one
-      if (cycles.length >= 2) {
-        // cycles is ordered ascending (oldest first)
-        // We want to update the SECOND-TO-LAST cycle (the one before the one we just created)
-        const previousCycle = cycles[cycles.length - 2];
+      const cycles = await getCycles(userId, 50);
+      if (cycles.length >= 1) {
+        // Update the most recent cycle (which is the previous one before creating new)
+        const previousCycle = cycles[cycles.length - 1];
+        previousCycleId = previousCycle.cycleId;
         await updateCycleLength(userId, previousCycle.cycleId, cycleLength);
         logger.info('Updated previous cycle length', {
           userId,
@@ -188,6 +293,9 @@ router.post('/period/log', verifyAuth, async (req, res) => {
         });
       }
     }
+
+    // NOW create the new cycle
+    const result = await createCycle(userId, cycleData);
 
     res.json({
       success: true,
@@ -208,23 +316,160 @@ router.post('/period/log', verifyAuth, async (req, res) => {
 
 /**
  * PUT /api/progress/period/update/:cycleId
- * Update an existing period cycle
+ * Update an existing period cycle with new restrictions
  */
 router.put('/period/update/:cycleId', verifyAuth, async (req, res) => {
   try {
     const userId = req.userId;
     const { cycleId } = req.params;
-    const updateData = req.body;
+    const {
+      newStartDate,
+      newEndDate,
+      flow,
+      symptoms,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      comparedToLast,
+    } = req.body;
 
     logger.info('Updating period cycle', { userId, cycleId });
 
+    // Step 1: Verify editing most recent cycle only
+    const allCycles = await getCycles(userId, 50);
+    if (!allCycles || allCycles.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: { message: 'No cycles found' },
+      });
+    }
+
+    const mostRecentCycle = allCycles[allCycles.length - 1];
+
+    // Only allow editing the most recent (last completed) period
+    if (cycleId !== mostRecentCycle.cycleId) {
+      return res.status(403).json({
+        success: false,
+        error: {
+          message:
+            'Only the most recent period can be edited. To modify older periods, please contact support.',
+        },
+      });
+    }
+
+    const originalCycle = mostRecentCycle;
+    const originalStart = new Date(originalCycle.startDate);
+
+    // Step 2: Validate start date ±5 days restriction
+    const newStart = new Date(newStartDate);
+    const daysDiff = Math.abs((newStart - originalStart) / (1000 * 60 * 60 * 24));
+
+    if (daysDiff > 5) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Start date can only be changed by ±5 days from the original date.' },
+      });
+    }
+
+    // Step 3: Validate end date after start date
+    const newEnd = new Date(newEndDate);
+    if (newEnd <= newStart) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'End date must be after start date.' },
+      });
+    }
+
+    // Step 4: Check for overlaps with OTHER periods
+    const otherCycles = allCycles.filter((c) => c.cycleId !== cycleId);
+    const hasOverlap = otherCycles.some((cycle) => {
+      const cStart = new Date(cycle.startDate);
+      const cEnd = new Date(cycle.endDate);
+      return newStart <= cEnd && newEnd >= cStart;
+    });
+
+    if (hasOverlap) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: 'These dates would create overlapping periods. Please adjust your dates.',
+        },
+      });
+    }
+
+    // Step 5: Calculate actual duration
+    const actualDuration = Math.floor((newEnd - newStart) / (1000 * 60 * 60 * 24)) + 1;
+
+    // Step 6: Compare with onboarding duration
+    const setupData = await getPeriodSetup(userId);
+    const onboardingDuration = setupData.onboardingDuration || 5; // Default fallback
+    const isDifferent = actualDuration !== onboardingDuration;
+
+    // Step 7: Update cycle document
+    const updateData = {
+      startDate: newStartDate,
+      endDate: newEndDate,
+      actualDuration,
+      durationDiffersFromOnboarding: isDifferent,
+      periodDuration: onboardingDuration, // Keep original onboarding reference
+      flow,
+      color,
+      colorConsistency,
+      clots,
+      spotting,
+      odor,
+      comparedToLast,
+      symptoms: symptoms || [],
+    };
+
     const result = await updateCycle(userId, cycleId, updateData);
 
-    res.json({
-      success: true,
-      message: 'Period updated successfully',
-      data: result,
-    });
+    // Step 8: Recalculate previous cycle's cycleLength if there is one
+    if (allCycles.length >= 2) {
+      const previousCycle = allCycles[allCycles.length - 2];
+      const newCycleLength = Math.floor(
+        (newStart - new Date(previousCycle.startDate)) / (1000 * 60 * 60 * 24)
+      );
+
+      await updateCycleLength(userId, previousCycle.cycleId, newCycleLength);
+    }
+
+    // Step 9: Check if duration update should be offered
+    const recentCycles = allCycles.slice(-3); // Last 3 cycles
+    const consecutiveDifferent = recentCycles.every(
+      (c) => c.durationDiffersFromOnboarding === true || c.cycleId === cycleId // Include the one being edited
+    );
+
+    const alreadyOffered = setupData.durationUpdateOffered || false;
+
+    let responseData = { success: true, message: 'Period updated successfully' };
+
+    if (consecutiveDifferent && recentCycles.length >= 3 && !alreadyOffered && isDifferent) {
+      // Calculate suggested duration (median of 4 values)
+      const recentActualDurations = recentCycles
+        .filter((c) => c.cycleId !== cycleId)
+        .map((c) => c.actualDuration || c.periodDuration);
+
+      // Add the newly edited duration
+      recentActualDurations.push(actualDuration);
+
+      const allDurations = [onboardingDuration, ...recentActualDurations];
+      allDurations.sort((a, b) => a - b);
+      const mid = Math.floor(allDurations.length / 2);
+      const suggestedDuration =
+        allDurations.length % 2 === 0
+          ? Math.round((allDurations[mid - 1] + allDurations[mid]) / 2)
+          : allDurations[mid];
+
+      responseData.offerDurationUpdate = true;
+      responseData.suggestedDuration = suggestedDuration;
+      responseData.currentDuration = onboardingDuration;
+      responseData.recentDurations = recentActualDurations;
+    }
+
+    res.json(responseData);
   } catch (error) {
     logger.error('Update period failed', {
       userId: req.userId,
@@ -235,6 +480,65 @@ router.put('/period/update/:cycleId', verifyAuth, async (req, res) => {
       success: false,
       error: {
         message: 'Failed to update period',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * POST /api/progress/period/update-duration
+ * Update user's period duration system-wide
+ */
+router.post('/period/update-duration', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { newDuration, declined } = req.body;
+
+    logger.info('Updating period duration', { userId, newDuration, declined });
+
+    const setupRef = doc(db, 'periodTracking', userId);
+
+    if (declined) {
+      // User declined the update
+      await updateDoc(setupRef, {
+        durationUpdateOffered: true,
+        durationUpdateDeclined: true,
+        durationUpdateDeclinedAt: serverTimestamp(),
+      });
+
+      return res.json({
+        success: true,
+        message: 'Duration kept as-is',
+      });
+    }
+
+    // Validate new duration
+    if (!newDuration || newDuration < 2 || newDuration > 10) {
+      return res.status(400).json({
+        success: false,
+        error: { message: 'Invalid duration. Must be between 2 and 10 days.' },
+      });
+    }
+
+    // User accepted update
+    await updateDoc(setupRef, {
+      onboardingDuration: newDuration,
+      durationUpdateOffered: true,
+      durationUpdatedAt: serverTimestamp(),
+    });
+
+    return res.json({
+      success: true,
+      message: 'Duration updated successfully',
+      newDuration: newDuration,
+    });
+  } catch (error) {
+    logger.error('Update duration failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to update duration',
         details: error.message,
       },
     });
