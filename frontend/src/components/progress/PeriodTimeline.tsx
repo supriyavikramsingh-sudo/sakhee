@@ -1,11 +1,5 @@
-2;
-/**
- * Period Timeline Component
- * Displays horizontal scrollable timeline of period cycles with fertile window visualization
- */
-
 import { useState, useEffect, useRef } from 'react';
-import { Calendar, ZoomIn, ZoomOut, Droplet, Heart } from 'lucide-react';
+import { Calendar, Droplet, Heart } from 'lucide-react';
 import progressTrackerApi from '../../services/progressTrackerApi';
 
 interface Cycle {
@@ -35,7 +29,7 @@ interface PeriodTimelineProps {
 const PeriodTimeline = ({ userId, onCycleClick, refreshTrigger }: PeriodTimelineProps) => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [loading, setLoading] = useState(true);
-  const [zoomLevel, setZoomLevel] = useState<number>(6); // 3, 6, or 12 months
+  const [zoomLevel, setZoomLevel] = useState<number>(6);
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,18 +59,8 @@ const PeriodTimeline = ({ userId, onCycleClick, refreshTrigger }: PeriodTimeline
     }
   };
 
-  const handleZoomIn = () => {
-    if (zoomLevel > 3) setZoomLevel(3);
-  };
-
-  const handleZoomOut = () => {
-    if (zoomLevel < 12) setZoomLevel(12);
-  };
-
   const getMonthRange = () => {
-    const months =
-      zoomLevel === 3 ? 'Last 3 months' : zoomLevel === 6 ? 'Last 6 months' : 'Last 12 months';
-    return months;
+    return `Last ${zoomLevel} months`;
   };
 
   if (loading) {
@@ -112,154 +96,168 @@ const PeriodTimeline = ({ userId, onCycleClick, refreshTrigger }: PeriodTimeline
           <p className="text-sm text-muted mt-1">{getMonthRange()}</p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleZoomIn}
-            disabled={zoomLevel === 3}
-            className="p-2 rounded-lg border border-gray-200 hover:bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Zoom in (3 months)"
-          >
-            <ZoomIn size={20} className="text-primary" />
-          </button>
-          <button
-            onClick={handleZoomOut}
-            disabled={zoomLevel === 12}
-            className="p-2 rounded-lg border border-gray-200 hover:bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Zoom out (12 months)"
-          >
-            <ZoomOut size={20} className="text-primary" />
-          </button>
+          {[1, 3, 6, 12].map((level) => (
+            <button
+              key={level}
+              onClick={() => setZoomLevel(level)}
+              disabled={zoomLevel === level}
+              className="p-2 rounded-lg border border-gray-200 text-primary hover:bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              title={`Zoom in (${level} months)`}
+            >
+              <span>{level} months</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Timeline */}
-      <div
-        ref={timelineRef}
-        className="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100"
-        style={{ scrollBehavior: 'smooth' }}
-      >
-        <div className="relative min-w-max px-8">
-          {/* Timeline line */}
-          <div className="absolute top-1/2 left-0 right-0 h-1 bg-muted/30 transform -translate-y-1/2" />
+      {/* Timeline - Vertical List Layout */}
+      <div className="space-y-4 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100">
+        {cycles
+          .slice()
+          .reverse()
+          .map((cycle, index) => {
+            const startDate = new Date(cycle.startDate);
+            const endDate = new Date(cycle.endDate);
+            const cycleLength = cycle.cycleLength || 28;
 
-          {/* Period points */}
-          <div className="relative flex items-center gap-8 py-8" style={{ zIndex: 1 }}>
-            {cycles.map((cycle, index) => {
-              const startDate = new Date(cycle.startDate);
-              // Next cycle is the one after (index + 1) since oldest is on left
-              const nextCycle = cycles[index + 1];
-              const daysApart = nextCycle
-                ? Math.floor(
-                    (new Date(nextCycle.startDate).getTime() - startDate.getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )
-                : null;
+            // Calculate days since start
+            const today = new Date();
+            const daysSinceStart = Math.floor(
+              (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+            );
+            const currentDay = Math.min(Math.max(daysSinceStart + 1, 1), cycleLength);
 
-              // Calculate fertile window (5-6 days before ovulation, ovulation ~14 days before next period)
-              const cycleLength = cycle.cycleLength || 28;
-              const ovulationDay = cycleLength - 14;
-              const fertileStartDay = ovulationDay - 5;
-              const fertileEndDay = ovulationDay + 1;
-              const ovulationDate = new Date(startDate);
-              ovulationDate.setDate(startDate.getDate() + ovulationDay - 1);
-              const fertileStartDate = new Date(startDate);
-              fertileStartDate.setDate(startDate.getDate() + fertileStartDay - 1);
+            // Calculate fertile window and ovulation
+            const ovulationDay = cycleLength - 14;
+            const fertileStartDay = ovulationDay - 5;
+            const fertileEndDay = ovulationDay + 1;
+            const ovulationDate = new Date(startDate);
+            ovulationDate.setDate(startDate.getDate() + ovulationDay - 1);
 
-              // Most recent cycle is the last one in the array
-              const isCurrentCycle = index === cycles.length - 1;
+            // Period duration (from startDate to endDate)
+            const periodDuration =
+              Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+            // Most recent cycle is first in reversed array
+            const isCurrentCycle = index === 0;
+
+            // Create cycle dots visualization
+            const cycleDots = Array.from({ length: cycleLength }, (_, i) => {
+              const day = i + 1;
+              let dotColor = 'bg-gray-200'; // Default
+
+              if (day <= periodDuration) {
+                dotColor = 'bg-primary'; // Period days
+              } else if (day >= fertileStartDay && day <= fertileEndDay) {
+                dotColor = 'bg-teal-400'; // Fertile window
+              } else if (day === ovulationDay) {
+                dotColor = 'bg-teal-600'; // Ovulation day
+              }
 
               return (
-                <div key={cycle.cycleId} className="relative flex flex-col items-center">
-                  {/* Fertile Window Shading - Only for most recent cycle */}
-                  {isCurrentCycle && (
-                    <div
-                      className="absolute bg-success/15 border-2 border-success/40 rounded-lg"
-                      style={{
-                        left: `${(fertileStartDay / cycleLength) * 100}%`,
-                        width: `${((fertileEndDay - fertileStartDay) / cycleLength) * 100}%`,
-                        top: '-20px',
-                        height: '80px',
-                        zIndex: 0,
-                      }}
-                    />
-                  )}
+                <div
+                  key={i}
+                  className={`h-2 w-2 rounded-full ${dotColor} transition-all`}
+                  title={`Day ${day}`}
+                />
+              );
+            });
 
-                  {/* Cycle length label - show to the right, between this and next cycle */}
-                  {daysApart && (
-                    <div className="absolute -top-8 left-full ml-4 text-xs text-muted whitespace-nowrap">
-                      {daysApart} days
+            return (
+              <button
+                key={cycle.cycleId}
+                onClick={() => onCycleClick(cycle)}
+                className={`w-full bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200 border-2 ${
+                  isCurrentCycle ? 'border-primary' : 'border-gray-100'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {isCurrentCycle && (
+                        <span className="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          CURRENT
+                        </span>
+                      )}
+                      <h4 className="text-base font-semibold text-gray-800">
+                        {isCurrentCycle
+                          ? `Current cycle: ${currentDay} day${currentDay !== 1 ? 's' : ''}`
+                          : `${cycleLength} days`}
+                      </h4>
                     </div>
-                  )}
-
-                  {/* Fertile window indicator */}
-                  {isCurrentCycle && (
-                    <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-success/20 border-2 border-success rounded-lg px-3 py-1 text-xs font-semibold text-success whitespace-nowrap shadow-sm">
-                        <Heart size={12} className="inline mr-1" />
-                        Fertile: Day {fertileStartDay}-{ovulationDay + 1}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Period point */}
-                  <button onClick={() => onCycleClick(cycle)} className="relative group">
-                    <div
-                      className={`w-6 h-6 rounded-full bg-primary shadow-lg cursor-pointer 
-                        transform transition-all duration-300 hover:scale-125 hover:shadow-xl
-                        ${isCurrentCycle ? 'animate-pulse ring-4 ring-primary/30' : ''}`}
-                    />
-                    {/* Tooltip */}
-                    <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                      <div className="bg-gray-800 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-xl">
-                        {startDate.toLocaleDateString('en-US', {
+                    <p className="flex justify-start text-sm text-gray-600">
+                      Started{' '}
+                      {startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      {endDate &&
+                        endDate > startDate &&
+                        ` – ${endDate.toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
-                          year: 'numeric',
-                        })}
-                        <div className="text-primary/80 text-[10px]">Click for details</div>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Date label */}
-                  <div className="mt-4 text-xs text-center text-gray-600 whitespace-nowrap">
-                    {startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        })}`}
+                    </p>
                   </div>
-
-                  {/* Ovulation prediction marker (only for current cycle) */}
-                  {isCurrentCycle && (
-                    <div className="absolute top-0 left-full ml-2">
-                      <div className="flex items-center gap-1 text-[10px] text-success font-semibold whitespace-nowrap">
-                        <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                        <span>
-                          Ovulation ~
-                          {ovulationDate.toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  <div className="text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+
+                {/* Cycle Visualization Dots */}
+                <div className="flex gap-1 flex-wrap mb-3">{cycleDots}</div>
+
+                {/* Additional Info for Current Cycle */}
+                {isCurrentCycle && (
+                  <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                    <div className="flex items-center gap-2 text-xs">
+                      <Heart size={14} className="text-teal-500" />
+                      <span className="text-gray-700 font-medium">
+                        Fertile window: Day {fertileStartDay}-{fertileEndDay}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs">
+                      <div className="w-2 h-2 rounded-full bg-teal-600" />
+                      <span className="text-gray-700">
+                        Predicted ovulation:{' '}
+                        {ovulationDate.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}{' '}
+                        (Day {ovulationDay})
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </button>
+            );
+          })}
       </div>
 
       {/* Legend */}
-      <div className="mt-4 flex items-center justify-center gap-6 pb-2">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-primary" />
-          <span className="text-xs text-gray-600">Period Start</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-success" />
-          <span className="text-xs text-gray-600">Fertile Window</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-success ring-2 ring-success/30" />
-          <span className="text-xs text-gray-600">Predicted Ovulation</span>
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <p className="text-xs text-gray-500 mb-3 font-medium">Legend:</p>
+        <div className="flex items-center justify-start gap-6 flex-wrap">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-primary" />
+            <span className="text-xs text-gray-600">Period Days</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-teal-400" />
+            <span className="text-xs text-gray-600">Fertile Window</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-teal-600" />
+            <span className="text-xs text-gray-600">Ovulation Day</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-gray-200" />
+            <span className="text-xs text-gray-600">Other Days</span>
+          </div>
         </div>
       </div>
     </div>

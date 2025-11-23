@@ -65,7 +65,7 @@ export const Navbar = () => {
             <Link
               to="/chat"
               className={`text-gray-700 font-medium hover:text-primaryDark transition ${
-                pathName === '/chat' ? 'text-rimaryDark' : ''
+                pathName === '/chat' ? 'text-primaryDark' : ''
               }`}
             >
               {t('nav.chat')}

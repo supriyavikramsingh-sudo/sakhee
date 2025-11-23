@@ -1,12 +1,4 @@
-/**
- * Cycle Details Modal
- * Displays complete details of a period cycle with AI insights
- */
-
-import { useState } from 'react';
-import { X, Sparkles, Calendar, Droplet, AlertCircle } from 'lucide-react';
-import { toast } from 'react-toastify';
-import progressTrackerApi from '../../services/progressTrackerApi';
+import { X, Calendar, Droplet, AlertCircle } from 'lucide-react';
 
 interface Cycle {
   cycleId: string;
@@ -29,41 +21,11 @@ interface Cycle {
 }
 
 interface CycleDetailsModalProps {
-  userId: string;
   cycle: Cycle;
   onClose: () => void;
-  onInsightsGenerated: () => void;
 }
 
-const CycleDetailsModal = ({
-  userId,
-  cycle,
-  onClose,
-  onInsightsGenerated,
-}: CycleDetailsModalProps) => {
-  console.log('Cycle data in modal:', cycle); // Debugging log
-  const [generatingInsights, setGeneratingInsights] = useState(false);
-  const [insights, setInsights] = useState(cycle.aiInsights);
-  const [showInsights, setShowInsights] = useState(false);
-
-  const handleGenerateInsights = async () => {
-    setGeneratingInsights(true);
-    try {
-      const response = await progressTrackerApi.generateCycleInsights(userId, cycle.cycleId);
-      if (response.success) {
-        setInsights(response.data.insights);
-        setShowInsights(true);
-        toast.success('AI insights generated!');
-        onInsightsGenerated();
-      }
-    } catch (error: any) {
-      console.error('Failed to generate insights:', error);
-      toast.error(error.message || 'Failed to generate insights. Try again later.');
-    } finally {
-      setGeneratingInsights(false);
-    }
-  };
-
+const CycleDetailsModal = ({ cycle, onClose }: CycleDetailsModalProps) => {
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-US', {
       month: 'long',
@@ -144,80 +106,12 @@ const CycleDetailsModal = ({
               />
             )}
           </div>
-
-          {/* AI Insights Section */}
-          {cycle.insightsButtonVisible && !insights && (
-            <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-6 border border-primary/20">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary/20 rounded-xl">
-                  <Sparkles className="text-primary" size={24} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Get AI Insights</h3>
-                  <p className="text-sm text-muted mb-4">
-                    Analyze your cycle patterns and get personalized insights based on PCOS
-                    management guidelines.
-                  </p>
-                  <button
-                    onClick={handleGenerateInsights}
-                    disabled={generatingInsights}
-                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {generatingInsights ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      <span className="flex items-center">
-                        <Sparkles size={18} className="mr-2" />
-                        Generate Insights
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Display Insights */}
-          {(insights || showInsights) && (
-            <div className="bg-secondary/30 rounded-2xl p-6 border border-secondary">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="text-primary" size={20} />
-                <h3 className="text-lg font-semibold text-gray-800">AI Analysis</h3>
-              </div>
-
-              {/* Medical Disclaimer */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 flex gap-3">
-                <AlertCircle className="text-blue-600 flex-shrink-0" size={20} />
-                <p className="text-xs text-blue-800">
-                  💡 These insights are based on your tracked data and PCOS management guidelines.
-                  This is not a medical diagnosis. Always consult your healthcare provider for
-                  personalized advice.
-                </p>
-              </div>
-
-              <div className="prose prose-sm max-w-none">
-                <p className="text-gray-700 whitespace-pre-line">{insights}</p>
-              </div>
-            </div>
-          )}
-
-          {insights && !showInsights && (
-            <button
-              onClick={() => setShowInsights(!showInsights)}
-              className="w-full btn-outline mt-4"
-            >
-              {showInsights ? 'Hide' : 'View'} AI Insights
-            </button>
-          )}
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-secondary">
           <button onClick={onClose} className="btn-primary w-full">
-            Done
+            Close
           </button>
         </div>
       </div>

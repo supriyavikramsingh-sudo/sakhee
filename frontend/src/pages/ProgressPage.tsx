@@ -142,11 +142,6 @@ const ProgressPage = () => {
     setSelectedCycle(cycle);
   };
 
-  const handleInsightsGenerated = () => {
-    // Refresh cycle data if needed
-    setSelectedCycle(null);
-  };
-
   const handleDailyTrackingSuccess = () => {
     setShowDailyForm(false);
     setDailyRefreshTrigger((prev) => prev + 1);
@@ -219,22 +214,10 @@ const ProgressPage = () => {
             {activeTab === 'period' && user?.uid && (
               <div className="space-y-6">
                 {/* Unified Cycle Insights Card */}
-                <CycleInsightsCard
-                  userId={user.uid}
-                  refreshTrigger={ovulationRefreshTrigger}
-                  onLogPeriod={() => setShowLogPeriod(true)}
-                  onTrackSymptoms={() => setShowDailyForm(true)}
-                />
-
-                {/* Period Timeline */}
-                <PeriodTimeline
-                  userId={user.uid}
-                  onCycleClick={handleCycleClick}
-                  refreshTrigger={periodRefreshTrigger}
-                />
+                <CycleInsightsCard userId={user.uid} refreshTrigger={ovulationRefreshTrigger} />
 
                 {/* Actions */}
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex justify-end gap-4 flex-wrap">
                   <button
                     onClick={() => {
                       setEditMode('new');
@@ -253,6 +236,13 @@ const ProgressPage = () => {
                     Edit Last Period
                   </button>
                 </div>
+
+                {/* Period Timeline */}
+                <PeriodTimeline
+                  userId={user.uid}
+                  onCycleClick={handleCycleClick}
+                  refreshTrigger={periodRefreshTrigger}
+                />
               </div>
             )}
 
@@ -380,13 +370,8 @@ const ProgressPage = () => {
         )}
 
         {/* Cycle Details Modal */}
-        {selectedCycle && user?.uid && (
-          <CycleDetailsModal
-            userId={user.uid}
-            cycle={selectedCycle}
-            onClose={() => setSelectedCycle(null)}
-            onInsightsGenerated={handleInsightsGenerated}
-          />
+        {selectedCycle && (
+          <CycleDetailsModal cycle={selectedCycle} onClose={() => setSelectedCycle(null)} />
         )}
 
         {/* Daily Tracking Form Modal */}

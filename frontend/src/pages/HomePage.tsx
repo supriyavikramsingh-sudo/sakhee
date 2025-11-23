@@ -1,5 +1,5 @@
 import { Alert } from 'antd';
-import { Cpu, FileHeart, Heart, Leaf, Zap } from 'lucide-react';
+import { CalendarDays, Cpu, FileHeart, Heart, Leaf, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/common/Footer';
@@ -86,8 +86,6 @@ const HomePage = () => {
               title={t('home.features.meals') || 'Meal plans'}
               description={t('home.features.mealsDesc') || 'Weekly meal plans with shopping lists.'}
             />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 justify-center gap-6 sm:gap-16 mt-4 sm:mt-8 w-full max-w-6xl px-4">
             <FeatureCard
               icon={<Zap className="w-8 h-8" />}
               title={t('home.features.tracking') || 'Progress tracking'}
@@ -99,6 +97,11 @@ const HomePage = () => {
               icon={<FileHeart className="w-8 h-8" />}
               title="AI Powered lab insights"
               description="Upload lab reports for simple analysis and food suggestions."
+            />
+            <FeatureCard
+              icon={<CalendarDays className="w-8 h-8" />}
+              title="AI Powered cycle insights"
+              description="Get personalized insights based on your cycle data."
             />
           </div>
         </section>

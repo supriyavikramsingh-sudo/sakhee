@@ -1,17 +1,10 @@
-/**
- * Unified Cycle Insights Card Component
- * Combines fertility tracking, ovulation scoring, and cycle information in one comprehensive card
- */
-
 import { useState, useEffect } from 'react';
-import { Heart, TrendingUp, Droplet, AlertCircle, CheckCircle2, Plus } from 'lucide-react';
+import { Heart, TrendingUp, Droplet, AlertCircle, CheckCircle2 } from 'lucide-react';
 import progressTrackerApi from '../../services/progressTrackerApi';
 
 interface CycleInsightsCardProps {
   userId: string;
   refreshTrigger?: number;
-  onLogPeriod?: () => void;
-  onTrackSymptoms?: () => void;
 }
 
 interface CycleData {
@@ -169,12 +162,7 @@ function calculatePeriodStatus(
   };
 }
 
-const CycleInsightsCard = ({
-  userId,
-  refreshTrigger = 0,
-  onLogPeriod,
-  onTrackSymptoms,
-}: CycleInsightsCardProps) => {
+const CycleInsightsCard = ({ userId, refreshTrigger = 0 }: CycleInsightsCardProps) => {
   const [cycleData, setCycleData] = useState<CycleData | null>(null);
   const [todayTracking, setTodayTracking] = useState<TodayTracking | null>(null);
   const [loading, setLoading] = useState(true);
@@ -830,7 +818,7 @@ const CycleInsightsCard = ({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <h4 className="text-sm font-semibold text-gray-700 mb-2">Last Period</h4>
-          <div className="bg-secondary/20 rounded-xl p-3">
+          <div className="bg-secondary/20 rounded-xl p-3 border border-secondary/80">
             <p className="text-sm font-medium text-gray-800">
               {new Date(cycleData.lastPeriodStart).toLocaleDateString('en-US', {
                 month: 'short',
