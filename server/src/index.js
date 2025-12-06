@@ -6,6 +6,7 @@ import { rateLimiter } from './middleware/rateLimit.js';
 import { safetyGuards } from './middleware/safetyGuards.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { Logger } from './utils/logger.js';
+import { initializeCronJobs, stopAllCronJobs } from './cron/cronScheduler.js';
 import chatRoutes from './routes/chat.js';
 import mealPlanRoutes from './routes/mealPlan.js';
 import uploadRoutes from './routes/upload.js';
@@ -17,6 +18,7 @@ import subscriptionRoutes from './routes/subscription.js';
 import metricsRoutes from './routes/metrics.js';
 import recipeRoutes from './routes/recipes.js';
 import jobRoutes from './routes/jobs.js';
+import cronRoutes from './routes/cron.js';
 import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
@@ -34,6 +36,13 @@ if (ragReady) {
   logger.warn('⚠️  RAG system not fully initialized - using fallback templates');
   logger.info('💡 To enable RAG with new templates: npm run ingest:meals');
 }
+
+// ============================================
+// CRON JOBS INITIALIZATION
+// ============================================
+logger.info('⏰ Initializing cron jobs...');
+initializeCronJobs();
+logger.info('✅ Cron jobs initialized');
 
 // ============================================
 // MIDDLEWARE
@@ -69,6 +78,7 @@ app.use('/api/user', userProfileRoutes);
 app.use('/api/user', subscriptionRoutes); // Subscription routes under /api/user
 app.use('/api/metrics', metricsRoutes); // Performance metrics routes
 app.use('/api/jobs', jobRoutes); // Background job tracking routes
+app.use('/api/cron', cronRoutes); // Cron job management routes
 
 // Health check
 app.get('/health', (req, res) => {
@@ -160,6 +170,7 @@ server.on('error', (err) => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down gracefully...');
+  stopAllCronJobs();
   server.close(() => {
     logger.info('Server closed');
     process.exit(0);
@@ -168,6 +179,7 @@ process.on('SIGTERM', () => {
 
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully...');
+  stopAllCronJobs();
   server.close(() => {
     logger.info('Server closed');
     process.exit(0);

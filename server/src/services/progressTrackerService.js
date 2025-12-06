@@ -486,6 +486,21 @@ export async function saveDailyTracking(userId, date, trackingData) {
 
     await setDoc(dailyRef, dataToSave, { merge: true });
 
+    // NEW (Phase 2): Calculate weekly activity level if exercisedToday is provided
+    if (trackingData.exercisedToday !== undefined) {
+      try {
+        await calculateWeeklyActivityLevel(userId, new Date(dateStr));
+        logger.info('Weekly activity level updated', { userId, date: dateStr });
+      } catch (activityError) {
+        // Don't fail the save if activity calculation fails
+        logger.error('Failed to calculate weekly activity (non-fatal)', {
+          userId,
+          date: dateStr,
+          error: activityError.message,
+        });
+      }
+    }
+
     logger.info('Daily tracking saved', { userId, date: dateStr });
     return { success: true, cycleDay, data: dataToSave };
   } catch (error) {
@@ -524,12 +539,34 @@ export async function getDailyTracking(userId, date) {
 export async function getDailyTrackingRange(userId, startDate, endDate) {
   try {
     const dailyRef = collection(db, 'dailyTracking', userId, 'entries');
+
+    logger.info('[getDailyTrackingRange] Fetching entries', {
+      userId,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      path: `dailyTracking/${userId}/entries`,
+    });
+
     const snapshot = await getDocs(dailyRef);
+
+    logger.info('[getDailyTrackingRange] Snapshot received', {
+      userId,
+      totalDocs: snapshot.size,
+      empty: snapshot.empty,
+    });
 
     const entries = [];
     snapshot.forEach((doc) => {
       const dateStr = doc.id;
       const entryDate = new Date(dateStr);
+
+      logger.info('[getDailyTrackingRange] Processing doc', {
+        userId,
+        docId: dateStr,
+        entryDate: entryDate.toISOString(),
+        inRange: entryDate >= startDate && entryDate <= endDate,
+        data: doc.data(),
+      });
 
       if (entryDate >= startDate && entryDate <= endDate) {
         const data = doc.data();
@@ -543,6 +580,12 @@ export async function getDailyTrackingRange(userId, startDate, endDate) {
 
     // Sort by date ascending
     entries.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    logger.info('[getDailyTrackingRange] Returning entries', {
+      userId,
+      count: entries.length,
+      entries,
+    });
 
     return entries;
   } catch (error) {
@@ -663,8 +706,14 @@ export async function calculateWeeklyWeightAverage(userId, date) {
 function calculateTDEE(weight, userProfile) {
   const height = userProfile.profileData?.height_cm || userProfile.height_cm || 160;
   const ageRange = userProfile.profileData?.age || userProfile.age || '25-29';
+
+  // NEW (Phase 2): Use weeklyActivityLevel if available, fallback to onboarding activityLevel
   const activityLevel =
-    userProfile.profileData?.activityLevel || userProfile.activityLevel || 'moderate';
+    userProfile.weeklyActivityLevel || // ✅ Calculated from exercise tracking
+    userProfile.profileData?.activityLevel || // 🔄 Onboarding value (fallback)
+    userProfile.activityLevel || // 🔄 Legacy field (fallback)
+    'moderate'; // 🆘 Default
+
   const weightGoal = userProfile.profileData?.weight_goal || userProfile.weight_goal || 'maintain';
 
   // Get age from range
@@ -683,10 +732,12 @@ function calculateTDEE(weight, userProfile) {
 
   // Activity multipliers
   const activityMultipliers = {
-    sedentary: 1.2,
-    light: 1.375,
-    moderate: 1.55,
-    very: 1.725,
+    sedentary: 1.2, // Little to no exercise
+    light: 1.375, // Light exercise 1-3 days/week
+    moderate: 1.55, // Moderate exercise 4-5 days/week
+    active: 1.725, // Hard exercise 6 days/week
+    very: 1.725, // Legacy support
+    very_active: 1.9, // Very hard exercise 7 days/week
   };
 
   const multiplier = activityMultipliers[activityLevel] || 1.55;
@@ -700,6 +751,92 @@ function calculateTDEE(weight, userProfile) {
   }
 
   return Math.round(TDEE);
+}
+
+/**
+ * Calculate weekly activity level from exercise tracking
+ * Maps exercise days to activity level:
+ * 0-1 days = sedentary
+ * 2-3 days = light
+ * 4-5 days = moderate
+ * 6 days = active
+ * 7 days = very_active
+ *
+ * @param {string} userId - User ID
+ * @param {Date} weekEndDate - End date of the week (usually today)
+ * @returns {Promise<Object>} Activity level and exercise count
+ */
+export async function calculateWeeklyActivityLevel(userId, weekEndDate = new Date()) {
+  try {
+    logger.info('Calculating weekly activity level', { userId, weekEndDate });
+
+    // Get last 7 days (including today)
+    const endDate = new Date(weekEndDate);
+    const startDate = new Date(weekEndDate);
+    startDate.setDate(startDate.getDate() - 6); // 6 days ago + today = 7 days
+
+    // Get all daily entries for the week
+    const entries = await getDailyTrackingRange(userId, startDate, endDate);
+
+    // Count exercise days (where exercisedToday === true)
+    const exerciseDays = entries.filter((e) => e.exercisedToday === true);
+    const exerciseCount = exerciseDays.length;
+
+    // Map exercise count to activity level
+    let calculatedActivityLevel;
+    if (exerciseCount <= 1) {
+      calculatedActivityLevel = 'sedentary';
+    } else if (exerciseCount <= 3) {
+      calculatedActivityLevel = 'light';
+    } else if (exerciseCount <= 5) {
+      calculatedActivityLevel = 'moderate';
+    } else if (exerciseCount === 6) {
+      calculatedActivityLevel = 'active';
+    } else {
+      calculatedActivityLevel = 'very_active';
+    }
+
+    // Update user profile with calculated activity level
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      weeklyActivityLevel: calculatedActivityLevel,
+      activityCalculatedAt: serverTimestamp(),
+    });
+
+    // Save to weekly metrics collection
+    const weekId = getWeekId(weekEndDate);
+    const weeklyMetricsRef = doc(db, 'weeklyMetrics', userId, weekId);
+    await setDoc(weeklyMetricsRef, {
+      weekStartDate: Timestamp.fromDate(startDate),
+      weekEndDate: Timestamp.fromDate(endDate),
+      exerciseDays: exerciseDays.map((e) => e.date),
+      exerciseCount,
+      calculatedActivityLevel,
+      calculatedAt: serverTimestamp(),
+    });
+
+    logger.info('Weekly activity level calculated', {
+      userId,
+      weekId,
+      exerciseCount,
+      calculatedActivityLevel,
+    });
+
+    return {
+      success: true,
+      weekId,
+      exerciseCount,
+      calculatedActivityLevel,
+      exerciseDays: exerciseDays.map((e) => e.date),
+    };
+  } catch (error) {
+    logger.error('Failed to calculate weekly activity level', {
+      userId,
+      weekEndDate,
+      error: error.message,
+    });
+    throw error;
+  }
 }
 
 /**

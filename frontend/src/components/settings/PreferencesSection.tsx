@@ -8,6 +8,26 @@ import { useAuthStore } from '../../store/authStore';
 import { calculateBMI, validateBMI } from '../../utils/calorieCalculations';
 import QuestionField from '../onboarding/QuestionField';
 
+// Helper function to format relative time
+const formatRelativeTime = (timestamp: string | Date | null): string => {
+  if (!timestamp) return 'never';
+
+  const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return 'today';
+  if (diffDays === 1) return 'yesterday';
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+  }
+
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
 const PreferencesSection = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
@@ -401,11 +421,13 @@ const PreferencesSection = () => {
             label: 'Current Weight (kg)',
             required: true,
             placeholder: 'Enter weight in kg',
-            value: data.current_weight_kg,
+            value: userProfile.currentWeight || data.current_weight_kg,
             maxDecimals: 1,
             min: 30,
             max: 200,
-            helperText: 'Enter your current weight in kilograms',
+            helperText: userProfile.currentWeight
+              ? `Latest weekly average (updated ${formatRelativeTime(userProfile.updatedAt)})`
+              : 'Baseline weight from onboarding. Log weight for 5+ days to see weekly average.',
             error: validationErrors.current_weight_kg,
           },
         ];

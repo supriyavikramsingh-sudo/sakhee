@@ -1,5 +1,5 @@
 import { Plus, TrendingUp, Calendar } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import PageHeader from '../components/common/PageHeader';
@@ -9,6 +9,8 @@ import LogPeriodModal from '../components/progress/LogPeriodModal';
 import EditPeriodModal from '../components/progress/EditPeriodModal';
 import CycleDetailsModal from '../components/progress/CycleDetailsModal';
 import DailyTrackingForm from '../components/progress/DailyTrackingForm';
+import DailyTrackingCalendar from '../components/progress/DailyTrackingCalendar';
+import DailyTrackingEntryPreview from '../components/progress/DailyTrackingEntryPreview';
 import WeightTracker from '../components/progress/WeightTracker';
 import GoalAchievementBanner from '../components/progress/GoalAchievementBanner';
 import CycleInsightsCard from '../components/progress/CycleInsightsCard';
@@ -18,10 +20,28 @@ import WeeklySummariesDashboard from '../components/progress/WeeklySummariesDash
 import MonthlyReportsDashboard from '../components/progress/MonthlyReportsDashboard';
 import { useAuthStore } from '../store/authStore';
 import progressTrackerApi from '../services/progressTrackerApi';
+import featureFlags from '../config/featureFlags';
+import { useDailyTrackingCalendar } from '../hooks/useDailyTrackingCalendarOptimized';
 
 const ProgressPage = () => {
   const { t } = useTranslation();
-  const { user } = useAuthStore();
+  const { user, userProfile } = useAuthStore();
+
+  // Parse user signup date (Task 5)
+  const userSignupDate = useMemo(() => {
+    if (!userProfile?.onboardedAt) return null;
+
+    // Handle Firestore Timestamp
+    const timestamp = userProfile.onboardedAt;
+    if (timestamp?.toDate) {
+      return timestamp.toDate(); // Firestore Timestamp
+    } else if (timestamp?.seconds) {
+      return new Date(timestamp.seconds * 1000); // Timestamp object
+    } else if (typeof timestamp === 'string') {
+      return new Date(timestamp); // ISO string
+    }
+    return null;
+  }, [userProfile]);
 
   // Period tracking state
   const [periodSetupComplete, setPeriodSetupComplete] = useState(false);
@@ -36,9 +56,18 @@ const ProgressPage = () => {
 
   // Daily tracking state
   const [showDailyForm, setShowDailyForm] = useState(false);
+  const [dailyFormMode, setDailyFormMode] = useState<'create' | 'edit'>('create');
+  const [dailyFormData, setDailyFormData] = useState<any>(null);
+  const [dailyFormDate, setDailyFormDate] = useState<string>('');
+  const [dailyFormEntryId, setDailyFormEntryId] = useState<string>('');
   const [dailyRefreshTrigger, setDailyRefreshTrigger] = useState(0);
   const [goalAchievementData, setGoalAchievementData] = useState<any>(null);
   const [showGoalBanner, setShowGoalBanner] = useState(false);
+
+  // Entry preview modal state (Phase 3)
+  const [showEntryPreview, setShowEntryPreview] = useState(false);
+  const [selectedEntryDate, setSelectedEntryDate] = useState<string>('');
+  const [selectedEntry, setSelectedEntry] = useState<any>(null);
 
   // Ovulation tracking state (Phase 4)
   const [ovulationRefreshTrigger, setOvulationRefreshTrigger] = useState(0);
@@ -53,6 +82,36 @@ const ProgressPage = () => {
   // Monthly reports state (Phase 7)
   const [reportsRefreshTrigger] = useState(0);
   const [reportsSubTab, setReportsSubTab] = useState<'weekly' | 'monthly'>('weekly');
+
+  // Hook to get today's entry for smart button (only when on daily tab)
+  const { getEntryForDate } = useDailyTrackingCalendar({
+    userId: user?.uid || '',
+    enabled: activeTab === 'daily' && !!user?.uid,
+  });
+
+  // Calculate today's date string and entry
+  const todayDateStr = useMemo(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }, []);
+
+  const todayEntry = useMemo(() => {
+    return getEntryForDate ? getEntryForDate(todayDateStr) : null;
+  }, [getEntryForDate, todayDateStr]);
+
+  // Smart button text based on today's entry status
+  const logTodayButtonText = useMemo(() => {
+    if (!todayEntry || todayEntry.status === 'empty') {
+      return "Log Today's Metrics";
+    }
+    if (todayEntry.status === 'complete') {
+      return "Edit Today's Metrics";
+    }
+    return "Complete Today's Metrics"; // partial
+  }, [todayEntry]);
 
   useEffect(() => {
     if (user?.uid) {
@@ -147,6 +206,31 @@ const ProgressPage = () => {
     setDailyRefreshTrigger((prev) => prev + 1);
     setOvulationRefreshTrigger((prev) => prev + 1); // Refresh ovulation data when daily tracking is updated
     checkGoalAchievement(); // Check if goal was achieved with new data
+
+    // Close preview modal if open
+    setShowEntryPreview(false);
+    setSelectedEntry(null);
+    setSelectedEntryDate('');
+
+    // Reset form state
+    setDailyFormMode('create');
+    setDailyFormData(null);
+    setDailyFormDate('');
+    setDailyFormEntryId('');
+  };
+
+  const handleEditEntry = (entry: any, date: string) => {
+    // Close preview modal
+    setShowEntryPreview(false);
+
+    // Set up form for edit mode
+    setDailyFormMode('edit');
+    setDailyFormData(entry);
+    setDailyFormDate(date);
+    setDailyFormEntryId(date); // Entry ID is the date itself (Firestore document ID)
+
+    // Open form in edit mode
+    setShowDailyForm(true);
   };
 
   const handleGoalBannerDismiss = () => {
@@ -258,14 +342,101 @@ const ProgressPage = () => {
                   />
                 )}
 
-                {/* Action Button */}
-                <div className="flex justify-end">
+                {/* Daily Tracking Calendar (Feature Flag) */}
+                {featureFlags.enableDailyTrackingCalendar && (
+                  <DailyTrackingCalendar
+                    userId={user.uid}
+                    userSignupDate={userSignupDate} // Task 5: Pass signup date
+                    onDateClick={async (date, entry) => {
+                      // Validate date is within allowed range (last 7 days)
+                      const selectedDate = new Date(date);
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      selectedDate.setHours(0, 0, 0, 0);
+
+                      const sevenDaysAgo = new Date(today);
+                      sevenDaysAgo.setDate(today.getDate() - 7);
+
+                      // Check if date is within allowed range
+                      if (selectedDate < sevenDaysAgo) {
+                        toast.error('You can only view or log entries for the last 7 days');
+                        return;
+                      }
+
+                      // Fetch fresh data for this specific date using the single-date API
+                      try {
+                        const response = await progressTrackerApi.getDailyTracking(user.uid, date);
+
+                        // If we have data, show it in the preview or edit modal
+                        if (
+                          response.success &&
+                          response.data &&
+                          Object.keys(response.data).length > 0
+                        ) {
+                          setSelectedEntryDate(date);
+                          setSelectedEntry(response.data);
+                          setShowEntryPreview(true);
+                        } else {
+                          // No data found, open form for creating new entry
+                          setDailyFormMode('create');
+                          setDailyFormDate(date);
+                          setDailyFormData(null);
+                          setShowDailyForm(true);
+                        }
+                      } catch (error) {
+                        console.error('Failed to fetch daily tracking data:', error);
+                        // On error, fall back to the entry from calendar (if available)
+                        if (entry && entry.status !== 'empty') {
+                          setSelectedEntryDate(date);
+                          setSelectedEntry(entry);
+                          setShowEntryPreview(true);
+                        } else {
+                          // Open form for empty date
+                          setDailyFormMode('create');
+                          setDailyFormDate(date);
+                          setDailyFormData(null);
+                          setShowDailyForm(true);
+                        }
+                      }
+                    }}
+                    onTodayClick={() => {
+                      // Smart behavior: Edit if entry exists, create if not
+                      if (todayEntry && todayEntry.status !== 'empty') {
+                        setDailyFormMode('edit');
+                        setDailyFormData(todayEntry);
+                        setDailyFormDate(todayDateStr);
+                        setDailyFormEntryId(todayDateStr); // Entry ID is the date
+                      } else {
+                        setDailyFormMode('create');
+                        setDailyFormDate('');
+                        setDailyFormData(null);
+                      }
+                      setShowDailyForm(true);
+                    }}
+                  />
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3 flex-wrap">
                   <button
-                    onClick={() => setShowDailyForm(true)}
+                    onClick={() => {
+                      // Smart behavior: Edit if entry exists, create if not
+                      if (todayEntry && todayEntry.status !== 'empty') {
+                        setDailyFormMode('edit');
+                        setDailyFormData(todayEntry);
+                        setDailyFormDate(todayDateStr);
+                        setDailyFormEntryId(todayDateStr); // Entry ID is the date
+                      } else {
+                        setDailyFormMode('create');
+                        setDailyFormDate('');
+                        setDailyFormData(null);
+                      }
+                      setShowDailyForm(true);
+                    }}
                     className="btn-primary flex items-center gap-2"
                   >
                     <Plus size={20} />
-                    Log Today's Metrics
+                    {logTodayButtonText}
                   </button>
                 </div>
 
@@ -378,8 +549,33 @@ const ProgressPage = () => {
         {showDailyForm && user?.uid && (
           <DailyTrackingForm
             userId={user.uid}
-            onClose={() => setShowDailyForm(false)}
+            onClose={() => {
+              setShowDailyForm(false);
+              setDailyFormMode('create');
+              setDailyFormData(null);
+              setDailyFormDate('');
+              setDailyFormEntryId('');
+            }}
             onSuccess={handleDailyTrackingSuccess}
+            mode={dailyFormMode}
+            initialData={dailyFormData}
+            initialDate={dailyFormDate}
+            entryId={dailyFormEntryId}
+          />
+        )}
+
+        {/* Entry Preview Modal (Phase 3) */}
+        {showEntryPreview && (
+          <DailyTrackingEntryPreview
+            entry={selectedEntry}
+            date={selectedEntryDate}
+            isOpen={showEntryPreview}
+            onClose={() => {
+              setShowEntryPreview(false);
+              setSelectedEntry(null);
+              setSelectedEntryDate('');
+            }}
+            onEdit={handleEditEntry}
           />
         )}
 

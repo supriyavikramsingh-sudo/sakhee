@@ -64,6 +64,7 @@ class AuthService {
           photoURL: user.photoURL,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           onboarded: false,
           profileData: {},
         });

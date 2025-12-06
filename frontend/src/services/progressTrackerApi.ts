@@ -208,6 +208,22 @@ export const progressTrackerApi = {
   },
 
   /**
+   * Update existing daily tracking entry (edit mode)
+   */
+  updateDailyTracking: async (userId: string, entryId: string, trackingData: any): Promise<any> => {
+    try {
+      const response = await axiosInstance.put(`/progress/daily/${entryId}`, {
+        userId,
+        ...trackingData,
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to update daily tracking:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Get daily tracking for specific date
    */
   getDailyTracking: async (userId: string, date: string): Promise<any> => {

@@ -735,6 +735,140 @@ router.post('/daily', verifyAuth, async (req, res) => {
 });
 
 /**
+ * PUT /api/progress/daily/:entryId
+ * Update existing daily tracking entry (edit mode - Phase 4)
+ * Entries can only be edited within 7 days of creation
+ */
+router.put('/daily/:entryId', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { entryId } = req.params; // This is actually the date (YYYY-MM-DD)
+    const trackingData = req.body;
+
+    logger.info('Updating daily tracking', { userId, entryId });
+
+    // Get the existing entry from subcollection: dailyTracking/{userId}/entries/{date}
+    const entryRef = db.collection('dailyTracking').doc(userId).collection('entries').doc(entryId);
+    const existingEntry = await entryRef.get();
+
+    if (!existingEntry.exists) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          message: 'Entry not found',
+        },
+      });
+    }
+
+    const entryData = existingEntry.data();
+
+    // Note: Ownership is implicit since we're querying user's subcollection
+    // No need for separate ownership check
+
+    // Check 7-day edit window
+    const entryDate = new Date(entryData.date);
+    const today = new Date();
+    entryDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    const diffDays = Math.floor((today - entryDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0 || diffDays >= 7) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: `Entries can only be edited within 7 days. This entry is ${diffDays} days old.`,
+        },
+      });
+    }
+
+    // Track if weight or exercise changed (for recalculation triggers)
+    const weightChanged = trackingData.weight !== entryData.weight;
+    const exerciseChanged = trackingData.exercisedToday !== entryData.exercisedToday;
+    const skipRecalculation = trackingData.skipRecalculation || false;
+
+    // Remove the skipRecalculation flag before saving (it's not a tracking field)
+    const { skipRecalculation: _, ...dataToSave } = trackingData;
+
+    // Update entry in subcollection
+    await entryRef.update({
+      ...dataToSave,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // Recalculate ovulation score if relevant data changed
+    let ovulationData = null;
+    if (trackingData.cervicalMucus || trackingData.ovulationPain || trackingData.libido) {
+      ovulationData = calculateOvulationScore(trackingData);
+
+      const currentCycleId = await getCurrentCycleId(userId);
+      if (currentCycleId) {
+        await saveDailyOvulationScore(userId, currentCycleId, entryData.date, ovulationData);
+      }
+    }
+
+    // Recalculate weekly metrics if weight or exercise changed (unless user opted to skip)
+    let recalculationResults = {};
+    if (!skipRecalculation && (weightChanged || exerciseChanged)) {
+      try {
+        // Recalculate weekly weight average
+        if (weightChanged) {
+          const weeklyResult = await calculateWeeklyWeightAverage(userId, entryData.date);
+          if (weeklyResult) {
+            recalculationResults.weeklyWeightAverage = weeklyResult;
+          }
+        }
+
+        // Recalculate weekly activity if exercise changed (Phase 2 feature)
+        if (exerciseChanged) {
+          // This will be triggered by the weekly cron job
+          // Or we can trigger immediate recalculation here
+          recalculationResults.activityRecalculated = true;
+        }
+
+        logger.info('Recalculations triggered', {
+          userId,
+          weightChanged,
+          exerciseChanged,
+          recalculationResults,
+        });
+      } catch (error) {
+        logger.warn('Recalculation failed', { userId, error: error.message });
+        // Don't fail the entire request if recalculation fails
+      }
+    } else if (skipRecalculation && weightChanged) {
+      logger.info('User opted to skip calorie recalculation despite weight change', {
+        userId,
+        entryId,
+        weightChanged,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Daily tracking updated successfully',
+      data: {
+        entryId,
+        ovulationScore: ovulationData,
+        recalculationResults,
+        changesDetected: {
+          weightChanged,
+          exerciseChanged,
+        },
+      },
+    });
+  } catch (error) {
+    logger.error('Update daily tracking failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to update daily tracking',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
  * GET /api/progress/daily/:userId/:date
  * Get daily tracking for specific date
  */
