@@ -290,7 +290,12 @@ const ProgressPage = () => {
     { id: 'period', label: 'Period & Ovulation', icon: <Calendar size={18} /> },
     { id: 'daily', label: 'Daily Tracking', icon: <Plus size={18} /> },
     { id: 'weekly', label: 'Weekly Check-ins', icon: <TrendingUp size={18} /> },
-    { id: 'reports', label: 'Reports & Insights', icon: <SparkleIcon size={18} /> },
+    {
+      id: 'reports',
+      label: 'Reports & Insights (Coming Soon)',
+      icon: <SparkleIcon size={18} />,
+      disabled: true,
+    },
   ];
 
   return (
@@ -318,12 +323,12 @@ const ProgressPage = () => {
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={tab.disabled ? undefined : () => setActiveTab(tab.id as any)}
                   className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap transition-all duration-300 border-b-2 ${
                     activeTab === tab.id
                       ? 'border-primary text-primary font-semibold !px-3'
                       : 'border-transparent text-muted hover:text-gray-700'
-                  }`}
+                  } ${tab.disabled ? 'cursor-not-allowed opacity-50' : ''}`}
                 >
                   {tab.icon}
                   {tab.label}
