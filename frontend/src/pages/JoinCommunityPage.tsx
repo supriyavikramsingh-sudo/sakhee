@@ -175,7 +175,7 @@ const JoinCommunityPage = () => {
             {formState === 'success' ? (
               // Success State
               <div className="text-center">
-                <h2 className="text-3xl font-bold text-primary mb-4">Thank You for Joining! 🎉</h2>
+                <h2 className="text-3xl font-bold text-primary mb-4">Thank you for joining! 🎉</h2>
                 <p className="text-lg text-muted mb-4">
                   We're thrilled to have you as part of the Sakhee community. You'll be the first to
                   know when we launch!
