@@ -95,21 +95,29 @@ const AboutUsPage = () => {
           <h2 className="text-4xl font-bold text-primary text-center mb-8">Our Story</h2>
           <div className="max-w-4xl mx-auto">
             <p className="text-lg text-muted leading-relaxed mb-4">
-              AI Sakhee was born from a simple observation: women with PCOS needed more than generic
-              health advice. They needed a companion that understood their unique challenges—from
-              managing symptoms while juggling work and family, to finding PCOS-friendly Indian
-              recipes that the whole family would enjoy.
+              AI Sakhee was born from a deeply personal place, a decade-long journey of living with
+              PCOS, searching for answers, and feeling profoundly alone in the process.
             </p>
             <p className="text-lg text-muted leading-relaxed mb-4">
-              We built AI Sakhee on the foundation of medical research, real experiences from
-              thousands of women, and advanced AI technology. Every feature—from personalized meal
-              plans to symptom tracking—is designed to make your PCOS journey more manageable and
-              less overwhelming.
+              For over 10 years, I navigated the challenges of PCOS,symptoms that started years
+              before my formal diagnosis in 2021, countless doctor visits, confusing advice, and the
+              overwhelming isolation that comes with managing a condition that touches every aspect
+              of your life. Through trial, error, research, and persistence, I learned to manage and
+              reverse most of my symptoms. But the loneliness of that journey never left me.
             </p>
             <p className="text-lg text-muted leading-relaxed">
-              Today, thousands of women across India trust AI Sakhee as their daily health
-              companion, and we're just getting started.
+              As a woman in STEM with a background in computer science and product management, I
+              realized I could combine my personal experience with technology to create something
+              that didn't exist when I needed it most—a companion for women navigating PCOS.
             </p>
+            <br />
+            <p className="text-lg text-muted leading-relaxed">
+              AI Sakhee isn't just a health app. It's the friend I wished I had during my darkest
+              moments. It's the culturally-aware guide that understands Indian cuisine and
+              lifestyle. It's the 24/7 support system that never judges, always listens, and
+              provides personalized guidance based on real medical research and lived experiences.
+            </p>
+            <p className="font-bold mt-4 text-primary text-lg">— Supriya Singh, Founder & CEO</p>
           </div>
         </section>
 
@@ -129,8 +137,8 @@ const AboutUsPage = () => {
             />
             <ValueCard
               icon={<Award size={48} />}
-              title="Evidence-Based"
-              description="All our recommendations are grounded in medical research and validated by healthcare professionals."
+              title="Research-Backed Guidance"
+              description="We stay current with the latest PCOS research to provide you with accurate, trustworthy information."
             />
             <ValueCard
               icon={<Users size={48} />}
@@ -166,7 +174,7 @@ const AboutUsPage = () => {
               <div className="text-5xl font-bold text-primary mb-4">1000s</div>
               <h3 className="text-xl font-semibold mb-2">Women Empowered</h3>
               <p className="text-muted">
-                Join thousands of women who are successfully managing their PCOS with AI Sakhee.
+                Join other women who are successfully managing their PCOS with AI Sakhee.
               </p>
             </div>
           </div>
@@ -179,16 +187,16 @@ const AboutUsPage = () => {
             <TeamMember
               link="https://www.linkedin.com/in/supriya-singh97/"
               image="/images/supriya-headshot.jpeg"
-              name="Supriya Gupta"
+              name="Supriya Singh"
               role="CEO, Founder"
-              description="Woman with PCOS who is passionate about creating impactful health solutions."
+              description="Product Manager with 4.5 years of experience. Bachelors in Computer Science Engineering and MSc in Management from SMU Singapore."
             />
             <TeamMember
               link="https://www.linkedin.com/in/utkarsh-gupta98/"
               image="/images/utkarsh-headshot.jpeg"
               name="Utkarsh Gupta"
               role="CTO, Co-Founder"
-              description="Expert in AI and healthcare technology, driving innovation at AI Sakhee."
+              description="Lead Software Engineer with 5 years of experience specializing in frontend and full-stack development."
             />
           </div>
         </section>
@@ -198,7 +206,7 @@ const AboutUsPage = () => {
           <section className="text-center bg-primary text-white rounded-xl p-12 mt-10">
             <h2 className="text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join thousands of women who are taking control of their PCOS with AI Sakhee. Start
+              Join a community of women who are taking control of their PCOS with AI Sakhee. Start
               your free trial today!
             </p>
             <div className="flex gap-4 justify-center">
