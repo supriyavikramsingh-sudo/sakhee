@@ -15,6 +15,14 @@ export const NavbarCommon = () => {
 
           <div className="hidden md:flex space-x-6">
             <Link
+              to="/join"
+              className={`text-gray-700 font-medium hover:text-primaryDark transition ${
+                pathName === '/join' ? 'text-primaryDark' : ''
+              }`}
+            >
+              Join
+            </Link>
+            <Link
               to="/about"
               className={`text-gray-700 font-medium hover:text-primaryDark transition ${
                 pathName === '/about' ? 'text-primaryDark' : ''

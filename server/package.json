@@ -20,7 +20,8 @@
     "ingest:medical": "node src/scripts/ingestMedicalKnowledge.js",
     "ingest:nutritional": "node src/scripts/ingestNutritionalData.js",
     "ingest:all": "node src/scripts/ingestAll.js",
-    "pinecone:clear": "node src/scripts/clear-pinecone.js"
+    "pinecone:clear": "node src/scripts/clear-pinecone.js",
+    "test:sheets": "node scripts/test-sheets.js"
   },
   "dependencies": {
     "@langchain/community": "^0.0.57",
@@ -36,6 +37,7 @@
     "express-rate-limit": "^7.1.5",
     "firebase": "^12.4.0",
     "firebase-admin": "^12.7.0",
+    "googleapis": "^126.0.1",
     "json5": "^2.2.3",
     "langchain": "^0.1.28",
     "mammoth": "^1.6.0",

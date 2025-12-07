@@ -8,6 +8,9 @@ node_modules/
 .env.local
 .env.*.local
 
+# Google Sheets API credentials
+server/config/google-credentials.json
+
 # Build outputs
 dist/
 build/

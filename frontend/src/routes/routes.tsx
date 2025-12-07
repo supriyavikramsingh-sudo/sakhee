@@ -19,6 +19,7 @@ const ProgressPage = lazy(() => import('../pages/ProgressPage'));
 const ReportsPage = lazy(() => import('../pages/ReportsPage'));
 const SettingsPageNew = lazy(() => import('../pages/SettingsPageNew'));
 const ComingSoonPage = lazy(() => import('../pages/ComingSoonPage'));
+const JoinCommunityPage = lazy(() => import('../pages/JoinCommunityPage'));
 
 // Loading component for route transitions
 const PageLoader = () => (
@@ -73,6 +74,14 @@ export const UnauthenticatedRoutes = () => {
             element={
               <Suspense fallback={<PageLoader />}>
                 <PricingDetailsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/join"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <JoinCommunityPage />
               </Suspense>
             }
           />

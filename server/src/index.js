@@ -19,6 +19,7 @@ import metricsRoutes from './routes/metrics.js';
 import recipeRoutes from './routes/recipes.js';
 import jobRoutes from './routes/jobs.js';
 import cronRoutes from './routes/cron.js';
+import communityRoutes from './routes/community.js';
 import { initializeRAG } from './langchain/initializeRAG.js';
 
 const app = express();
@@ -79,6 +80,7 @@ app.use('/api/user', subscriptionRoutes); // Subscription routes under /api/user
 app.use('/api/metrics', metricsRoutes); // Performance metrics routes
 app.use('/api/jobs', jobRoutes); // Background job tracking routes
 app.use('/api/cron', cronRoutes); // Cron job management routes
+app.use('/api/community', communityRoutes); // Community signup routes
 
 // Health check
 app.get('/health', (req, res) => {

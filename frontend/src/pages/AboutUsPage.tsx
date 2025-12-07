@@ -171,10 +171,10 @@ const AboutUsPage = () => {
               </p>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold text-primary mb-4">1000s</div>
-              <h3 className="text-xl font-semibold mb-2">Women Empowered</h3>
+              <div className="text-5xl font-bold text-primary mb-4">35M+</div>
+              <h3 className="text-xl font-semibold mb-2">PCOS Fighters</h3>
               <p className="text-muted">
-                Join other women who are successfully managing their PCOS with AI Sakhee.
+                Help us build India's first community for millions managing PCOS.
               </p>
             </div>
           </div>
