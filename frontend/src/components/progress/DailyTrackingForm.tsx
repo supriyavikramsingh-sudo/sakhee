@@ -1,13 +1,4 @@
-/**
- * Daily Tracking Form Component
- * Multi-step form for logging daily health metrics
- * Step 1: Physical Metrics (Weight, Waist, Activity)
- * Step 2: Energy & Sleep (Hours, Quality, Energy Level)
- * Step 3: Mood & Cravings (Mood, Stress, Sugar Cravings, Appetite)
- * Step 4: Ovulation Tracking (Optional - Cervical Mucus, BBT, Symptoms)
- */
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   X,
   ChevronLeft,
@@ -126,6 +117,7 @@ const DailyTrackingForm = ({
   const [isLoadingDefaults, setIsLoadingDefaults] = useState(false);
   const [defaultsApplied, setDefaultsApplied] = useState(false);
   const [weightSource, setWeightSource] = useState<'recent' | 'onboarding' | 'none'>('none'); // Track where weight came from
+  const toastShownRef = useRef(false); // Track if toast has been shown to prevent duplicates in StrictMode
 
   // Fetch user goals on mount (Phase 5)
   useEffect(() => {
@@ -157,6 +149,11 @@ const DailyTrackingForm = ({
 
     fetchUserGoals();
   }, [user]);
+
+  // Reset toast ref when form is opened for a new date or mode changes
+  useEffect(() => {
+    toastShownRef.current = false;
+  }, [selectedDate, mode]);
 
   // Fetch and apply smart defaults for backfill scenarios (Task 4)
   useEffect(() => {
@@ -224,12 +221,16 @@ const DailyTrackingForm = ({
             setWeightSource(source);
             setDefaultsApplied(true);
 
-            // Show toast notification
-            if (defaults.confidence !== 'none') {
-              const message = getConfidenceMessage(defaults.confidence, defaults.sampleSize);
-              toast.info(`✨ ${message}`, { autoClose: 5000 });
-            } else if (source === 'onboarding') {
-              toast.info(`📊 Weight pre-filled from your onboarding data`, { autoClose: 5000 });
+            // Show toast notification (only once to prevent duplicates in StrictMode)
+            if (!toastShownRef.current) {
+              if (defaults.confidence !== 'none') {
+                const message = getConfidenceMessage(defaults.confidence, defaults.sampleSize);
+                toast.info(`✨ ${message}`, { autoClose: 5000 });
+                toastShownRef.current = true;
+              } else if (source === 'onboarding') {
+                toast.info(`📊 Weight pre-filled from your onboarding data`, { autoClose: 5000 });
+                toastShownRef.current = true;
+              }
             }
           }
         } else {
@@ -252,7 +253,12 @@ const DailyTrackingForm = ({
               }));
               setWeightSource('onboarding');
               setDefaultsApplied(true);
-              toast.info(`📊 Weight pre-filled from your onboarding data`, { autoClose: 5000 });
+
+              // Show toast only once to prevent duplicates in StrictMode
+              if (!toastShownRef.current) {
+                toast.info(`📊 Weight pre-filled from your onboarding data`, { autoClose: 5000 });
+                toastShownRef.current = true;
+              }
             }
           }
         }
@@ -349,8 +355,50 @@ const DailyTrackingForm = ({
       const userProfile = user as any;
       const currentTDEE = userProfile?.tdee || userProfile?.profileData?.tdee || 2000;
 
-      // Simple TDEE calculation estimate
-      const weightDiff = (formData.weight || 0) - (initialData.weight || 0);
+      // Calculate weekly average with the new weight value
+      let newWeeklyAverage = formData.weight;
+
+      try {
+        // Fetch last 7 days of data to calculate accurate weekly average
+        const endDate = new Date(selectedDate);
+        const startDate = new Date(endDate);
+        startDate.setDate(startDate.getDate() - 6); // 7 days total including today
+
+        const startDateStr = startDate.toISOString().split('T')[0];
+        const endDateStr = endDate.toISOString().split('T')[0];
+
+        const response = await progressTrackerApi.getDailyTrackingRange(
+          userId,
+          startDateStr,
+          endDateStr
+        );
+
+        if (response.success && response.data && Array.isArray(response.data)) {
+          // Get all weight entries from the last 7 days, excluding the current entry being edited
+          const weightEntries = response.data
+            .filter(
+              (entry: any) =>
+                entry.weight !== null && entry.weight !== undefined && entry.date !== selectedDate // Exclude current entry
+            )
+            .map((entry: any) => entry.weight);
+
+          // Add the new weight value
+          weightEntries.push(formData.weight);
+
+          // Calculate average if we have enough data points
+          if (weightEntries.length >= 1) {
+            const sum = weightEntries.reduce((acc: number, w: number) => acc + w, 0);
+            newWeeklyAverage = Math.round((sum / weightEntries.length) * 10) / 10; // Round to 1 decimal
+          }
+        }
+      } catch (error) {
+        console.error('Failed to calculate weekly average:', error);
+        // Fall back to single weight value if calculation fails
+        newWeeklyAverage = formData.weight;
+      }
+
+      // Simple TDEE calculation estimate based on weekly average
+      const weightDiff = newWeeklyAverage - (initialData.weight || 0);
       const tdeeChange = Math.round(weightDiff * 22); // ~22 cal/kg for women
       const newTDEE = currentTDEE + tdeeChange;
 
@@ -360,7 +408,7 @@ const DailyTrackingForm = ({
         setCaloriePromptData({
           oldWeight: initialData.weight || 0,
           newWeight: formData.weight,
-          newWeeklyAverage: formData.weight, // Will be recalculated on backend
+          newWeeklyAverage: newWeeklyAverage,
           currentTDEE: currentTDEE,
           newTDEE: newTDEE,
         });
@@ -1069,7 +1117,7 @@ const DailyTrackingForm = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-surface rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-surface border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl">
+        <div className="sticky z-10 top-0 bg-surface border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl">
           <div>
             <h2 className="text-2xl font-serif font-bold text-gray-800">
               {mode === 'view' ? 'View Entry' : mode === 'edit' ? 'Edit Entry' : 'Daily Tracking'}

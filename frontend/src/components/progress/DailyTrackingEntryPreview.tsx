@@ -1,18 +1,9 @@
-/**
- * DailyTrackingEntryPreview Component
- *
- * Read-only modal to display daily tracking entry details.
- * Shows all logged data for a selected date.
- * Phase 4: Includes edit functionality for entries within 7-day window.
- */
-
 import React from 'react';
 import {
   X,
   Calendar,
   Activity,
   Moon,
-  Droplet,
   Brain,
   Zap,
   FileText,
@@ -107,9 +98,6 @@ export const DailyTrackingEntryPreview: React.FC<DailyTrackingEntryPreviewProps>
             <span
               className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border ${statusColor}`}
             >
-              {entry?.status === 'complete' && '✅'}
-              {entry?.status === 'partial' && '⚠️'}
-              {entry?.status === 'empty' && '❌'}
               {statusText}
               {entry && entry.completenessScore > 0 && (
                 <span className="ml-1 opacity-70">({entry.completenessScore}%)</span>
@@ -217,22 +205,6 @@ export const DailyTrackingEntryPreview: React.FC<DailyTrackingEntryPreviewProps>
                   <div>
                     <p className="text-xs text-gray-600 mb-1">Hours Slept</p>
                     <p className="text-lg font-semibold text-gray-800">{entry.sleepHours} hours</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Hydration */}
-              {entry.waterIntake && (
-                <div className="bg-gradient-to-r from-cyan-50 to-cyan-50/50 rounded-2xl p-5 border border-cyan-100">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Droplet className="text-cyan-600" size={20} />
-                    <h3 className="text-base font-semibold text-gray-800">Hydration</h3>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">Water Intake</p>
-                    <p className="text-lg font-semibold text-gray-800">
-                      {entry.waterIntake} glasses
-                    </p>
                   </div>
                 </div>
               )}

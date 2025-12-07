@@ -24,7 +24,6 @@ export interface DailyEntry {
   exercisedToday?: boolean;
   activityLevel?: string;
   sleepHours?: number;
-  waterIntake?: number;
   stressLevel?: string;
   symptomsTags?: string[];
   energyLevel?: string;
@@ -82,7 +81,6 @@ function calculateEntryStatus(entry: DailyEntry | null): { status: EntryStatus; 
   const optionalFields = [
     'waistCircumference',
     'sleepHours',
-    'waterIntake',
     'stressLevel',
     'symptomsTags',
     'energyLevel',

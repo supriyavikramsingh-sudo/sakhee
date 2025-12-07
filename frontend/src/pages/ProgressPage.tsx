@@ -1,4 +1,4 @@
-import { Plus, TrendingUp, Calendar } from 'lucide-react';
+import { Plus, TrendingUp, Calendar, SparkleIcon } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ import { useAuthStore } from '../store/authStore';
 import progressTrackerApi from '../services/progressTrackerApi';
 import featureFlags from '../config/featureFlags';
 import { useDailyTrackingCalendar } from '../hooks/useDailyTrackingCalendarOptimized';
+import { enrichEntryWithStatus } from '../utils/dailyTrackingUtils';
 
 const ProgressPage = () => {
   const { t } = useTranslation();
@@ -75,6 +76,8 @@ const ProgressPage = () => {
   // Weekly symptom tracking state (Phase 5)
   const [showWeeklySymptomForm, setShowWeeklySymptomForm] = useState(false);
   const [weeklyRefreshTrigger, setWeeklyRefreshTrigger] = useState(0);
+  const [hasLoggedThisWeek, setHasLoggedThisWeek] = useState(false);
+  const [checkingWeeklyLog, setCheckingWeeklyLog] = useState(false);
 
   // Weekly summaries state (Phase 6)
   const [summariesRefreshTrigger] = useState(0);
@@ -243,12 +246,51 @@ const ProgressPage = () => {
     setWeeklyRefreshTrigger((prev) => prev + 1);
   };
 
+  // Helper function to get current week ID (ISO week: YYYY-WW)
+  const getCurrentWeekId = () => {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const days = Math.floor((now.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000));
+    const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    return `${now.getFullYear()}-${String(weekNumber).padStart(2, '0')}`;
+  };
+
+  // Check if current week has already been logged
+  const checkCurrentWeekLog = async () => {
+    if (!user?.uid) return;
+
+    setCheckingWeeklyLog(true);
+    try {
+      const currentWeekId = getCurrentWeekId();
+      const response = await progressTrackerApi.getWeeklySymptoms(user.uid, currentWeekId);
+
+      // If data exists and is not empty, mark as logged
+      if (response.success && response.data && Object.keys(response.data).length > 0) {
+        setHasLoggedThisWeek(true);
+      } else {
+        setHasLoggedThisWeek(false);
+      }
+    } catch (error) {
+      // If error (likely 404), week hasn't been logged
+      setHasLoggedThisWeek(false);
+    } finally {
+      setCheckingWeeklyLog(false);
+    }
+  };
+
+  // Check weekly log status when tab changes to weekly or on refresh
+  useEffect(() => {
+    if (activeTab === 'weekly') {
+      checkCurrentWeekLog();
+    }
+  }, [activeTab, weeklyRefreshTrigger]);
+
   // Tab navigation
   const tabs = [
     { id: 'period', label: 'Period & Ovulation', icon: <Calendar size={18} /> },
     { id: 'daily', label: 'Daily Tracking', icon: <Plus size={18} /> },
     { id: 'weekly', label: 'Weekly Check-ins', icon: <TrendingUp size={18} /> },
-    { id: 'reports', label: 'Reports & Insights', icon: <TrendingUp size={18} /> },
+    { id: 'reports', label: 'Reports & Insights', icon: <SparkleIcon size={18} /> },
   ];
 
   return (
@@ -272,14 +314,14 @@ const ProgressPage = () => {
         {/* Tab Navigation */}
         {periodSetupComplete && (
           <div className="mb-6">
-            <div className="flex gap-2 border-b border-gray-200 overflow-x-auto">
+            <div className="flex gap-2 border-b border-gray-200 flex-wrap">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap transition-all duration-300 border-b-2 ${
                     activeTab === tab.id
-                      ? 'border-primary text-primary font-semibold'
+                      ? 'border-primary text-primary font-semibold !px-3'
                       : 'border-transparent text-muted hover:text-gray-700'
                   }`}
                 >
@@ -342,6 +384,30 @@ const ProgressPage = () => {
                   />
                 )}
 
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3 flex-wrap">
+                  <button
+                    onClick={() => {
+                      // Smart behavior: Edit if entry exists, create if not
+                      if (todayEntry && todayEntry.status !== 'empty') {
+                        setDailyFormMode('edit');
+                        setDailyFormData(todayEntry);
+                        setDailyFormDate(todayDateStr);
+                        setDailyFormEntryId(todayDateStr); // Entry ID is the date
+                      } else {
+                        setDailyFormMode('create');
+                        setDailyFormDate('');
+                        setDailyFormData(null);
+                      }
+                      setShowDailyForm(true);
+                    }}
+                    className="btn-primary flex items-center gap-2"
+                  >
+                    <Plus size={20} />
+                    {logTodayButtonText}
+                  </button>
+                </div>
+
                 {/* Daily Tracking Calendar (Feature Flag) */}
                 {featureFlags.enableDailyTrackingCalendar && (
                   <DailyTrackingCalendar
@@ -374,7 +440,9 @@ const ProgressPage = () => {
                           Object.keys(response.data).length > 0
                         ) {
                           setSelectedEntryDate(date);
-                          setSelectedEntry(response.data);
+                          // Enrich the backend data with calculated status
+                          const enrichedEntry = enrichEntryWithStatus({ date, ...response.data });
+                          setSelectedEntry(enrichedEntry);
                           setShowEntryPreview(true);
                         } else {
                           // No data found, open form for creating new entry
@@ -416,30 +484,6 @@ const ProgressPage = () => {
                   />
                 )}
 
-                {/* Action Buttons */}
-                <div className="flex justify-end gap-3 flex-wrap">
-                  <button
-                    onClick={() => {
-                      // Smart behavior: Edit if entry exists, create if not
-                      if (todayEntry && todayEntry.status !== 'empty') {
-                        setDailyFormMode('edit');
-                        setDailyFormData(todayEntry);
-                        setDailyFormDate(todayDateStr);
-                        setDailyFormEntryId(todayDateStr); // Entry ID is the date
-                      } else {
-                        setDailyFormMode('create');
-                        setDailyFormDate('');
-                        setDailyFormData(null);
-                      }
-                      setShowDailyForm(true);
-                    }}
-                    className="btn-primary flex items-center gap-2"
-                  >
-                    <Plus size={20} />
-                    {logTodayButtonText}
-                  </button>
-                </div>
-
                 {/* Weight Tracker */}
                 <WeightTracker userId={user.uid} refreshTrigger={dailyRefreshTrigger} />
               </div>
@@ -452,12 +496,35 @@ const ProgressPage = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={() => setShowWeeklySymptomForm(true)}
-                    className="btn-primary flex items-center gap-2"
+                    disabled={hasLoggedThisWeek || checkingWeeklyLog}
+                    className={`btn-primary flex items-center gap-2 ${
+                      hasLoggedThisWeek ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    title={
+                      hasLoggedThisWeek
+                        ? 'You have already logged symptoms for this week'
+                        : 'Log your weekly symptoms'
+                    }
                   >
                     <Plus size={20} />
-                    Weekly Symptom Check-in
+                    {checkingWeeklyLog
+                      ? 'Checking...'
+                      : hasLoggedThisWeek
+                      ? 'Week Already Logged ✓'
+                      : 'Weekly Symptom Check-in'}
                   </button>
                 </div>
+
+                {/* Info message when already logged */}
+                {hasLoggedThisWeek && (
+                  <div className="bg-success/10 border border-success/30 rounded-2xl p-4">
+                    <p className="text-sm text-success font-medium flex items-center gap-2">
+                      <span className="text-lg">✓</span>
+                      You've already completed your weekly symptom check-in for this week. Great job
+                      staying on track!
+                    </p>
+                  </div>
+                )}
 
                 {/* Symptom Trends Chart */}
                 <SymptomTrendsChart userId={user.uid} refreshTrigger={weeklyRefreshTrigger} />

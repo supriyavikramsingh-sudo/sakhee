@@ -3,7 +3,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
-  AlertCircle,
   Lock,
   Grid3x3,
   CalendarDays,
@@ -22,22 +21,6 @@ interface DailyTrackingCalendarProps {
   userSignupDate?: Date | null; // Task 5: Disable dates before signup
 }
 
-/**
- * Daily Tracking Calendar Component
- *
- * Phase 3: Complete calendar with real data and status indicators
- * Phase 5: Optimized with React Query for automatic caching
- *
- * Features:
- * - Monthly calendar grid view
- * - Real-time data fetching with automatic caching (5-min stale time)
- * - Completeness status indicators (✅ ⚠️ ❌)
- * - Streak tracking
- * - Navigation between months
- * - "Today" quick navigation
- * - Mobile responsive (week view for small screens)
- * - Background refetching when data becomes stale
- */
 export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
   userId,
   onDateClick,
@@ -64,7 +47,7 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, [viewMode]);
+  }, []);
 
   // Scroll detection for FAB visibility (Task 8)
   useEffect(() => {
@@ -90,7 +73,6 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
   const {
     data: calendarData,
     isLoading: loading,
-    error,
     refetch: refresh,
     getEntryForDate,
   } = useDailyTrackingCalendar({
@@ -248,34 +230,6 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
     preventScrollOnSwipe: true,
   });
 
-  // Keyboard navigation (Task 7 - Accessibility)
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      // Arrow key navigation for month/week
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        if (viewMode === 'week') {
-          goToPreviousWeek();
-        } else {
-          goToPreviousMonth();
-        }
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        if (viewMode === 'week') {
-          goToNextWeek();
-        } else {
-          goToNextMonth();
-        }
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        goToToday();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [viewMode]);
-
   // Refresh data when month changes
   useEffect(() => {
     refresh();
@@ -307,48 +261,31 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
 
   return (
     <div
-      className="bg-white rounded-2xl p-3 shadow-md max-w-md"
+      className="bg-white rounded-2xl p-3 shadow-md"
       role="region"
       aria-label="Daily tracking calendar"
     >
       {/* Compact Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h3 className="text-sm font-semibold font-lora text-gray-800">Daily Tracking</h3>
+          <h3 className="max-sm:text-xs text-lg font-semibold font-lora text-gray-800">
+            Daily Tracking
+          </h3>
           {/* Compact Streak Display */}
           {calendarData && calendarData.streak > 0 && (
-            <p className="text-[10px] text-orange-600 mt-0.5">
+            <p className="max-sm:text-xs text-orange-600 mt-0.5">
               🔥 {calendarData.streak} day streak
             </p>
           )}
         </div>
         <button
           onClick={goToToday}
-          className="px-2.5 py-1 text-[10px] bg-primary/10 text-primary rounded-md font-medium hover:bg-primary/20 transition-all"
+          className="px-2.5 py-1 max-sm:text-[10px] text-sm bg-primary/10 text-primary rounded-md font-medium hover:bg-primary/20 transition-all"
           aria-label="Jump to today's date"
         >
           Today
         </button>
       </div>
-
-      {/* Error State */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="text-red-500 mt-0.5" size={20} />
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-red-800">Failed to load calendar data</p>
-              <p className="text-xs text-red-600 mt-1">{error.message}</p>
-              <button
-                onClick={refresh}
-                className="mt-2 text-sm text-red-700 underline hover:text-red-800"
-              >
-                Try again
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Loading State */}
       {loading && !calendarData && (
@@ -371,7 +308,7 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
         </button>
 
         <div className="flex items-center gap-2">
-          <h4 className="text-xs font-semibold text-gray-800">
+          <h4 className="max-sm:text-xs text-lg font-semibold text-gray-800">
             {viewMode === 'week'
               ? `Week of ${weekDates[0]?.toLocaleDateString('en-US', {
                   month: 'short',
@@ -429,7 +366,7 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
         {/* Date Cells - Week View (Task 6) */}
         {viewMode === 'week' && (
           <div
-            className={`grid grid-cols-7 gap-1 transition-opacity duration-300 ${
+            className={`grid grid-cols-7 place-items-center gap-1 transition-opacity duration-300 ${
               isTransitioning ? 'opacity-50' : 'opacity-100'
             }`}
           >
@@ -442,16 +379,6 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
               const isDisabled = isFutureDate || isBeforeSignupDate || isTooOld;
               const entry = getEntryForDate(dateStr);
               const isCompleted = hasEntry(entry);
-
-              // Debug logging for 24th and 25th
-              if (date.getDate() === 24 || date.getDate() === 25) {
-                console.log(`[Week View Debug] Date: ${dateStr}`, {
-                  entry,
-                  status: entry?.status,
-                  isCompleted,
-                  hasEntry: entry !== null,
-                });
-              }
 
               return (
                 <button
@@ -477,23 +404,17 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
                       ? 'You can only log entries for the last 7 days'
                       : undefined
                   }
-                  className={`
-                    rounded-full aspect-square flex items-center justify-center
-                    text-sm font-medium transition-all duration-200
-                    relative w-8 h-8
-                    ${
-                      isDisabled
-                        ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
-                        : 'hover:bg-primary/10 cursor-pointer active:scale-95'
-                    }
-                    ${
-                      isTodayDate
-                        ? 'bg-primary text-white hover:bg-primary/90 shadow-md'
-                        : isCompleted
-                        ? 'bg-primary/10'
-                        : 'bg-white border border-gray-200'
-                    }
-                  `}
+                  className={`rounded-full aspect-square flex items-center justify-center text-sm font-medium transition-all duration-200 relative w-8 h-8 ${
+                    isDisabled
+                      ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                      : 'hover:bg-primary/10 cursor-pointer active:scale-95'
+                  } ${
+                    isTodayDate
+                      ? 'bg-primary text-white hover:bg-primary/90 shadow-md'
+                      : isCompleted
+                      ? 'bg-primary/10'
+                      : 'bg-white border border-gray-200'
+                  }`}
                 >
                   <span className={isTodayDate ? 'text-white font-semibold' : 'text-gray-800'}>
                     {date.getDate()}
@@ -530,34 +451,24 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
         {/* Date Cells - Month View */}
         {viewMode === 'month' && (
           <div
-            className={`grid grid-cols-7 gap-1 transition-opacity duration-300 ${
+            className={`grid grid-cols-7 place-items-center gap-x-1 gap-y-3 transition-opacity duration-300 ${
               isTransitioning ? 'opacity-50' : 'opacity-100'
             }`}
           >
             {calendarDates.map((date, index) => {
               if (!date) {
                 // Empty cell
-                return <div key={`empty-${index}`} className="aspect-square" />;
+                return <div key={`empty-${index}`} />;
               }
 
               const dateStr = formatDate(date);
               const isTodayDate = isToday(date);
               const isFutureDate = isFuture(date);
-              const isBeforeSignupDate = isBeforeSignup(date); // Task 5
+              const isBeforeSignupDate = isBeforeSignup(date);
               const isTooOld = isOlderThan7Days(date);
               const isDisabled = isFutureDate || isBeforeSignupDate || isTooOld;
               const entry = getEntryForDate(dateStr);
               const isCompleted = hasEntry(entry);
-
-              // Debug logging for 24th and 25th
-              if (date.getDate() === 24 || date.getDate() === 25) {
-                console.log(`[Calendar Debug] Date: ${dateStr}`, {
-                  entry,
-                  status: entry?.status,
-                  isCompleted,
-                  hasEntry: entry !== null,
-                });
-              }
 
               return (
                 <button
@@ -583,23 +494,17 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
                       ? 'You can only log entries for the last 7 days'
                       : undefined
                   }
-                  className={`
-                    rounded-full aspect-square flex items-center justify-center
-                    text-xs font-medium transition-all duration-200 relative
-                    w-7 h-7 sm:w-8 sm:h-8
-                    ${
-                      isDisabled
-                        ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
-                        : 'hover:bg-primary/10 cursor-pointer active:scale-95'
-                    }
-                    ${
-                      isTodayDate
-                        ? 'bg-primary text-white hover:bg-primary/90 shadow-md'
-                        : isCompleted
-                        ? 'bg-primary/10'
-                        : 'bg-white border border-gray-200'
-                    }
-                  `}
+                  className={`rounded-full aspect-square flex items-center justify-center text-xs font-medium transition-all duration-200 relative w-7 h-7 sm:w-8 sm:h-8 ${
+                    isDisabled
+                      ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                      : 'hover:bg-primary/10 cursor-pointer active:scale-95'
+                  } ${
+                    isTodayDate
+                      ? 'bg-primary text-white hover:bg-primary/90 shadow-md'
+                      : isCompleted
+                      ? 'bg-primary/10'
+                      : 'bg-white border border-gray-200'
+                  }`}
                 >
                   <span className={isTodayDate ? 'text-white font-semibold' : 'text-gray-800'}>
                     {date.getDate()}
@@ -634,24 +539,24 @@ export const DailyTrackingCalendar: React.FC<DailyTrackingCalendarProps> = ({
       <div className="flex flex-wrap gap-2 text-xs text-gray-600 pt-2 border-t border-gray-200">
         <div className="flex items-center gap-1">
           <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-          <span className="text-[10px]">Today</span>
+          <span className="max-sm:text-[10px] text-xs">Today</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-2.5 h-2.5 rounded-full bg-primary/10 flex items-center justify-center">
             <Check size={6} className="text-primary" strokeWidth={2.5} />
           </div>
-          <span className="text-[10px]">Tracked</span>
+          <span className="max-sm:text-[10px] text-xs">Tracked</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-2.5 h-2.5 rounded-full bg-white border border-gray-200" />
-          <span className="text-[10px]">Not tracked</span>
+          <span className="max-sm:text-[10px] text-xs">Not tracked</span>
         </div>
         {userSignupDate && (
           <div className="flex items-center gap-1">
             <div className="w-2.5 h-2.5 rounded-full bg-gray-50 flex items-center justify-center">
               <Lock size={6} className="text-gray-400" />
             </div>
-            <span className="text-[10px]">Locked</span>
+            <span className="max-sm:text-[10px] text-xs">Locked</span>
           </div>
         )}
       </div>

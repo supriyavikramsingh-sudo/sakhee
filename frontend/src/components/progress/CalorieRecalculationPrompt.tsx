@@ -13,14 +13,6 @@ interface CalorieRecalculationPromptProps {
   onSkip: () => void;
 }
 
-/**
- * Calorie Recalculation Prompt Modal
- *
- * Shows when user edits weight and the change would trigger TDEE recalculation.
- * Gives user control over whether to recalculate calories or save without changing.
- *
- * Phase 5: Task 9 - User confirmation before calorie changes
- */
 export const CalorieRecalculationPrompt: React.FC<CalorieRecalculationPromptProps> = ({
   isOpen,
   onClose,

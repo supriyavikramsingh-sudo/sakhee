@@ -4,7 +4,7 @@
  */
 
 import express from 'express';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 import {
@@ -748,10 +748,10 @@ router.put('/daily/:entryId', verifyAuth, async (req, res) => {
     logger.info('Updating daily tracking', { userId, entryId });
 
     // Get the existing entry from subcollection: dailyTracking/{userId}/entries/{date}
-    const entryRef = db.collection('dailyTracking').doc(userId).collection('entries').doc(entryId);
-    const existingEntry = await entryRef.get();
+    const entryRef = doc(db, 'dailyTracking', userId, 'entries', entryId);
+    const existingEntry = await getDoc(entryRef);
 
-    if (!existingEntry.exists) {
+    if (!existingEntry.exists()) {
       return res.status(404).json({
         success: false,
         error: {
@@ -786,13 +786,19 @@ router.put('/daily/:entryId', verifyAuth, async (req, res) => {
     const exerciseChanged = trackingData.exercisedToday !== entryData.exercisedToday;
     const skipRecalculation = trackingData.skipRecalculation || false;
 
-    // Remove the skipRecalculation flag before saving (it's not a tracking field)
-    const { skipRecalculation: _, ...dataToSave } = trackingData;
+    // Remove frontend-only fields and flags before saving
+    const {
+      skipRecalculation: _skip,
+      status: _status,
+      completenessScore: _score,
+      userId: _userId,
+      ...dataToSave
+    } = trackingData;
 
     // Update entry in subcollection
-    await entryRef.update({
+    await updateDoc(entryRef, {
       ...dataToSave,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
 
     // Recalculate ovulation score if relevant data changed
@@ -869,37 +875,9 @@ router.put('/daily/:entryId', verifyAuth, async (req, res) => {
 });
 
 /**
- * GET /api/progress/daily/:userId/:date
- * Get daily tracking for specific date
- */
-router.get('/daily/:userId/:date', verifyAuth, async (req, res) => {
-  try {
-    const userId = req.userId;
-    const { date } = req.params;
-
-    logger.info('Fetching daily tracking', { userId, date });
-
-    const tracking = await getDailyTracking(userId, date);
-
-    res.json({
-      success: true,
-      data: tracking,
-    });
-  } catch (error) {
-    logger.error('Get daily tracking failed', { userId: req.userId, error: error.message });
-    res.status(500).json({
-      success: false,
-      error: {
-        message: 'Failed to fetch daily tracking',
-        details: error.message,
-      },
-    });
-  }
-});
-
-/**
  * GET /api/progress/daily/range/:userId
  * Get daily tracking for date range
+ * NOTE: This must be defined BEFORE /daily/:userId/:date to avoid route conflicts
  */
 router.get('/daily/range/:userId', verifyAuth, async (req, res) => {
   try {
@@ -927,6 +905,35 @@ router.get('/daily/range/:userId', verifyAuth, async (req, res) => {
       success: false,
       error: {
         message: 'Failed to fetch daily tracking range',
+        details: error.message,
+      },
+    });
+  }
+});
+
+/**
+ * GET /api/progress/daily/:userId/:date
+ * Get daily tracking for specific date
+ */
+router.get('/daily/:userId/:date', verifyAuth, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { date } = req.params;
+
+    logger.info('Fetching daily tracking', { userId, date });
+
+    const tracking = await getDailyTracking(userId, date);
+
+    res.json({
+      success: true,
+      data: tracking,
+    });
+  } catch (error) {
+    logger.error('Get daily tracking failed', { userId: req.userId, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: {
+        message: 'Failed to fetch daily tracking',
         details: error.message,
       },
     });

@@ -1,8 +1,3 @@
-/**
- * Edit Period Modal
- * Modal for editing the most recent period with date restrictions
- */
-
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -25,7 +20,6 @@ const EditPeriodModal = ({
   onClose,
   onSuccess,
 }: EditPeriodModalProps) => {
-  console.log('Initial data in EditPeriodModal:', initialData); // Debugging log
   const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState<string>('');
   const [showDurationUpdateModal, setShowDurationUpdateModal] = useState(false);
