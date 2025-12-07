@@ -1,4 +1,4 @@
-import { Award, Heart, Target, Users } from 'lucide-react';
+import { Award, Heart, Linkedin, Target, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import Footer from '../components/common/Footer';
@@ -20,18 +20,30 @@ const ValueCard = ({ icon, title, description }: ValueCardProps) => (
 );
 
 interface TeamMemberProps {
+  image: string;
   name: string;
   role: string;
   description: string;
+  link: string;
 }
 
-const TeamMember = ({ name, role, description }: TeamMemberProps) => (
+const TeamMember = ({ image, name, role, description, link }: TeamMemberProps) => (
   <div className="bg-white p-6 rounded-lg shadow-[0_0_1px_#ff8d8d,0_0_2px_#171a1f14]">
     <div className="flex flex-col gap-3">
-      <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full mx-auto" />
+      <div className="w-80 h-80 rounded-full mx-auto overflow-hidden">
+        <img src={image} alt={name} className="w-full h-full object-cover" />
+      </div>
       <h3 className="font-bold text-xl text-center">{name}</h3>
       <p className="text-primary font-semibold text-center">{role}</p>
       <p className="text-muted text-center">{description}</p>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 font-semibold text-center"
+      >
+        <Linkedin size={16} className="inline-block ml-1" /> Connect on LinkedIn
+      </a>
     </div>
   </div>
 );
@@ -53,16 +65,16 @@ const AboutUsPage = () => {
         </section>
 
         {/* Mission Section */}
-        <section className="mb-16 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-12">
+        <section className="mb-16 bg-gradient-to-r from-primary to-secondary rounded-xl p-12">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
-              <h2 className="text-4xl font-bold text-primary mb-4">Our Mission</h2>
-              <p className="text-lg text-muted leading-relaxed mb-4">
+              <h2 className="text-4xl font-bold text-white mb-4">Our Mission</h2>
+              <p className="text-lg text-white leading-relaxed mb-4">
                 PCOS affects millions of women in India, yet many struggle to find personalized,
                 culturally-relevant guidance that fits their daily lives. We created AI Sakhee to
                 bridge this gap.
               </p>
-              <p className="text-lg text-muted leading-relaxed">
+              <p className="text-lg text-white leading-relaxed">
                 Our mission is to make managing PCOS easier, more accessible, and more effective
                 through cutting-edge AI technology combined with deep understanding of Indian
                 culture, cuisine, and lifestyle.
@@ -163,28 +175,27 @@ const AboutUsPage = () => {
         {/* Team Section (Optional - customize with actual team info) */}
         <section>
           <h2 className="text-4xl font-bold text-primary text-center mb-12">Meet Our Team</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <TeamMember
-              name="Healthcare Experts"
-              role="Medical Advisory Board"
-              description="Gynecologists and nutritionists who ensure our guidance is medically sound and safe."
+              link="https://www.linkedin.com/in/supriya-singh97/"
+              image="/images/supriya-headshot.jpeg"
+              name="Supriya Gupta"
+              role="CEO, Founder"
+              description="Woman with PCOS who is passionate about creating impactful health solutions."
             />
             <TeamMember
-              name="AI Engineers"
-              role="Technology Team"
-              description="Building cutting-edge AI that understands PCOS and provides personalized recommendations."
-            />
-            <TeamMember
-              name="PCOS Warriors"
-              role="Community Support"
-              description="Women with PCOS who share their experiences to make our platform more helpful and relatable."
+              link="https://www.linkedin.com/in/utkarsh-gupta98/"
+              image="/images/utkarsh-headshot.jpeg"
+              name="Utkarsh Gupta"
+              role="CTO, Co-Founder"
+              description="Expert in AI and healthcare technology, driving innovation at AI Sakhee."
             />
           </div>
         </section>
 
         {/* CTA Section */}
         {!isAuthenticated && (
-          <section className="text-center bg-primary text-white rounded-xl p-12">
+          <section className="text-center bg-primary text-white rounded-xl p-12 mt-10">
             <h2 className="text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
               Join thousands of women who are taking control of their PCOS with AI Sakhee. Start
