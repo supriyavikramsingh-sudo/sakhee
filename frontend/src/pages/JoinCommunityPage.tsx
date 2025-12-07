@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loader2, MapPin, XCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { joinCommunity } from '../services/communityService';
 
 interface LocationData {
@@ -20,7 +20,6 @@ const JoinCommunityPage = () => {
   const [formState, setFormState] = useState<FormState>('initial');
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [locationError, setLocationError] = useState('');
 
   // Detect device type on mount
   useEffect(() => {
@@ -72,9 +71,7 @@ const JoinCommunityPage = () => {
           },
           (error) => {
             console.error('Geolocation error:', error);
-            setLocationError(
-              "Location access denied. We'll use approximate location based on your connection."
-            );
+
             // Set a default fallback location
             setLocation({
               city: 'Unknown',
@@ -84,7 +81,6 @@ const JoinCommunityPage = () => {
           }
         );
       } else {
-        setLocationError('Geolocation is not supported by your browser.');
         setLocation({
           city: 'Unknown',
           state: 'Unknown',
@@ -186,24 +182,6 @@ const JoinCommunityPage = () => {
               // Form State
               <form onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-bold text-center mb-6">Get Started</h2>
-
-                {/* Location Status */}
-                {location && !locationError && (
-                  <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-start gap-2">
-                    <MapPin size={16} className="text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-green-700">
-                      Location detected: {location.city}, {location.state}, {location.country}
-                    </p>
-                  </div>
-                )}
-
-                {/* Location Error */}
-                {locationError && (
-                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-2">
-                    <XCircle size={16} className="text-yellow-600 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-yellow-700">{locationError}</p>
-                  </div>
-                )}
 
                 {/* Email Input */}
                 <div className="mb-4">
