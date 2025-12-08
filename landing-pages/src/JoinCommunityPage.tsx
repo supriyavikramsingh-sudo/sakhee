@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { joinCommunity } from '../services/communityService';
+import Navigation from './Navigation';
+import Footer from './Footer';
 
 interface LocationData {
   city: string;
@@ -146,6 +148,7 @@ const JoinCommunityPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
+      <Navigation />
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Hero Section */}
         <section className="text-center mb-12">
@@ -283,6 +286,7 @@ const JoinCommunityPage = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 };
