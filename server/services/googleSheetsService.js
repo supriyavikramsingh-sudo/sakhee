@@ -34,21 +34,37 @@ class GoogleSheetsService {
 
       console.log(`📋 Using Google Sheet ID: ${this.spreadsheetId.substring(0, 10)}...`);
 
-      const credentialsPath = path.join(__dirname, '../src/config/google-credentials.json');
+      // Try to use environment variable first (for production/Render)
+      // Fall back to local file for development
+      if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+        console.log('🔑 Using Google credentials from environment variable');
 
-      // Check if credentials file exists
-      if (!fs.existsSync(credentialsPath)) {
-        console.error('Looking for credentials at:', credentialsPath);
-        throw new Error(
-          'Google credentials file not found. Please add google-credentials.json to server/src/config/'
-        );
+        // Parse the JSON credentials from environment variable
+        const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+
+        this.auth = new google.auth.GoogleAuth({
+          credentials: credentials,
+          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        });
+      } else {
+        // Development: Use local file
+        console.log('🔑 Using Google credentials from local file');
+
+        const credentialsPath = path.join(__dirname, '../src/config/google-credentials.json');
+
+        // Check if credentials file exists
+        if (!fs.existsSync(credentialsPath)) {
+          console.error('Looking for credentials at:', credentialsPath);
+          throw new Error(
+            'Google credentials file not found. Please add google-credentials.json to server/src/config/ OR set GOOGLE_SERVICE_ACCOUNT_KEY environment variable'
+          );
+        }
+
+        this.auth = new google.auth.GoogleAuth({
+          keyFile: credentialsPath,
+          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        });
       }
-
-      // Initialize auth with service account
-      this.auth = new google.auth.GoogleAuth({
-        keyFile: credentialsPath,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
 
       this.sheets = google.sheets({ version: 'v4', auth: this.auth });
       this.initialized = true;
