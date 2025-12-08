@@ -34,9 +34,20 @@ class GoogleSheetsService {
 
       console.log(`📋 Using Google Sheet ID: ${this.spreadsheetId.substring(0, 10)}...`);
 
-      // Try to use environment variable first (for production/Render)
-      // Fall back to local file for development
-      if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+      // Priority order for finding credentials:
+      // 1. Render secret file (production)
+      // 2. Environment variable with JSON (alternative production method)
+      // 3. Local file (development)
+
+      let credentialsPath = null;
+
+      // Check for Render secret file first
+      if (process.env.GOOGLE_CREDENTIALS_PATH) {
+        credentialsPath = process.env.GOOGLE_CREDENTIALS_PATH;
+        console.log('🔑 Using Google credentials from Render secret file');
+      }
+      // Check for environment variable with JSON credentials
+      else if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
         console.log('🔑 Using Google credentials from environment variable');
 
         // Parse the JSON credentials from environment variable
@@ -46,17 +57,20 @@ class GoogleSheetsService {
           credentials: credentials,
           scopes: ['https://www.googleapis.com/auth/spreadsheets'],
         });
-      } else {
-        // Development: Use local file
+      }
+      // Fall back to local file for development
+      else {
+        credentialsPath = path.join(__dirname, '../src/config/google-credentials.json');
         console.log('🔑 Using Google credentials from local file');
+      }
 
-        const credentialsPath = path.join(__dirname, '../src/config/google-credentials.json');
-
+      // If we have a file path, use it
+      if (credentialsPath) {
         // Check if credentials file exists
         if (!fs.existsSync(credentialsPath)) {
           console.error('Looking for credentials at:', credentialsPath);
           throw new Error(
-            'Google credentials file not found. Please add google-credentials.json to server/src/config/ OR set GOOGLE_SERVICE_ACCOUNT_KEY environment variable'
+            `Google credentials file not found at ${credentialsPath}. Please add google-credentials.json to server/src/config/ OR set GOOGLE_CREDENTIALS_PATH or GOOGLE_SERVICE_ACCOUNT_KEY environment variable`
           );
         }
 
