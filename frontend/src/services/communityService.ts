@@ -23,7 +23,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const joinCommunity = async (data: JoinCommunityData): Promise<JoinCommunityResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/community/join`, {
+    const response = await fetch(`${API_BASE_URL}/api/community/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
