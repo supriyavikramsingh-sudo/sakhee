@@ -21,6 +21,7 @@
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
     "firebase": "^12.4.0",
+    "framer-motion": "^12.23.25",
     "i18next": "^23.7.6",
     "jspdf": "^2.5.1",
     "lucide-react": "^0.294.0",

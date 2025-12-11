@@ -46,7 +46,16 @@ html {
 }
 
 body {
-  @apply text-gray-900 inter-regular antialiased bg-gradient-to-r from-pink-100 via-red-50 to-rose-100;
+  @apply text-gray-900 inter-regular antialiased;
+}
+
+/* Custom animation delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
 
 h1,h2,h3,h4,h5,h6 {

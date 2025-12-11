@@ -1,7 +1,7 @@
 {
-  "name": "sakhee",
+  "name": "ai_sakhee",
   "version": "1.0.0",
-  "description": "AI-powered PCOS Management Assistant for Indian Women",
+  "description": "Your ultimate PCOS management companion.",
   "author": "supriyavikramsingh-sudo",
   "repository": {
     "type": "git",

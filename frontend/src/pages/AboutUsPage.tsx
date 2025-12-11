@@ -99,7 +99,7 @@ const AboutUsPage = () => {
               PCOS, searching for answers, and feeling profoundly alone in the process.
             </p>
             <p className="text-lg text-muted leading-relaxed mb-4">
-              For over 10 years, I navigated the challenges of PCOS,symptoms that started years
+              For over 10 years, I navigated the challenges of PCOS, symptoms that started years
               before my formal diagnosis in 2021, countless doctor visits, confusing advice, and the
               overwhelming isolation that comes with managing a condition that touches every aspect
               of your life. Through trial, error, research, and persistence, I learned to manage and
@@ -196,7 +196,7 @@ const AboutUsPage = () => {
               image="/images/utkarsh-headshot.jpeg"
               name="Utkarsh Gupta"
               role="CTO, Co-Founder"
-              description="Lead Software Engineer with 5 years of experience specializing in frontend and full-stack development."
+              description="Lead Software Engineer with 5 years of experience specializing in full-stack development."
             />
           </div>
         </section>
