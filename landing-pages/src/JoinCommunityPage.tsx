@@ -23,6 +23,7 @@ const JoinCommunityPage = () => {
   const [formState, setFormState] = useState<FormState>('initial');
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [submittedEmail, setSubmittedEmail] = useState<string>('');
 
   // Detect device type on mount
   useEffect(() => {
@@ -39,61 +40,65 @@ const JoinCommunityPage = () => {
     setDeviceType(detectDevice());
   }, []);
 
-  // Get user location on mount
+  // Asynchronously get user location in the background (non-blocking)
   useEffect(() => {
-    const getLocation = () => {
+    const getLocationAsync = async () => {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const { latitude, longitude } = position.coords;
             try {
-              // Reverse geocoding using OpenStreetMap Nominatim API (free, no API key needed)
+              // Reverse geocoding using OpenStreetMap Nominatim API
               const response = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
               );
               const data = await response.json();
 
-              setLocation({
+              const locationData: LocationData = {
                 city:
                   data.address?.city || data.address?.town || data.address?.village || 'Unknown',
                 state: data.address?.state || 'Unknown',
                 country: data.address?.country || 'Unknown',
                 latitude,
                 longitude,
-              });
+              };
+
+              setLocation(locationData);
+
+              // If user already submitted, update their location data in backend
+              if (submittedEmail) {
+                try {
+                  await fetch(
+                    `${
+                      import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
+                    }/api/community/update-location`,
+                    {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        email: submittedEmail,
+                        location: locationData,
+                      }),
+                    }
+                  );
+                  console.log('✅ Location data updated for:', submittedEmail);
+                } catch (error) {
+                  console.error('Failed to update location:', error);
+                }
+              }
             } catch (error) {
               console.error('Reverse geocoding failed:', error);
-              setLocation({
-                city: 'Unknown',
-                state: 'Unknown',
-                country: 'Unknown',
-                latitude,
-                longitude,
-              });
             }
           },
           (error) => {
             console.error('Geolocation error:', error);
-
-            // Set a default fallback location
-            setLocation({
-              city: 'Unknown',
-              state: 'Unknown',
-              country: 'Unknown',
-            });
           }
         );
-      } else {
-        setLocation({
-          city: 'Unknown',
-          state: 'Unknown',
-          country: 'Unknown',
-        });
       }
     };
 
-    getLocation();
-  }, []);
+    getLocationAsync();
+  }, [submittedEmail]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -124,22 +129,29 @@ const JoinCommunityPage = () => {
       return;
     }
 
-    // Validate location
-    if (!location) {
-      setErrorMessage('Unable to detect location. Please refresh the page and try again.');
-      return;
-    }
-
+    // Set loading state
     setFormState('loading');
 
     try {
+      // Use current location or fallback to 'Unknown' if still loading
+      // This allows seamless submission without waiting for location
+      const locationData = location || {
+        city: 'Unknown',
+        state: 'Unknown',
+        country: 'Unknown',
+      };
+
       await joinCommunity({
         email: email.trim(),
-        location,
+        location: locationData,
         deviceType,
         consentGiven,
       });
 
+      // Store submitted email to update location later if it becomes available
+      setSubmittedEmail(email.trim().toLowerCase());
+
+      // Immediately show success state for seamless UX
       setFormState('success');
     } catch (error: any) {
       setFormState('error');
@@ -324,7 +336,13 @@ const JoinCommunityPage = () => {
                     <input
                       type="checkbox"
                       checked={consentGiven}
-                      onChange={(e) => setConsentGiven(e.target.checked)}
+                      onChange={(e) => {
+                        setConsentGiven(e.target.checked);
+                        // Clear error when user checks the box
+                        if (e.target.checked) {
+                          setErrorMessage('');
+                        }
+                      }}
                       className="mt-1 w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
                       disabled={formState === 'loading'}
                     />
@@ -347,8 +365,8 @@ const JoinCommunityPage = () => {
                   </p>
                 </motion.div>
 
-                {/* Error Message */}
-                {formState === 'error' && errorMessage && (
+                {/* Error Message - Shows for both validation and server errors */}
+                {errorMessage && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

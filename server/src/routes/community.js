@@ -7,17 +7,18 @@ const router = express.Router();
 /**
  * POST /api/community/join
  * Join the Sakhee community - save email and location to Google Sheets
+ * Optimized for instant UI response - validation happens immediately,
+ * but duplicate check and sheet write happen asynchronously
  */
 router.post('/join', communityJoinLimiter, async (req, res) => {
   try {
     const { email, location, deviceType, consentGiven } = req.body;
 
     // Validate required fields
-    if (!email || !location || !deviceType || consentGiven !== true) {
+    if (!email || !deviceType || consentGiven !== true) {
       return res.status(400).json({
         success: false,
-        message:
-          'Missing required fields. Please provide email, location, device type, and consent.',
+        message: 'Missing required fields. Please provide email, device type, and consent.',
       });
     }
 
@@ -33,15 +34,6 @@ router.post('/join', communityJoinLimiter, async (req, res) => {
     // Sanitize email
     const sanitizedEmail = email.trim().toLowerCase();
 
-    // Check for duplicate email
-    const isDuplicate = await googleSheetsService.checkDuplicateEmail(sanitizedEmail);
-    if (isDuplicate) {
-      return res.status(409).json({
-        success: false,
-        message: 'This email is already registered.',
-      });
-    }
-
     // Get IP address (handle proxies)
     const ipAddress =
       req.headers['x-forwarded-for']?.split(',')[0].trim() ||
@@ -56,50 +48,120 @@ router.post('/join', communityJoinLimiter, async (req, res) => {
     // Prepare data for Google Sheets
     const sheetData = {
       email: sanitizedEmail,
-      city: location.city || 'Unknown',
-      state: location.state || 'Unknown',
-      country: location.country || 'Unknown',
-      latitude: location.latitude,
-      longitude: location.longitude,
+      city: location?.city || 'Unknown',
+      state: location?.state || 'Unknown',
+      country: location?.country || 'Unknown',
+      latitude: location?.latitude,
+      longitude: location?.longitude,
       deviceType: deviceType || 'Unknown',
       ipAddress,
       userAgent,
     };
 
-    // Append to Google Sheets
-    const result = await googleSheetsService.appendRow(sheetData);
-
-    console.log(
-      `✅ New community member: ${sanitizedEmail} from ${location.city}, ${location.country}`
-    );
-
-    // Return success response
-    return res.status(200).json({
+    // Immediately return success to the user for seamless UX
+    res.status(200).json({
       success: true,
       message: "Successfully joined the community! You'll receive updates soon.",
-      data: result,
+      data: { processed: true },
     });
+
+    // Process duplicate check and sheet write asynchronously in the background
+    // This ensures the user gets immediate feedback
+    processUserSignupAsync(sanitizedEmail, sheetData);
   } catch (error) {
     console.error('Error in /api/community/join:', error);
 
-    // Check if it's a Google Sheets specific error
-    if (
-      error.message.includes('Failed to save data') ||
-      error.message.includes('Failed to verify email')
-    ) {
-      return res.status(503).json({
-        success: false,
-        message: 'Service temporarily unavailable. Please try again in a few moments.',
-      });
-    }
-
-    // Generic error response
+    // Generic error response for validation failures
     return res.status(500).json({
       success: false,
       message: 'Something went wrong. Please try again later.',
     });
   }
 });
+
+/**
+ * Background async processor for user signup
+ * Handles duplicate checking and Google Sheets insertion
+ */
+async function processUserSignupAsync(sanitizedEmail, sheetData) {
+  try {
+    // Check for duplicate email
+    const isDuplicate = await googleSheetsService.checkDuplicateEmail(sanitizedEmail);
+
+    if (isDuplicate) {
+      console.log(`⚠️ Duplicate signup attempt: ${sanitizedEmail}`);
+      // Don't add to sheet, but don't fail the user's experience
+      return;
+    }
+
+    // Append to Google Sheets
+    const result = await googleSheetsService.appendRow(sheetData);
+
+    console.log(
+      `✅ New community member: ${sanitizedEmail} from ${sheetData.city}, ${sheetData.country}`
+    );
+  } catch (error) {
+    console.error(`❌ Background processing failed for ${sanitizedEmail}:`, error);
+    // Log error but don't propagate since user already got success response
+    // Could implement retry logic or alert monitoring here
+  }
+}
+
+/**
+ * POST /api/community/update-location
+ * Update location data for an existing community member (async after signup)
+ */
+router.post('/update-location', async (req, res) => {
+  try {
+    const { email, location } = req.body;
+
+    // Validate required fields
+    if (!email || !location) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields: email and location.',
+      });
+    }
+
+    // Sanitize email
+    const sanitizedEmail = email.trim().toLowerCase();
+
+    // Update location in Google Sheets asynchronously
+    updateLocationAsync(sanitizedEmail, location);
+
+    // Return immediate success
+    return res.status(200).json({
+      success: true,
+      message: 'Location update queued successfully.',
+    });
+  } catch (error) {
+    console.error('Error in /api/community/update-location:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to queue location update.',
+    });
+  }
+});
+
+/**
+ * Background async processor for location updates
+ * Finds user by email and updates their location data
+ */
+async function updateLocationAsync(sanitizedEmail, location) {
+  try {
+    const updated = await googleSheetsService.updateLocationByEmail(sanitizedEmail, location);
+
+    if (updated) {
+      console.log(
+        `📍 Location updated for ${sanitizedEmail}: ${location.city}, ${location.country}`
+      );
+    } else {
+      console.log(`⚠️ Could not find user to update location: ${sanitizedEmail}`);
+    }
+  } catch (error) {
+    console.error(`❌ Location update failed for ${sanitizedEmail}:`, error);
+  }
+}
 
 /**
  * GET /api/community/health

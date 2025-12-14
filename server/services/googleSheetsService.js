@@ -220,6 +220,78 @@ class GoogleSheetsService {
       throw error;
     }
   }
+
+  /**
+   * Update location data for an existing user by email
+   * @param {string} email - Email of the user to update
+   * @param {Object} location - Location data to update
+   * @param {string} location.city - City name
+   * @param {string} location.state - State name
+   * @param {string} location.country - Country name
+   * @param {number} [location.latitude] - Latitude
+   * @param {number} [location.longitude] - Longitude
+   * @returns {Promise<boolean>} - True if updated, false if user not found
+   */
+  async updateLocationByEmail(email, location) {
+    try {
+      await this.initialize();
+
+      // Get all data from the sheet
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.spreadsheetId,
+        range: 'Sheet1!A:J',
+      });
+
+      const rows = response.data.values || [];
+
+      // Find the row with matching email (case-insensitive)
+      // Skip header row (index 0)
+      let rowIndex = -1;
+      for (let i = 1; i < rows.length; i++) {
+        if (rows[i][1] && rows[i][1].toLowerCase() === email.toLowerCase()) {
+          rowIndex = i;
+          break;
+        }
+      }
+
+      if (rowIndex === -1) {
+        console.log(`User not found for location update: ${email}`);
+        return false;
+      }
+
+      // Update only if current location is 'Unknown' or empty
+      const currentCity = rows[rowIndex][2];
+      if (currentCity && currentCity !== 'Unknown') {
+        console.log(`Location already set for ${email}, skipping update`);
+        return true; // Not an error, just skip
+      }
+
+      // Prepare update - only update location columns (C, D, E, F, G)
+      const updateRange = `Sheet1!C${rowIndex + 1}:G${rowIndex + 1}`;
+      const values = [
+        [
+          location.city || 'Unknown',
+          location.state || 'Unknown',
+          location.country || 'Unknown',
+          location.latitude || '',
+          location.longitude || '',
+        ],
+      ];
+
+      await this.sheets.spreadsheets.values.update({
+        spreadsheetId: this.spreadsheetId,
+        range: updateRange,
+        valueInputOption: 'USER_ENTERED',
+        resource: { values },
+      });
+
+      console.log(`✅ Location updated for ${email} at row ${rowIndex + 1}`);
+      return true;
+    } catch (error) {
+      console.error('Error updating location by email:', error);
+      throw new Error('Failed to update location data.');
+    }
+  }
 }
 
 // Export a singleton instance

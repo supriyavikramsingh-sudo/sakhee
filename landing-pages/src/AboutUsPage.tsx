@@ -440,7 +440,7 @@ const AboutUsPage = () => {
                 Join a community of women who are taking control of their PCOS with AI Sakhee.
                 Coming Soon!
               </p>
-              <div className="flex gap-4 justify-center">
+              <div className="flex gap-4 justify-center flex-wrap">
                 <motion.button
                   onClick={() => navigate('/')}
                   whileHover={{ scale: 1.05 }}
@@ -449,6 +449,17 @@ const AboutUsPage = () => {
                 >
                   Join our community
                 </motion.button>
+                <motion.a
+                  href="https://www.linkedin.com/company/ai-sakhee/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg"
+                >
+                  <Linkedin size={20} />
+                  Follow Us on LinkedIn
+                </motion.a>
               </div>
             </motion.section>
           }

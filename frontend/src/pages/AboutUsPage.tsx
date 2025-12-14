@@ -209,7 +209,7 @@ const AboutUsPage = () => {
               Join a community of women who are taking control of their PCOS with AI Sakhee. Start
               your free trial today!
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center flex-wrap">
               <button
                 onClick={() => navigate('/login')}
                 className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
@@ -222,6 +222,15 @@ const AboutUsPage = () => {
               >
                 View Pricing
               </button>
+              <a
+                href="https://www.linkedin.com/company/ai-sakhee/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                <Linkedin size={20} />
+                Follow Us on LinkedIn
+              </a>
             </div>
           </section>
         )}
