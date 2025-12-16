@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import Logo from '/images/logo.svg';
+import Logo from './Logo';
 
 const Navigation = () => {
   const { pathname } = useLocation();
@@ -10,7 +10,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img className="h-12" src={Logo} alt="AI Sakhee Logo" />
+            <Logo />
           </Link>
 
           {/* Navigation Links */}
