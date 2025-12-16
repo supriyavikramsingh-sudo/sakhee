@@ -6,33 +6,85 @@ const router = express.Router();
 
 /**
  * POST /api/community/join
- * Join the Sakhee community - save email and location to Google Sheets
+ * Join the Sakhee community - save phone number, optional email, and location to Google Sheets
  * Optimized for instant UI response - validation happens immediately,
  * but duplicate check and sheet write happen asynchronously
  */
 router.post('/join', communityJoinLimiter, async (req, res) => {
   try {
-    const { email, location, deviceType, consentGiven } = req.body;
+    const { email, phoneNumber, countryCode, phoneLength, location, deviceType, consentGiven } =
+      req.body;
 
-    // Validate required fields
-    if (!email || !deviceType || consentGiven !== true) {
+    // Validate required fields - phone number is now mandatory, email is optional
+    if (!phoneNumber || !countryCode || !deviceType || consentGiven !== true) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields. Please provide email, device type, and consent.',
+        message:
+          'Missing required fields. Please provide phone number, country code, device type, and consent.',
       });
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Validate phone number format based on country-specific rules
+    const digitsOnly = phoneNumber.replace(/\s/g, '');
+
+    // Check if it contains only digits
+    if (!/^\d+$/.test(digitsOnly)) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide a valid email address.',
+        message: 'Phone number must contain only digits.',
       });
     }
 
-    // Sanitize email
-    const sanitizedEmail = email.trim().toLowerCase();
+    // Validate against country-specific phone length if provided
+    if (phoneLength) {
+      let isValidLength = false;
+
+      if (typeof phoneLength === 'number') {
+        // Exact length required
+        isValidLength = digitsOnly.length === phoneLength;
+      } else if (typeof phoneLength === 'object' && phoneLength.min && phoneLength.max) {
+        // Range validation
+        isValidLength =
+          digitsOnly.length >= phoneLength.min && digitsOnly.length <= phoneLength.max;
+      }
+
+      if (!isValidLength) {
+        const lengthMsg =
+          typeof phoneLength === 'number'
+            ? `${phoneLength} digits`
+            : `${phoneLength.min}-${phoneLength.max} digits`;
+
+        return res.status(400).json({
+          success: false,
+          message: `Please provide a valid phone number (${lengthMsg}) for the selected country.`,
+        });
+      }
+    } else {
+      // Fallback validation if phoneLength not provided (6-15 digits)
+      if (!/^\d{6,15}$/.test(digitsOnly)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide a valid phone number (6-15 digits).',
+        });
+      }
+    }
+
+    // Validate email format if provided (optional)
+    let sanitizedEmail = null;
+    if (email && email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide a valid email address.',
+        });
+      }
+      sanitizedEmail = email.trim().toLowerCase();
+    }
+
+    // Sanitize phone number
+    const sanitizedPhone = phoneNumber.trim();
+    const fullPhoneNumber = `${countryCode}${sanitizedPhone}`;
 
     // Get IP address (handle proxies)
     const ipAddress =
@@ -47,7 +99,10 @@ router.post('/join', communityJoinLimiter, async (req, res) => {
 
     // Prepare data for Google Sheets
     const sheetData = {
-      email: sanitizedEmail,
+      phoneNumber: sanitizedPhone,
+      countryCode: countryCode,
+      fullPhoneNumber: fullPhoneNumber,
+      email: sanitizedEmail || '', // Empty string if no email provided
       city: location?.city || 'Unknown',
       state: location?.state || 'Unknown',
       country: location?.country || 'Unknown',
@@ -67,7 +122,7 @@ router.post('/join', communityJoinLimiter, async (req, res) => {
 
     // Process duplicate check and sheet write asynchronously in the background
     // This ensures the user gets immediate feedback
-    processUserSignupAsync(sanitizedEmail, sheetData);
+    processUserSignupAsync(fullPhoneNumber, sheetData);
   } catch (error) {
     console.error('Error in /api/community/join:', error);
 
@@ -83,13 +138,13 @@ router.post('/join', communityJoinLimiter, async (req, res) => {
  * Background async processor for user signup
  * Handles duplicate checking and Google Sheets insertion
  */
-async function processUserSignupAsync(sanitizedEmail, sheetData) {
+async function processUserSignupAsync(fullPhoneNumber, sheetData) {
   try {
-    // Check for duplicate email
-    const isDuplicate = await googleSheetsService.checkDuplicateEmail(sanitizedEmail);
+    // Check for duplicate phone number
+    const isDuplicate = await googleSheetsService.checkDuplicatePhone(fullPhoneNumber);
 
     if (isDuplicate) {
-      console.log(`⚠️ Duplicate signup attempt: ${sanitizedEmail}`);
+      console.log(`⚠️ Duplicate signup attempt: ${fullPhoneNumber}`);
       // Don't add to sheet, but don't fail the user's experience
       return;
     }
@@ -98,10 +153,10 @@ async function processUserSignupAsync(sanitizedEmail, sheetData) {
     const result = await googleSheetsService.appendRow(sheetData);
 
     console.log(
-      `✅ New community member: ${sanitizedEmail} from ${sheetData.city}, ${sheetData.country}`
+      `✅ New community member: ${fullPhoneNumber} from ${sheetData.city}, ${sheetData.country}`
     );
   } catch (error) {
-    console.error(`❌ Background processing failed for ${sanitizedEmail}:`, error);
+    console.error(`❌ Background processing failed for ${fullPhoneNumber}:`, error);
     // Log error but don't propagate since user already got success response
     // Could implement retry logic or alert monitoring here
   }

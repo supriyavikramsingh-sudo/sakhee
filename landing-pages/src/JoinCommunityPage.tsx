@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Loader2, SparkleIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { Loader2, SparkleIcon, ChevronDown, Search } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { joinCommunity } from '../services/communityService';
 import Navigation from './Navigation';
 import Footer from './Footer';
+import { countryCodes, type CountryCode } from './data/countryCodes';
 
 interface LocationData {
   city: string;
@@ -17,13 +18,19 @@ type FormState = 'initial' | 'loading' | 'success' | 'error';
 
 const JoinCommunityPage = () => {
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState<CountryCode>(countryCodes[0]); // Default to India
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [countrySearch, setCountrySearch] = useState('');
   const [consentGiven, setConsentGiven] = useState(false);
   const [location, setLocation] = useState<LocationData | null>(null);
   const [deviceType, setDeviceType] = useState<string>('Desktop');
   const [formState, setFormState] = useState<FormState>('initial');
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [submittedEmail, setSubmittedEmail] = useState<string>('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Detect device type on mount
   useEffect(() => {
@@ -100,25 +107,84 @@ const JoinCommunityPage = () => {
     getLocationAsync();
   }, [submittedEmail]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowCountryDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  const validatePhoneNumber = (phone: string): boolean => {
+    // Remove all spaces and non-digits
+    const digitsOnly = phone.replace(/\s/g, '');
+
+    // Check if it contains only digits
+    if (!/^\d+$/.test(digitsOnly)) {
+      return false;
+    }
+
+    // Get the expected phone length for the selected country
+    const expectedLength = countryCode.phoneLength;
+
+    // If phoneLength is a number, check for exact match
+    if (typeof expectedLength === 'number') {
+      return digitsOnly.length === expectedLength;
+    }
+
+    // If phoneLength is a range {min, max}, check if within range
+    if (typeof expectedLength === 'object' && expectedLength.min && expectedLength.max) {
+      return digitsOnly.length >= expectedLength.min && digitsOnly.length <= expectedLength.max;
+    }
+
+    return false;
+  };
+
+  const filteredCountries = countryCodes.filter(
+    (country) =>
+      country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+      country.dialCode.includes(countrySearch)
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Reset errors
     setEmailError('');
+    setPhoneError('');
     setErrorMessage('');
 
-    // Validate email
-    if (!email.trim()) {
-      setEmailError('Email is required');
+    // Validate phone number (MANDATORY)
+    if (!phoneNumber.trim()) {
+      setPhoneError('Phone number is required');
       return;
     }
 
-    if (!validateEmail(email)) {
+    if (!validatePhoneNumber(phoneNumber)) {
+      const expectedLength = countryCode.phoneLength;
+      let errorMsg = '';
+
+      if (typeof expectedLength === 'number') {
+        errorMsg = `Please enter a valid ${expectedLength}-digit phone number for ${countryCode.name}`;
+      } else if (typeof expectedLength === 'object') {
+        errorMsg = `Please enter a valid phone number (${expectedLength.min}-${expectedLength.max} digits) for ${countryCode.name}`;
+      }
+
+      setPhoneError(errorMsg);
+      return;
+    }
+
+    // Validate email (OPTIONAL - only if provided)
+    if (email.trim() && !validateEmail(email)) {
       setEmailError('Please enter a valid email address');
       return;
     }
@@ -142,14 +208,19 @@ const JoinCommunityPage = () => {
       };
 
       await joinCommunity({
-        email: email.trim(),
+        email: email.trim() || undefined, // Optional email
+        phoneNumber: phoneNumber.trim(),
+        countryCode: countryCode.dialCode,
+        phoneLength: countryCode.phoneLength, // Send country-specific phone length for backend validation
         location: locationData,
         deviceType,
         consentGiven,
       });
 
       // Store submitted email to update location later if it becomes available
-      setSubmittedEmail(email.trim().toLowerCase());
+      if (email.trim()) {
+        setSubmittedEmail(email.trim().toLowerCase());
+      }
 
       // Immediately show success state for seamless UX
       setFormState('success');
@@ -290,15 +361,179 @@ const JoinCommunityPage = () => {
               <form onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-bold text-center mb-6 text-primary">Sign me up!</h2>
 
-                {/* Email Input */}
+                {/* Phone Number Input (MANDATORY) */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 }}
                   className="mb-4"
                 >
+                  <label htmlFor="phone" className="block text-sm font-semibold mb-2">
+                    Phone Number <span className="text-danger">*</span>
+                  </label>
+                  <div className="flex gap-2">
+                    {/* Country Code Dropdown */}
+                    <div className="relative" ref={dropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                        className="px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all flex items-center gap-2 bg-white hover:border-primary"
+                      >
+                        <span className="text-xl">{countryCode.flag}</span>
+                        <span className="font-medium">{countryCode.dialCode}</span>
+                        <ChevronDown size={16} className="text-gray-500" />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {showCountryDropdown && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute z-50 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg max-h-96 overflow-hidden"
+                          >
+                            {/* Search Box */}
+                            <div className="p-2 border-b border-gray-200">
+                              <div className="relative">
+                                <Search
+                                  size={18}
+                                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="Search country..."
+                                  value={countrySearch}
+                                  onChange={(e) => setCountrySearch(e.target.value)}
+                                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Country List */}
+                            <div className="overflow-y-auto max-h-80">
+                              {filteredCountries.length > 0 ? (
+                                filteredCountries.map((country) => (
+                                  <button
+                                    key={country.code}
+                                    type="button"
+                                    onClick={() => {
+                                      setCountryCode(country);
+                                      setShowCountryDropdown(false);
+                                      setCountrySearch('');
+
+                                      // Re-validate phone number if already entered
+                                      if (phoneNumber.trim()) {
+                                        // Clear error first, then validate with new country
+                                        setPhoneError('');
+
+                                        // Use setTimeout to ensure countryCode state is updated
+                                        setTimeout(() => {
+                                          const digitsOnly = phoneNumber.replace(/\s/g, '');
+                                          if (!/^\d+$/.test(digitsOnly)) {
+                                            return;
+                                          }
+
+                                          const expectedLength = country.phoneLength;
+                                          let isValid = false;
+
+                                          if (typeof expectedLength === 'number') {
+                                            isValid = digitsOnly.length === expectedLength;
+                                          } else if (
+                                            typeof expectedLength === 'object' &&
+                                            expectedLength.min &&
+                                            expectedLength.max
+                                          ) {
+                                            isValid =
+                                              digitsOnly.length >= expectedLength.min &&
+                                              digitsOnly.length <= expectedLength.max;
+                                          }
+
+                                          if (!isValid) {
+                                            let errorMsg = '';
+                                            if (typeof expectedLength === 'number') {
+                                              errorMsg = `Please enter a valid ${expectedLength}-digit phone number for ${country.name}`;
+                                            } else if (typeof expectedLength === 'object') {
+                                              errorMsg = `Please enter a valid phone number (${expectedLength.min}-${expectedLength.max} digits) for ${country.name}`;
+                                            }
+                                            setPhoneError(errorMsg);
+                                          }
+                                        }, 0);
+                                      }
+                                    }}
+                                    className="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-3 text-left transition-colors"
+                                  >
+                                    <span className="text-xl">{country.flag}</span>
+                                    <span className="flex-1 text-sm">{country.name}</span>
+                                    <span className="text-sm text-gray-600">
+                                      {country.dialCode}
+                                    </span>
+                                  </button>
+                                ))
+                              ) : (
+                                <div className="px-4 py-8 text-center text-gray-500 text-sm">
+                                  No countries found
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Phone Number Input */}
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        // Only allow digits and spaces
+                        const value = e.target.value.replace(/[^\d\s]/g, '');
+                        setPhoneNumber(value);
+                        setPhoneError('');
+                      }}
+                      onBlur={() => {
+                        // Validate phone number when user leaves the field
+                        if (phoneNumber.trim() && !validatePhoneNumber(phoneNumber)) {
+                          const expectedLength = countryCode.phoneLength;
+                          let errorMsg = '';
+
+                          if (typeof expectedLength === 'number') {
+                            errorMsg = `Please enter a valid ${expectedLength}-digit phone number for ${countryCode.name}`;
+                          } else if (typeof expectedLength === 'object') {
+                            errorMsg = `Please enter a valid phone number (${expectedLength.min}-${expectedLength.max} digits) for ${countryCode.name}`;
+                          }
+
+                          setPhoneError(errorMsg);
+                        }
+                      }}
+                      placeholder="Enter phone number"
+                      className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+                        phoneError ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      disabled={formState === 'loading'}
+                    />
+                  </div>
+                  {phoneError && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-500 text-sm mt-1"
+                    >
+                      {phoneError}
+                    </motion.p>
+                  )}
+                </motion.div>
+
+                {/* Email Input (OPTIONAL) */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="mb-4"
+                >
                   <label htmlFor="email" className="block text-sm font-semibold mb-2">
-                    Email Address <span className="text-danger">*</span>
+                    Email Address <span className="text-sm text-gray-500">(Optional)</span>
                   </label>
                   <input
                     type="email"
@@ -329,7 +564,7 @@ const JoinCommunityPage = () => {
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ delay: 0.7 }}
                   className="mb-4"
                 >
                   <label className="flex items-start gap-3 cursor-pointer">
@@ -356,7 +591,7 @@ const JoinCommunityPage = () => {
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 }}
+                  transition={{ delay: 0.8 }}
                   className="mb-6 p-3 bg-secondary rounded-lg"
                 >
                   <p className="text-xs text-muted leading-relaxed">
@@ -384,7 +619,7 @@ const JoinCommunityPage = () => {
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 0.9 }}
                   className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primaryDark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {formState === 'loading' ? (

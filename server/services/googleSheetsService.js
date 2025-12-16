@@ -101,7 +101,7 @@ class GoogleSheetsService {
 
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!B:B', // Column B contains emails
+        range: 'Sheet1!E:E', // Column E now contains emails
       });
 
       const rows = response.data.values || [];
@@ -119,9 +119,38 @@ class GoogleSheetsService {
   }
 
   /**
+   * Check if a phone number already exists in the Google Sheet
+   * @param {string} fullPhoneNumber - Full phone number with country code to check
+   * @returns {Promise<boolean>} - True if phone exists, false otherwise
+   */
+  async checkDuplicatePhone(fullPhoneNumber) {
+    try {
+      await this.initialize();
+
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.spreadsheetId,
+        range: 'Sheet1!D:D', // Column D contains full phone numbers
+      });
+
+      const rows = response.data.values || [];
+
+      // Check if phone number exists
+      const phoneExists = rows.some((row) => row[0] && row[0] === fullPhoneNumber);
+
+      return phoneExists;
+    } catch (error) {
+      console.error('Error checking duplicate phone:', error);
+      throw new Error('Failed to verify phone number. Please try again.');
+    }
+  }
+
+  /**
    * Append a new row to the Google Sheet
    * @param {Object} data - Data to append
-   * @param {string} data.email - User email
+   * @param {string} data.phoneNumber - User phone number (without country code)
+   * @param {string} data.countryCode - Country code (e.g., +91)
+   * @param {string} data.fullPhoneNumber - Full phone number with country code
+   * @param {string} data.email - User email (optional)
    * @param {string} data.city - City name
    * @param {string} data.state - State name
    * @param {string} data.country - Country name
@@ -139,7 +168,10 @@ class GoogleSheetsService {
       const timestamp = new Date().toISOString();
       const row = [
         timestamp,
-        data.email,
+        data.countryCode,
+        data.phoneNumber,
+        data.fullPhoneNumber,
+        data.email || '',
         data.city,
         data.state,
         data.country,
@@ -152,7 +184,7 @@ class GoogleSheetsService {
 
       const response = await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A:J', // Columns A through J
+        range: 'Sheet1!A:M', // Columns A through M (expanded for phone fields)
         valueInputOption: 'USER_ENTERED',
         resource: {
           values: [row],
@@ -181,6 +213,9 @@ class GoogleSheetsService {
 
       const headers = [
         'Timestamp',
+        'Country Code',
+        'Phone Number',
+        'Full Phone Number',
         'Email',
         'City',
         'State',
@@ -195,14 +230,14 @@ class GoogleSheetsService {
       // Check if sheet is empty
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A1:J1',
+        range: 'Sheet1!A1:M1',
       });
 
       if (!response.data.values || response.data.values.length === 0) {
         // Add header row
         await this.sheets.spreadsheets.values.update({
           spreadsheetId: this.spreadsheetId,
-          range: 'Sheet1!A1:J1',
+          range: 'Sheet1!A1:M1',
           valueInputOption: 'USER_ENTERED',
           resource: {
             values: [headers],
@@ -239,16 +274,17 @@ class GoogleSheetsService {
       // Get all data from the sheet
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A:J',
+        range: 'Sheet1!A:M',
       });
 
       const rows = response.data.values || [];
 
       // Find the row with matching email (case-insensitive)
+      // Email is now in column E (index 4)
       // Skip header row (index 0)
       let rowIndex = -1;
       for (let i = 1; i < rows.length; i++) {
-        if (rows[i][1] && rows[i][1].toLowerCase() === email.toLowerCase()) {
+        if (rows[i][4] && rows[i][4].toLowerCase() === email.toLowerCase()) {
           rowIndex = i;
           break;
         }
@@ -260,14 +296,16 @@ class GoogleSheetsService {
       }
 
       // Update only if current location is 'Unknown' or empty
-      const currentCity = rows[rowIndex][2];
+      // City is now in column F (index 5)
+      const currentCity = rows[rowIndex][5];
       if (currentCity && currentCity !== 'Unknown') {
         console.log(`Location already set for ${email}, skipping update`);
         return true; // Not an error, just skip
       }
 
-      // Prepare update - only update location columns (C, D, E, F, G)
-      const updateRange = `Sheet1!C${rowIndex + 1}:G${rowIndex + 1}`;
+      // Prepare update - only update location columns (F, G, H, I, J)
+      // City, State, Country, Latitude, Longitude
+      const updateRange = `Sheet1!F${rowIndex + 1}:J${rowIndex + 1}`;
       const values = [
         [
           location.city || 'Unknown',

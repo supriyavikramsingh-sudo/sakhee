@@ -7,7 +7,10 @@ interface LocationData {
 }
 
 interface JoinCommunityData {
-  email: string;
+  email?: string; // Now optional
+  phoneNumber: string; // Mandatory
+  countryCode: string; // Mandatory
+  phoneLength: number | { min: number; max: number }; // Country-specific phone length for validation
   location: LocationData;
   deviceType: string;
   consentGiven: boolean;
