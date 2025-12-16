@@ -331,7 +331,7 @@ const JoinCommunityPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             whileHover={{ y: -5 }}
-            className="bg-white p-8 flex-1 rounded-xl shadow-lg"
+            className="bg-white p-4 md:p-8 flex-1 rounded-xl shadow-lg"
           >
             {formState === 'success' ? (
               // Success State

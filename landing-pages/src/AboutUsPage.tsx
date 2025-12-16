@@ -1,4 +1,4 @@
-import { Award, Heart, Linkedin, Target, Users } from 'lucide-react';
+import { Award, Heart, Linkedin, SparkleIcon, Target, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Footer from './Footer';
@@ -46,12 +46,12 @@ const TeamMember = ({ image, name, role, description, link, delay = 0 }: TeamMem
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
     whileHover={{ y: -10 }}
-    className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
+    className="bg-white p-4 md:p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
   >
     <div className="flex flex-col gap-3">
       <motion.div
         whileHover={{ scale: 1.05 }}
-        className="w-80 h-80 rounded-full mx-auto overflow-hidden ring-4 ring-secondary"
+        className="w-48 h-48 md:w-80 md:h-80 rounded-full mx-auto overflow-hidden ring-4 ring-secondary"
       >
         <img src={image} alt={name} className="w-full h-full object-cover" />
       </motion.div>
@@ -132,7 +132,9 @@ const AboutUsPage = () => {
               transition={{ duration: 0.6 }}
               className="inline-block mb-4 px-4 py-2 bg-secondary rounded-full"
             >
-              <span className="text-sm font-semibold text-primary">✨ Our Story</span>
+              <span className="text-sm font-semibold text-primary flex items-center gap-1">
+                <SparkleIcon /> Our Story
+              </span>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
@@ -160,7 +162,7 @@ const AboutUsPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mb-16 bg-gradient-to-r from-primary to-accent rounded-2xl p-12 shadow-2xl"
+            className="mb-16 bg-gradient-to-r from-primary to-accent rounded-2xl p-6 md:p-12 shadow-2xl"
           >
             <div className="flex flex-col md:flex-row items-center gap-8">
               <motion.div
@@ -296,7 +298,7 @@ const AboutUsPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mb-16 bg-white rounded-2xl p-12 shadow-2xl"
+            className="mb-16 bg-white rounded-2xl p-6 md:p-12 shadow-2xl"
           >
             <h2 className="text-4xl font-bold text-primary text-center mb-12">
               What Makes Us Different
