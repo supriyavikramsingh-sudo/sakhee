@@ -377,7 +377,7 @@ const JoinCommunityPage = () => {
                       <button
                         type="button"
                         onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                        className="px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all flex items-center gap-2 bg-white hover:border-primary"
+                        className="px-2 md:px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all flex items-center gap-2 bg-white hover:border-primary"
                       >
                         <span className="text-xl">{countryCode.flag}</span>
                         <span className="font-medium">{countryCode.dialCode}</span>
@@ -508,7 +508,7 @@ const JoinCommunityPage = () => {
                         }
                       }}
                       placeholder="Enter phone number"
-                      className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+                      className={`flex-1 px-2 md:px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
                         phoneError ? 'border-red-500' : 'border-gray-300'
                       }`}
                       disabled={formState === 'loading'}
@@ -544,7 +544,7 @@ const JoinCommunityPage = () => {
                       setEmailError('');
                     }}
                     placeholder="your.email@example.com"
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+                    className={`w-full px-2 md:px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
                       emailError ? 'border-red-500' : 'border-gray-300'
                     }`}
                     disabled={formState === 'loading'}
