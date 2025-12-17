@@ -317,14 +317,18 @@ const JoinCommunityPage = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-            className="flex-1 mx-auto mb-12"
+            className="flex-1 max-sm:mb-12 rounded-xl overflow-hidden"
           >
-            <img
-              src="/images/undraw_happy-women-day_8whn.svg"
-              alt="Diverse community of women supporting each other"
-              className="w-full max-w-md mx-auto drop-shadow-xl"
-            />
+            <video
+              autoPlay
+              loop
+              muted
+              controls
+              className="w-full max-w-md mx-auto drop-shadow-xl rounded-xl"
+            >
+              <source src="/videos/sakhee_launch_video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -592,9 +596,9 @@ const JoinCommunityPage = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 }}
-                  className="mb-6 p-3 bg-secondary rounded-lg"
+                  className="mb-6 p-3 border border-accent border-l-8 rounded-lg"
                 >
-                  <p className="text-xs text-muted leading-relaxed">
+                  <p className="text-xs text-primary leading-relaxed">
                     <strong>Data Usage:</strong> Your data is stored securely and will never be
                     shared with third parties. By signing up, you agree to our privacy practices.
                   </p>
