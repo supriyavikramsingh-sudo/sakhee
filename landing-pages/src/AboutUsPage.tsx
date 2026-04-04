@@ -1,6 +1,6 @@
+import { motion } from 'framer-motion';
 import { Award, Heart, Linkedin, SparkleIcon, Target, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import Footer from './Footer';
 import Navigation from './Navigation';
 
@@ -393,37 +393,6 @@ const AboutUsPage = () => {
                 role="Co-Founder (Engineering)"
                 description="Lead Software Engineer with 5 years of experience specializing in full-stack development."
                 delay={0.1}
-              />
-              <TeamMember
-                link="https://www.linkedin.com/in/rashiatry/"
-                image="/images/rashi-headshot.png"
-                name="Rashi Atry"
-                role="Co-Founder (Marketing & GTM)"
-                description="Product Manager with 13 years of experience in building user-centric products. Ex-TatvaCare, Dream11, Naukri.com."
-                delay={0.2}
-              />
-            </div>
-          </section>
-
-          {/* Team Section (Optional - customize with actual team info) */}
-          <section>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl font-bold text-primary text-center my-12"
-            >
-              Meet Our Mentor
-            </motion.h2>
-            <div className="grid md:grid-cols-1 gap-8">
-              <TeamMember
-                link="https://www.linkedin.com/in/revathi/"
-                image="/images/rev-headshot.jpeg"
-                name="Revathi Raghunath"
-                role="Mentor"
-                description="Experienced Mentor and AI Strategy & Transformation Leader | Co-founder- Garage Labs (AceAI.Club, PMx Global, World of Women in AI) | Ex-CMO Randstad."
-                delay={0.3}
               />
             </div>
           </section>
