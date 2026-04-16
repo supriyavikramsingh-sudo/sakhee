@@ -38,7 +38,9 @@ const ReportsPage = () => {
 
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/upload/user/${user.uid}/report`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/upload/user/${user.uid}/report`
+        );
 
         if (response.ok) {
           const data = await response.json();
