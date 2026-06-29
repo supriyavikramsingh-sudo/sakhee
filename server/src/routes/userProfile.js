@@ -1,6 +1,5 @@
 import express from 'express';
-import { collection, doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+import { db, FieldValue } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const router = express.Router();
@@ -129,10 +128,10 @@ router.get('/profile', verifyAuth, async (req, res) => {
 
     logger.info('Fetching user profile', { userId });
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       logger.warn('User profile not found', { userId });
       return res.status(404).json({
         success: false,
@@ -186,10 +185,10 @@ router.put('/profile', verifyAuth, async (req, res) => {
     const validationErrors = {};
 
     // Get current user data for comparison
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User profile not found' },
@@ -337,7 +336,7 @@ router.put('/profile', verifyAuth, async (req, res) => {
           daily_calorie_requirement,
           current_bmi,
           target_bmi,
-          calculated_at: serverTimestamp(),
+          calculated_at: FieldValue.serverTimestamp(),
         };
 
         logger.info('Metrics recalculated', {
@@ -353,13 +352,13 @@ router.put('/profile', verifyAuth, async (req, res) => {
     const updateData = {
       profileData: updatedProfileData,
       ...calculatedMetrics,
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
-    await updateDoc(userRef, updateData);
+    await userRef.update(updateData);
 
     // Fetch updated profile
-    const updatedDoc = await getDoc(userRef);
+    const updatedDoc = await userRef.get();
     const updatedData = updatedDoc.data();
 
     logger.info('User profile updated successfully', { userId });

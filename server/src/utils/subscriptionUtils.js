@@ -1,4 +1,3 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
@@ -32,10 +31,10 @@ function getLastMonday(date = new Date()) {
  */
 export async function checkAndResetWeeklyLimit(userId) {
   try {
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       throw new Error('User not found');
     }
 
@@ -58,7 +57,7 @@ export async function checkAndResetWeeklyLimit(userId) {
         last_meal_plan_reset_date: lastMonday,
       };
 
-      await updateDoc(userRef, updateData);
+      await userRef.update(updateData);
 
       // Return updated data
       return {
@@ -120,8 +119,8 @@ export async function canGenerateMealPlan(userId) {
       logger.info('Pro subscription expired - treating as free user', { userId });
 
       // Update user to free (could be done as a background job)
-      const userRef = doc(db, 'users', userId);
-      await updateDoc(userRef, {
+      const userRef = db.collection('users').doc(userId);
+      await userRef.update({
         subscription_plan: 'free',
         subscription_status: 'expired',
         billing_cycle: null,
@@ -217,10 +216,10 @@ export async function canGenerateMealPlan(userId) {
  */
 export async function incrementMealPlanCounter(userId) {
   try {
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       throw new Error('User not found');
     }
 
@@ -237,7 +236,7 @@ export async function incrementMealPlanCounter(userId) {
         (userData.meal_plans_generated_this_week || 0) + 1;
     }
 
-    await updateDoc(userRef, updateData);
+    await userRef.update(updateData);
 
     logger.info('Meal plan counter incremented', {
       userId,

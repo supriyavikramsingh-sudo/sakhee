@@ -1,6 +1,5 @@
 // server/src/routes/mealPlan.js
 import express from 'express';
-import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
 import { Logger } from '../utils/logger.js';
@@ -190,10 +189,10 @@ async function processMealPlanGeneration(params) {
 
     if (userId) {
       try {
-        const userRef = doc(db, 'users', userId);
-        const userDoc = await getDoc(userRef);
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
 
-        if (userDoc.exists()) {
+        if (userDoc.exists) {
           const userData = userDoc.data();
           // Use calculated daily_calorie_requirement if available
           if (userData.daily_calorie_requirement) {

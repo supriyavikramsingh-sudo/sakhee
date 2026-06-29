@@ -3,22 +3,7 @@
  * Handles all database operations for period tracking, daily tracking, ovulation, and reports
  */
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  limit,
-  serverTimestamp,
-  Timestamp,
-} from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+import { db, FieldValue, Timestamp } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const logger = new Logger('ProgressTrackerService');
@@ -32,15 +17,15 @@ const logger = new Logger('ProgressTrackerService');
  */
 export async function initializePeriodSetup(userId, setupData) {
   try {
-    const setupRef = doc(db, 'periodTracking', userId);
+    const setupRef = db.collection('periodTracking').doc(userId);
 
     const dataToSave = {
       ...setupData,
-      setupCompletedAt: serverTimestamp(),
+      setupCompletedAt: FieldValue.serverTimestamp(),
       setupCompleted: true,
     };
 
-    await setDoc(setupRef, dataToSave);
+    await setupRef.set(dataToSave);
 
     logger.info('Period setup initialized', { userId });
     return { success: true, data: dataToSave };
@@ -55,10 +40,10 @@ export async function initializePeriodSetup(userId, setupData) {
  */
 export async function getPeriodSetup(userId) {
   try {
-    const setupRef = doc(db, 'periodTracking', userId);
-    const setupDoc = await getDoc(setupRef);
+    const setupRef = db.collection('periodTracking').doc(userId);
+    const setupDoc = await setupRef.get();
 
-    if (!setupDoc.exists()) {
+    if (!setupDoc.exists) {
       return { setupCompleted: false };
     }
 
@@ -96,8 +81,8 @@ async function validatePeriodDates(userId, startDate, endDate, excludeCycleId = 
   }
 
   // Validation 2: Check for overlapping periods
-  const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-  const snapshot = await getDocs(cyclesRef);
+  const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+  const snapshot = await cyclesRef.get();
 
   snapshot.forEach((doc) => {
     const existingCycle = doc.data();
@@ -172,7 +157,7 @@ async function validatePeriodDates(userId, startDate, endDate, excludeCycleId = 
 export async function createCycle(userId, cycleData) {
   try {
     const cycleId = `cycle_${Date.now()}`;
-    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
+    const cycleRef = db.collection('periodTracking').doc(userId).collection('cycles').doc(cycleId);
 
     // Convert date strings to Date objects
     let startDate;
@@ -217,13 +202,13 @@ export async function createCycle(userId, cycleData) {
       cycleLength: cycleLength, // Add cycle length
       month: startDate.getMonth() + 1, // 1-12
       year: startDate.getFullYear(),
-      loggedAt: serverTimestamp(),
+      loggedAt: FieldValue.serverTimestamp(),
       insightsButtonVisible: true,
       aiInsights: null,
       insightsGeneratedAt: null,
     };
 
-    await setDoc(cycleRef, dataToSave);
+    await cycleRef.set(dataToSave);
 
     logger.info('Cycle created', { userId, cycleId, cycleLength });
     return { success: true, cycleId, data: dataToSave, warnings: validation.warnings };
@@ -238,10 +223,8 @@ export async function createCycle(userId, cycleData) {
  */
 export async function getCycles(userId, limitCount = 6) {
   try {
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    // Order descending to get most recent cycles, then reverse to return ascending
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(limitCount));
-    const snapshot = await getDocs(q);
+    const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+    const snapshot = await cyclesRef.orderBy('startDate', 'desc').limit(limitCount).get();
 
     const cycles = [];
     snapshot.forEach((doc) => {
@@ -269,10 +252,10 @@ export async function getCycles(userId, limitCount = 6) {
  */
 export async function getCycle(userId, cycleId) {
   try {
-    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
-    const cycleDoc = await getDoc(cycleRef);
+    const cycleRef = db.collection('periodTracking').doc(userId).collection('cycles').doc(cycleId);
+    const cycleDoc = await cycleRef.get();
 
-    if (!cycleDoc.exists()) {
+    if (!cycleDoc.exists) {
       return null;
     }
 
@@ -295,11 +278,11 @@ export async function getCycle(userId, cycleId) {
  */
 export async function updateCycle(userId, cycleId, updateData) {
   try {
-    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
+    const cycleRef = db.collection('periodTracking').doc(userId).collection('cycles').doc(cycleId);
 
     // Check if cycle exists
-    const cycleDoc = await getDoc(cycleRef);
-    if (!cycleDoc.exists()) {
+    const cycleDoc = await cycleRef.get();
+    if (!cycleDoc.exists) {
       throw new Error('Cycle not found');
     }
 
@@ -341,14 +324,14 @@ export async function updateCycle(userId, cycleId, updateData) {
       endDate: endDate ? Timestamp.fromDate(endDate) : null,
       month: startDate.getMonth() + 1,
       year: startDate.getFullYear(),
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
     // Remove cycleId and cycleLength from update (don't allow changing these)
     delete dataToUpdate.cycleId;
     delete dataToUpdate.cycleLength;
 
-    await updateDoc(cycleRef, dataToUpdate);
+    await cycleRef.update(dataToUpdate);
 
     // Recalculate cycle lengths for this cycle and the next one
     const cycles = await getCycles(userId, 50); // Get more cycles to ensure we find neighbors
@@ -389,11 +372,11 @@ export async function updateCycle(userId, cycleId, updateData) {
  */
 export async function saveCycleInsights(userId, cycleId, insights) {
   try {
-    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
+    const cycleRef = db.collection('periodTracking').doc(userId).collection('cycles').doc(cycleId);
 
-    await updateDoc(cycleRef, {
+    await cycleRef.update({
       aiInsights: insights,
-      insightsGeneratedAt: serverTimestamp(),
+      insightsGeneratedAt: FieldValue.serverTimestamp(),
       insightsButtonVisible: false,
     });
 
@@ -410,10 +393,8 @@ export async function saveCycleInsights(userId, cycleId, insights) {
  */
 export async function calculateCycleLength(userId, currentStartDate) {
   try {
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    // Get the most recent cycle (before the one being created)
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
-    const snapshot = await getDocs(q);
+    const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+    const snapshot = await cyclesRef.orderBy('startDate', 'desc').limit(1).get();
 
     if (snapshot.empty) {
       return null; // This is the first cycle, no previous cycle to compare
@@ -448,10 +429,8 @@ export async function calculateCycleLength(userId, currentStartDate) {
  */
 export async function updateCycleLength(userId, cycleId, cycleLength) {
   try {
-    const cycleRef = doc(db, 'periodTracking', userId, 'cycles', cycleId);
-    await updateDoc(cycleRef, {
-      cycleLength,
-    });
+    const cycleRef = db.collection('periodTracking').doc(userId).collection('cycles').doc(cycleId);
+    await cycleRef.update({ cycleLength });
     logger.info('Updated cycle length', { userId, cycleId, cycleLength });
     return { success: true };
   } catch (error) {
@@ -472,7 +451,7 @@ export async function saveDailyTracking(userId, date, trackingData) {
     // Format date as YYYY-MM-DD to use as entry ID
     const dateStr = typeof date === 'string' ? date : date.toISOString().split('T')[0];
 
-    const dailyRef = doc(db, 'dailyTracking', userId, 'entries', dateStr);
+    const dailyRef = db.collection('dailyTracking').doc(userId).collection('entries').doc(dateStr);
 
     // Calculate cycle day
     const cycleDay = await calculateCurrentCycleDay(userId, new Date(dateStr));
@@ -481,10 +460,10 @@ export async function saveDailyTracking(userId, date, trackingData) {
       ...trackingData,
       date: dateStr,
       cycleDay,
-      timestamp: serverTimestamp(),
+      timestamp: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(dailyRef, dataToSave, { merge: true });
+    await dailyRef.set(dataToSave, { merge: true });
 
     // NEW (Phase 2): Calculate weekly activity level if exercisedToday is provided
     if (trackingData.exercisedToday !== undefined) {
@@ -515,10 +494,10 @@ export async function saveDailyTracking(userId, date, trackingData) {
 export async function getDailyTracking(userId, date) {
   try {
     const dateStr = typeof date === 'string' ? date : date.toISOString().split('T')[0];
-    const dailyRef = doc(db, 'dailyTracking', userId, 'entries', dateStr);
-    const dailyDoc = await getDoc(dailyRef);
+    const dailyRef = db.collection('dailyTracking').doc(userId).collection('entries').doc(dateStr);
+    const dailyDoc = await dailyRef.get();
 
-    if (!dailyDoc.exists()) {
+    if (!dailyDoc.exists) {
       return null;
     }
 
@@ -538,7 +517,7 @@ export async function getDailyTracking(userId, date) {
  */
 export async function getDailyTrackingRange(userId, startDate, endDate) {
   try {
-    const dailyRef = collection(db, 'dailyTracking', userId, 'entries');
+    const dailyRef = db.collection('dailyTracking').doc(userId).collection('entries');
 
     logger.info('[getDailyTrackingRange] Fetching entries', {
       userId,
@@ -547,7 +526,7 @@ export async function getDailyTrackingRange(userId, startDate, endDate) {
       path: `dailyTracking/${userId}/entries`,
     });
 
-    const snapshot = await getDocs(dailyRef);
+    const snapshot = await dailyRef.get();
 
     logger.info('[getDailyTrackingRange] Snapshot received', {
       userId,
@@ -599,9 +578,8 @@ export async function getDailyTrackingRange(userId, startDate, endDate) {
  */
 export async function calculateCurrentCycleDay(userId, currentDate) {
   try {
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
-    const snapshot = await getDocs(q);
+    const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+    const snapshot = await cyclesRef.orderBy('startDate', 'desc').limit(1).get();
 
     if (snapshot.empty) {
       return null; // No period logged yet
@@ -662,9 +640,9 @@ export async function calculateWeeklyWeightAverage(userId, date) {
     const newTDEE = calculateTDEE(average, userProfile);
 
     // Check if TDEE changed significantly
-    const weeklyRef = doc(db, 'users', userId, 'weightTracking', 'weeklyAverages', weekId);
-    const existingDoc = await getDoc(weeklyRef);
-    const existingTDEE = existingDoc.exists() ? existingDoc.data().tdeeAtThisWeight : null;
+    const weeklyRef = db.collection('users').doc(userId).collection('weightTracking').doc(weekId);
+    const existingDoc = await weeklyRef.get();
+    const existingTDEE = existingDoc.exists ? existingDoc.data().tdeeAtThisWeight : null;
     const mealPlanUpdateNeeded = existingTDEE ? Math.abs(existingTDEE - newTDEE) > 50 : false;
 
     const weeklyData = {
@@ -674,17 +652,17 @@ export async function calculateWeeklyWeightAverage(userId, date) {
       numberOfEntries: weightEntries.length,
       tdeeAtThisWeight: newTDEE,
       mealPlanUpdateNeeded,
-      calculatedAt: serverTimestamp(),
+      calculatedAt: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(weeklyRef, weeklyData);
+    await weeklyRef.set(weeklyData);
 
     // Update user profile
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
+    const userRef = db.collection('users').doc(userId);
+    await userRef.update({
       currentWeight: average,
       tdeeRequirement: newTDEE,
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     });
 
     // Check goal achievement
@@ -797,22 +775,22 @@ export async function calculateWeeklyActivityLevel(userId, weekEndDate = new Dat
     }
 
     // Update user profile with calculated activity level
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
+    const userRef = db.collection('users').doc(userId);
+    await userRef.update({
       weeklyActivityLevel: calculatedActivityLevel,
-      activityCalculatedAt: serverTimestamp(),
+      activityCalculatedAt: FieldValue.serverTimestamp(),
     });
 
     // Save to weekly metrics collection
     const weekId = getWeekId(weekEndDate);
-    const weeklyMetricsRef = doc(db, 'weeklyMetrics', userId, weekId);
-    await setDoc(weeklyMetricsRef, {
+    const weeklyMetricsRef = db.collection('weeklyMetrics').doc(userId).collection('weeks').doc(weekId);
+    await weeklyMetricsRef.set({
       weekStartDate: Timestamp.fromDate(startDate),
       weekEndDate: Timestamp.fromDate(endDate),
       exerciseDays: exerciseDays.map((e) => e.date),
       exerciseCount,
       calculatedActivityLevel,
-      calculatedAt: serverTimestamp(),
+      calculatedAt: FieldValue.serverTimestamp(),
     });
 
     logger.info('Weekly activity level calculated', {
@@ -844,10 +822,10 @@ export async function calculateWeeklyActivityLevel(userId, weekEndDate = new Dat
  */
 async function getUserProfile(userId) {
   try {
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       throw new Error('User profile not found');
     }
 
@@ -872,9 +850,9 @@ async function checkGoalAchievement(userId, currentWeight, date) {
 
     if (diff <= 0.1) {
       // Goal achieved!
-      const achievementRef = doc(db, 'users', userId, 'weightTracking', 'goalAchievement');
+      const achievementRef = db.collection('users').doc(userId).collection('weightTracking').doc('goalAchievement');
 
-      await setDoc(achievementRef, {
+      await achievementRef.set({
         goalAchieved: true,
         achievedDate: Timestamp.fromDate(date instanceof Date ? date : new Date(date)),
         achievedWeight: currentWeight,
@@ -893,10 +871,10 @@ async function checkGoalAchievement(userId, currentWeight, date) {
  */
 export async function getGoalAchievement(userId) {
   try {
-    const achievementRef = doc(db, 'users', userId, 'weightTracking', 'goalAchievement');
-    const achievementDoc = await getDoc(achievementRef);
+    const achievementRef = db.collection('users').doc(userId).collection('weightTracking').doc('goalAchievement');
+    const achievementDoc = await achievementRef.get();
 
-    if (!achievementDoc.exists()) {
+    if (!achievementDoc.exists) {
       return { goalAchieved: false };
     }
 
@@ -916,11 +894,9 @@ export async function getGoalAchievement(userId) {
  */
 export async function dismissGoalBanner(userId) {
   try {
-    const achievementRef = doc(db, 'users', userId, 'weightTracking', 'goalAchievement');
+    const achievementRef = db.collection('users').doc(userId).collection('weightTracking').doc('goalAchievement');
 
-    await updateDoc(achievementRef, {
-      bannerDismissed: true,
-    });
+    await achievementRef.update({ bannerDismissed: true });
 
     logger.info('Goal banner dismissed', { userId });
     return { success: true };
@@ -995,22 +971,16 @@ export async function saveDailyOvulationScore(userId, cycleId, date, scoreData) 
   try {
     const dateStr = typeof date === 'string' ? date : date.toISOString().split('T')[0];
 
-    const scoreRef = doc(
-      db,
-      'users',
-      userId,
-      'ovulationPrediction',
-      cycleId,
-      'dailyScores',
-      dateStr
-    );
+    const scoreRef = db.collection('users').doc(userId)
+      .collection('ovulationPrediction').doc(cycleId)
+      .collection('dailyScores').doc(dateStr);
 
     const dataToSave = {
       ...scoreData,
-      calculatedAt: serverTimestamp(),
+      calculatedAt: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(scoreRef, dataToSave);
+    await scoreRef.set(dataToSave);
 
     logger.info('Ovulation score saved', { userId, cycleId, date: dateStr });
     return { success: true };
@@ -1025,9 +995,8 @@ export async function saveDailyOvulationScore(userId, cycleId, date, scoreData) 
  */
 export async function getCurrentCycleId(userId) {
   try {
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
-    const snapshot = await getDocs(q);
+    const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+    const snapshot = await cyclesRef.orderBy('startDate', 'desc').limit(1).get();
 
     if (snapshot.empty) {
       return null;
@@ -1046,9 +1015,8 @@ export async function getCurrentCycleId(userId) {
 export async function getOvulationPrediction(userId) {
   try {
     // Get current cycle info
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const q = query(cyclesRef, orderBy('startDate', 'desc'), limit(1));
-    const cycleSnapshot = await getDocs(q);
+    const cyclesRef = db.collection('periodTracking').doc(userId).collection('cycles');
+    const cycleSnapshot = await cyclesRef.orderBy('startDate', 'desc').limit(1).get();
 
     if (cycleSnapshot.empty) {
       return {
@@ -1066,8 +1034,8 @@ export async function getOvulationPrediction(userId) {
     const cycleLength = currentCycle.cycleLength || 28;
 
     // Get daily tracking data for current cycle
-    const dailyRef = collection(db, 'dailyTracking', userId, 'entries');
-    const dailySnapshot = await getDocs(dailyRef);
+    const dailyRef = db.collection('dailyTracking').doc(userId).collection('entries');
+    const dailySnapshot = await dailyRef.get();
 
     const ovulationScores = [];
     dailySnapshot.forEach((doc) => {
@@ -1184,15 +1152,15 @@ function getWeekEnd(date) {
  */
 export async function saveWeeklySymptoms(userId, weekId, symptomData) {
   try {
-    const symptomsRef = doc(db, 'weeklySymptoms', userId, 'weeks', weekId);
+    const symptomsRef = db.collection('weeklySymptoms').doc(userId).collection('weeks').doc(weekId);
 
     const dataToSave = {
       weekId,
       ...symptomData,
-      loggedAt: serverTimestamp(),
+      loggedAt: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(symptomsRef, dataToSave, { merge: true });
+    await symptomsRef.set(dataToSave, { merge: true });
 
     logger.info('Weekly symptoms saved', { userId, weekId });
     return { success: true, data: dataToSave };
@@ -1207,10 +1175,10 @@ export async function saveWeeklySymptoms(userId, weekId, symptomData) {
  */
 export async function getWeeklySymptoms(userId, weekId) {
   try {
-    const symptomsRef = doc(db, 'weeklySymptoms', userId, 'weeks', weekId);
-    const symptomsDoc = await getDoc(symptomsRef);
+    const symptomsRef = db.collection('weeklySymptoms').doc(userId).collection('weeks').doc(weekId);
+    const symptomsDoc = await symptomsRef.get();
 
-    if (!symptomsDoc.exists()) {
+    if (!symptomsDoc.exists) {
       logger.info('Weekly symptoms not found', { userId, weekId });
       return null;
     }
@@ -1231,8 +1199,8 @@ export async function getWeeklySymptoms(userId, weekId) {
  */
 export async function getWeeklySymptomsRange(userId, startWeek, endWeek) {
   try {
-    const symptomsRef = collection(db, 'weeklySymptoms', userId, 'weeks');
-    const snapshot = await getDocs(symptomsRef);
+    const symptomsRef = db.collection('weeklySymptoms').doc(userId).collection('weeks');
+    const snapshot = await symptomsRef.get();
 
     const symptoms = [];
     snapshot.forEach((doc) => {
@@ -1273,10 +1241,10 @@ export async function getWeeklySymptomsRange(userId, startWeek, endWeek) {
  */
 export async function getWeeklySummary(userId, weekId) {
   try {
-    const summaryRef = doc(db, 'weeklySummaries', userId, 'weeks', weekId);
-    const summaryDoc = await getDoc(summaryRef);
+    const summaryRef = db.collection('weeklySummaries').doc(userId).collection('weeks').doc(weekId);
+    const summaryDoc = await summaryRef.get();
 
-    if (!summaryDoc.exists()) {
+    if (!summaryDoc.exists) {
       logger.info('Weekly summary not found', { userId, weekId });
       return null;
     }
@@ -1293,11 +1261,8 @@ export async function getWeeklySummary(userId, weekId) {
  */
 export async function getWeeklySummariesRange(userId, numberOfWeeks = 12) {
   try {
-    const summariesRef = collection(db, 'weeklySummaries', userId, 'weeks');
-
-    const q = query(summariesRef, orderBy('startDate', 'desc'), limit(numberOfWeeks));
-
-    const snapshot = await getDocs(q);
+    const summariesRef = db.collection('weeklySummaries').doc(userId).collection('weeks');
+    const snapshot = await summariesRef.orderBy('startDate', 'desc').limit(numberOfWeeks).get();
 
     if (snapshot.empty) {
       logger.info('No weekly summaries found', { userId });
@@ -1375,10 +1340,10 @@ async function aggregateWeeklyData(userId, weekId, startDate, endDate) {
     }
 
     // Aggregate weekly symptoms (if any were logged this week)
-    const weeklySymptomRef = doc(db, 'weeklySymptoms', userId, 'weeks', weekId);
-    const weeklySymptomDoc = await getDoc(weeklySymptomRef);
+    const weeklySymptomRef = db.collection('weeklySymptoms').doc(userId).collection('weeks').doc(weekId);
+    const weeklySymptomDoc = await weeklySymptomRef.get();
 
-    if (weeklySymptomDoc.exists()) {
+    if (weeklySymptomDoc.exists) {
       const symptoms = weeklySymptomDoc.data().symptoms || {};
 
       // Get top 3 most severe symptoms
@@ -1508,14 +1473,14 @@ export async function generateWeeklySummary(userId, weekId) {
     const summaryData = await aggregateWeeklyData(userId, weekId, weekStart, weekEnd);
 
     // Save to Firestore
-    const summaryRef = doc(db, 'weeklySummaries', userId, 'weeks', weekId);
+    const summaryRef = db.collection('weeklySummaries').doc(userId).collection('weeks').doc(weekId);
 
     const dataToSave = {
       ...summaryData,
-      generatedAt: serverTimestamp(),
+      generatedAt: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(summaryRef, dataToSave, { merge: true });
+    await summaryRef.set(dataToSave, { merge: true });
 
     logger.info('Weekly summary generated', { userId, weekId });
 
@@ -1539,10 +1504,10 @@ export async function generateWeeklySummary(userId, weekId) {
  */
 export async function getMonthlyReport(userId, monthId) {
   try {
-    const reportRef = doc(db, 'monthlyReports', userId, 'months', monthId);
-    const reportDoc = await getDoc(reportRef);
+    const reportRef = db.collection('monthlyReports').doc(userId).collection('months').doc(monthId);
+    const reportDoc = await reportRef.get();
 
-    if (!reportDoc.exists()) {
+    if (!reportDoc.exists) {
       logger.info('Monthly report not found', { userId, monthId });
       return null;
     }
@@ -1559,11 +1524,8 @@ export async function getMonthlyReport(userId, monthId) {
  */
 export async function getMonthlyReportsRange(userId, numberOfMonths = 6) {
   try {
-    const reportsRef = collection(db, 'monthlyReports', userId, 'months');
-
-    const q = query(reportsRef, orderBy('startDate', 'desc'), limit(numberOfMonths));
-
-    const snapshot = await getDocs(q);
+    const reportsRef = db.collection('monthlyReports').doc(userId).collection('months');
+    const snapshot = await reportsRef.orderBy('startDate', 'desc').limit(numberOfMonths).get();
 
     if (snapshot.empty) {
       logger.info('No monthly reports found', { userId });
@@ -1708,9 +1670,8 @@ async function aggregateMonthlyData(userId, monthId, startDate, endDate) {
     }
 
     // Get period cycles for the month
-    const cyclesRef = collection(db, 'periodTracking', userId, 'cycles');
-    const cyclesQuery = query(cyclesRef, where('month', '==', month), where('year', '==', year));
-    const cyclesSnapshot = await getDocs(cyclesQuery);
+    const cyclesSnapshot = await db.collection('periodTracking').doc(userId).collection('cycles')
+      .where('month', '==', month).where('year', '==', year).get();
 
     data.periodsLogged = cyclesSnapshot.size;
 
@@ -1745,17 +1706,10 @@ async function aggregateMonthlyData(userId, monthId, startDate, endDate) {
 
     // Fetch weekly symptoms for each week
     for (const weekId of weeksInMonth) {
-      const weeklySymptomRef = doc(
-        db,
-        'users',
-        userId,
-        'progressTracking',
-        'weeklySymptoms',
-        weekId
-      );
-      const weeklySymptomDoc = await getDoc(weeklySymptomRef);
+      const weeklySymptomRef = db.collection('weeklySymptoms').doc(userId).collection('weeks').doc(weekId);
+      const weeklySymptomDoc = await weeklySymptomRef.get();
 
-      if (weeklySymptomDoc.exists()) {
+      if (weeklySymptomDoc.exists) {
         const symptoms = weeklySymptomDoc.data().symptoms || {};
 
         Object.entries(symptoms).forEach(([name, value]) => {
@@ -1799,17 +1753,10 @@ async function aggregateMonthlyData(userId, monthId, startDate, endDate) {
     };
 
     for (const weekId of weeksInMonth) {
-      const weeklySymptomRef = doc(
-        db,
-        'users',
-        userId,
-        'progressTracking',
-        'weeklySymptoms',
-        weekId
-      );
-      const weeklySymptomDoc = await getDoc(weeklySymptomRef);
+      const weeklySymptomRef = db.collection('weeklySymptoms').doc(userId).collection('weeks').doc(weekId);
+      const weeklySymptomDoc = await weeklySymptomRef.get();
 
-      if (weeklySymptomDoc.exists()) {
+      if (weeklySymptomDoc.exists) {
         const symptoms = weeklySymptomDoc.data().symptoms || {};
 
         if (symptoms.anxiety?.severity) mentalHealthData.anxiety.push(symptoms.anxiety.severity);
@@ -1945,14 +1892,14 @@ export async function generateMonthlyReport(userId, monthId) {
     const reportData = await aggregateMonthlyData(userId, monthId, monthStart, monthEnd);
 
     // Save to Firestore
-    const reportRef = doc(db, 'monthlyReports', userId, 'months', monthId);
+    const reportRef = db.collection('monthlyReports').doc(userId).collection('months').doc(monthId);
 
     const dataToSave = {
       ...reportData,
-      generatedAt: serverTimestamp(),
+      generatedAt: FieldValue.serverTimestamp(),
     };
 
-    await setDoc(reportRef, dataToSave, { merge: true });
+    await reportRef.set(dataToSave, { merge: true });
 
     logger.info('Monthly report generated', { userId, monthId });
 

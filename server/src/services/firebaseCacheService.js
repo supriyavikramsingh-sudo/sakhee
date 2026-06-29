@@ -3,18 +3,7 @@
 // Note: SERP cache methods are deprecated but kept for backward compatibility
 // Replace in-memory caching in production
 
-import { db } from '../config/firebase.js';
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { db, FieldValue } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const logger = new Logger('FirebaseCacheService');
@@ -40,13 +29,13 @@ class FirebaseCacheService {
   async cacheRedditInsights(topic, timeFilter, insights) {
     try {
       const cacheKey = `${topic || 'general'}_${timeFilter}`;
-      const docRef = doc(db, this.collections.redditInsights, cacheKey);
+      const docRef = db.collection(this.collections.redditInsights).doc(cacheKey);
 
-      await setDoc(docRef, {
+      await docRef.set({
         topic,
         timeFilter,
         insights,
-        cachedAt: serverTimestamp(),
+        cachedAt: FieldValue.serverTimestamp(),
         expiresAt: Date.now() + this.ttl.reddit,
       });
 
@@ -62,10 +51,10 @@ class FirebaseCacheService {
   async getCachedRedditInsights(topic, timeFilter) {
     try {
       const cacheKey = `${topic || 'general'}_${timeFilter}`;
-      const docRef = doc(db, this.collections.redditInsights, cacheKey);
-      const docSnap = await getDoc(docRef);
+      const docRef = db.collection(this.collections.redditInsights).doc(cacheKey);
+      const docSnap = await docRef.get();
 
-      if (!docSnap.exists()) {
+      if (!docSnap.exists) {
         return null;
       }
 
@@ -74,7 +63,7 @@ class FirebaseCacheService {
       // Check if expired
       if (data.expiresAt && Date.now() > data.expiresAt) {
         logger.info('Cache expired', { cacheKey });
-        await deleteDoc(docRef);
+        await docRef.delete();
         return null;
       }
 
@@ -92,13 +81,13 @@ class FirebaseCacheService {
   async cacheNutrition(foodItem, location, nutritionData) {
     try {
       const cacheKey = `${foodItem.toLowerCase()}_${location}`;
-      const docRef = doc(db, this.collections.nutritionData, cacheKey);
+      const docRef = db.collection(this.collections.nutritionData).doc(cacheKey);
 
-      await setDoc(docRef, {
+      await docRef.set({
         foodItem,
         location,
         data: nutritionData,
-        cachedAt: serverTimestamp(),
+        cachedAt: FieldValue.serverTimestamp(),
         expiresAt: Date.now() + this.ttl.nutrition,
       });
 
@@ -114,10 +103,10 @@ class FirebaseCacheService {
   async getCachedNutrition(foodItem, location) {
     try {
       const cacheKey = `${foodItem.toLowerCase()}_${location}`;
-      const docRef = doc(db, this.collections.nutritionData, cacheKey);
-      const docSnap = await getDoc(docRef);
+      const docRef = db.collection(this.collections.nutritionData).doc(cacheKey);
+      const docSnap = await docRef.get();
 
-      if (!docSnap.exists()) {
+      if (!docSnap.exists) {
         return null;
       }
 
@@ -125,7 +114,7 @@ class FirebaseCacheService {
 
       // Check if expired
       if (data.expiresAt && Date.now() > data.expiresAt) {
-        await deleteDoc(docRef);
+        await docRef.delete();
         return null;
       }
 
@@ -145,12 +134,12 @@ class FirebaseCacheService {
     logger.warn('DEPRECATED: cacheSerpResults() - SERP API has been replaced by Spoonacular');
     try {
       const cacheKey = query.toLowerCase().replace(/\s+/g, '_');
-      const docRef = doc(db, this.collections.serpResults, cacheKey);
+      const docRef = db.collection(this.collections.serpResults).doc(cacheKey);
 
-      await setDoc(docRef, {
+      await docRef.set({
         query,
         results,
-        cachedAt: serverTimestamp(),
+        cachedAt: FieldValue.serverTimestamp(),
         expiresAt: Date.now() + this.ttl.serp,
       });
 
@@ -169,17 +158,17 @@ class FirebaseCacheService {
     logger.warn('DEPRECATED: getCachedSerpResults() - SERP API has been replaced by Spoonacular');
     try {
       const cacheKey = query.toLowerCase().replace(/\s+/g, '_');
-      const docRef = doc(db, this.collections.serpResults, cacheKey);
-      const docSnap = await getDoc(docRef);
+      const docRef = db.collection(this.collections.serpResults).doc(cacheKey);
+      const docSnap = await docRef.get();
 
-      if (!docSnap.exists()) {
+      if (!docSnap.exists) {
         return null;
       }
 
       const data = docSnap.data();
 
       if (data.expiresAt && Date.now() > data.expiresAt) {
-        await deleteDoc(docRef);
+        await docRef.delete();
         return null;
       }
 
@@ -199,12 +188,10 @@ class FirebaseCacheService {
       let totalDeleted = 0;
 
       for (const collectionName of Object.values(this.collections)) {
-        const q = query(collection(db, collectionName), where('expiresAt', '<', now));
-
-        const snapshot = await getDocs(q);
+        const snapshot = await db.collection(collectionName).where('expiresAt', '<', now).get();
 
         for (const docSnapshot of snapshot.docs) {
-          await deleteDoc(docSnapshot.ref);
+          await docSnapshot.ref.delete();
           totalDeleted++;
         }
       }
@@ -225,7 +212,7 @@ class FirebaseCacheService {
       const stats = {};
 
       for (const [key, collectionName] of Object.entries(this.collections)) {
-        const snapshot = await getDocs(collection(db, collectionName));
+        const snapshot = await db.collection(collectionName).get();
         stats[key] = {
           total: snapshot.size,
           active: 0,
@@ -260,11 +247,11 @@ class FirebaseCacheService {
         throw new Error(`Invalid cache type: ${type}`);
       }
 
-      const snapshot = await getDocs(collection(db, collectionName));
+      const snapshot = await db.collection(collectionName).get();
       let deleted = 0;
 
       for (const docSnapshot of snapshot.docs) {
-        await deleteDoc(docSnapshot.ref);
+        await docSnapshot.ref.delete();
         deleted++;
       }
 

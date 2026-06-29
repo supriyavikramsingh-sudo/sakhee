@@ -1,6 +1,5 @@
 import express from 'express';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+import { db, FieldValue } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const router = express.Router();
@@ -87,10 +86,10 @@ router.get('/subscription', verifyAuth, async (req, res) => {
       logger.info('Test Pro user detected', { userId });
     }
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User not found' },
@@ -169,10 +168,10 @@ router.put('/subscription/upgrade', verifyAuth, async (req, res) => {
       });
     }
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User not found' },
@@ -187,16 +186,16 @@ router.put('/subscription/upgrade', verifyAuth, async (req, res) => {
       subscription_plan: 'pro',
       billing_cycle: billing_cycle,
       subscription_status: 'active',
-      subscription_start_date: serverTimestamp(),
+      subscription_start_date: FieldValue.serverTimestamp(),
       next_billing_date: nextBillingDate,
       subscription_end_date: null, // Clear any cancellation
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
-    await updateDoc(userRef, updateData);
+    await userRef.update(updateData);
 
     // Fetch updated data
-    const updatedDoc = await getDoc(userRef);
+    const updatedDoc = await userRef.get();
     const updatedData = updatedDoc.data();
 
     const subscriptionData = {
@@ -245,10 +244,10 @@ router.put('/subscription/cancel', verifyAuth, async (req, res) => {
 
     logger.info('Canceling subscription', { userId });
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User not found' },
@@ -270,13 +269,13 @@ router.put('/subscription/cancel', verifyAuth, async (req, res) => {
     const updateData = {
       subscription_status: 'canceled',
       subscription_end_date: endDate,
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
-    await updateDoc(userRef, updateData);
+    await userRef.update(updateData);
 
     // Fetch updated data
-    const updatedDoc = await getDoc(userRef);
+    const updatedDoc = await userRef.get();
     const updatedData = updatedDoc.data();
 
     const subscriptionData = {
@@ -325,10 +324,10 @@ router.put('/subscription/reactivate', verifyAuth, async (req, res) => {
 
     logger.info('Reactivating subscription', { userId });
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User not found' },
@@ -354,13 +353,13 @@ router.put('/subscription/reactivate', verifyAuth, async (req, res) => {
     const updateData = {
       subscription_status: 'active',
       subscription_end_date: null,
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
-    await updateDoc(userRef, updateData);
+    await userRef.update(updateData);
 
     // Fetch updated data
-    const updatedDoc = await getDoc(userRef);
+    const updatedDoc = await userRef.get();
     const updatedData = updatedDoc.data();
 
     const subscriptionData = {
@@ -409,10 +408,10 @@ router.get('/usage', verifyAuth, async (req, res) => {
 
     logger.info('Fetching usage stats', { userId });
 
-    const userRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userRef);
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
 
-    if (!userDoc.exists()) {
+    if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
         error: { message: 'User not found' },

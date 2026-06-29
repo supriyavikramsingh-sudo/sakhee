@@ -3,17 +3,6 @@
  * Handles meal plan naming, Firestore operations for history management
  */
 
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  deleteDoc,
-  query,
-  orderBy,
-  limit as firestoreLimit,
-  getDocs,
-} from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { Logger } from './logger.js';
 
@@ -113,9 +102,8 @@ export async function saveMealPlanToHistory(userId, mealPlanData) {
     } = mealPlanData;
 
     // Check existing plan count
-    const historyRef = collection(db, 'users', userId, 'mealPlanHistory');
-    const historyQuery = query(historyRef, orderBy('generatedAt', 'desc'));
-    const historySnapshot = await getDocs(historyQuery);
+    const historyRef = db.collection('users').doc(userId).collection('mealPlanHistory');
+    const historySnapshot = await historyRef.orderBy('generatedAt', 'desc').get();
 
     const currentPlanCount = historySnapshot.size;
 
@@ -166,8 +154,8 @@ export async function saveMealPlanToHistory(userId, mealPlanData) {
     };
 
     // Save to Firestore
-    const planDocRef = doc(db, 'users', userId, 'mealPlanHistory', planId);
-    await setDoc(planDocRef, planDocument);
+    const planDocRef = db.collection('users').doc(userId).collection('mealPlanHistory').doc(planId);
+    await planDocRef.set(planDocument);
 
     logger.info('Meal plan saved to history', {
       userId,
@@ -205,9 +193,8 @@ export async function saveMealPlanToHistory(userId, mealPlanData) {
  */
 export async function getMealPlanHistory(userId) {
   try {
-    const historyRef = collection(db, 'users', userId, 'mealPlanHistory');
-    const historyQuery = query(historyRef, orderBy('generatedAt', 'desc'), firestoreLimit(5));
-    const historySnapshot = await getDocs(historyQuery);
+    const historyRef = db.collection('users').doc(userId).collection('mealPlanHistory');
+    const historySnapshot = await historyRef.orderBy('generatedAt', 'desc').limit(5).get();
 
     const plans = [];
     historySnapshot.forEach((doc) => {
@@ -261,10 +248,10 @@ export async function getMealPlanHistory(userId) {
  */
 export async function loadFullMealPlan(userId, planId) {
   try {
-    const planDocRef = doc(db, 'users', userId, 'mealPlanHistory', planId);
-    const planDoc = await getDoc(planDocRef);
+    const planDocRef = db.collection('users').doc(userId).collection('mealPlanHistory').doc(planId);
+    const planDoc = await planDocRef.get();
 
-    if (!planDoc.exists()) {
+    if (!planDoc.exists) {
       return {
         success: false,
         error: 'Meal plan not found',
@@ -323,18 +310,18 @@ export async function loadFullMealPlan(userId, planId) {
  */
 export async function deleteMealPlan(userId, planId) {
   try {
-    const planDocRef = doc(db, 'users', userId, 'mealPlanHistory', planId);
+    const planDocRef = db.collection('users').doc(userId).collection('mealPlanHistory').doc(planId);
 
     // Check if plan exists before deleting
-    const planDoc = await getDoc(planDocRef);
-    if (!planDoc.exists()) {
+    const planDoc = await planDocRef.get();
+    if (!planDoc.exists) {
       return {
         success: false,
         error: 'Meal plan not found',
       };
     }
 
-    await deleteDoc(planDocRef);
+    await planDocRef.delete();
 
     logger.info('Meal plan deleted from history', {
       userId,

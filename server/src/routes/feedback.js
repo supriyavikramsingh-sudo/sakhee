@@ -1,6 +1,5 @@
 import express from 'express';
-import { collection, addDoc, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+import { db, Timestamp } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 
 const router = express.Router();
@@ -54,7 +53,7 @@ router.post('/', async (req, res) => {
     };
 
     // Store feedback in Firestore
-    const docRef = await addDoc(collection(db, FEEDBACK_COLLECTION), feedbackEntry);
+    const docRef = await db.collection(FEEDBACK_COLLECTION).add(feedbackEntry);
 
     logger.info(`✅ Feedback stored successfully in Firestore`, {
       feedbackId: docRef.id,
@@ -95,13 +94,10 @@ router.get('/:userId', async (req, res) => {
     }
 
     // Query Firestore for user's feedback
-    const q = query(
-      collection(db, FEEDBACK_COLLECTION),
-      where('userId', '==', userId),
-      orderBy('timestamp', 'desc')
-    );
-
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await db.collection(FEEDBACK_COLLECTION)
+      .where('userId', '==', userId)
+      .orderBy('timestamp', 'desc')
+      .get();
     const userFeedback = [];
 
     querySnapshot.forEach((doc) => {
@@ -137,7 +133,7 @@ router.get('/:userId', async (req, res) => {
 router.get('/stats/summary', async (req, res) => {
   try {
     // Get all feedback from Firestore
-    const querySnapshot = await getDocs(collection(db, FEEDBACK_COLLECTION));
+    const querySnapshot = await db.collection(FEEDBACK_COLLECTION).get();
     const allFeedback = [];
 
     querySnapshot.forEach((doc) => {
@@ -173,7 +169,7 @@ router.get('/stats/summary', async (req, res) => {
 router.get('/debug/all', async (req, res) => {
   try {
     // Get all feedback from Firestore
-    const querySnapshot = await getDocs(collection(db, FEEDBACK_COLLECTION));
+    const querySnapshot = await db.collection(FEEDBACK_COLLECTION).get();
     const allFeedback = [];
 
     querySnapshot.forEach((doc) => {

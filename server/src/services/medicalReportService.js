@@ -4,17 +4,7 @@
  * Enforces single-report-per-user policy
  */
 
-import { db } from '../config/firebase.js';
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  getDocs,
-  deleteDoc,
-  query,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { db, FieldValue } from '../config/firebase.js';
 import fs from 'fs';
 import path from 'path';
 import { Logger } from '../utils/logger.js';
@@ -31,10 +21,10 @@ class MedicalReportService {
    */
   async getUserReport(userId) {
     try {
-      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
-      const reportDoc = await getDoc(reportRef);
+      const reportRef = db.collection('users').doc(userId).collection('medicalReport').doc('current');
+      const reportDoc = await reportRef.get();
 
-      if (reportDoc.exists()) {
+      if (reportDoc.exists) {
         return {
           success: true,
           data: {
@@ -151,7 +141,7 @@ class MedicalReportService {
       await this.deletePreviousReport(userId);
 
       // Save new report with fixed document ID 'current'
-      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
+      const reportRef = db.collection('users').doc(userId).collection('medicalReport').doc('current');
 
       // Sanitize all data before saving
       const sanitizedLabValues = this.sanitizeData(reportData.labValues) || {};
@@ -169,7 +159,7 @@ class MedicalReportService {
         extractedText: (reportData.extractedText || '').substring(0, 50000), // Limit text size
         labValues: sanitizedLabValues,
         analysis: sanitizedAnalysis,
-        uploadedAt: serverTimestamp(),
+        uploadedAt: FieldValue.serverTimestamp(),
         fileMetadata: {
           originalName: reportData.filename || 'unknown',
           size: reportData.fileSize || 0,
@@ -187,7 +177,7 @@ class MedicalReportService {
         logger.warn('Document too large, reduced extractedText size');
       }
 
-      await setDoc(reportRef, reportToSave);
+      await reportRef.set(reportToSave);
 
       logger.info('Medical report saved to Firestore', {
         userId,
@@ -217,8 +207,8 @@ class MedicalReportService {
       const existingReport = await this.getUserReport(userId);
 
       if (existingReport.success && existingReport.data) {
-        const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
-        await deleteDoc(reportRef);
+        const reportRef = db.collection('users').doc(userId).collection('medicalReport').doc('current');
+        await reportRef.delete();
 
         // Delete physical file if it exists
         const filePath = path.join(this.uploadDir, `${userId}_${existingReport.data.filename}`);
@@ -271,18 +261,17 @@ class MedicalReportService {
    */
   async updateReportAnalysis(userId, analysis) {
     try {
-      const reportRef = doc(db, 'users', userId, 'medicalReport', 'current');
-      const reportDoc = await getDoc(reportRef);
+      const reportRef = db.collection('users').doc(userId).collection('medicalReport').doc('current');
+      const reportDoc = await reportRef.get();
 
-      if (!reportDoc.exists()) {
+      if (!reportDoc.exists) {
         return { success: false, error: 'Report not found' };
       }
 
-      await setDoc(
-        reportRef,
+      await reportRef.set(
         {
           analysis,
-          updatedAt: serverTimestamp(),
+          updatedAt: FieldValue.serverTimestamp(),
         },
         { merge: true }
       );

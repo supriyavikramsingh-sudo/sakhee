@@ -1,25 +1,9 @@
-#!/usr/bin/env node
-// server/src/scripts/measureMealPlanPerformance.js
-
-/**
- * Performance Measurement Script for Meal Plan Generation
- *
- * This script:
- * 1. Generates multiple meal plans with different configurations
- * 2. Measures LLM response times and RAG retrieval times
- * 3. Compares performance across different scenarios
- * 4. Provides detailed performance analysis
- *
- * Usage:
- *   node server/src/scripts/measureMealPlanPerformance.js
- */
-
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { mealPlanChain } from '../langchain/chains/mealPlanChain.js';
-import { performanceMetrics } from '../utils/performanceMetrics.js';
 import { Logger } from '../utils/logger.js';
+import { performanceMetrics } from '../utils/performanceMetrics.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

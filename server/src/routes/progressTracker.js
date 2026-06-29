@@ -4,8 +4,7 @@
  */
 
 import express from 'express';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+import { db, FieldValue } from '../config/firebase.js';
 import { Logger } from '../utils/logger.js';
 import {
   initializePeriodSetup,
@@ -497,14 +496,14 @@ router.post('/period/update-duration', verifyAuth, async (req, res) => {
 
     logger.info('Updating period duration', { userId, newDuration, declined });
 
-    const setupRef = doc(db, 'periodTracking', userId);
+    const setupRef = db.collection('periodTracking').doc(userId);
 
     if (declined) {
       // User declined the update
-      await updateDoc(setupRef, {
+      await setupRef.update({
         durationUpdateOffered: true,
         durationUpdateDeclined: true,
-        durationUpdateDeclinedAt: serverTimestamp(),
+        durationUpdateDeclinedAt: FieldValue.serverTimestamp(),
       });
 
       return res.json({
@@ -522,10 +521,10 @@ router.post('/period/update-duration', verifyAuth, async (req, res) => {
     }
 
     // User accepted update
-    await updateDoc(setupRef, {
+    await setupRef.update({
       onboardingDuration: newDuration,
       durationUpdateOffered: true,
-      durationUpdatedAt: serverTimestamp(),
+      durationUpdatedAt: FieldValue.serverTimestamp(),
     });
 
     return res.json({
@@ -748,10 +747,10 @@ router.put('/daily/:entryId', verifyAuth, async (req, res) => {
     logger.info('Updating daily tracking', { userId, entryId });
 
     // Get the existing entry from subcollection: dailyTracking/{userId}/entries/{date}
-    const entryRef = doc(db, 'dailyTracking', userId, 'entries', entryId);
-    const existingEntry = await getDoc(entryRef);
+    const entryRef = db.collection('dailyTracking').doc(userId).collection('entries').doc(entryId);
+    const existingEntry = await entryRef.get();
 
-    if (!existingEntry.exists()) {
+    if (!existingEntry.exists) {
       return res.status(404).json({
         success: false,
         error: {
@@ -796,9 +795,9 @@ router.put('/daily/:entryId', verifyAuth, async (req, res) => {
     } = trackingData;
 
     // Update entry in subcollection
-    await updateDoc(entryRef, {
+    await entryRef.update({
       ...dataToSave,
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     });
 
     // Recalculate ovulation score if relevant data changed
